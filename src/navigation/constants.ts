@@ -1,0 +1,9 @@
+export const HOME = 'home';
+export const DASHBOARD = 'dashboard';
+export const SETTINGS = 'settings';
+export const ACCOUNT = 'account';
+export const WALLET = 'wallet';
+export const SAVINGS = 'savings';
+export const ACCUMULATE = 'accumulate';
+export const TRANSACTIONS = 'transactions';
+export const REPORT = 'report';

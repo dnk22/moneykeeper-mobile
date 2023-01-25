@@ -1,0 +1,9 @@
+export const SELECTIONCHANGE = 'selectionChange';
+export const CLEAR = 'Clear';
+export const ENTER = 'Enter';
+export const BACK = 'Back';
+export const PLUS = 'Plus';
+export const MINUS = 'Minus';
+export const DIVIDE = 'Divide';
+export const MULTIPLY = 'Multiply';
+export const PUSHSPECIALOPERATOR = 'pushSpecialOperator';

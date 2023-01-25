@@ -1,0 +1,19 @@
+{
+  "extends": "@tsconfig/react-native/tsconfig.json",
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "strict": true,
+    "paths": {
+      "assets/*": ["src/assets/*"],
+      "components/*": ["src/components/*"],
+      "features/*": ["src/features/*"],
+      "navigation/*": ["src/navigation/*"],
+      "resources/*": ["src/resources/*"],
+      "services/*": ["src/services/*"],
+      "share/*": ["src/share/*"],
+      "store/*": ["src/store/*"],
+      "utils/*": ["src/utils/*"],
+    }
+  }
+}
