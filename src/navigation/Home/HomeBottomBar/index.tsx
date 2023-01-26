@@ -23,7 +23,6 @@ const BottomBar = ({
   ];
 
   const navigate = useCallback((route: string) => {
-    console.log(route);
     navigation.navigate(route);
   }, []);
 
