@@ -7,7 +7,7 @@ import AppNavigators from 'navigation/index';
 import { MyAppTheme } from 'resources/theme';
 import { PersistGate } from 'redux-persist/integration/react';
 import { logBoxIgnore } from 'utils/constant';
-import { Loading } from 'components/index';
+import { Loading, StatusBar } from 'components/index';
 import RnKeyboard from 'rn-keyboard'; // <-- Import here
 import KeyboardCalculator from 'components/InputCalculator/KeyboardCalculator';
 
@@ -22,6 +22,7 @@ const App = () => {
     <Provider store={store}>
       <PersistGate loading={<Loading />} persistor={persistor}>
         <NavigationContainer theme={MyAppTheme[isDarkMode ? 'dark' : 'default']}>
+          <StatusBar />
           <AppNavigators />
         </NavigationContainer>
       </PersistGate>
