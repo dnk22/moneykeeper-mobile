@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { LogBox, StatusBar, useColorScheme } from 'react-native';
+import { LogBox, useColorScheme } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 import { persistor, store } from './store';
@@ -22,7 +22,6 @@ const App = () => {
     <Provider store={store}>
       <PersistGate loading={<Loading />} persistor={persistor}>
         <NavigationContainer theme={MyAppTheme[isDarkMode ? 'dark' : 'default']}>
-          <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
           <AppNavigators />
         </NavigationContainer>
       </PersistGate>

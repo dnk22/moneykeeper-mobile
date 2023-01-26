@@ -6,7 +6,7 @@ import {
   GestureResponderEvent,
 } from 'react-native';
 import isEqual from 'react-fast-compare';
-import { hapticFeedback } from '/utils/system/haptic';
+import { hapticFeedback } from 'utils/system/haptic';
 
 type baseType = PressableProps & React.RefAttributes<View>;
 

@@ -1,8 +1,9 @@
 import React from 'react';
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
-import { Pressable } from 'react-native';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import styles from './styles';
+import PressableHaptic from 'components/PressableHaptic';
+import { RNText } from 'components/index';
 
 type ITabBarProps = {
   active?: boolean;
@@ -16,16 +17,18 @@ const TabBar = ({ active, options, onPress, style }: ITabBarProps) => {
     return {
       opacity: withTiming(active ? 1 : 0.5, { duration: 400 }),
       transform: [{ scale: withTiming(active ? 1.2 : 1) }],
+      marginBottom: 3,
     };
   });
 
   return (
-    <Pressable onPress={onPress} disabled={active} style={[styles.component, style]}>
+    <PressableHaptic onPress={onPress} disabled={active} style={[styles.component, style]}>
       <Animated.View style={animatedIconContainerStyles}>
         {/* @ts-ignore */}
         {options.tabBarIcon()}
       </Animated.View>
-    </Pressable>
+      {options.tabBarLabel && <RNText preset="textXXSmall">{options.tabBarLabel}</RNText>}
+    </PressableHaptic>
   );
 };
 

@@ -13,17 +13,20 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around',
   },
   component: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 10,
-    borderRadius: 30,
   },
   circle: {
+    flex: 0,
+    width: 50,
+    height: 50,
+    borderRadius: 30,
     marginBottom: 20,
-    backgroundColor: 'red',
+    marginHorizontal: 10,
   },
 });
 

@@ -39,6 +39,7 @@ import location from 'assets/svg/icon-location.svg';
 import camp from 'assets/svg/icon-camp.svg';
 import map from 'assets/svg/icon-map.svg';
 import panel from 'assets/svg/icon-panel.svg';
+import check from 'assets/svg/icon-check.svg';
 
 const icon = {
   add,
@@ -81,7 +82,8 @@ const icon = {
   location,
   camp,
   map,
-  panel
+  panel,
+  check,
 };
 
 export type IconProps = keyof typeof icon;

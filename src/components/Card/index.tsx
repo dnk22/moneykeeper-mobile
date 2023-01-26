@@ -1,10 +1,12 @@
 import { memo, useEffect, useRef, useState } from 'react';
-import { RNText, SvgIcon, PressableHaptic } from 'components/index';
 import { Animated, View } from 'react-native';
 import isEqual from 'react-fast-compare';
 import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
 import Collapsible from 'react-native-collapsible';
+import PressableHaptic from 'components/PressableHaptic';
+import RNText from 'components/Text';
+import SvgIcon from 'components/SvgIcon';
 
 type CardProps = {
   children?: React.ReactElement;
@@ -13,7 +15,7 @@ type CardProps = {
 function Card({ children }: CardProps) {
   const { colors } = useCustomTheme();
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const rotateAnim = useRef(new Animated.Value(0)).current;
+  const rotateAnim = useRef(new Animated.Value(1)).current;
 
   const onCardToggle = () => {
     setIsCollapsed(!isCollapsed);

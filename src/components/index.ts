@@ -16,6 +16,7 @@ import DateTimeModalPicker from 'components/DateTimeModalPicker';
 import InputCalculator from 'components/InputCalculator';
 import Loading from 'components/Loading';
 import StatusBar from 'components/StatusBar';
+import Card from 'components/Card';
 
 export {
   DateTimePicker,
@@ -36,4 +37,5 @@ export {
   InputCalculator,
   Loading,
   StatusBar,
+  Card
 };

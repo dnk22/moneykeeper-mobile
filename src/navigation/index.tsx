@@ -1,9 +1,10 @@
-import * as React from 'react';
+import React, { memo } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import type { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { HOME } from './constants';
 import HomeNavigation from './Home';
 import { RootStackParamList } from './type';
+import isEqual from 'react-fast-compare';
 
 //set up routes
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -19,4 +20,4 @@ function AppNavigators() {
   );
 }
 
-export default AppNavigators;
+export default memo(AppNavigators, isEqual);

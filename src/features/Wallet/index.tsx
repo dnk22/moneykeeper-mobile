@@ -1,12 +1,19 @@
 import React from 'react';
-import { RNText } from 'components/index';
+import { Card, PressableHaptic, RNText, SvgIcon } from 'components/index';
 import { ScrollView, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
-import Card from './Card';
+import { useNavigation } from '@react-navigation/native';
+import { ADDWALLET } from 'navigation/constants';
 
-const Wallet = ({}) => {
+function Wallet() {
   const { colors } = useCustomTheme();
+  const navigation = useNavigation();
+
+  const onCreateWallet = () => {
+    navigation.navigate(ADDWALLET);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.totalBalance}>
@@ -26,8 +33,14 @@ const Wallet = ({}) => {
           </View>
         </Card>
       </ScrollView>
+      <PressableHaptic
+        style={[styles.createButton, { backgroundColor: colors.primary }]}
+        onPress={onCreateWallet}
+      >
+        <SvgIcon name="add" size={30} color="white" />
+      </PressableHaptic>
     </View>
   );
-};
+}
 
 export default Wallet;

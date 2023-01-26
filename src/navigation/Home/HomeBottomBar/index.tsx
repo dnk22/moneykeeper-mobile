@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { View } from 'react-native';
@@ -21,6 +21,12 @@ const BottomBar = ({
       backgroundColor: colors.primary,
     },
   ];
+
+  const navigate = useCallback((route: string) => {
+    console.log(route);
+    navigation.navigate(route);
+  }, []);
+
   return (
     <View
       style={[
@@ -40,7 +46,7 @@ const BottomBar = ({
               key={route.key}
               active={active}
               options={options}
-              onPress={() => navigation.navigate(route.name)}
+              onPress={() => navigate(route.name)}
               style={isTransactions}
             />
           );

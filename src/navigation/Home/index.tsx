@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
   BottomTabNavigationOptions,
   createBottomTabNavigator,
@@ -11,12 +11,12 @@ import { ACCOUNT, DASHBOARD, SETTINGS, TRANSACTIONS, REPORT } from '../constants
 import Settings from 'features/Settings';
 import AddTransactions from 'features/AddTransaction';
 import AccountNavigation from 'navigation/Account';
-import AccountHeaderBar from 'navigation/Account/AccountHeaderBar';
+import isEqual from 'react-fast-compare';
 
 // set up routes
 const Tab = createBottomTabNavigator();
 
-// variable
+// header config
 const homeOptions: BottomTabNavigationOptions = {
   headerShown: false,
 };
@@ -33,6 +33,7 @@ function HomeNavigation() {
         options={{
           // @ts-ignore
           tabBarIcon: () => <SvgIcon name="house" />,
+          tabBarLabel: 'Tổng quan',
         }}
         component={Settings}
       />
@@ -41,10 +42,7 @@ function HomeNavigation() {
         options={{
           // @ts-ignore
           tabBarIcon: () => <SvgIcon name="card" />,
-          headerShown: true,
-          header: ({ navigation, route, options }) => {
-            return <AccountHeaderBar />;
-          },
+          tabBarLabel: 'Tài khoản',
         }}
         component={AccountNavigation}
       />
@@ -61,6 +59,7 @@ function HomeNavigation() {
         options={{
           // @ts-ignore
           tabBarIcon: () => <SvgIcon name="report" size={26} />,
+          tabBarLabel: 'Báo cáo',
         }}
         component={Settings}
       />
@@ -69,6 +68,7 @@ function HomeNavigation() {
         options={{
           // @ts-ignore
           tabBarIcon: () => <SvgIcon name="settings" />,
+          tabBarLabel: 'Cài đặt',
         }}
         component={Settings}
       />
@@ -76,4 +76,4 @@ function HomeNavigation() {
   );
 }
 
-export default HomeNavigation;
+export default memo(HomeNavigation, isEqual);

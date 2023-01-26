@@ -8,7 +8,7 @@ import { textPresets } from './preset';
 
 export interface TTextProps extends TextProps {
   text?: 'string';
-  children: string;
+  children?: string;
   t18n?: any;
   t18nOptions?: any;
   color?: string;

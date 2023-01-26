@@ -9,30 +9,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  wrapper: {
-    margin: 5,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 100,
-    elevation: 10,
-  },
-  header: {
-    height: 40,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
   title: {
     fontWeight: '700',
   },
-  content: {
-    paddingBottom: 10,
+  createButton: {
+    position: 'absolute',
+    right: 30,
+    bottom: 20,
+    height: 60,
+    width: 60,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

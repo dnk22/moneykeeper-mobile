@@ -2,14 +2,13 @@ import React, { memo, useEffect, useMemo, useState } from 'react';
 import { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
 import isEqual from 'react-fast-compare';
 import { View } from 'react-native';
-import styles from './styles';
+import styles from '../styles';
 import { useCustomTheme } from 'resources/theme';
 import SegmentedControl from 'components/SegmentedControl';
 import { SAVINGS, WALLET } from 'navigation/constants';
 
 function TabBar({ state, descriptors, navigation }: MaterialTopTabBarProps) {
   const { colors } = useCustomTheme();
-
   const [isActive, setIsActive] = useState(state.index);
 
   const routes = useMemo(() => {
