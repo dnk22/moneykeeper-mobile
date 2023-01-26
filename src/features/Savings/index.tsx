@@ -5,7 +5,7 @@ import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import Card from './Card';
 
-const Wallet = ({}) => {
+const Savings = ({}) => {
   const { colors } = useCustomTheme();
   return (
     <View style={styles.container}>
@@ -13,21 +13,10 @@ const Wallet = ({}) => {
         <RNText style={styles.title}>Tổng tiền: 10000000Đ</RNText>
       </View>
       <ScrollView>
-        <Card>
-          <View>
-            <RNText>Content</RNText>
-            <RNText>Content</RNText>
-            <RNText>Content</RNText>
-            <RNText>Content</RNText>
-            <RNText>Content</RNText>
-            <RNText>Content</RNText>
-            <RNText>Content</RNText>
-            <RNText>Content</RNText>
-          </View>
-        </Card>
+        {/* <Card /> */}
       </ScrollView>
     </View>
   );
 };
 
-export default Wallet;
+export default Savings;

@@ -3,14 +3,15 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { SAVINGS, WALLET } from 'navigation/constants';
 import Wallet from 'features/Wallet';
 import TabBar from './TabBar';
+import Savings from 'features/Savings';
 
 const Tab = createMaterialTopTabNavigator();
 
 function AccountNavigation() {
   return (
     <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
-      <Tab.Screen name={WALLET} options={{ title: 'Ví' }} component={Wallet} />
-      <Tab.Screen name={SAVINGS} options={{ title: 'Tiết kiệm' }} component={Wallet} />
+      <Tab.Screen name={WALLET} options={{ title: 'Ví Tiền' }} component={Wallet} />
+      <Tab.Screen name={SAVINGS} options={{ title: 'Sổ Tiết kiệm' }} component={Savings} />
     </Tab.Navigator>
   );
 }
