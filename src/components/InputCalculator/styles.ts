@@ -12,6 +12,12 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  group: {
+    borderRadius: 10,
+    padding: 5,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  },
   inputGroup: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -24,6 +30,9 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     borderBottomWidth: 1,
     borderColor: 'rgb(242,242,242)',
+  },
+  amountLabel: {
+    textAlign: 'right',
   },
   currency: {
     fontSize: 24,

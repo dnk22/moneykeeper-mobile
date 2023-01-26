@@ -1,5 +1,5 @@
 import React, { ElementRef, useCallback, useMemo, useRef, useState } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, SafeAreaView } from 'react-native';
 import { DynamicIsland } from 'resources/animations';
 import TransactionTypePicker from './TransactionTypePicker';
 import styles from './styles';
@@ -16,7 +16,6 @@ import {
   SwitchField,
   PressableHaptic,
   InputCalculator,
-  StatusBar,
 } from 'components/index';
 import { formatDateLocal } from 'utils/date';
 import Animated, { StretchInY } from 'react-native-reanimated';
@@ -88,7 +87,7 @@ export default function AddTransactions() {
   };
 
   return (
-    <View style={[styles.container]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.primary }]}>
       <DynamicIsland ref={dynamicIsland}>
         <TransactionTypePicker
           onPressItem={onHandleTransactionTypePress}
@@ -102,7 +101,6 @@ export default function AddTransactions() {
         onToggleModal={onToggleDateTimeModal}
         onDateTimePicker={onDateTimePicker}
       />
-      <StatusBar />
       <View style={[styles.headerBar, { backgroundColor: colors.primary }]}>
         <View style={styles.actionView} />
         <PressableHaptic
@@ -119,14 +117,11 @@ export default function AddTransactions() {
         </PressableHaptic>
       </View>
       <KeyboardAwareScrollView
-        style={styles.form}
+        style={[styles.form, { backgroundColor: colors.background }]}
         showsVerticalScrollIndicator={false}
         extraScrollHeight={60}
       >
-        <View style={[styles.group, styles.amount, { backgroundColor: colors.surface }]}>
-          <RNText style={styles.amountLabel}>Số tiền</RNText>
-          <InputCalculator inputTextColor={setInputTextColor} />
-        </View>
+        <InputCalculator inputTextColor={setInputTextColor} />
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={styles.itemGroup}>
             <SvgIcon name="add" style={styles.icon} />
@@ -220,12 +215,8 @@ export default function AddTransactions() {
                 <Switch value={isShowFee} onValueChange={onHandleFeeChange} />
               </View>
               {isShowFee && (
-                <Animated.View
-                  style={[styles.group, styles.amount, { backgroundColor: colors.surface }]}
-                  entering={StretchInY}
-                >
-                  <RNText style={styles.amountLabel}>Số tiền</RNText>
-                  <InputCalculator inputTextColor={setInputTextColor} />
+                <Animated.View entering={StretchInY}>
+                  <InputCalculator />
                 </Animated.View>
               )}
             </View>
@@ -259,6 +250,6 @@ export default function AddTransactions() {
         </TouchableOpacity>
         <View style={styles.spacer}></View>
       </KeyboardAwareScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

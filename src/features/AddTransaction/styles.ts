@@ -60,12 +60,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 6,
   },
-  amount: {
-    height: 90,
-  },
-  amountLabel: {
-    textAlign: 'right',
-  },
   formInput: {
     height: 50,
     fontSize: 20,

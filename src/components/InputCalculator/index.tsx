@@ -1,4 +1,4 @@
-import React, { ElementRef, memo, useCallback, useEffect, useRef, useState } from 'react';
+import React, { ElementRef, memo, useEffect, useRef, useState } from 'react';
 import isEqual from 'react-fast-compare';
 import {
   NativeSyntheticEvent,
@@ -8,7 +8,9 @@ import {
   TextInputSelectionChangeEventData,
   View,
 } from 'react-native';
+import { useCustomTheme } from 'resources/theme';
 import RnKeyboard from 'rn-keyboard';
+import RNText from 'components/Text';
 import styles from './styles';
 import { CLEAR, PUSHSPECIALOPERATOR, SELECTIONCHANGE } from './type';
 
@@ -25,6 +27,7 @@ function InputCalculator({
   isShowPrefix = true,
   inputTextColor = 'red',
 }: TInputCalculator) {
+  const { colors } = useCustomTheme();
   const inputRef = useRef<ElementRef<typeof RnKeyboard.Input>>(null);
   const selection = useRef<{ start: number; end: number }>({ start: 0, end: 0 });
   const [inputValue, setInputValue] = useState<string>(value);
@@ -60,16 +63,18 @@ function InputCalculator({
 
   return (
     <>
-      <View style={styles.inputGroup}>
-        <TextInput
-          style={[styles.amountInput, { color: inputTextColor }]}
-          onChangeText={onHandleInputChange}
-          value={inputValue}
-          keyboardType="numeric"
-          selectTextOnFocus
-          // showSoftInputOnFocus={false}
-        />
-        {/* <RnKeyboard.Input
+      <View style={[styles.group, { backgroundColor: colors.surface }]}>
+        <RNText style={styles.amountLabel}>Số tiền</RNText>
+        <View style={styles.inputGroup}>
+          <TextInput
+            style={[styles.amountInput, { color: inputTextColor }]}
+            onChangeText={onHandleInputChange}
+            value={inputValue}
+            keyboardType="numeric"
+            selectTextOnFocus
+            // showSoftInputOnFocus={false}
+          />
+          {/* <RnKeyboard.Input
           ref={inputRef}
           selectTextOnFocus
           value={inputValue}
@@ -79,7 +84,8 @@ function InputCalculator({
           onChangeText={onHandleInputChange}
           onSelectionChange={onHandleInputSelectionChange}
         /> */}
-        {isShowPrefix && <Text style={styles.currency}>₫</Text>}
+          {isShowPrefix && <Text style={styles.currency}>₫</Text>}
+        </View>
       </View>
     </>
   );

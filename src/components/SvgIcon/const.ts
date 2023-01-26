@@ -40,6 +40,7 @@ import camp from 'assets/svg/icon-camp.svg';
 import map from 'assets/svg/icon-map.svg';
 import panel from 'assets/svg/icon-panel.svg';
 import check from 'assets/svg/icon-check.svg';
+import clipboard from 'assets/svg/icon-clipboard.svg';
 
 const icon = {
   add,
@@ -84,6 +85,7 @@ const icon = {
   map,
   panel,
   check,
+  clipboard
 };
 
 export type IconProps = keyof typeof icon;
