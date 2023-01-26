@@ -30,6 +30,7 @@
     "react-hook-form": "^7.42.1",
     "react-i18next": "^12.1.4",
     "react-native": "0.71.1",
+    "react-native-collapsible": "^1.6.0",
     "react-native-color-picker-ios": "^0.1.2",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-haptic-feedback": "^1.14.0",
