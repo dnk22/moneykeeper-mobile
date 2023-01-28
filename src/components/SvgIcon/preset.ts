@@ -7,5 +7,5 @@ export const IconSize = {
   settingsIcon: normalize(16),
   alertIcon: normalize(14),
   closeModal: 20,
-  transactionType: normalize(20),
+  transactionType: normalize(26),
 };

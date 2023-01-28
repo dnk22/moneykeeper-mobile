@@ -9,8 +9,8 @@ const FlatListComponent: PropsFlatList = (props) => {
     renderItem,
     onRefresh,
     onLoadMore,
-    maxToRenderPerBatch = 5,
-    initialNumToRender = 5,
+    maxToRenderPerBatch = 10,
+    initialNumToRender = 10,
     showsVerticalScrollIndicator = false,
     showsHorizontalScrollIndicator = false,
   } = props;
@@ -25,7 +25,7 @@ const FlatListComponent: PropsFlatList = (props) => {
         }}
       />
     ),
-    [onRefresh]
+    [onRefresh],
   );
 
   return (

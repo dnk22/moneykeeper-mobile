@@ -1,3 +1,5 @@
+import { TAccountType, TProvider } from 'src/types/models';
+
 // export const STORAGE_KEY_TOKEN = 'TOKEN';
 // export const STORAGE_KEY_APP_THEME = 'APP_THEME';
 // export const KANA_FULL_HALF_MAP = {
@@ -108,31 +110,74 @@ export const logBoxIgnore = [
 
 export const CREATE_MODE = 'create';
 
-export const alertInitialState = [
+export const Account_Type: TAccountType[] = [
   {
-    id: '0',
-    name: 'Khi bắt đầu',
-    value: 0,
-    type: 'minute',
-    default: true,
+    _id: '1',
+    name: 'Tiền mặt',
+    value: 'cash',
+    icon: 'cash',
   },
   {
-    id: '1',
-    name: 'Trước 15 phút',
-    value: 15,
-    type: 'minute',
+    _id: '2',
+    name: 'Tài khoản ngân hàng',
+    value: 'bank',
+    icon: 'bank',
   },
   {
-    id: '2',
-    name: 'Trước 30 phút',
-    value: 30,
-    type: 'minute',
+    _id: '3',
+    name: 'Thẻ tín dụng',
+    value: 'credit',
+    icon: 'credit',
   },
   {
-    id: '3',
-    name: 'Trước 60 phút',
-    value: 60,
-    type: 'minute',
+    _id: '4',
+    name: 'Tài khoản đầu tư',
+    value: 'investment',
+    icon: 'investment',
+  },
+  {
+    _id: '5',
+    name: 'Ví điện tử',
+    value: 'eWallet',
+    icon: 'eWallet',
+  },
+  {
+    _id: '6',
+    name: 'Khác',
+    value: 'other',
+    icon: 'money',
   },
 ];
 
+export const Provider: TProvider[] = [
+  {
+    _id: '1',
+    name: 'Shopee Pay',
+    value: 'shopeepay',
+    icon: 'shopeepay',
+  },
+  {
+    _id: '2',
+    name: 'Viettel Pay',
+    value: 'viettelpay',
+    icon: 'viettelpay',
+  },
+  {
+    _id: '3',
+    name: 'Zalo Pay',
+    value: 'zalopay',
+    icon: 'zalopay',
+  },
+  {
+    _id: '4',
+    name: 'Momo',
+    value: 'momo',
+    icon: 'momo',
+  },
+  {
+    _id: '5',
+    name: 'VNPT Pay',
+    value: 'vnptpay',
+    icon: 'vnptpay',
+  },
+];

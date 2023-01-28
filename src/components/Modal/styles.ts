@@ -21,6 +21,10 @@ export const styles = StyleSheet.create({
   modalAction: {
     alignItems: 'flex-end',
     paddingHorizontal: 10,
-    marginBottom: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
   },
 });

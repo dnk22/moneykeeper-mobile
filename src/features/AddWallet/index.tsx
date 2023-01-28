@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
   InputCalculator,
   InputField,
-  PressableHaptic,
   RNText,
+  InputSelection,
   SvgIcon,
   SwitchField,
 } from 'components/index';
@@ -11,23 +11,56 @@ import { TouchableOpacity, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { formatDateLocal } from 'utils/date';
 import { useForm } from 'react-hook-form';
-import { TTransactions } from 'src/types/models';
+import { TAccountType, TAccount } from 'types/models';
+import SelectWalletType from './SelectWalletType';
+import { useAppSelector } from 'store/index';
+import { accountTypeSelectors } from 'store/account/account.selector';
+import { useEffect } from 'react';
 
 const AddWallet = ({}) => {
   const { colors } = useCustomTheme();
+  const [isShowModalWalletType, setIsShowModalWalletType] = useState<boolean>(false);
 
-  const { control, handleSubmit, getValues, setValue, watch } = useForm<TTransactions>({
-    defaultValues: {},
+  const { control, handleSubmit, getValues, setValue, watch } = useForm<TAccount>({
+    defaultValues: {
+      account_type: '1',
+    },
   });
-  const { transactions_type_details, date_time } = getValues();
 
-  const onHandleSubmit = (data: TTransactions) => {
+  const { account_type } = getValues();
+
+  const getAllAccountType = useAppSelector((state) => accountTypeSelectors.selectEntities(state));
+
+  useEffect(() => {
+    if (account_type) {
+      setValue('account_type_details', getAllAccountType[account_type]);
+    }
+  }, [account_type]);
+
+  const onSelectWalletType = useCallback(() => {
+    setIsShowModalWalletType(!isShowModalWalletType);
+  }, [isShowModalWalletType]);
+
+  const onItemWalletTypePress = useCallback((item: TAccountType) => {
+    setValue('account_type', item._id);
+    setIsShowModalWalletType(false);
+  }, []);
+
+  const onHandleSubmit = (data: TAccount) => {
     console.log(data);
   };
+
+  const currentAccountType = getAllAccountType[account_type];
+
   return (
     <View style={styles.container}>
+      <SelectWalletType
+        isVisible={isShowModalWalletType}
+        onToggleModal={onSelectWalletType}
+        onPressItem={onItemWalletTypePress}
+        isTypeSelected={account_type}
+      />
       <KeyboardAwareScrollView
         style={[styles.form, { backgroundColor: colors.background }]}
         showsVerticalScrollIndicator={false}
@@ -63,20 +96,18 @@ const AddWallet = ({}) => {
           </View>
         </View>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
-          <View style={styles.itemGroup}>
-            <SvgIcon name="add" style={styles.icon} />
-            <View style={styles.groupContent}>
-              <RNText>{watch('transactions_category') || 'Chọn danh mục'}</RNText>
-              <SvgIcon name="forward" size={18} style={styles.iconForward} />
-            </View>
-          </View>
-          <View style={styles.itemGroup}>
-            <SvgIcon name="add" style={styles.icon} />
-            <View style={styles.groupContent}>
-              <RNText>{watch('transactions_category') || 'Chọn tài khoản'}</RNText>
-              <SvgIcon name="forward" size={18} style={styles.iconForward} />
-            </View>
-          </View>
+          <InputSelection
+            icon={currentAccountType?.icon}
+            title="Chọn loại tài khoản"
+            value={currentAccountType?.name}
+            onSelect={onSelectWalletType}
+          />
+          {(currentAccountType?.value === 'bank' || currentAccountType?.value === 'eWallet') && (
+            <InputSelection
+              title={currentAccountType?.value === 'bank' ? 'Chọn ngân hàng' : 'Chọn nhà cung cấp'}
+              onSelect={onSelectWalletType}
+            />
+          )}
         </View>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={[styles.itemGroup, styles.itemGroupBetween]}>

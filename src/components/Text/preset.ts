@@ -35,5 +35,9 @@ export const textPresets = StyleSheet.create({
   textXXSmall: {
     fontSize: normalize(9),
   },
+  modalTitle: {
+    fontSize: normalize(18),
+    fontWeight: '500',
+  },
   default: {},
 });

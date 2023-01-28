@@ -17,6 +17,7 @@ import InputCalculator from 'components/InputCalculator';
 import Loading from 'components/Loading';
 import StatusBar from 'components/StatusBar';
 import Card from 'components/Card';
+import InputSelection from 'components/InputSelection';
 
 export {
   DateTimePicker,
@@ -37,5 +38,6 @@ export {
   InputCalculator,
   Loading,
   StatusBar,
-  Card
+  Card,
+  InputSelection
 };

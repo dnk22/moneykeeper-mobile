@@ -41,6 +41,12 @@ import map from 'assets/svg/icon-map.svg';
 import panel from 'assets/svg/icon-panel.svg';
 import check from 'assets/svg/icon-check.svg';
 import clipboard from 'assets/svg/icon-clipboard.svg';
+import cash from 'assets/svg/icon-cash.svg';
+import bank from 'assets/svg/icon-bank.svg';
+import credit from 'assets/svg/icon-credit.svg';
+import investment from 'assets/svg/icon-investment.svg';
+import eWallet from 'assets/svg/icon-eWallet.svg';
+import money from 'assets/svg/icon-money.svg';
 
 const icon = {
   add,
@@ -85,7 +91,13 @@ const icon = {
   map,
   panel,
   check,
-  clipboard
+  clipboard,
+  cash,
+  bank,
+  investment,
+  money,
+  eWallet,
+  credit,
 };
 
 export type IconProps = keyof typeof icon;

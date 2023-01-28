@@ -5,12 +5,11 @@ import { styles } from './styles';
 import { useCustomTheme } from 'resources/theme';
 import isEqual from 'react-fast-compare';
 import SvgIcon from 'components/SvgIcon';
+import RNText from 'components/Text';
 
 const defaultProps = {
   isVisible: false,
   isShowClose: true,
-  animationInTiming: 400,
-  animationOutTiming: 400,
   backdropColor: '#6e768142',
   animationIn: 'zoomIn',
   animationOut: 'zoomOut',
@@ -23,6 +22,7 @@ export interface IModalComponentProps extends NewModalProps {
   isShowClose?: boolean;
   height?: string | number;
   styleDefaultContent?: StyleProp<any>;
+  title?: string;
 }
 
 const ModalComponent = ({
@@ -39,6 +39,7 @@ const ModalComponent = ({
   styleDefaultContent,
   onBackdropPress,
   onToggleModal,
+  title,
   ...rest
 }: IModalComponentProps) => {
   const { colors } = useCustomTheme();
@@ -65,10 +66,15 @@ const ModalComponent = ({
       <View
         style={[styles.modalView, { backgroundColor: colors.surface, height }, styleDefaultContent]}
       >
-        {isShowClose && (
-          <TouchableOpacity style={styles.modalAction} onPress={onToggleModal}>
-            <SvgIcon name="closeCircle" preset="closeModal" />
-          </TouchableOpacity>
+        {title && isShowClose && (
+          <View style={styles.header}>
+            {title && <RNText preset="modalTitle">{title}</RNText>}
+            {isShowClose && (
+              <TouchableOpacity style={styles.modalAction} onPress={onToggleModal}>
+                <SvgIcon name="closeCircle" preset="closeModal" />
+              </TouchableOpacity>
+            )}
+          </View>
         )}
         {children}
       </View>

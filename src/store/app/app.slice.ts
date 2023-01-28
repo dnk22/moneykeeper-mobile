@@ -1,22 +1,16 @@
-import { alertInitialState } from 'utils/constant';
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { AlertItemProps } from 'types';
 
-export const alertAdapter = createEntityAdapter<AlertItemProps>();
+export const alertAdapter = createEntityAdapter<any>();
 
-const getAlertInitialState = alertAdapter.upsertMany(
-  alertAdapter.getInitialState(),
-  alertInitialState
-);
 
 export const appSlice = createSlice({
   name: 'app',
   initialState: {
-    alertSettings: getAlertInitialState,
+    alertSettings: [],
   },
   reducers: {
-    addOrEditAlert: (state, { payload }: PayloadAction<AlertItemProps>) => {
+    addOrEditAlert: (state, { payload }: PayloadAction<any>) => {
       alertAdapter.upsertOne(state.alertSettings, payload);
     },
     deleteAlertByValue: (state, { payload }: PayloadAction<string>) => {
