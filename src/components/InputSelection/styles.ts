@@ -12,9 +12,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 10,
   },
-  icon: {
-    opacity: 0.6,
-  },
   iconForward: {
     position: 'absolute',
     right: 6,

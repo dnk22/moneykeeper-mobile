@@ -1,22 +1,30 @@
 import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TAccount, TAccountType } from 'src/types/models';
-import { Account_Type } from 'utils/constant';
+import { TAccount, TAccountType, TProvider } from 'src/types/models';
+import { Account_Type, Provider } from 'utils/constant';
 
-export const accountAdapter = createEntityAdapter<TAccount>();
+export const accountAdapter = createEntityAdapter<TAccount>({
+  selectId: (account) => account._id,
+});
 export const accountTypeAdapter = createEntityAdapter<TAccountType>({
   selectId: (accountType) => accountType._id,
 });
+export const providerAdapter = createEntityAdapter<TProvider>({
+  selectId: (provider) => provider._id,
+});
 
+//set default data
 const setInitAccountType = accountTypeAdapter.upsertMany(
   accountTypeAdapter.getInitialState(),
   Account_Type,
 );
+const setInitProvider = accountTypeAdapter.upsertMany(providerAdapter.getInitialState(), Provider);
 
 export const accountSlice = createSlice({
   name: 'account',
   initialState: {
     account: accountAdapter.getInitialState(),
     account_type: setInitAccountType,
+    provider: setInitProvider,
   },
   reducers: {
     addOrUpdateAccount: (state, { payload }: PayloadAction<TAccount>) => {

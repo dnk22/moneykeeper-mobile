@@ -47,6 +47,12 @@ import credit from 'assets/svg/icon-credit.svg';
 import investment from 'assets/svg/icon-investment.svg';
 import eWallet from 'assets/svg/icon-eWallet.svg';
 import money from 'assets/svg/icon-money.svg';
+import wallet from 'assets/svg/icon-wallet.svg';
+import shopeepay from 'assets/svg/icon-shopeepay.svg';
+import viettelpay from 'assets/svg/icon-viettelpay.svg';
+import zalopay from 'assets/svg/icon-zalopay.svg';
+import momo from 'assets/svg/icon-momo.svg';
+import vnptpay from 'assets/svg/icon-vnptpay.svg';
 
 const icon = {
   add,
@@ -98,6 +104,12 @@ const icon = {
   money,
   eWallet,
   credit,
+  wallet,
+  shopeepay,
+  viettelpay,
+  zalopay,
+  momo,
+  vnptpay
 };
 
 export type IconProps = keyof typeof icon;

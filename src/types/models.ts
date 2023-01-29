@@ -42,7 +42,6 @@ export type TAccount = {
   initial_amount?: number;
   current_amount?: number;
   account_type: string;
-  account_type_details?: TAccountType;
   provider?: string;
   currency?: string;
   descriptions?: string;
@@ -57,10 +56,15 @@ export type TAccountType = {
   _id: string;
   name: string;
   value: string;
+  shortName?: string;
   icon: IconProps;
 };
+
 // provider
 export type TProvider = TAccountType;
+
+// bank
+export type TBank = TAccountType;
 
 export type TTransactionsCategory = {
   _id: string;

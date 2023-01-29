@@ -13,13 +13,15 @@ const FlatListComponent: PropsFlatList = (props) => {
     initialNumToRender = 10,
     showsVerticalScrollIndicator = false,
     showsHorizontalScrollIndicator = false,
+    refreshing,
+    hasPull = false,
   } = props;
   const keyExtractor = useCallback((item: any) => item._id, []);
 
   const renderRefreshControl = useMemo(
     () => (
       <RefreshControl
-        refreshing={false}
+        refreshing={refreshing || false}
         onRefresh={() => {
           onRefresh && onRefresh();
         }}
@@ -36,7 +38,7 @@ const FlatListComponent: PropsFlatList = (props) => {
       extraData={data}
       keyboardShouldPersistTaps="handled"
       renderItem={renderItem}
-      refreshControl={renderRefreshControl}
+      refreshControl={hasPull ? renderRefreshControl : undefined}
       onEndReachedThreshold={0.5}
       onEndReached={() => onLoadMore && onLoadMore()}
       maxToRenderPerBatch={maxToRenderPerBatch}

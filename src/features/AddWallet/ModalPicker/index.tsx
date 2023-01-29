@@ -1,29 +1,52 @@
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import Modal from 'components/Modal';
 import isEqual from 'react-fast-compare';
 import { FlatListComponent, RNText, SvgIcon } from 'components/index';
 import { IModalComponentProps } from 'components/Modal';
-import { Account_Type } from 'utils/constant';
+import { Account_Type, Bank, Provider } from 'utils/constant';
 import { TouchableHighlight, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import { TAccountType } from 'src/types/models';
 
-type SelectWalletTypeProps = IModalComponentProps & {
+type ModalPickerProps = IModalComponentProps & {
   isTypeSelected?: string;
+  isShowData: string;
   onPressItem?: (item: TAccountType) => void;
 };
 
-function SelectWalletType({
+function ModalPicker({
   isVisible,
   onToggleModal,
   isTypeSelected,
+  isShowData,
   onPressItem,
-}: SelectWalletTypeProps) {
+}: ModalPickerProps) {
   const { colors } = useCustomTheme();
-
   const [isSelected, setIsSelected] = useState(isTypeSelected);
-  const currentSelected = (itemId: string) => (isSelected || isTypeSelected) === itemId;
+  const [data, setData] = useState<any>([]);
+
+  useEffect(() => {
+    if (!isTypeSelected) {
+      setIsSelected(isTypeSelected);
+    }
+  }, [isTypeSelected]);
+
+  useEffect(() => {
+    switch (isShowData) {
+      case 'bank':
+        setData(Bank);
+        break;
+      case 'eWallet':
+        setData(Provider);
+        break;
+      default:
+        setData(Account_Type);
+        break;
+    }
+  }, [isShowData]);
+
+  const currentSelected = (itemId: string) => isSelected === itemId;
 
   const renderItem = ({ item }: { item: TAccountType }) => {
     const onPress = () => {
@@ -57,14 +80,15 @@ function SelectWalletType({
   };
   return (
     <Modal
+      styleDefaultContent={{ maxHeight: '60%' }}
       isVisible={isVisible}
       animationIn="slideInUp"
       animationOut="slideOutDown"
       onToggleModal={onToggleModal}
       title="Chọn loại tài khoản"
     >
-      <FlatListComponent data={Account_Type} renderItem={renderItem} />
+      <FlatListComponent data={data} renderItem={renderItem} />
     </Modal>
   );
 }
-export default memo(SelectWalletType, isEqual);
+export default memo(ModalPicker, isEqual);

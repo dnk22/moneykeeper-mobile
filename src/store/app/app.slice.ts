@@ -3,11 +3,10 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 export const alertAdapter = createEntityAdapter<any>();
 
-
 export const appSlice = createSlice({
   name: 'app',
   initialState: {
-    alertSettings: [],
+    alertSettings: alertAdapter.getInitialState(),
   },
   reducers: {
     addOrEditAlert: (state, { payload }: PayloadAction<any>) => {
@@ -23,7 +22,7 @@ export const appSlice = createSlice({
 export const { addOrEditAlert, deleteAlertByValue } = appSlice.actions;
 
 export type TAppSlice = {
-  [appSlice.name]: ReturnType<typeof appSlice['reducer']>;
+  [appSlice.name]: ReturnType<(typeof appSlice)['reducer']>;
 };
 
 export default appSlice.reducer;
