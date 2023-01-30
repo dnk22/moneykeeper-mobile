@@ -3,11 +3,16 @@ import Modal from 'components/Modal';
 import isEqual from 'react-fast-compare';
 import { FlatListComponent, RNText, SvgIcon } from 'components/index';
 import { IModalComponentProps } from 'components/Modal';
-import { Account_Type, Bank, Provider } from 'utils/constant';
 import { TouchableHighlight, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import { TAccountType } from 'src/types/models';
+import { useAppSelector } from 'store/index';
+import {
+  accountTypeSelectors,
+  bankSelectors,
+  providerSelectors,
+} from 'store/account/account.selector';
 
 type ModalPickerProps = IModalComponentProps & {
   isTypeSelected?: string;
@@ -23,25 +28,27 @@ function ModalPicker({
   onPressItem,
 }: ModalPickerProps) {
   const { colors } = useCustomTheme();
+  const getAllAccountTypeList = useAppSelector((state) => accountTypeSelectors.selectAll(state));
+  const getAllProviderList = useAppSelector((state) => providerSelectors.selectAll(state));
+  const getAllBankList = useAppSelector((state) => bankSelectors.selectAll(state));
+
   const [isSelected, setIsSelected] = useState(isTypeSelected);
-  const [data, setData] = useState<any>([]);
+  const [data, setData] = useState<TAccountType[]>(getAllAccountTypeList);
 
   useEffect(() => {
-    if (!isTypeSelected) {
-      setIsSelected(isTypeSelected);
-    }
+    setIsSelected(isTypeSelected);
   }, [isTypeSelected]);
 
   useEffect(() => {
     switch (isShowData) {
       case 'bank':
-        setData(Bank);
+        setData(getAllBankList);
         break;
       case 'eWallet':
-        setData(Provider);
+        setData(getAllProviderList);
         break;
       default:
-        setData(Account_Type);
+        setData(getAllAccountTypeList);
         break;
     }
   }, [isShowData]);
@@ -78,6 +85,14 @@ function ModalPicker({
       </TouchableHighlight>
     );
   };
+
+  const title =
+    isShowData === 'bank'
+      ? 'Chọn ngân hàng'
+      : isShowData === 'eWallet'
+      ? 'Chọn nhà cung cấp'
+      : 'Chọn loại tài khoản';
+
   return (
     <Modal
       styleDefaultContent={{ maxHeight: '60%' }}
@@ -85,7 +100,7 @@ function ModalPicker({
       animationIn="slideInUp"
       animationOut="slideOutDown"
       onToggleModal={onToggleModal}
-      title="Chọn loại tài khoản"
+      title={title}
     >
       <FlatListComponent data={data} renderItem={renderItem} />
     </Modal>

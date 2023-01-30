@@ -26,6 +26,7 @@ function RNText({
   fontSize = 14,
   style,
   preset = 'default',
+  ...props
 }: TTextProps) {
   const { colors } = useCustomTheme();
   // setup translation
@@ -40,6 +41,7 @@ function RNText({
     <Text
       allowFontScaling={false}
       style={[style, { color: textColor, fontSize: textSize }, textPreset]}
+      {...props}
     >
       {content}
     </Text>

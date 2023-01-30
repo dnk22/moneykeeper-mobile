@@ -13,9 +13,13 @@ import styles from './styles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useForm } from 'react-hook-form';
 import { TAccountType, TAccount } from 'types/models';
-import SelectWalletType from './ModalPicker';
+import ModalPicker from './ModalPicker';
 import { useAppSelector } from 'store/index';
-import { accountTypeSelectors, providerSelectors } from 'store/account/account.selector';
+import {
+  accountTypeSelectors,
+  bankSelectors,
+  providerSelectors,
+} from 'store/account/account.selector';
 
 const AddWallet = ({}) => {
   const { colors } = useCustomTheme();
@@ -24,20 +28,33 @@ const AddWallet = ({}) => {
 
   const { control, handleSubmit, getValues, setValue, watch } = useForm<TAccount>({
     defaultValues: {
+      initial_amount: 0,
       account_type: '1',
+      created_date: new Date(),
+      is_active: true,
+      currency: 'vnd',
     },
   });
-
-  const { account_type, provider } = getValues();
+  const { account_type, provider, bank } = getValues();
 
   const getAllAccountType = useAppSelector((state) => accountTypeSelectors.selectEntities(state));
   const getAllProvider = useAppSelector((state) => providerSelectors.selectEntities(state));
-  const currentAccountType = getAllAccountType[account_type];
+  const getAllBankList = useAppSelector((state) => bankSelectors.selectEntities(state));
 
-  const isItemSelected = useMemo(
-    () => (isModalType.current === '' ? account_type : provider),
-    [isModalType.current],
-  );
+  // get current account type selected
+  const currentAccountType = getAllAccountType[account_type];
+  const currentProvider = (type: string) => {
+    if (provider) {
+      if (type === 'eWallet') {
+        return getAllProvider[provider];
+      }
+    }
+    if (bank) {
+      if (type === 'bank') {
+        return getAllBankList[bank];
+      }
+    }
+  };
 
   const onSelectWalletType = useCallback(() => {
     isModalType.current = '';
@@ -55,9 +72,11 @@ const AddWallet = ({}) => {
     setIsShowModalPicker(false);
   }, []);
 
-  const onItemWalletTypePress = useCallback((item: TAccountType) => {
+  const onItemModalPickerPress = useCallback((item: TAccountType) => {
     switch (isModalType.current) {
       case 'bank':
+        setValue('bank', item._id);
+        break;
       case 'eWallet':
         setValue('provider', item._id);
         break;
@@ -65,17 +84,21 @@ const AddWallet = ({}) => {
         setValue('account_type', item._id);
         break;
     }
-    setIsShowModalPicker(false);
+    onCloseModal();
   }, []);
 
   useEffect(() => {
-    // reset provider if account type != bank and eWallet
+    // reset provider and bank value
     switch (account_type) {
       case 'bank':
+        setValue('provider', '');
+        break;
       case 'eWallet':
+        setValue('bank', '');
         break;
       default:
         setValue('provider', '');
+        setValue('bank', '');
         break;
     }
   }, [account_type]);
@@ -84,13 +107,15 @@ const AddWallet = ({}) => {
     console.log(data);
   };
 
+  const isItemSelected = isModalType.current === '' ? account_type : provider;
+
   return (
     <View style={styles.container}>
-      <SelectWalletType
+      <ModalPicker
         isShowData={isModalType.current}
         isVisible={isShowModalPicker}
         onToggleModal={onCloseModal}
-        onPressItem={onItemWalletTypePress}
+        onPressItem={onItemModalPickerPress}
         isTypeSelected={isItemSelected}
       />
       <KeyboardAwareScrollView
@@ -104,7 +129,7 @@ const AddWallet = ({}) => {
             <SvgIcon name="clipboard" style={styles.icon} />
             <View style={styles.groupContent}>
               <InputField
-                name="descriptions"
+                name="name"
                 control={control}
                 placeholder="Tên tài khoản"
                 style={styles.formInput}
@@ -136,8 +161,8 @@ const AddWallet = ({}) => {
           />
           {(currentAccountType?.value === 'bank' || currentAccountType?.value === 'eWallet') && (
             <InputSelection
-              icon={getAllProvider[provider]?.icon || 'wallet'}
-              value={getAllProvider[provider]?.name}
+              icon={currentProvider(currentAccountType?.value)?.icon || 'wallet'}
+              value={currentProvider(currentAccountType?.value)?.name}
               title={currentAccountType?.value === 'bank' ? 'Chọn ngân hàng' : 'Chọn nhà cung cấp'}
               onSelect={onSelectProvider}
             />
@@ -146,7 +171,7 @@ const AddWallet = ({}) => {
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={[styles.itemGroup, styles.itemGroupBetween]}>
             <RNText>Không tính vào báo cáo</RNText>
-            <SwitchField name="is_add_report" control={control} />
+            <SwitchField name="is_not_add_report" control={control} />
           </View>
           <RNText style={styles.subText}>Ghi chép này sẽ không thống kê vào các báo cáo.</RNText>
         </View>

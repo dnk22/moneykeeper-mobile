@@ -28,7 +28,7 @@ export type TTransactions = {
   pay_for?: string;
   fee?: number;
   fee_type?: string;
-  is_add_report?: boolean;
+  is_not_add_report?: boolean;
   media?: any;
   created_date: Date;
   user_created?: string;
@@ -42,11 +42,12 @@ export type TAccount = {
   initial_amount?: number;
   current_amount?: number;
   account_type: string;
+  bank?: string;
   provider?: string;
   currency?: string;
   descriptions?: string;
   is_active: boolean;
-  is_add_report?: boolean;
+  is_not_add_report?: boolean;
   user_created: string;
   created_date: Date;
 };

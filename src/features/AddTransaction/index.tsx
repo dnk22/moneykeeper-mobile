@@ -223,7 +223,7 @@ export default function AddTransactions() {
             <View style={[styles.group, { backgroundColor: colors.surface }]}>
               <View style={[styles.itemGroup, styles.itemGroupBetween]}>
                 <RNText>Không tính vào báo cáo</RNText>
-                <SwitchField name="is_add_report" control={control} />
+                <SwitchField name="is_not_add_report" control={control} />
               </View>
               <RNText style={styles.subText}>
                 Ghi chép này sẽ không thống kê vào các báo cáo.

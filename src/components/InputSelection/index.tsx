@@ -30,15 +30,18 @@ function Selected({
       <View style={styles.groupContent}>
         {value && !required ? (
           <View style={styles.value}>
-            <RNText fontSize={16}>{value}</RNText>
+            <RNText fontSize={16} style={{ width: '80%' }} numberOfLines={50}>
+              {value}
+            </RNText>
             <Pressable onPress={onDelete}>
               <SvgIcon name="closeCircle" size={16} />
             </Pressable>
           </View>
         ) : (
-          <RNText fontSize={16}>{value || title}</RNText>
+          <RNText fontSize={16} style={{ width: '90%' }} ellipsizeMode="tail" numberOfLines={1}>
+            {value || title}
+          </RNText>
         )}
-
         <SvgIcon name="forward" size={16} style={styles.iconForward} />
       </View>
     </PressableHaptic>

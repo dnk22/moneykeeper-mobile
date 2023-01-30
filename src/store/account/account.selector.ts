@@ -6,6 +6,7 @@ import {
   accountSlice,
   accountTypeAdapter,
   providerAdapter,
+  bankAdapter,
 } from './account.slice';
 
 const accountState = (state: RootState) => state.account;
@@ -19,4 +20,7 @@ export const accountTypeSelectors = accountTypeAdapter.getSelectors<TAccountSlic
 );
 export const providerSelectors = providerAdapter.getSelectors<TAccountSlice>(
   (state) => state[accountSlice.name].provider,
+);
+export const bankSelectors = bankAdapter.getSelectors<TAccountSlice>(
+  (state) => state[accountSlice.name].bank,
 );
