@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   InputCalculator,
   InputField,
@@ -24,9 +24,18 @@ import {
 const AddWallet = ({}) => {
   const { colors } = useCustomTheme();
   const isModalType = useRef('');
+  const inputNameRef = useRef<any>(null);
   const [isShowModalPicker, setIsShowModalPicker] = useState<boolean>(false);
 
-  const { control, handleSubmit, getValues, setValue, watch } = useForm<TAccount>({
+  const {
+    control,
+    handleSubmit,
+    getValues,
+    setValue,
+    watch,
+    setFocus,
+    formState: { errors },
+  } = useForm<TAccount>({
     defaultValues: {
       initial_amount: 0,
       account_type: '1',
@@ -110,6 +119,12 @@ const AddWallet = ({}) => {
     }
   }, [account_type]);
 
+  useEffect(() => {
+    if (errors?.name) {
+      inputNameRef.current.focus();
+    }
+  }, [errors?.name, setFocus]);
+
   const onHandleSubmit = (data: TAccount) => {
     console.log(data);
   };
@@ -131,7 +146,7 @@ const AddWallet = ({}) => {
         showsVerticalScrollIndicator={false}
         extraScrollHeight={60}
       >
-        <InputCalculator />
+        <InputCalculator name="initial_amount" control={control} />
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={styles.itemGroup}>
             <SvgIcon name="clipboard" style={styles.icon} />
@@ -143,6 +158,8 @@ const AddWallet = ({}) => {
                 style={styles.formInput}
                 clearButtonMode="always"
                 maxLength={50}
+                rules={{ required: true }}
+                ref={inputNameRef}
               />
             </View>
           </View>
