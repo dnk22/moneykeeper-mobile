@@ -43,18 +43,20 @@ const AddWallet = ({}) => {
 
   // get current account type selected
   const currentAccountType = getAllAccountType[account_type];
-  const currentProvider = (type: string) => {
-    if (provider) {
-      if (type === 'eWallet') {
-        return getAllProvider[provider];
-      }
-    }
-    if (bank) {
-      if (type === 'bank') {
-        return getAllBankList[bank];
-      }
-    }
-  };
+  const currentProvider = useCallback(
+    (type: string) => {
+      if (provider) {
+        if (type === 'eWallet') {
+          return getAllProvider[provider];
+        }
+      } else if (bank) {
+        if (type === 'bank') {
+          return getAllBankList[bank];
+        }
+      } else return undefined;
+    },
+    [watch('provider'), watch('bank')],
+  );
 
   const onSelectWalletType = useCallback(() => {
     isModalType.current = '';
@@ -66,7 +68,7 @@ const AddWallet = ({}) => {
       ? (isModalType.current = 'bank')
       : (isModalType.current = 'eWallet');
     setIsShowModalPicker(true);
-  }, [currentAccountType]);
+  }, [currentAccountType?.value]);
 
   const onCloseModal = useCallback(() => {
     setIsShowModalPicker(false);
@@ -85,6 +87,11 @@ const AddWallet = ({}) => {
         break;
     }
     onCloseModal();
+  }, []);
+
+  const onDeleteBankProvider = useCallback(() => {
+    setValue('provider', '');
+    setValue('bank', '');
   }, []);
 
   useEffect(() => {
@@ -107,7 +114,8 @@ const AddWallet = ({}) => {
     console.log(data);
   };
 
-  const isItemSelected = isModalType.current === '' ? account_type : provider;
+  const isItemSelected =
+    isModalType.current === '' ? account_type : isModalType.current === 'eWallet' ? provider : bank;
 
   return (
     <View style={styles.container}>
@@ -165,6 +173,8 @@ const AddWallet = ({}) => {
               value={currentProvider(currentAccountType?.value)?.name}
               title={currentAccountType?.value === 'bank' ? 'Chọn ngân hàng' : 'Chọn nhà cung cấp'}
               onSelect={onSelectProvider}
+              required={false}
+              onDelete={onDeleteBankProvider}
             />
           )}
         </View>

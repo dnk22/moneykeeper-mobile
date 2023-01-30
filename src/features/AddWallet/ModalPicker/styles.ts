@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 import { normalize } from 'share/dimensions';
 
 const styles = StyleSheet.create({
+  bankModal: { maxHeight: '90%', height: '90%' },
   item: {
     flex: 1,
     paddingVertical: 15,
@@ -10,6 +11,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   itemContent: {
+    width: '80%',
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: 10,
@@ -29,6 +31,22 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: normalize(16),
+  },
+  subTitle: {
+    opacity: 0.5,
+  },
+  inputGroup: {
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
+  inputSearch: {
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+  },
+  iconSearch: {
+    left: 3,
+    position: 'absolute',
   },
 });
 

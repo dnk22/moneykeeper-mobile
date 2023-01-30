@@ -324,20 +324,6 @@ export const Bank: TBank[] = [
     icon: 'https://api.vietqr.io/img/UBANK.png',
   },
   {
-    _id: '57',
-    name: 'Viettel Money',
-    value: 'VTLMONEY',
-    shortName: 'ViettelMoney',
-    icon: 'https://api.vietqr.io/img/VIETTELMONEY.png',
-  },
-  {
-    _id: '56',
-    name: 'VNPT Money',
-    value: 'VNPTMONEY',
-    shortName: 'VNPTMoney',
-    icon: 'https://api.vietqr.io/img/VNPTMONEY.png',
-  },
-  {
     _id: '34',
     name: 'Ngân hàng TMCP Sài Gòn Công Thương',
     value: 'SGICB',

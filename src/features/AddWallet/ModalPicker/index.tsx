@@ -3,7 +3,13 @@ import Modal from 'components/Modal';
 import isEqual from 'react-fast-compare';
 import { FlatListComponent, RNText, SvgIcon } from 'components/index';
 import { IModalComponentProps } from 'components/Modal';
-import { TouchableHighlight, View } from 'react-native';
+import {
+  Keyboard,
+  TextInput,
+  TouchableHighlight,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import { TAccountType } from 'src/types/models';
@@ -53,9 +59,8 @@ function ModalPicker({
     }
   }, [isShowData]);
 
-  const currentSelected = (itemId: string) => isSelected === itemId;
-
   const renderItem = ({ item }: { item: TAccountType }) => {
+    const currentSelected = (itemId: string) => isSelected === itemId;
     const onPress = () => {
       setIsSelected(item._id);
       if (onPressItem) {
@@ -72,7 +77,18 @@ function ModalPicker({
         <View style={styles.item}>
           <View style={styles.itemContent}>
             <SvgIcon name={item.icon} preset="transactionType" />
-            <RNText style={[styles.title, { color: colors.text }]}>{item.name}</RNText>
+            {isShowData === 'bank' ? (
+              <View>
+                <RNText style={[styles.title, { color: colors.text }]}>{item.shortName}</RNText>
+                <RNText fontSize={12} style={[styles.subTitle, { color: colors.text }]}>
+                  {item.name}
+                </RNText>
+              </View>
+            ) : (
+              <RNText style={[styles.title, { color: colors.text }]} numberOfLines={1}>
+                {item.name}
+              </RNText>
+            )}
           </View>
           {currentSelected(item._id) && (
             <View style={[styles.itemActive, { backgroundColor: colors.background }]}>
@@ -86,6 +102,16 @@ function ModalPicker({
     );
   };
 
+  const onInputChange = (text: string) => {
+    const bankFilteredList = getAllBankList.filter(
+      (item) =>
+        item.value.toLowerCase().includes(text.toLowerCase()) ||
+        item?.shortName?.toLowerCase().includes(text.toLowerCase()) ||
+        item?.name?.toLowerCase().includes(text.toLowerCase()),
+    );
+    setData(bankFilteredList);
+  };
+
   const title =
     isShowData === 'bank'
       ? 'Chọn ngân hàng'
@@ -93,17 +119,31 @@ function ModalPicker({
       ? 'Chọn nhà cung cấp'
       : 'Chọn loại tài khoản';
 
+  const modalBankStyle = isShowData === 'bank' ? styles.bankModal : {};
+
   return (
-    <Modal
-      styleDefaultContent={{ maxHeight: '60%' }}
-      isVisible={isVisible}
-      animationIn="slideInUp"
-      animationOut="slideOutDown"
-      onToggleModal={onToggleModal}
-      title={title}
-    >
-      <FlatListComponent data={data} renderItem={renderItem} />
-    </Modal>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <Modal
+        styleDefaultContent={[modalBankStyle]}
+        isVisible={isVisible}
+        animationIn="slideInUp"
+        animationOut="slideOutDown"
+        onToggleModal={onToggleModal}
+        title={title}
+      >
+        {isShowData === 'bank' && (
+          <View style={styles.inputGroup}>
+            <TextInput
+              placeholder="Nhập tên ngân hàng"
+              style={[styles.inputSearch, { backgroundColor: colors.background }]}
+              onChangeText={onInputChange}
+            />
+            <SvgIcon name="search" style={styles.iconSearch} size={18} color="gray" />
+          </View>
+        )}
+        <FlatListComponent data={data} renderItem={renderItem} />
+      </Modal>
+    </TouchableWithoutFeedback>
   );
 }
 export default memo(ModalPicker, isEqual);

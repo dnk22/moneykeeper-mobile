@@ -30,15 +30,15 @@ function Selected({
       <View style={styles.groupContent}>
         {value && !required ? (
           <View style={styles.value}>
-            <RNText fontSize={16} style={{ width: '80%' }} numberOfLines={50}>
+            <RNText fontSize={16} numberOfLines={1} style={{ maxWidth: '90%' }}>
               {value}
             </RNText>
             <Pressable onPress={onDelete}>
-              <SvgIcon name="closeCircle" size={16} />
+              <SvgIcon name="closeCircle" size={20} color="gray" />
             </Pressable>
           </View>
         ) : (
-          <RNText fontSize={16} style={{ width: '90%' }} ellipsizeMode="tail" numberOfLines={1}>
+          <RNText fontSize={16} style={{ maxWidth: '90%' }} ellipsizeMode="tail" numberOfLines={1}>
             {value || title}
           </RNText>
         )}
