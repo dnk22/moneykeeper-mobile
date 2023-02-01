@@ -1,4 +1,4 @@
-import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createEntityAdapter, createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 import { TAccount, TAccountType, TProvider, TBank } from 'src/types/models';
 import { Account_Type, Provider, Bank } from 'utils/constant';
 
@@ -33,7 +33,11 @@ export const accountSlice = createSlice({
   },
   reducers: {
     addOrUpdateAccount: (state, { payload }: PayloadAction<TAccount>) => {
-      accountAdapter.upsertOne(state.account, {});
+      const data = {
+        ...payload,
+        _id: payload._id || nanoid(),
+      };
+      accountAdapter.upsertOne(state.account, data);
     },
     deleteAccountById(state, { payload }: PayloadAction<string>) {
       accountAdapter.removeOne(state.account, payload);

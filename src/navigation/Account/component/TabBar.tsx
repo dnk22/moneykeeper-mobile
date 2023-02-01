@@ -3,12 +3,10 @@ import { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
 import isEqual from 'react-fast-compare';
 import { View } from 'react-native';
 import styles from '../styles';
-import { useCustomTheme } from 'resources/theme';
 import SegmentedControl from 'components/SegmentedControl';
 import { SAVINGS, WALLET } from 'navigation/constants';
 
 function TabBar({ state, descriptors, navigation }: MaterialTopTabBarProps) {
-  const { colors } = useCustomTheme();
   const [isActive, setIsActive] = useState(state.index);
 
   const routes = useMemo(() => {
@@ -40,8 +38,6 @@ function TabBar({ state, descriptors, navigation }: MaterialTopTabBarProps) {
         values={routes}
         selectedIndex={isActive}
         onChange={onRouteChange}
-        tintColor={colors.primary}
-        activeFontStyle={{ color: 'white' }}
       />
     </View>
   );

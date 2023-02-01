@@ -1,25 +1,33 @@
-import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-export const alertAdapter = createEntityAdapter<any>();
+type AccountViewSettingsProps = {
+  sort?: 'name' | 'custom';
+  group?: boolean;
+};
+type AppState = {
+  AccountViewSettings: AccountViewSettingsProps;
+};
+
+const initialState = {
+  AccountViewSettings: {
+    sort: 'name',
+    group: true,
+  },
+} as AppState;
 
 export const appSlice = createSlice({
   name: 'app',
-  initialState: {
-    alertSettings: alertAdapter.getInitialState(),
-  },
+  initialState: initialState,
   reducers: {
-    addOrEditAlert: (state, { payload }: PayloadAction<any>) => {
-      alertAdapter.upsertOne(state.alertSettings, payload);
-    },
-    deleteAlertByValue: (state, { payload }: PayloadAction<string>) => {
-      alertAdapter.removeOne(state.alertSettings, payload);
+    updateAccountViewSettings(state, { payload }: PayloadAction<AccountViewSettingsProps>) {
+      state.AccountViewSettings = { ...state.AccountViewSettings, ...payload };
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addOrEditAlert, deleteAlertByValue } = appSlice.actions;
+export const { updateAccountViewSettings } = appSlice.actions;
 
 export type TAppSlice = {
   [appSlice.name]: ReturnType<(typeof appSlice)['reducer']>;

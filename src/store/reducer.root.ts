@@ -9,7 +9,7 @@ const appPersistConfig = {
   key: 'root',
   version: 1,
   storage: reduxPersistStorage,
-  blacklist: ['account'],
+  // blacklist: ['account'],
 };
 
 const allReducer = combineReducers({

@@ -1,4 +1,3 @@
-import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from 'store/index';
 import {
   accountAdapter,
@@ -8,8 +7,6 @@ import {
   providerAdapter,
   bankAdapter,
 } from './account.slice';
-
-const accountState = (state: RootState) => state.account;
 
 // export selectors
 export const accountSelectors = accountAdapter.getSelectors<TAccountSlice>(

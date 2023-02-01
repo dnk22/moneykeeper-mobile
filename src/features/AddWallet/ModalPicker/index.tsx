@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from 'react';
 import Modal from 'components/Modal';
 import isEqual from 'react-fast-compare';
-import { FlatListComponent, RNText, SvgIcon } from 'components/index';
+import { FlatListComponent, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
 import { IModalComponentProps } from 'components/Modal';
 import {
   Keyboard,
@@ -69,11 +69,7 @@ function ModalPicker({
     };
 
     return (
-      <TouchableHighlight
-        onPress={onPress}
-        underlayColor={colors.background}
-        style={{ borderRadius: 10 }}
-      >
+      <TouchableHighlightComponent onPress={onPress}>
         <View style={styles.item}>
           <View style={styles.itemContent}>
             <SvgIcon name={item.icon} preset="transactionType" />
@@ -98,7 +94,7 @@ function ModalPicker({
             </View>
           )}
         </View>
-      </TouchableHighlight>
+      </TouchableHighlightComponent>
     );
   };
 

@@ -39,15 +39,21 @@ export type TTransactions = {
 export type TAccount = {
   _id: string;
   name: string;
-  initial_amount?: number;
-  current_amount?: number;
+  initial_amount: number;
+  current_amount: number;
   account_type: string;
+  account_type_name: string;
   bank?: string;
   provider?: string;
   currency?: string;
   descriptions?: string;
   is_active: boolean;
   is_not_add_report?: boolean;
+  icon?: {
+    accountType?: IconProps;
+    provider?: IconProps;
+    bank?: IconProps;
+  };
   user_created: string;
   created_date: Date;
 };

@@ -14,19 +14,23 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useForm } from 'react-hook-form';
 import { TAccountType, TAccount } from 'types/models';
 import ModalPicker from './ModalPicker';
-import { useAppSelector } from 'store/index';
+import { useAppDispatch, useAppSelector } from 'store/index';
 import {
   accountTypeSelectors,
   bankSelectors,
   providerSelectors,
 } from 'store/account/account.selector';
+import { addOrUpdateAccount } from 'store/account/account.slice';
+import { useNavigation } from '@react-navigation/native';
 
 const AddWallet = ({}) => {
   const { colors } = useCustomTheme();
+  const navigation = useNavigation();
   const isModalType = useRef('');
   const inputNameRef = useRef<any>(null);
   const [isShowModalPicker, setIsShowModalPicker] = useState<boolean>(false);
 
+  const useDispatch = useAppDispatch();
   const {
     control,
     handleSubmit,
@@ -38,10 +42,15 @@ const AddWallet = ({}) => {
   } = useForm<TAccount>({
     defaultValues: {
       initial_amount: 0,
+      current_amount: 0,
       account_type: '1',
+      account_type_name: 'Tiền mặt',
       created_date: new Date(),
       is_active: true,
       currency: 'vnd',
+      icon: {
+        accountType: 'cash',
+      },
     },
   });
   const { account_type, provider, bank } = getValues();
@@ -87,12 +96,16 @@ const AddWallet = ({}) => {
     switch (isModalType.current) {
       case 'bank':
         setValue('bank', item._id);
+        setValue('icon.bank', item.icon);
         break;
       case 'eWallet':
         setValue('provider', item._id);
+        setValue('icon.provider', item.icon);
         break;
       default:
         setValue('account_type', item._id);
+        setValue('account_type_name', item.name);
+        setValue('icon.accountType', item.icon);
         break;
     }
     onCloseModal();
@@ -108,13 +121,17 @@ const AddWallet = ({}) => {
     switch (account_type) {
       case 'bank':
         setValue('provider', '');
+        setValue('icon.provider', undefined);
         break;
       case 'eWallet':
         setValue('bank', '');
+        setValue('icon.bank', undefined);
         break;
       default:
         setValue('provider', '');
+        setValue('icon.provider', undefined);
         setValue('bank', '');
+        setValue('icon.bank', undefined);
         break;
     }
   }, [account_type]);
@@ -126,7 +143,8 @@ const AddWallet = ({}) => {
   }, [errors?.name, setFocus]);
 
   const onHandleSubmit = (data: TAccount) => {
-    console.log(data);
+    useDispatch(addOrUpdateAccount(data));
+    navigation.goBack();
   };
 
   const isItemSelected =
