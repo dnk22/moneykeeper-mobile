@@ -2,15 +2,15 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   touch: {
-    marginVertical: 5,
+    paddingVertical: 5,
+    borderBottomWidth: 0.2,
+    borderColor: 'rgb(200, 200, 200)',
   },
   container: {
     flex: 1,
-    height: 70,
+    height: 60,
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomWidth: 0.2,
-    borderColor: 'rgb(200, 200, 200)',
   },
   content: {
     flex: 1,
@@ -24,8 +24,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  accountInfo: {
+  accountName: {
+    fontWeight: '500',
     width: '100%',
+  },
+  accountAmount: {
+    width: '100%',
+    opacity: 0.7,
   },
 });
 

@@ -45,11 +45,15 @@ export const accountSlice = createSlice({
     clearAllAccount: (state) => {
       accountAdapter.removeAll(state.account);
     },
+    deactivateAccountById(state, { payload }: PayloadAction<TAccount>) {
+      accountAdapter.upsertOne(state.account, payload);
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addOrUpdateAccount, clearAllAccount, deleteAccountById } = accountSlice.actions;
+export const { addOrUpdateAccount, clearAllAccount, deleteAccountById, deactivateAccountById } =
+  accountSlice.actions;
 
 export type TAccountSlice = {
   [accountSlice.name]: ReturnType<(typeof accountSlice)['reducer']>;
