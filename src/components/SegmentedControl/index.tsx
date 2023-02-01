@@ -1,8 +1,7 @@
-import React, { memo } from 'react';
+import React from 'react';
 import SegmentedControl, {
   SegmentedControlProps,
 } from '@react-native-segmented-control/segmented-control';
-import isEqual from 'react-fast-compare';
 
 function RNSegmentedControl({
   style,
@@ -16,6 +15,7 @@ function RNSegmentedControl({
   };
   return (
     <SegmentedControl
+      style={[style]}
       values={values}
       selectedIndex={selectedIndex}
       onChange={onHandleChange}
@@ -24,4 +24,4 @@ function RNSegmentedControl({
   );
 }
 
-export default memo(RNSegmentedControl, isEqual);
+export default RNSegmentedControl;

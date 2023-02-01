@@ -1,4 +1,4 @@
-import React, { memo, useRef } from 'react';
+import React, { memo } from 'react';
 import { StyleProp, TextInput, TextInputProps, TextStyle } from 'react-native';
 import { Control, RegisterOptions, useController } from 'react-hook-form';
 import stylesInline from './styles';
@@ -21,7 +21,6 @@ const InputField = React.forwardRef<any, any>(function InputField(
   ref,
 ) {
   const { colors } = useCustomTheme();
-  const inputRef = useRef(null);
   const {
     field: { value, onChange, onBlur },
     fieldState: { error },
@@ -40,6 +39,7 @@ const InputField = React.forwardRef<any, any>(function InputField(
       placeholderTextColor={error?.type ? 'red' : '#9999'}
       style={[stylesInline, style, { color: colors.text }]}
       {...rest}
+      autoCorrect={false}
     />
   );
 });

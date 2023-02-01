@@ -7,7 +7,7 @@ import icon, { IconProps } from './const';
 import { IconSize } from './preset';
 
 interface SvgIconProps extends SvgProps {
-  name: IconProps;
+  name?: IconProps;
   color?: string;
   preset?: keyof typeof IconSize;
   size?: NumberProp;
@@ -16,7 +16,7 @@ interface SvgIconProps extends SvgProps {
 function SvgIcon({ name, color, size, preset = 'default', ...rest }: SvgIconProps) {
   const { colors } = useCustomTheme();
   // import svg icon by name
-  const Icon: React.FC<SvgProps> = icon[name] || icon.questionCircle;
+  const Icon: React.FC<SvgProps> = (name && icon[name]) || icon.questionCircle;
   const presetStyle = IconSize[preset];
   const dimension = {
     width: normalize(size) || presetStyle,

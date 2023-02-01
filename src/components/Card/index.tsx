@@ -37,8 +37,8 @@ function Card({ children }: CardProps) {
   return (
     <View style={[styles.wrapper, { backgroundColor: colors.surface }]}>
       <PressableHaptic style={styles.header} onPress={onCardToggle}>
-        <RNText style={styles.title}>Đang sử dụng:</RNText>
-        <Animated.View style={{ transform: [{ rotate: rotate }] }}>
+        <RNText style={styles.title}>Đang sử dụng</RNText>
+        <Animated.View style={[styles.iconDropdown, { transform: [{ rotate: rotate }] }]}>
           <SvgIcon name="arrowDown" size={16} />
         </Animated.View>
       </PressableHaptic>

@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import isEqual from 'react-fast-compare';
 import { Switch as RNSwitch } from 'react-native';
 import { ISwitchProps } from './type';
@@ -7,19 +7,24 @@ import { useCustomTheme } from 'resources/theme';
 function Switch({
   style,
   ios_backgroundColor,
-  value,
+  value = false,
   onValueChange,
   trackColor,
   ...rest
 }: ISwitchProps) {
   const { colors } = useCustomTheme();
+  const [isActive, setIsActive] = useState(value);
+  const onHandleValueChange = (value: boolean) => {
+    setIsActive(value);
+    onValueChange && onValueChange(value);
+  };
   return (
     <RNSwitch
       ios_backgroundColor={ios_backgroundColor || '#3e3e3e'}
       trackColor={trackColor || { true: colors.primary }}
-      onValueChange={onValueChange}
+      onValueChange={onHandleValueChange}
       style={[style]}
-      value={value}
+      value={isActive}
       {...rest}
     />
   );

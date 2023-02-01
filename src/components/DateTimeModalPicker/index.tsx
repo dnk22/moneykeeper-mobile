@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import isEqual from 'react-fast-compare';
-import { Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import ModalComponent from 'components/Modal';
 import DateTimePicker from 'components/DateTimePicker';
 import PressableHaptic from 'components/PressableHaptic';
@@ -75,10 +75,7 @@ function DateTimeModalPicker({
       styleDefaultContent={styles.contentView}
     >
       <View style={[styles.pickerHeader, { backgroundColor: colors.surface }]}>
-        <PressableHaptic
-          style={styles.itemHeader}
-          onPress={() => setIsMode('date')}
-        >
+        <PressableHaptic style={styles.itemHeader} onPress={() => setIsMode('date')}>
           <Text
             style={[
               styles.dateTimeText,
@@ -91,10 +88,7 @@ function DateTimeModalPicker({
           </Text>
         </PressableHaptic>
         <View style={[styles.divider, { backgroundColor: colors.divider }]} />
-        <PressableHaptic
-          style={styles.itemHeader}
-          onPress={() => setIsMode('time')}
-        >
+        <PressableHaptic style={styles.itemHeader} onPress={() => setIsMode('time')}>
           <Text
             style={[
               styles.dateTimeText,
@@ -115,30 +109,13 @@ function DateTimeModalPicker({
           display={isMode === 'date' ? 'inline' : 'spinner'}
         />
         <TouchableOpacity activeOpacity={0.6}>
-          <PressableHaptic
-            style={styles.bottomBar}
-            onPress={getCurrentDateTime}
-          >
-            <Text style={[styles.actionDate, { color: colors.primary }]}>
-              {actionName}
-            </Text>
+          <PressableHaptic style={styles.bottomBar} onPress={getCurrentDateTime}>
+            <Text style={[styles.actionDate, { color: colors.primary }]}>{actionName}</Text>
           </PressableHaptic>
         </TouchableOpacity>
       </View>
-      <View
-        style={[
-          styles.bright,
-          styles.brightLeft,
-          { backgroundColor: colors.primary },
-        ]}
-      />
-      <View
-        style={[
-          styles.bright,
-          styles.brightRight,
-          { backgroundColor: colors.primary },
-        ]}
-      />
+      <View style={[styles.bright, styles.brightLeft, { backgroundColor: colors.primary }]} />
+      <View style={[styles.bright, styles.brightRight, { backgroundColor: colors.primary }]} />
     </ModalComponent>
   );
 }

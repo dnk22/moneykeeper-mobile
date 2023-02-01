@@ -90,6 +90,7 @@ function InputCalculator({
           onChangeText={onChange}
           keyboardType="numeric"
           selectTextOnFocus
+          autoCorrect={false}
           // showSoftInputOnFocus={false}
         />
         {/* <RnKeyboard.Input

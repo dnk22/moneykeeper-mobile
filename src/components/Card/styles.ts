@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   wrapper: {
+    maxHeight: '80%',
     margin: 5,
     paddingHorizontal: 10,
     borderRadius: 10,
@@ -21,7 +22,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
+    flex: 1,
     fontWeight: '700',
+  },
+  iconDropdown: {
+    width: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   content: {
     paddingBottom: 10,

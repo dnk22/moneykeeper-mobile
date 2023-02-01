@@ -11,8 +11,8 @@ const defaultProps = {
   isVisible: false,
   isShowClose: true,
   backdropColor: '#6e768142',
-  animationIn: 'zoomIn',
-  animationOut: 'zoomOut',
+  animationIn: 'slideInUp',
+  animationOut: 'slideOutDown',
 };
 
 type NewModalProps = Partial<ModalProps>;

@@ -1,12 +1,13 @@
 import React, { useCallback, memo, useMemo } from 'react';
-import { FlatList, RefreshControl } from 'react-native';
-import { PropsFlatList } from './model';
+import { RefreshControl, SectionList } from 'react-native';
+import { PropsSectionList } from './model';
 import isEqual from 'react-fast-compare';
 
-const FlatListComponent: PropsFlatList = (props) => {
+const FlatListComponent: PropsSectionList = (props) => {
   const {
-    data,
+    sections,
     renderItem,
+    renderSectionHeader,
     onRefresh,
     onLoadMore,
     maxToRenderPerBatch = 10,
@@ -17,6 +18,7 @@ const FlatListComponent: PropsFlatList = (props) => {
     hasPull = false,
     ...rest
   } = props;
+
   const keyExtractor = useCallback((item: any) => item._id, []);
 
   const renderRefreshControl = useMemo(
@@ -32,13 +34,12 @@ const FlatListComponent: PropsFlatList = (props) => {
   );
 
   return (
-    <FlatList
-      {...props}
-      data={data}
+    <SectionList
+      sections={sections}
       keyExtractor={keyExtractor}
-      extraData={data}
-      keyboardShouldPersistTaps="handled"
+      // extraData={sections}
       renderItem={renderItem}
+      renderSectionHeader={renderSectionHeader}
       refreshControl={hasPull ? renderRefreshControl : undefined}
       onEndReachedThreshold={0.5}
       onEndReached={() => onLoadMore && onLoadMore()}

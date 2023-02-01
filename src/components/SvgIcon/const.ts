@@ -6,9 +6,7 @@ import search from 'assets/svg/icon-search.svg';
 import category from 'assets/svg/icon-category.svg';
 import bellBadge from 'assets/svg/icon-bell-badge.svg';
 import closeCircle from 'assets/svg/icon-close-circle.svg';
-import general from 'assets/svg/icon-close-circle.svg';
 import backward from 'assets/svg/icon-backward.svg';
-import birthday from 'assets/svg/icon-birthday.svg';
 import calendarHoliday from 'assets/svg/icon-calendar-holiday.svg';
 import doneCircle from 'assets/svg/icon-done-circle.svg';
 import forward from 'assets/svg/icon-forward.svg';
@@ -53,6 +51,12 @@ import viettelpay from 'assets/svg/icon-viettelpay.svg';
 import zalopay from 'assets/svg/icon-zalopay.svg';
 import momo from 'assets/svg/icon-momo.svg';
 import vnptpay from 'assets/svg/icon-vnptpay.svg';
+import settingDot from 'assets/svg/icon-settingDot.svg';
+import currency from 'assets/svg/icon-currency.svg';
+import lock from 'assets/svg/icon-lock.svg';
+import trash from 'assets/svg/icon-trash.svg';
+import trayUp from 'assets/svg/icon-trayUp.svg';
+import plusMinus from 'assets/svg/icon-plusMinus.svg';
 
 const icon = {
   add,
@@ -63,9 +67,7 @@ const icon = {
   category,
   bellBadge,
   closeCircle,
-  general,
   backward,
-  birthday,
   calendarHoliday,
   doneCircle,
   forward,
@@ -109,7 +111,13 @@ const icon = {
   viettelpay,
   zalopay,
   momo,
-  vnptpay
+  vnptpay,
+  settingDot,
+  currency,
+  lock,
+  trash,
+  trayUp,
+  plusMinus
 };
 
 export type IconProps = keyof typeof icon;

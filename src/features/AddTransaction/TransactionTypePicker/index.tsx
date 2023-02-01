@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
-import { TouchableHighlight, View, Text } from 'react-native';
-import { FlatListComponent, SvgIcon } from 'components/index';
+import { View, Text } from 'react-native';
+import { FlatListComponent, SvgIcon, TouchableHighlightComponent } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import isEqual from 'react-fast-compare';
 import styles from './style';
@@ -32,12 +32,7 @@ function TransactionTypePicker({
     };
 
     return (
-      <TouchableHighlight
-        onPress={onPress}
-        activeOpacity={0.6}
-        underlayColor={colors.background}
-        style={{ borderRadius: 10 }}
-      >
+      <TouchableHighlightComponent onPress={onPress}>
         <View style={styles.item}>
           <View style={styles.itemContent}>
             <View style={styles.itemIcon}>
@@ -51,7 +46,7 @@ function TransactionTypePicker({
             </View>
           )}
         </View>
-      </TouchableHighlight>
+      </TouchableHighlightComponent>
     );
   };
   return (
