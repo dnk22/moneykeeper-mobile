@@ -10,9 +10,10 @@ import SvgIcon from 'components/SvgIcon';
 
 type CardProps = {
   children?: React.ReactElement;
+  title?: string;
 };
 
-function Card({ children }: CardProps) {
+function Card({ children, title }: CardProps) {
   const { colors } = useCustomTheme();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const rotateAnim = useRef(new Animated.Value(1)).current;
@@ -37,7 +38,7 @@ function Card({ children }: CardProps) {
   return (
     <View style={[styles.wrapper, { backgroundColor: colors.surface }]}>
       <PressableHaptic style={styles.header} onPress={onCardToggle}>
-        <RNText style={styles.title}>Đang sử dụng</RNText>
+        <RNText style={styles.title}>{title}</RNText>
         <Animated.View style={[styles.iconDropdown, { transform: [{ rotate: rotate }] }]}>
           <SvgIcon name="arrowDown" size={16} />
         </Animated.View>
