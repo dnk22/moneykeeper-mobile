@@ -9,8 +9,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  title: {
+  totalCurrency: {
     fontWeight: '700',
+  },
+  groupTitle: {
+    marginTop: 5,
+    opacity: 0.7,
   },
   createButton: {
     position: 'absolute',

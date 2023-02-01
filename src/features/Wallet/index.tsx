@@ -1,5 +1,12 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Card, PressableHaptic, RNText, SvgIcon, SectionListComponent } from 'components/index';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  Card,
+  PressableHaptic,
+  RNText,
+  SvgIcon,
+  SectionListComponent,
+  FlatListComponent,
+} from 'components/index';
 import { View, SectionListData } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
@@ -19,21 +26,38 @@ function Wallet() {
   const getAllAccountList = useAppSelector((state) => accountSelectors.selectAll(state));
   const accountViewSettings = useAppSelector((state) => accountViewSettingsSelector(state));
 
+  const currentAccountPressed = useRef<TAccount | any>(null);
   const [isShowItemSettingsModal, setIsShowItemSettingsModal] = useState(false);
-  const [data, setData] = useState<any>([]);
+  const [isActiveData, setIsActiveData] = useState<any[]>([]);
+  const [isDeactivateData, setIsDeactivateData] = useState<TAccount[]>([]);
 
   useEffect(() => {
+    const { activeData, deactivateData } = splitData(getAllAccountList);
     if (accountViewSettings.group) {
-      const dataGroup: any = groupDataByValue();
-      setData(dataGroup);
+      const dataGroup: any = groupDataByValue(activeData);
+      setIsActiveData(dataGroup);
     } else {
-      setData([{ data: getAllAccountList }]);
+      setIsActiveData([{ data: activeData }]);
     }
-  }, [accountViewSettings.group, getAllAccountList.length]);
+    setIsDeactivateData(deactivateData);
+  }, [accountViewSettings.group, getAllAccountList]);
 
-  const groupDataByValue = () => {
+  const splitData = useCallback((data: TAccount[]) => {
+    const activeData: TAccount[] = [];
+    const deactivateData: TAccount[] = [];
+    data.forEach((item) => {
+      if (item.is_active) {
+        activeData.push(item);
+      } else {
+        deactivateData.push(item);
+      }
+    });
+    return { activeData, deactivateData };
+  }, []);
+
+  const groupDataByValue = useCallback((data: TAccount[]) => {
     const groupedData: any = {};
-    getAllAccountList.forEach((item) => {
+    data.forEach((item) => {
       if (!groupedData[item.account_type]) {
         groupedData[item.account_type] = { title: '', data: [] };
       }
@@ -41,14 +65,14 @@ function Wallet() {
       groupedData[item.account_type].data.push(item);
     });
     return Object.values(groupedData);
-  };
+  }, []);
 
   const onToggleModal = () => {
     setIsShowItemSettingsModal(!isShowItemSettingsModal);
   };
 
   const onActionPress = useCallback((account: TAccount) => {
-    console.log(account, 'account');
+    currentAccountPressed.current = account;
     onToggleModal();
   }, []);
 
@@ -57,7 +81,8 @@ function Wallet() {
   };
 
   const renderSectionHeader = ({ section }: { section: SectionListData<any, any> }) => {
-    return accountViewSettings.group ? <RNText>{section?.title}</RNText> : null;
+    if (!accountViewSettings.group) return null;
+    return <RNText style={styles.groupTitle}>{section?.title}</RNText>;
   };
 
   const onCreateWallet = () => {
@@ -66,18 +91,27 @@ function Wallet() {
 
   return (
     <>
-      <ItemSettingsModal isVisible={isShowItemSettingsModal} onToggleModal={onToggleModal} />
+      <ItemSettingsModal
+        isVisible={isShowItemSettingsModal}
+        onToggleModal={onToggleModal}
+        account={currentAccountPressed.current}
+      />
       <View style={styles.container}>
         <View style={styles.totalBalance}>
-          <RNText style={styles.title}>Tổng tiền: 10000000Đ</RNText>
+          <RNText style={styles.totalCurrency}>Tổng tiền: 10000000Đ</RNText>
         </View>
-        <Card>
+        <Card title="Đang sử dụng">
           <SectionListComponent
-            sections={data}
+            sections={isActiveData}
             renderItem={renderItem}
             renderSectionHeader={renderSectionHeader}
           />
         </Card>
+        {Boolean(isDeactivateData.length) && (
+          <Card title="Ngưng sử dụng">
+            <FlatListComponent data={isDeactivateData} renderItem={renderItem} />
+          </Card>
+        )}
         <PressableHaptic
           style={[styles.createButton, { backgroundColor: colors.primary }]}
           onPress={onCreateWallet}
