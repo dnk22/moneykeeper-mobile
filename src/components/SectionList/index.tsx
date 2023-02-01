@@ -8,6 +8,7 @@ const FlatListComponent: PropsSectionList = (props) => {
     sections,
     renderItem,
     renderSectionHeader,
+    stickySectionHeadersEnabled = false,
     onRefresh,
     onLoadMore,
     maxToRenderPerBatch = 10,
@@ -37,7 +38,10 @@ const FlatListComponent: PropsSectionList = (props) => {
     <SectionList
       sections={sections}
       keyExtractor={keyExtractor}
-      // extraData={sections}
+      extraData={sections}
+      showsVerticalScrollIndicator={showsVerticalScrollIndicator}
+      showsHorizontalScrollIndicator={showsHorizontalScrollIndicator}
+      stickySectionHeadersEnabled={stickySectionHeadersEnabled}
       renderItem={renderItem}
       renderSectionHeader={renderSectionHeader}
       refreshControl={hasPull ? renderRefreshControl : undefined}
@@ -45,8 +49,6 @@ const FlatListComponent: PropsSectionList = (props) => {
       onEndReached={() => onLoadMore && onLoadMore()}
       maxToRenderPerBatch={maxToRenderPerBatch}
       initialNumToRender={initialNumToRender}
-      showsVerticalScrollIndicator={showsVerticalScrollIndicator}
-      showsHorizontalScrollIndicator={showsHorizontalScrollIndicator}
       {...rest}
     />
   );
