@@ -39,10 +39,10 @@ function AccountNavigation() {
       />
       <AccountStack.Screen
         name={ADDWALLET}
-        options={{
-          title: 'Thêm tài khoản',
+        options={({ route }) => ({
+          title: route.params?.accountId ? 'Sửa tài khoản' : 'Thêm tài khoản',
           headerRight: (props) => <Submit {...props} />,
-        }}
+        })}
         component={AddWallet}
       />
     </AccountStack.Navigator>

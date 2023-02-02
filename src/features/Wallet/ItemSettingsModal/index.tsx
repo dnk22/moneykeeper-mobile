@@ -7,48 +7,59 @@ import styles from './styles';
 import { TAccount } from 'types/models';
 import { useAppDispatch } from 'store/index';
 import { deactivateAccountById, deleteAccountById } from 'store/account/account.slice';
+import { useNavigation } from '@react-navigation/native';
+import { ADDWALLET } from 'navigation/constants';
 
 type ItemSettingsModalProps = IModalComponentProps & { account?: TAccount };
 
+const TRANSFER = 'transfer';
+const ADJUSTMENT = 'adjustment';
+const EDIT = 'edit';
+const DELETE = 'delete';
+const INACTIVE = 'inactive';
+
 function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsModalProps) {
   const useDispatch = useAppDispatch();
+  const navigation = useNavigation();
   const isAccountActive = account?.is_active;
 
   const onItemPress = (type: string) => {
     switch (type) {
-      case 'transfer':
+      case TRANSFER:
         break;
-      case 'adjustment':
+      case ADJUSTMENT:
         break;
-      case 'edit':
+      case EDIT:
+        navigation.navigate(ADDWALLET, { accountId: account?._id });
         break;
-      case 'delete':
+      case DELETE:
         onConfirmDelete();
         break;
       default:
         if (account) {
-          useDispatch(deactivateAccountById({ ...account, is_active: !account.is_active }));
+          useDispatch(
+            deactivateAccountById({ id: account._id, changes: { is_active: !account.is_active } }),
+          );
         }
-        onToggleModal();
         break;
     }
+    if (type !== DELETE) onToggleModal();
   };
 
   const onOk = () => {
     account?._id && useDispatch(deleteAccountById(account._id));
-    onToggleModal();
   };
 
   const onConfirmDelete = () =>
     Alert.alert(
       `Xóa ${account?.name}`,
-      'Xóa tài khoản đồng nghĩa với việc tất cả các ghi chép của tài khoản này sẽ bị xóa theo, HÃY CẨN THẬN!',
+      'Xóa tài khoản đồng này nghĩa với việc tất cả các ghi chép của tài khoản này sẽ bị xóa theo, HÃY CẨN THẬN!',
       [
         {
           text: 'Hủy bỏ',
           style: 'cancel',
         },
-        { text: 'Đồng ý', onPress: () => onOk() },
+        { text: 'Đồng ý', style: 'destructive', onPress: () => onOk() },
       ],
     );
 
@@ -56,7 +67,7 @@ function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsMo
     <ModalComponent isVisible={isVisible} onToggleModal={onToggleModal}>
       <View>
         <TouchableHighlightComponent
-          onPress={() => onItemPress('transfer')}
+          onPress={() => onItemPress(TRANSFER)}
           isActive={isAccountActive}
         >
           <View style={styles.item}>
@@ -65,7 +76,7 @@ function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsMo
           </View>
         </TouchableHighlightComponent>
         <TouchableHighlightComponent
-          onPress={() => onItemPress('adjustment')}
+          onPress={() => onItemPress(ADJUSTMENT)}
           isActive={isAccountActive}
         >
           <View style={styles.item}>
@@ -73,22 +84,19 @@ function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsMo
             <RNText>Điều chỉnh số dư tài khoản</RNText>
           </View>
         </TouchableHighlightComponent>
-        <TouchableHighlightComponent onPress={() => onItemPress('edit')} isActive={isAccountActive}>
+        <TouchableHighlightComponent onPress={() => onItemPress(EDIT)} isActive={isAccountActive}>
           <View style={styles.item}>
             <SvgIcon name="pencil" size={18} />
             <RNText>Sửa tài khoản</RNText>
           </View>
         </TouchableHighlightComponent>
-        <TouchableHighlightComponent
-          onPress={() => onItemPress('delete')}
-          isActive={isAccountActive}
-        >
+        <TouchableHighlightComponent onPress={() => onItemPress(DELETE)} isActive={isAccountActive}>
           <View style={styles.item}>
             <SvgIcon name="trash" size={18} />
             <RNText>Xóa tài khoản</RNText>
           </View>
         </TouchableHighlightComponent>
-        <TouchableHighlightComponent onPress={() => onItemPress('inactive')}>
+        <TouchableHighlightComponent onPress={() => onItemPress(INACTIVE)}>
           <View style={styles.item}>
             <SvgIcon name={isAccountActive ? 'lock' : 'lockOpen'} size={18} />
             <RNText>{isAccountActive ? 'Ngưng sử dụng' : 'Tái sử dụng'}</RNText>

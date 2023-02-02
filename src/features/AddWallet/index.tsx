@@ -16,21 +16,33 @@ import { TAccountType, TAccount } from 'types/models';
 import ModalPicker from './ModalPicker';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import {
+  accountSelectors,
   accountTypeSelectors,
   bankSelectors,
   providerSelectors,
 } from 'store/account/account.selector';
 import { addOrUpdateAccount } from 'store/account/account.slice';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { AddWalletRouteProp } from 'navigation/type';
 
 const AddWallet = ({}) => {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
+  const useDispatch = useAppDispatch();
+  const { params } = useRoute<AddWalletRouteProp>();
+
   const isModalType = useRef('');
   const inputNameRef = useRef<any>(null);
   const [isShowModalPicker, setIsShowModalPicker] = useState<boolean>(false);
 
-  const useDispatch = useAppDispatch();
+  // get state from store
+  const getAllAccountType = useAppSelector((state) => accountTypeSelectors.selectEntities(state));
+  const getAllProvider = useAppSelector((state) => providerSelectors.selectEntities(state));
+  const getAllBankList = useAppSelector((state) => bankSelectors.selectEntities(state));
+  const accountDataForEditScreen = params?.accountId
+    ? useAppSelector((state) => accountSelectors.selectById(state, params.accountId))
+    : {};
+
   const {
     control,
     handleSubmit,
@@ -51,13 +63,10 @@ const AddWallet = ({}) => {
       icon: {
         accountType: 'cash',
       },
+      ...accountDataForEditScreen,
     },
   });
   const { account_type, provider, bank } = getValues();
-
-  const getAllAccountType = useAppSelector((state) => accountTypeSelectors.selectEntities(state));
-  const getAllProvider = useAppSelector((state) => providerSelectors.selectEntities(state));
-  const getAllBankList = useAppSelector((state) => bankSelectors.selectEntities(state));
 
   // get current account type selected
   const currentAccountType = getAllAccountType[account_type];

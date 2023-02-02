@@ -1,3 +1,4 @@
+import { RouteProp } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {
   HOME,
@@ -24,13 +25,12 @@ export type HomeStackParamList = {
 
 export type AccountStackParamList = {
   [ACCOUNTTAB]: undefined;
-  [ADDWALLET]: undefined;
+  [ADDWALLET]: { accountId?: string };
 };
 
-export type RootStackScreenProps<T extends keyof RootStackParamList> = NativeStackScreenProps<
-  RootStackParamList,
-  T
->;
+
+// route type props
+export type AddWalletRouteProp = RouteProp<AccountStackParamList, typeof ADDWALLET>;
 
 declare global {
   namespace ReactNavigation {
