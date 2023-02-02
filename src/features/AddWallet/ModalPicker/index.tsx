@@ -1,15 +1,9 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import Modal from 'components/Modal';
 import isEqual from 'react-fast-compare';
 import { FlatListComponent, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
 import { IModalComponentProps } from 'components/Modal';
-import {
-  Keyboard,
-  TextInput,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import { Keyboard, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import { TAccountType } from 'src/types/models';
@@ -58,6 +52,16 @@ function ModalPicker({
         break;
     }
   }, [isShowData]);
+
+  const title = useMemo(
+    () =>
+      isShowData === 'bank'
+        ? 'Chọn ngân hàng'
+        : isShowData === 'eWallet'
+        ? 'Chọn nhà cung cấp'
+        : 'Chọn loại tài khoản',
+    [],
+  );
 
   const renderItem = ({ item }: { item: TAccountType }) => {
     const currentSelected = (itemId: string) => isSelected === itemId;
@@ -108,23 +112,21 @@ function ModalPicker({
     setData(bankFilteredList);
   };
 
-  const title =
-    isShowData === 'bank'
-      ? 'Chọn ngân hàng'
-      : isShowData === 'eWallet'
-      ? 'Chọn nhà cung cấp'
-      : 'Chọn loại tài khoản';
+  const onModalHide = () => {
+    setData(getAllBankList);
+  };
 
   const modalBankStyle = isShowData === 'bank' ? styles.bankModal : {};
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Modal
         styleDefaultContent={[modalBankStyle]}
         isVisible={isVisible}
         animationIn="slideInUp"
         animationOut="slideOutDown"
         onToggleModal={onToggleModal}
+        onModalHide={onModalHide}
         title={title}
       >
         {isShowData === 'bank' && (

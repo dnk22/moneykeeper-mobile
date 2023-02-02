@@ -61,7 +61,7 @@ function Wallet() {
       if (!groupedData[item.account_type]) {
         groupedData[item.account_type] = { title: '', data: [] };
       }
-      groupedData[item.account_type].title = item.account_type_name;
+      groupedData[item.account_type].title = item.account_type_details?.name;
       groupedData[item.account_type].data.push(item);
     });
     return Object.values(groupedData);
@@ -77,6 +77,8 @@ function Wallet() {
   }, []);
 
   const renderItem = ({ item }: { item: TAccount }) => {
+    console.log(item);
+
     return <Item account={item} onActionPress={onActionPress} />;
   };
 

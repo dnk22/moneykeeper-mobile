@@ -42,18 +42,15 @@ export type TAccount = {
   initial_amount: number;
   current_amount: number;
   account_type: string;
-  account_type_name: string;
+  account_type_details: TAccountType;
   bank?: string;
+  bank_details?: TBank;
   provider?: string;
+  provider_details?: TProvider;
   currency?: string;
   descriptions?: string;
   is_active: boolean;
   is_not_add_report?: boolean;
-  icon?: {
-    accountType?: IconProps;
-    provider?: IconProps;
-    bank?: IconProps;
-  };
   user_created: string;
   created_date: Date;
 };

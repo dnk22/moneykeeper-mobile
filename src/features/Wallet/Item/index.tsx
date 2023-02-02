@@ -19,7 +19,11 @@ function Item({ account, onActionPress }: ItemProps) {
         <View style={styles.container}>
           <View style={styles.content}>
             <SvgIcon
-              name={account?.icon?.provider || account?.icon?.bank || account?.icon?.accountType}
+              name={
+                account?.provider_details?.icon ||
+                account?.bank_details?.icon ||
+                account?.account_type_details?.icon
+              }
               size={30}
             />
             <View style={{ flex: 1, rowGap: 5 }}>

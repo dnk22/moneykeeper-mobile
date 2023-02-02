@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
   InputCalculator,
   InputField,
@@ -15,15 +15,13 @@ import { useForm } from 'react-hook-form';
 import { TAccountType, TAccount } from 'types/models';
 import ModalPicker from './ModalPicker';
 import { useAppDispatch, useAppSelector } from 'store/index';
-import {
-  accountSelectors,
-  accountTypeSelectors,
-  bankSelectors,
-  providerSelectors,
-} from 'store/account/account.selector';
+import { accountSelectors, accountTypeSelectors } from 'store/account/account.selector';
 import { addOrUpdateAccount } from 'store/account/account.slice';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AddWalletRouteProp } from 'navigation/type';
+import isEqual from 'react-fast-compare';
+
+const DEFAULT_ACCOUNT_TYPE_ID = '1';
 
 const AddWallet = ({}) => {
   const { colors } = useCustomTheme();
@@ -31,17 +29,17 @@ const AddWallet = ({}) => {
   const useDispatch = useAppDispatch();
   const { params } = useRoute<AddWalletRouteProp>();
 
-  const isModalType = useRef('');
+  const isModalType = useRef<'accountType' | 'bank' | 'eWallet'>('accountType');
   const inputNameRef = useRef<any>(null);
   const [isShowModalPicker, setIsShowModalPicker] = useState<boolean>(false);
 
   // get state from store
-  const getAllAccountType = useAppSelector((state) => accountTypeSelectors.selectEntities(state));
-  const getAllProvider = useAppSelector((state) => providerSelectors.selectEntities(state));
-  const getAllBankList = useAppSelector((state) => bankSelectors.selectEntities(state));
-  const accountDataForEditScreen = params?.accountId
-    ? useAppSelector((state) => accountSelectors.selectById(state, params.accountId))
-    : {};
+  const getDefaultAccountType = useAppSelector((state) =>
+    accountTypeSelectors.selectById(state, DEFAULT_ACCOUNT_TYPE_ID),
+  );
+  const accountDataForEditScreen = useAppSelector((state) =>
+    accountSelectors.selectById(state, params?.accountId || ''),
+  );
 
   const {
     control,
@@ -49,115 +47,132 @@ const AddWallet = ({}) => {
     getValues,
     setValue,
     watch,
-    setFocus,
+    reset,
     formState: { errors },
   } = useForm<TAccount>({
     defaultValues: {
+      _id: '',
+      name: '',
+      user_created: '',
       initial_amount: 0,
       current_amount: 0,
-      account_type: '1',
-      account_type_name: 'Tiền mặt',
+      account_type: getDefaultAccountType?._id,
+      account_type_details: getDefaultAccountType,
       created_date: new Date(),
+      is_not_add_report: false,
       is_active: true,
       currency: 'vnd',
-      icon: {
-        accountType: 'cash',
-      },
-      ...accountDataForEditScreen,
     },
   });
-  const { account_type, provider, bank } = getValues();
-
-  // get current account type selected
-  const currentAccountType = getAllAccountType[account_type];
-  const currentProvider = useCallback(
-    (type: string) => {
-      if (provider) {
-        if (type === 'eWallet') {
-          return getAllProvider[provider];
-        }
-      } else if (bank) {
-        if (type === 'bank') {
-          return getAllBankList[bank];
-        }
-      } else return undefined;
-    },
-    [watch('provider'), watch('bank')],
-  );
-
-  const onSelectWalletType = useCallback(() => {
-    isModalType.current = '';
-    setIsShowModalPicker(true);
-  }, []);
-
-  const onSelectProvider = useCallback(() => {
-    currentAccountType?.value === 'bank'
-      ? (isModalType.current = 'bank')
-      : (isModalType.current = 'eWallet');
-    setIsShowModalPicker(true);
-  }, [currentAccountType?.value]);
-
-  const onCloseModal = useCallback(() => {
-    setIsShowModalPicker(false);
-  }, []);
-
-  const onItemModalPickerPress = useCallback((item: TAccountType) => {
-    switch (isModalType.current) {
-      case 'bank':
-        setValue('bank', item._id);
-        setValue('icon.bank', item.icon);
-        break;
-      case 'eWallet':
-        setValue('provider', item._id);
-        setValue('icon.provider', item.icon);
-        break;
-      default:
-        setValue('account_type', item._id);
-        setValue('account_type_name', item.name);
-        setValue('icon.accountType', item.icon);
-        break;
-    }
-    onCloseModal();
-  }, []);
-
-  const onDeleteBankProvider = useCallback(() => {
-    setValue('provider', '');
-    setValue('bank', '');
-  }, []);
+  const { account_type, account_type_details, provider, bank } = getValues();
 
   useEffect(() => {
-    // reset provider and bank value
-    switch (account_type) {
-      case 'bank':
-        setValue('provider', '');
-        setValue('icon.provider', undefined);
-        break;
-      case 'eWallet':
-        setValue('bank', '');
-        setValue('icon.bank', undefined);
-        break;
-      default:
-        setValue('provider', '');
-        setValue('icon.provider', undefined);
-        setValue('bank', '');
-        setValue('icon.bank', undefined);
-        break;
+    if (params?.accountId) {
+      reset(accountDataForEditScreen);
     }
-  }, [account_type]);
+  }, [params?.accountId, reset]);
 
   useEffect(() => {
     if (errors?.name) {
       inputNameRef.current.focus();
     }
-  }, [errors?.name, setFocus]);
+  }, [errors?.name]);
+
+  const onSelectWalletType = useCallback(() => {
+    isModalType.current = 'accountType';
+    setIsShowModalPicker(true);
+  }, []);
+
+  const onSelectProvider = useCallback(() => {
+    account_type_details?.value === 'bank'
+      ? (isModalType.current = 'bank')
+      : (isModalType.current = 'eWallet');
+    setIsShowModalPicker(true);
+  }, [account_type_details?.value]);
+
+  const handleItemModalPickerPress = useCallback((item: TAccountType) => {
+    switch (isModalType.current) {
+      case 'bank':
+        setSelectedBank(item._id, item);
+        resetSelectedProvider();
+        break;
+      case 'eWallet':
+        setSelectedProvider(item._id, item);
+        resetSelectedBank();
+        break;
+      default:
+        setSelectedAccountType(item._id, item);
+        resetSelectedBankAndProvider();
+        break;
+    }
+    closeModal();
+  }, []);
+
+  const resetSelectedBankAndProvider = () => {
+    resetSelectedBank();
+    resetSelectedProvider();
+  };
+
+  const resetSelectedBank = () => {
+    setSelectedValues({
+      bank: '',
+      bank_details: undefined,
+    });
+  };
+
+  const resetSelectedProvider = () => {
+    setSelectedValues({
+      provider: '',
+      provider_details: undefined,
+    });
+  };
+
+  const setSelectedBank = (bankId: string, bankDetails: TAccountType) => {
+    setSelectedValues({
+      bank: bankId,
+      bank_details: bankDetails,
+    });
+  };
+
+  const setSelectedProvider = (providerId: string, providerDetails: TAccountType) => {
+    setSelectedValues({
+      provider: providerId,
+      provider_details: providerDetails,
+    });
+  };
+
+  const setSelectedAccountType = (accountTypeId: string, accountTypeDetails: TAccountType) => {
+    setSelectedValues({
+      account_type: accountTypeId,
+      account_type_details: accountTypeDetails,
+    });
+  };
+
+  const setSelectedValues = (values: Partial<TAccount>) => {
+    Object.entries(values).forEach(([key, value]) => {
+      setValue(key as keyof TAccount, value);
+    });
+  };
+
+  const closeModal = () => {
+    onCloseModal();
+  };
+
+  const onCloseModal = useCallback(() => {
+    setIsShowModalPicker(false);
+  }, []);
+
+  const isItemSelected =
+    isModalType.current === 'accountType'
+      ? account_type
+      : isModalType.current === 'eWallet'
+      ? provider
+      : bank;
 
   const onHandleSubmit = (data: TAccount) => {
     useDispatch(addOrUpdateAccount(data));
     navigation.goBack();
   };
-
-  const isItemSelected =
-    isModalType.current === '' ? account_type : isModalType.current === 'eWallet' ? provider : bank;
 
   return (
     <View style={styles.container}>
@@ -165,7 +180,7 @@ const AddWallet = ({}) => {
         isShowData={isModalType.current}
         isVisible={isShowModalPicker}
         onToggleModal={onCloseModal}
-        onPressItem={onItemModalPickerPress}
+        onPressItem={handleItemModalPickerPress}
         isTypeSelected={isItemSelected}
       />
       <KeyboardAwareScrollView
@@ -206,19 +221,24 @@ const AddWallet = ({}) => {
         </View>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <InputSelection
-            icon={currentAccountType?.icon}
+            icon={watch('account_type_details')?.icon}
             title="Chọn loại tài khoản"
-            value={currentAccountType?.name}
+            value={watch('account_type_details')?.name}
             onSelect={onSelectWalletType}
           />
-          {(currentAccountType?.value === 'bank' || currentAccountType?.value === 'eWallet') && (
+          {(watch('account_type_details')?.value === 'bank' ||
+            watch('account_type_details')?.value === 'eWallet') && (
             <InputSelection
-              icon={currentProvider(currentAccountType?.value)?.icon || 'wallet'}
-              value={currentProvider(currentAccountType?.value)?.name}
-              title={currentAccountType?.value === 'bank' ? 'Chọn ngân hàng' : 'Chọn nhà cung cấp'}
+              icon={watch('bank_details')?.icon || watch('provider_details')?.icon}
+              value={watch('bank_details')?.name || watch('provider_details')?.name}
+              title={
+                watch('account_type_details')?.value === 'bank'
+                  ? 'Chọn ngân hàng'
+                  : 'Chọn nhà cung cấp'
+              }
               onSelect={onSelectProvider}
               required={false}
-              onDelete={onDeleteBankProvider}
+              onDelete={resetSelectedBankAndProvider}
             />
           )}
         </View>
@@ -245,4 +265,4 @@ const AddWallet = ({}) => {
   );
 };
 
-export default AddWallet;
+export default memo(AddWallet, isEqual);
