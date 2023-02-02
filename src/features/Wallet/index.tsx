@@ -102,13 +102,15 @@ function Wallet() {
         <View style={styles.totalBalance}>
           <RNText style={styles.totalCurrency}>Tổng tiền: 10000000Đ</RNText>
         </View>
-        <Card title="Đang sử dụng">
-          <SectionListComponent
-            sections={isActiveData}
-            renderItem={renderItem}
-            renderSectionHeader={renderSectionHeader}
-          />
-        </Card>
+        {Boolean(isActiveData.length) && (
+          <Card title="Đang sử dụng">
+            <SectionListComponent
+              sections={isActiveData}
+              renderItem={renderItem}
+              renderSectionHeader={renderSectionHeader}
+            />
+          </Card>
+        )}
         {Boolean(isDeactivateData.length) && (
           <Card title="Ngưng sử dụng">
             <FlatListComponent data={isDeactivateData} renderItem={renderItem} />
