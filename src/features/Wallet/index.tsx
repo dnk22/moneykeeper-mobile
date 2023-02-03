@@ -13,49 +13,48 @@ import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { ADDWALLET } from 'navigation/constants';
 import { useAppSelector } from 'store/index';
-import { accountSelectors } from 'store/account/account.selector';
+import {
+  selectActiveAccounts,
+  selectDeactivateActiveAccounts,
+} from 'store/account/account.selector';
 import { TAccount } from 'types/models';
 import Item from './Item';
 import ItemSettingsModal from './ItemSettingsModal';
-import { accountViewSettingsSelector } from 'store/app/app.selector';
+import { selectAccountViewSettings } from 'store/app/app.selector';
 
 function Wallet() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
 
-  const getAllAccountList = useAppSelector((state) => accountSelectors.selectAll(state));
-  const accountViewSettings = useAppSelector((state) => accountViewSettingsSelector(state));
+  const getActiveAccounts = useAppSelector((state) => selectActiveAccounts(state));
+  const getDeactivateActiveAccounts = useAppSelector((state) =>
+    selectDeactivateActiveAccounts(state),
+  );
+  const { group } = useAppSelector((state) => selectAccountViewSettings(state));
 
   const currentAccountPressed = useRef<TAccount | any>(null);
   const [isShowItemSettingsModal, setIsShowItemSettingsModal] = useState(false);
-  const [isActiveData, setIsActiveData] = useState<any[]>([]);
+  const [isActiveData, setIsActiveData] = useState<SectionListData<TAccount, any>>([]);
   const [isDeactivateData, setIsDeactivateData] = useState<TAccount[]>([]);
 
   useEffect(() => {
-    const { activeData, deactivateData } = splitData(getAllAccountList);
-    if (accountViewSettings.group) {
-      const dataGroup: any = groupDataByValue(activeData);
+    if (!getActiveAccounts.length) return;
+    if (group) {
+      const dataGroup: any = groupDataByValue(getActiveAccounts);
       setIsActiveData(dataGroup);
     } else {
-      setIsActiveData([{ data: activeData }]);
+      setIsActiveData([{ data: getActiveAccounts }]);
     }
-    setIsDeactivateData(deactivateData);
-  }, [accountViewSettings.group, getAllAccountList]);
+  }, [group, getActiveAccounts]);
 
-  const splitData = useCallback((data: TAccount[]) => {
-    const activeData: TAccount[] = [];
-    const deactivateData: TAccount[] = [];
-    data.forEach((item) => {
-      if (item.is_active) {
-        activeData.push(item);
-      } else {
-        deactivateData.push(item);
-      }
-    });
-    return { activeData, deactivateData };
-  }, []);
+  useEffect(() => {
+    if (getDeactivateActiveAccounts.length) {
+      setIsDeactivateData(getDeactivateActiveAccounts);
+    }
+  }, [getDeactivateActiveAccounts]);
 
   const groupDataByValue = useCallback((data: TAccount[]) => {
+    if (!data.length) return [];
     const groupedData: any = {};
     data.forEach((item) => {
       if (!groupedData[item.account_type]) {
@@ -77,13 +76,11 @@ function Wallet() {
   }, []);
 
   const renderItem = ({ item }: { item: TAccount }) => {
-    console.log(item);
-
     return <Item account={item} onActionPress={onActionPress} />;
   };
 
-  const renderSectionHeader = ({ section }: { section: SectionListData<any, any> }) => {
-    if (!accountViewSettings.group) return null;
+  const renderSectionHeader = ({ section }: { section: SectionListData<TAccount> }) => {
+    if (!group) return null;
     return <RNText style={styles.groupTitle}>{section?.title}</RNText>;
   };
 
@@ -102,7 +99,7 @@ function Wallet() {
         <View style={styles.totalBalance}>
           <RNText style={styles.totalCurrency}>Tổng tiền: 10000000Đ</RNText>
         </View>
-        {Boolean(isActiveData.length) && (
+        {Boolean(getActiveAccounts.length) && (
           <Card title="Đang sử dụng">
             <SectionListComponent
               sections={isActiveData}
@@ -111,7 +108,7 @@ function Wallet() {
             />
           </Card>
         )}
-        {Boolean(isDeactivateData.length) && (
+        {Boolean(getDeactivateActiveAccounts.length) && (
           <Card title="Ngưng sử dụng">
             <FlatListComponent data={isDeactivateData} renderItem={renderItem} />
           </Card>

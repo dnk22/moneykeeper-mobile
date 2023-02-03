@@ -2,15 +2,16 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 type AccountViewSettingsProps = {
-  sort?: 'name' | 'custom';
-  group?: boolean;
+  sort: 'name' | 'custom';
+  group: boolean;
 };
+
 type AppState = {
-  AccountViewSettings: AccountViewSettingsProps;
+  account_view_settings: AccountViewSettingsProps;
 };
 
 const initialState = {
-  AccountViewSettings: {
+  account_view_settings: {
     sort: 'name',
     group: true,
   },
@@ -20,8 +21,11 @@ export const appSlice = createSlice({
   name: 'app',
   initialState: initialState,
   reducers: {
-    updateAccountViewSettings(state, { payload }: PayloadAction<AccountViewSettingsProps>) {
-      state.AccountViewSettings = { ...state.AccountViewSettings, ...payload };
+    updateAccountViewSettings(
+      state,
+      { payload }: PayloadAction<Partial<AccountViewSettingsProps>>,
+    ) {
+      state.account_view_settings = { ...state.account_view_settings, ...payload };
     },
   },
 });

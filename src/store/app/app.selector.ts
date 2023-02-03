@@ -1,11 +1,10 @@
+import { appSlice } from './app.slice';
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from 'store/index';
 
-const appState = (state: RootState) => state.app;
+const accountViewSettingsState = (state: RootState) => state[appSlice.name].account_view_settings;
+
+// init selectors
 
 // export selectors
-
-export const accountViewSettingsSelector = createSelector(
-  appState,
-  (state) => state.AccountViewSettings,
-);
+export const selectAccountViewSettings = createSelector(accountViewSettingsState, (state) => state);

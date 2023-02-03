@@ -10,13 +10,13 @@ import {
 } from 'components/index';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { accountViewSettingsSelector } from 'store/app/app.selector';
+import { selectAccountViewSettings } from 'store/app/app.selector';
 import { updateAccountViewSettings } from 'store/app/app.slice';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import styles from './styles';
 
 function Toolbar({}: HeaderButtonProps) {
-  const { group, sort } = useAppSelector((state) => accountViewSettingsSelector(state));
+  const { group, sort } = useAppSelector((state) => selectAccountViewSettings(state));
 
   const [isShowModal, setIsShowModal] = useState(false);
   const useDispatch = useAppDispatch();
