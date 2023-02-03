@@ -14,7 +14,7 @@ export type TUsers = {
 // transactions
 export type TTransactions = {
   _id: string;
-  amount?: number;
+  amount: number;
   transactions_category?: string;
   transactions_category_details?: TTransactionsCategory;
   transactions_type?: string;

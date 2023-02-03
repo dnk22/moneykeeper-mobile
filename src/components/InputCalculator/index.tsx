@@ -75,17 +75,14 @@ function InputCalculator({
     selection.current = { start, end };
   };
 
-  const onSubmitEditing = () => {
-    const parseData = inputValue.replaceAll('.', '').replaceAll(',', '.');
-    const result = eval(parseData);
-  };
+  const onSubmitEditing = () => {};
 
   return (
     <View style={[styles.group, { backgroundColor: colors.surface }]}>
       <RNText style={styles.amountLabel}>Số tiền</RNText>
       <View style={styles.inputGroup}>
         <TextInput
-          value={value.toString()}
+          value={value}
           style={[styles.amountInput, { color: inputTextColor }]}
           onChangeText={onChange}
           keyboardType="numeric"

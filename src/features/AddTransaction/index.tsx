@@ -121,7 +121,7 @@ export default function AddTransactions() {
         showsVerticalScrollIndicator={false}
         extraScrollHeight={60}
       >
-        <InputCalculator inputTextColor={setInputTextColor} />
+        <InputCalculator name="amount" control={control} inputTextColor={setInputTextColor} />
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={styles.itemGroup}>
             <SvgIcon name="add" style={styles.icon} />
