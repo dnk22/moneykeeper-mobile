@@ -9,3 +9,4 @@ export const ACCUMULATE = 'accumulate';
 export const TRANSACTIONS = 'transactions';
 export const REPORT = 'report';
 export const ADDWALLET = 'addWallet';
+export const WALLET_DETAIL = 'walletDetail';

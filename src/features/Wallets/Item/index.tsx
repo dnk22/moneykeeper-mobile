@@ -4,14 +4,21 @@ import { View } from 'react-native';
 import styles from './styles';
 import { TAccount } from 'types/models';
 import { PressableHaptic, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
+import { NavigationProp } from '@react-navigation/native';
+import { AccountStackParamList } from 'navigation/type';
+import { WALLET_DETAIL } from 'navigation/constants';
 
 type ItemProps = {
   account: TAccount;
   onActionPress: (account: TAccount) => void;
+  navigation: NavigationProp<AccountStackParamList>;
 };
 
-function Item({ account, onActionPress }: ItemProps) {
-  const onItemPress = () => {};
+function Item({ account, onActionPress, navigation }: ItemProps) {
+  const onItemPress = () => {
+    const { _id } = account;
+    navigation.navigate(WALLET_DETAIL, { accountId: _id });
+  };
 
   return (
     <View style={styles.touch}>

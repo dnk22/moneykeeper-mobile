@@ -1,5 +1,4 @@
 import { RouteProp } from '@react-navigation/native';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {
   HOME,
   ADDWALLET,
@@ -9,6 +8,7 @@ import {
   REPORT,
   TRANSACTIONS,
   SETTINGS,
+  WALLET_DETAIL,
 } from './constants';
 
 export type RootStackParamList = {
@@ -26,8 +26,8 @@ export type HomeStackParamList = {
 export type AccountStackParamList = {
   [ACCOUNTTAB]: undefined;
   [ADDWALLET]: { accountId?: string };
+  [WALLET_DETAIL]: { accountId: string };
 };
-
 
 // route type props
 export type AddWalletRouteProp = RouteProp<AccountStackParamList, typeof ADDWALLET>;

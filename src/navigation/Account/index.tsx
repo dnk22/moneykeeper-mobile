@@ -1,8 +1,9 @@
 import React, { memo } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ACCOUNTTAB, ADDWALLET } from 'navigation/constants';
+import { ACCOUNTTAB, ADDWALLET, WALLET_DETAIL } from 'navigation/constants';
 import { AccountStackParamList } from 'navigation/type';
 import { useCustomTheme } from 'resources/theme';
+import isEqual from 'react-fast-compare';
 
 import AccountTab from './tab';
 import AddWallet from 'features/AddWallet';
@@ -11,7 +12,7 @@ import AddWallet from 'features/AddWallet';
 import Submit from './component/Submit';
 import Toolbar from './component/Toolbar';
 import Search from './component/Search';
-import isEqual from 'react-fast-compare';
+import WalletDetail from 'features/WalletDetail';
 
 //set up routes
 const AccountStack = createNativeStackNavigator<AccountStackParamList>();
@@ -44,6 +45,13 @@ function AccountNavigation() {
           headerRight: (props) => <Submit {...props} />,
         })}
         component={AddWallet}
+      />
+      <AccountStack.Screen
+        name={WALLET_DETAIL}
+        options={({ route }) => ({
+          headerRight: (props) => <Submit {...props} />,
+        })}
+        component={WalletDetail}
       />
     </AccountStack.Navigator>
   );

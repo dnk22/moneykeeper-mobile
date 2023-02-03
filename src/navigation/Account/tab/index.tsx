@@ -1,7 +1,7 @@
 import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { SAVINGS, WALLET } from 'navigation/constants';
-import Wallet from 'features/Wallet';
+import Wallet from 'features/Wallets';
 import TabBar from '../component/TabBar';
 import Savings from 'features/Savings';
 

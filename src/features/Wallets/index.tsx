@@ -66,22 +66,35 @@ function Wallet() {
     return Object.values(groupedData);
   }, []);
 
-  const onToggleModal = () => {
-    setIsShowItemSettingsModal(!isShowItemSettingsModal);
-  };
+  const getTotalAmount = useCallback((data: TAccount[]) => {
+    const result = data.reduce((sum, account) => sum + account.current_amount, 0);
+    return result;
+  }, []);
+
+  const renderTitle = useCallback(
+    (title: string, value: TAccount[]) => {
+      return `${title}${getTotalAmount(value)} ₫`;
+    },
+    [getTotalAmount],
+  );
+
+  const renderSectionHeader = useCallback(({ section }: { section: SectionListData<TAccount> }) => {
+    if (!group) return null;
+    const { data, title } = section;
+    return <RNText style={styles.groupTitle}>{`${title} (${renderTitle('', data)})`}</RNText>;
+  }, []);
 
   const onActionPress = useCallback((account: TAccount) => {
     currentAccountPressed.current = account;
     onToggleModal();
   }, []);
 
-  const renderItem = ({ item }: { item: TAccount }) => {
-    return <Item account={item} onActionPress={onActionPress} />;
+  const onToggleModal = () => {
+    setIsShowItemSettingsModal(!isShowItemSettingsModal);
   };
 
-  const renderSectionHeader = ({ section }: { section: SectionListData<TAccount> }) => {
-    if (!group) return null;
-    return <RNText style={styles.groupTitle}>{section?.title}</RNText>;
+  const renderItem = ({ item }: { item: TAccount }) => {
+    return <Item account={item} onActionPress={onActionPress} navigation={navigation} />;
   };
 
   const onCreateWallet = () => {
@@ -97,10 +110,10 @@ function Wallet() {
       />
       <View style={styles.container}>
         <View style={styles.totalBalance}>
-          <RNText style={styles.totalCurrency}>Tổng tiền: 10000000Đ</RNText>
+          <RNText style={styles.totalCurrency}>{renderTitle('Tổng tiền: ', isActiveData)}</RNText>
         </View>
         {Boolean(getActiveAccounts.length) && (
-          <Card title="Đang sử dụng">
+          <Card title={renderTitle('Đang sử dụng: ', isActiveData)}>
             <SectionListComponent
               sections={isActiveData}
               renderItem={renderItem}

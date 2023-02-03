@@ -28,3 +28,8 @@ export const selectDeactivateActiveAccounts = createSelector(
   [accountSelectors.selectAll],
   (accounts) => accounts.filter((account) => !account.is_active),
 );
+
+export const selectAccountById = createSelector(
+  [accountSelectors.selectById],
+  (account) => account,
+);
