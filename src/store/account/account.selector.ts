@@ -20,6 +20,7 @@ export const providerSelectors = providerAdapter.getSelectors(providerState);
 export const bankSelectors = bankAdapter.getSelectors(bankState);
 
 // export custom selector
+
 export const selectActiveAccounts = createSelector([accountSelectors.selectAll], (accounts) =>
   accounts.filter((account) => account.is_active),
 );
@@ -33,3 +34,13 @@ export const selectAccountById = createSelector(
   [accountSelectors.selectById],
   (account) => account,
 );
+
+export const selectAllAccountType = createSelector(
+  [accountTypeSelectors.selectAll],
+  (accountType) => accountType,
+);
+export const selectAllProvider = createSelector(
+  [providerSelectors.selectAll],
+  (providers) => providers,
+);
+export const selectAllBank = createSelector([bankSelectors.selectAll], (banks) => banks);
