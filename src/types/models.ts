@@ -68,7 +68,9 @@ export type TAccountType = {
 export type TProvider = TAccountType;
 
 // bank
-export type TBank = TAccountType;
+export type TBank = TAccountType & {
+  icon?: any;
+};
 
 export type TTransactionsCategory = {
   _id: string;
