@@ -8,7 +8,7 @@ import icon, { IconProps } from './const';
 import { IconSize } from './preset';
 
 interface SvgIconProps extends SvgProps {
-  name?: IconProps;
+  name?: IconProps | any;
   color?: string;
   preset?: keyof typeof IconSize;
   size?: NumberProp;
@@ -24,7 +24,6 @@ function SvgIcon({ name, color, size, preset = 'default', ...rest }: SvgIconProp
     height: normalize(size) || presetStyle,
   };
   const isImage = useMemo(() => name && !icon.hasOwnProperty(name), [name]);
-  console.log(name);
 
   return (
     <>
