@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import Modal from 'components/Modal';
 import isEqual from 'react-fast-compare';
 import { FlatListComponent, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
@@ -9,10 +9,11 @@ import styles from './styles';
 import { TAccountType } from 'src/types/models';
 import { useAppSelector } from 'store/index';
 import {
-  accountTypeSelectors,
-  bankSelectors,
-  providerSelectors,
+  selectAllAccountType,
+  selectAllProvider,
+  selectAllBank,
 } from 'store/account/account.selector';
+import { BANK, EWALLET } from '../index';
 
 type ModalPickerProps = IModalComponentProps & {
   isTypeSelected?: string;
@@ -28,9 +29,9 @@ function ModalPicker({
   onPressItem,
 }: ModalPickerProps) {
   const { colors } = useCustomTheme();
-  const getAllAccountTypeList = useAppSelector((state) => accountTypeSelectors.selectAll(state));
-  const getAllProviderList = useAppSelector((state) => providerSelectors.selectAll(state));
-  const getAllBankList = useAppSelector((state) => bankSelectors.selectAll(state));
+  const getAllAccountTypeList = useAppSelector((state) => selectAllAccountType(state));
+  const getAllProviderList = useAppSelector((state) => selectAllProvider(state));
+  const getAllBankList = useAppSelector((state) => selectAllBank(state));
 
   const [isSelected, setIsSelected] = useState(isTypeSelected);
   const [data, setData] = useState<TAccountType[]>(getAllAccountTypeList);
@@ -41,10 +42,10 @@ function ModalPicker({
 
   useEffect(() => {
     switch (isShowData) {
-      case 'bank':
+      case BANK:
         setData(getAllBankList);
         break;
-      case 'eWallet':
+      case EWALLET:
         setData(getAllProviderList);
         break;
       default:
@@ -53,15 +54,12 @@ function ModalPicker({
     }
   }, [isShowData]);
 
-  const title = useMemo(
-    () =>
-      isShowData === 'bank'
-        ? 'Chọn ngân hàng'
-        : isShowData === 'eWallet'
-        ? 'Chọn nhà cung cấp'
-        : 'Chọn loại tài khoản',
-    [],
-  );
+  const title =
+    isShowData === BANK
+      ? 'Chọn ngân hàng'
+      : isShowData === EWALLET
+      ? 'Chọn nhà cung cấp'
+      : 'Chọn loại tài khoản';
 
   const renderItem = ({ item }: { item: TAccountType }) => {
     const currentSelected = (itemId: string) => isSelected === itemId;
@@ -77,7 +75,7 @@ function ModalPicker({
         <View style={styles.item}>
           <View style={styles.itemContent}>
             <SvgIcon name={item.icon} preset="transactionType" />
-            {isShowData === 'bank' ? (
+            {isShowData === BANK ? (
               <View>
                 <RNText style={[styles.title, { color: colors.text }]}>{item.shortName}</RNText>
                 <RNText fontSize={12} style={[styles.subTitle, { color: colors.text }]}>
@@ -113,15 +111,15 @@ function ModalPicker({
   };
 
   const onModalHide = () => {
-    setData(getAllBankList);
+    if (isShowData === BANK) {
+      setData(getAllBankList);
+    }
   };
-
-  const modalBankStyle = isShowData === 'bank' ? styles.bankModal : {};
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Modal
-        styleDefaultContent={[modalBankStyle]}
+        styleDefaultContent={[isShowData === BANK ? styles.bankModal : {}]}
         isVisible={isVisible}
         animationIn="slideInUp"
         animationOut="slideOutDown"
@@ -129,7 +127,7 @@ function ModalPicker({
         onModalHide={onModalHide}
         title={title}
       >
-        {isShowData === 'bank' && (
+        {isShowData === BANK && (
           <View style={styles.inputGroup}>
             <TextInput
               placeholder="Nhập tên ngân hàng"

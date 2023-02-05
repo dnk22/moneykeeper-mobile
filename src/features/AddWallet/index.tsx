@@ -22,6 +22,8 @@ import { AddWalletRouteProp } from 'navigation/type';
 import isEqual from 'react-fast-compare';
 
 const DEFAULT_ACCOUNT_TYPE_ID = '1';
+export const BANK = 'bank';
+export const EWALLET = 'eWallet';
 
 const AddWallet = ({}) => {
   const { colors } = useCustomTheme();
@@ -29,7 +31,7 @@ const AddWallet = ({}) => {
   const useDispatch = useAppDispatch();
   const { params } = useRoute<AddWalletRouteProp>();
 
-  const isModalType = useRef<'accountType' | 'bank' | 'eWallet'>('accountType');
+  const isModalType = useRef<string | typeof BANK | typeof EWALLET>('');
   const inputNameRef = useRef<any>(null);
   const [isShowModalPicker, setIsShowModalPicker] = useState<boolean>(false);
 
@@ -79,24 +81,22 @@ const AddWallet = ({}) => {
   }, [errors?.name]);
 
   const onSelectWalletType = useCallback(() => {
-    isModalType.current = 'accountType';
+    isModalType.current = '';
     setIsShowModalPicker(true);
   }, []);
 
   const onSelectProvider = useCallback(() => {
-    account_type_details?.value === 'bank'
-      ? (isModalType.current = 'bank')
-      : (isModalType.current = 'eWallet');
+    isModalType.current = account_type_details?.value;
     setIsShowModalPicker(true);
   }, [account_type_details?.value]);
 
   const handleItemModalPickerPress = useCallback((item: TAccountType) => {
     switch (isModalType.current) {
-      case 'bank':
+      case BANK:
         setSelectedBank(item._id, item);
         resetSelectedProvider();
         break;
-      case 'eWallet':
+      case EWALLET:
         setSelectedProvider(item._id, item);
         resetSelectedBank();
         break;
@@ -163,11 +163,11 @@ const AddWallet = ({}) => {
   }, []);
 
   const isItemSelected =
-    isModalType.current === 'accountType'
-      ? account_type
+    isModalType.current === BANK
+      ? bank
       : isModalType.current === 'eWallet'
       ? provider
-      : bank;
+      : account_type;
 
   const onHandleSubmit = (data: TAccount) => {
     useDispatch(addOrUpdateAccount(data));
@@ -226,13 +226,13 @@ const AddWallet = ({}) => {
             value={watch('account_type_details')?.name}
             onSelect={onSelectWalletType}
           />
-          {(watch('account_type_details')?.value === 'bank' ||
-            watch('account_type_details')?.value === 'eWallet') && (
+          {(watch('account_type_details')?.value === BANK ||
+            watch('account_type_details')?.value === EWALLET) && (
             <InputSelection
               icon={watch('bank_details')?.icon || watch('provider_details')?.icon}
               value={watch('bank_details')?.name || watch('provider_details')?.name}
               title={
-                watch('account_type_details')?.value === 'bank'
+                watch('account_type_details')?.value === BANK
                   ? 'Chọn ngân hàng'
                   : 'Chọn nhà cung cấp'
               }
