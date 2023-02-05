@@ -20,10 +20,9 @@ import { addOrUpdateAccount } from 'store/account/account.slice';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AddWalletRouteProp } from 'navigation/type';
 import isEqual from 'react-fast-compare';
+import { BANK, EWALLET } from './constants';
 
 const DEFAULT_ACCOUNT_TYPE_ID = '1';
-export const BANK = 'bank';
-export const EWALLET = 'eWallet';
 
 const AddWallet = ({}) => {
   const { colors } = useCustomTheme();

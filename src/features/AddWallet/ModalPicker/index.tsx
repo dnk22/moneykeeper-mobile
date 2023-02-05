@@ -13,7 +13,7 @@ import {
   selectAllProvider,
   selectAllBank,
 } from 'store/account/account.selector';
-import { BANK, EWALLET } from '../index';
+import { BANK, EWALLET } from '../constants';
 
 type ModalPickerProps = IModalComponentProps & {
   isTypeSelected?: string;
