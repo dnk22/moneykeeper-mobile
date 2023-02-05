@@ -13,6 +13,7 @@ import { useCustomTheme } from 'resources/theme';
 import RNText from 'components/Text';
 import styles from './styles';
 import { Control, RegisterOptions, useController } from 'react-hook-form';
+import RnKeyboard from 'rn-keyboard';
 // import { CLEAR, PUSHSPECIALOPERATOR, SELECTIONCHANGE } from './type';
 
 const operator = ['+', '-', '*', '/', ','];
@@ -39,9 +40,18 @@ function InputCalculator({
   inputTextColor = 'red',
 }: TInputCalculator) {
   const { colors } = useCustomTheme();
-  // const inputRef = useRef<ElementRef<typeof RnKeyboard.Input>>(null);
+  const {
+    field: { value, onChange },
+    fieldState,
+  } = useController({
+    name,
+    control,
+    rules,
+  });
+
+  const inputRef = useRef<ElementRef<typeof RnKeyboard.Input>>(null);
   const selection = useRef<{ start: number; end: number }>({ start: 0, end: 0 });
-  // const [inputValue, setInputValue] = useState<string>(value);
+  const [inputValue, setInputValue] = useState<string>(value.toString());
 
   // useEffect(() => {
   //   RnKeyboard.addListener(CLEAR, () => {
@@ -51,15 +61,6 @@ function InputCalculator({
   //     RnKeyboard.addListener(CLEAR, () => {});
   //   };
   // }, []);
-
-  const {
-    field: { value, onChange },
-    fieldState,
-  } = useController({
-    name,
-    control,
-    rules,
-  });
 
   const onHandleInputChange = (text?: any) => {
     // setInputValue(text);
@@ -81,7 +82,7 @@ function InputCalculator({
     <View style={[styles.group, { backgroundColor: colors.surface }]}>
       <RNText style={styles.amountLabel}>Số tiền</RNText>
       <View style={styles.inputGroup}>
-        <TextInput
+        {/* <TextInput
           value={value}
           style={[styles.amountInput, { color: inputTextColor }]}
           onChangeText={onChange}
@@ -89,8 +90,8 @@ function InputCalculator({
           selectTextOnFocus
           autoCorrect={false}
           // showSoftInputOnFocus={false}
-        />
-        {/* <RnKeyboard.Input
+        /> */}
+        <RnKeyboard.Input
           ref={inputRef}
           selectTextOnFocus
           value={inputValue}
@@ -99,7 +100,7 @@ function InputCalculator({
           onSubmitEditing={onSubmitEditing}
           onChangeText={onHandleInputChange}
           onSelectionChange={onHandleInputSelectionChange}
-        /> */}
+        />
         {isShowPrefix && <Text style={styles.currency}>₫</Text>}
       </View>
     </View>

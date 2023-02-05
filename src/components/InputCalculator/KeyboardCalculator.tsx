@@ -144,7 +144,3 @@ function KeyboardCalculator() {
 }
 
 export default memo(KeyboardCalculator, isEqual);
-
-function format(num: number) {
-  return formatThousandNumber(num, ',' as string, '.' as string);
-}
