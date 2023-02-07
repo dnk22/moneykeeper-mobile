@@ -16,7 +16,7 @@ function TouchableHighlightComponent({
   const { colors } = useCustomTheme();
   return (
     <TouchableHighlight
-      style={[{ borderRadius: 10 }, style]}
+      style={[{ borderRadius: 10 }, { backgroundColor: colors.surface }, style]}
       onPress={isActive ? onPress : undefined}
       underlayColor={colors.background}
       activeOpacity={activeOpacity}

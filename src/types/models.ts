@@ -21,8 +21,8 @@ export type TTransactions = {
   transactions_type_details?: TTransactionType;
   descriptions?: string;
   date_time: Date;
-  account?: string;
-  account_details?: TAccount;
+  account: string;
+  account_details: TAccount;
   location?: string;
   event?: string;
   pay_for?: string;

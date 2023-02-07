@@ -1,9 +1,21 @@
-export const SELECTIONCHANGE = 'selectionChange';
-export const CLEAR = 'Clear';
 export const ENTER = 'Enter';
-export const BACK = 'Back';
-export const PLUS = 'Plus';
-export const MINUS = 'Minus';
-export const DIVIDE = 'Divide';
-export const MULTIPLY = 'Multiply';
-export const PUSHSPECIALOPERATOR = 'pushSpecialOperator';
+export const PLUS = '+';
+export const MINUS = '-';
+export const DIVIDE = '/';
+export const MULTIPLY = '*';
+
+export const NUMBER = 'number';
+export const OPERATOR = 'operator';
+export const BACKSPACE = '⌫';
+export const DECIMAL = ',';
+export const CLEAR = 'C';
+
+export type OperatorProps =
+  | typeof OPERATOR
+  | typeof BACKSPACE
+  | typeof CLEAR
+  | typeof DECIMAL
+  | typeof ENTER;
+
+export const CHANGESUBMIT = 'changeSubmit';
+export const CALCULATE = 'calculate';

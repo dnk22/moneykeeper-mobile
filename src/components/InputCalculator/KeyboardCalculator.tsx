@@ -1,92 +1,74 @@
-import React, { memo, useCallback, useRef } from 'react';
-import isEqual from 'react-fast-compare';
-import { Text, TouchableHighlight, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import TouchableHighlight from 'components/TouchableHighlight';
+import { Text, View } from 'react-native';
 import RnKeyboard from 'rn-keyboard';
-import { formatThousandNumber } from 'utils/math';
 import styles from './styles';
-import { BACK, CLEAR, DIVIDE, ENTER, MINUS, MULTIPLY, PLUS } from './type';
+import {
+  CLEAR,
+  ENTER,
+  OPERATOR,
+  BACKSPACE,
+  DECIMAL,
+  OperatorProps,
+  CHANGESUBMIT,
+  CALCULATE,
+} from './type';
 
 function KeyboardCalculator() {
-  const renderActionButton = useCallback((value: string, actionKey: string) => {
+  const [isHasOperator, setIsHasOperator] = useState(false);
+  const renderActionButton = (value: string, type?: OperatorProps) => {
     const onActionButtonPress = () => {
-      switch (actionKey) {
-        case CLEAR:
-          onPushKeyboardEvent(CLEAR);
-          break;
-
-        case PLUS:
-          onKeyboardButtonPress('+');
-          break;
-
-        case MINUS:
-          onKeyboardButtonPress('-');
-          break;
-
-        case MULTIPLY:
-          onKeyboardButtonPress('*');
-          break;
-
-        case DIVIDE:
-          onKeyboardButtonPress('/');
-          break;
-
-        case BACK:
-          onPushKeyboardEvent(BACK);
-          break;
-      }
+      onPushKeyboardEvent(value, type || OPERATOR);
     };
     return (
-      <TouchableHighlight
-        underlayColor={'rgb(242,242,242)'}
-        style={styles.button}
-        onPress={onActionButtonPress}
-      >
+      <TouchableHighlight style={styles.button} onPress={onActionButtonPress}>
         <Text>{value}</Text>
       </TouchableHighlight>
     );
-  }, []);
-
-  const renderNumberButton = useCallback((value: string) => {
-    const onNumberButtonPress = () => {
-      switch (value) {
-        case ',':
-          onKeyboardButtonPress(',');
-          break;
-        default:
-          onPushKeyboardEvent(value);
-          break;
-      }
-    };
-    return (
-      <TouchableHighlight
-        underlayColor={'rgb(242,242,242)'}
-        style={styles.button}
-        onPress={onNumberButtonPress}
-      >
-        <Text>{value}</Text>
-      </TouchableHighlight>
-    );
-  }, []);
-
-  const onKeyboardButtonPress = (value: string) => {
-    onPushKeyboardEvent(value);
   };
 
-  const onPushKeyboardEvent = async (type: string) => {
+  const renderNumberButton = (value: string) => {
+    const onNumberButtonPress = () => {
+      onPushKeyboardEvent(value);
+    };
+    return (
+      <TouchableHighlight style={styles.button} onPress={onNumberButtonPress}>
+        <Text>{value}</Text>
+      </TouchableHighlight>
+    );
+  };
+
+  useEffect(() => {
+    const changeSubmitEvent = RnKeyboard.addListener(CHANGESUBMIT, (value: boolean) => {
+      setIsHasOperator(value);
+    });
+    return () => {
+      changeSubmitEvent.remove();
+    };
+  }, []);
+
+  const onPushKeyboardEvent = async (value: string, type?: OperatorProps) => {
     try {
       const inputId = RnKeyboard.getFocusId();
       switch (type) {
+        case OPERATOR:
+          RnKeyboard.emit(OPERATOR, value);
+          break;
         case CLEAR:
           RnKeyboard.emit(CLEAR, '');
           break;
-        case ENTER:
-          await RnKeyboard.submit(inputId);
-          break;
-        case BACK:
+        case BACKSPACE:
           await RnKeyboard.backspace(inputId);
           break;
+        case ENTER:
+          if (isHasOperator) {
+            RnKeyboard.emit(CALCULATE, '');
+            break;
+          }
+          await RnKeyboard.submit(inputId);
+          break;
         default:
-          await RnKeyboard.insert(inputId, type);
+          await RnKeyboard.insert(inputId, value);
           break;
       }
     } catch (err) {
@@ -94,29 +76,25 @@ function KeyboardCalculator() {
     }
   };
 
-  const onHandleEnter = () => {
-    onPushKeyboardEvent(ENTER);
-  };
-
   return (
     <View>
-      <View style={styles.calcRow}>
+      <View style={[styles.calcRow]}>
         {renderActionButton('C', CLEAR)}
-        {renderActionButton('/', DIVIDE)}
-        {renderActionButton('*', MULTIPLY)}
-        {renderActionButton('⌫', BACK)}
+        {renderActionButton('/')}
+        {renderActionButton('*')}
+        {renderActionButton('⌫', BACKSPACE)}
       </View>
       <View style={styles.calcRow}>
         {renderNumberButton('7')}
         {renderNumberButton('8')}
         {renderNumberButton('9')}
-        {renderActionButton('-', MINUS)}
+        {renderActionButton('-')}
       </View>
       <View style={styles.calcRow}>
         {renderNumberButton('4')}
         {renderNumberButton('5')}
         {renderNumberButton('6')}
-        {renderActionButton('+', PLUS)}
+        {renderActionButton('+')}
       </View>
       <View style={styles.calcRow}>
         <View style={{ flex: 3 }}>
@@ -128,19 +106,18 @@ function KeyboardCalculator() {
           <View style={styles.calcRow}>
             {renderNumberButton('0')}
             {renderNumberButton('000')}
-            {renderNumberButton(',')}
+            {renderActionButton(',', DECIMAL)}
           </View>
         </View>
         <TouchableHighlight
           style={[styles.enterButton]}
-          onPress={onHandleEnter}
-          underlayColor={'rgb(242,242,242)'}
+          onPress={() => onPushKeyboardEvent('', ENTER)}
         >
-          <Text>Xong</Text>
+          <Text>{isHasOperator ? '=' : 'Xong'}</Text>
         </TouchableHighlight>
       </View>
     </View>
   );
 }
 
-export default memo(KeyboardCalculator, isEqual);
+export default KeyboardCalculator;

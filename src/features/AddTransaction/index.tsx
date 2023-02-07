@@ -22,6 +22,7 @@ import Animated, { StretchInY } from 'react-native-reanimated';
 
 const initialAddFormValues: TTransactions = {
   _id: '',
+  amount: 0,
   transactions_type: '1',
   date_time: new Date(),
   created_date: new Date(),
