@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import {
   BottomTabNavigationOptions,
   createBottomTabNavigator,
@@ -11,7 +11,7 @@ import { ACCOUNT, DASHBOARD, SETTINGS, TRANSACTIONS, REPORT } from '../constants
 import Settings from 'features/Settings';
 import AddTransactions from 'features/AddTransaction';
 import AccountNavigation from 'navigation/Account';
-import isEqual from 'react-fast-compare';
+import Dashboard from 'features/Dashboard';
 
 // set up routes
 const Tab = createBottomTabNavigator();
@@ -35,7 +35,7 @@ function HomeNavigation() {
           tabBarIcon: () => <SvgIcon name="house" />,
           tabBarLabel: 'Tổng quan',
         }}
-        component={Settings}
+        component={Dashboard}
       />
       <Tab.Screen
         name={ACCOUNT}
@@ -76,4 +76,4 @@ function HomeNavigation() {
   );
 }
 
-export default memo(HomeNavigation, isEqual);
+export default HomeNavigation;
