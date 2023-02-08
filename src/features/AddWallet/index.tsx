@@ -220,18 +220,18 @@ const AddWallet = ({}) => {
         </View>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <InputSelection
-            icon={watch('account_type_details')?.icon}
+            icon={watch('account_type_details.icon')}
             title="Chọn loại tài khoản"
-            value={watch('account_type_details')?.name}
+            value={watch('account_type_details.name')}
             onSelect={onSelectWalletType}
           />
-          {(watch('account_type_details')?.value === BANK ||
-            watch('account_type_details')?.value === EWALLET) && (
+          {(watch('account_type_details.value') === BANK ||
+            watch('account_type_details.value') === EWALLET) && (
             <InputSelection
-              icon={watch('bank_details')?.icon || watch('provider_details')?.icon}
-              value={watch('bank_details')?.name || watch('provider_details')?.name}
+              icon={watch('bank_details.icon') || watch('provider_details')?.icon}
+              value={watch('bank_details.name') || watch('provider_details')?.name}
               title={
-                watch('account_type_details')?.value === BANK
+                watch('account_type_details.value') === BANK
                   ? 'Chọn ngân hàng'
                   : 'Chọn nhà cung cấp'
               }
