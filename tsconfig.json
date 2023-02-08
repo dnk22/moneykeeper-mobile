@@ -15,6 +15,7 @@
       "store/*": ["src/store/*"],
       "utils/*": ["src/utils/*"],
       "types/*": ["src/types/*"],
+      "modules/*": ["src/modules/*"],
     }
   }
 }
