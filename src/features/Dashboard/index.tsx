@@ -1,58 +1,22 @@
-import React, { memo } from 'react';
-import {
-  Text,
-  View,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
-import isEqual from 'react-fast-compare';
+import React from 'react';
+import { SafeAreaView, ScrollView, View } from 'react-native';
+import FinancialStatement from 'modules/DashboardWidget/FinancialStatement';
+import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
-import SvgIcon from 'components/SvgIcon';
-import { settingRoutes } from './constants';
+import RecentTransactions from 'modules/DashboardWidget/RecentTransactions';
 
-function Settings() {
+function Dashboard() {
+  const { colors } = useCustomTheme();
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView style={styles.container}>
-        <Text style={styles.title}>Cài đặt</Text>
-        <TouchableOpacity activeOpacity={0.5}>
-          <View style={[styles.group, styles.premium]}>
-            <Text style={styles.premiumSubTitle}>Mở khóa tất cả tính năng</Text>
-            <Text style={styles.premiumTitle}>Your Time Pro</Text>
-          </View>
-        </TouchableOpacity>
-        {Object.values(settingRoutes).map(({ key, child }) => (
-          <View style={styles.group} key={key}>
-            {child.map(({ link, name, icon }, index) => (
-              <TouchableOpacity activeOpacity={0.5} key={link}>
-                <View
-                  style={[
-                    styles.item,
-                    index !== child.length - 1 && styles.itemBorderBottom,
-                  ]}
-                >
-                  <SvgIcon
-                    name={icon}
-                    preset="settingsIcon"
-                    style={styles.itemIcon}
-                  />
-                  <Text style={styles.itemText}>{name}</Text>
-                  <SvgIcon
-                    name="forward"
-                    color="gray"
-                    preset="forwardLink"
-                    style={styles.itemNavigation}
-                  />
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
-        ))}
-        <Text style={styles.version}>Version 1.0</Text>
-      </ScrollView>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.primary }}>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <FinancialStatement />
+        <ScrollView style={{ paddingTop: 160 }}>
+          <RecentTransactions />
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
 
-export default memo(Settings, isEqual);
+export default Dashboard;
