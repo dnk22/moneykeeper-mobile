@@ -11,6 +11,7 @@ import isEqual from 'react-fast-compare';
 import {
   NativeSyntheticEvent,
   Text,
+  TextInput,
   TextInputProps,
   TextInputSelectionChangeEventData,
   View,
@@ -56,68 +57,67 @@ function InputCalculator({
 
   const inputRef = useRef<ElementRef<typeof RnKeyboard.Input>>(null);
   const cursorPosition = useRef<number>(0);
-  const [inputValue, setInputValue] = useState<string>(value.toString());
+  // const [inputValue, setInputValue] = useState<string>(value.toString());
 
-  const inputHasOperators = useMemo(() => {
-    return (
-      inputValue.includes('+') ||
-      inputValue.includes('-') ||
-      inputValue.includes('*') ||
-      inputValue.includes('/')
-    );
-  }, [inputValue]);
+  // const inputHasOperators = useMemo(() => {
+  //   return (
+  //     inputValue.includes('+') ||
+  //     inputValue.includes('-') ||
+  //     inputValue.includes('*') ||
+  //     inputValue.includes('/')
+  //   );
+  // }, [inputValue]);
 
-  useEffect(() => {
-    setInputValue(value.toString());
-  }, [value]);
+  // useEffect(() => {
+  //   setInputValue(value.toString());
+  // }, [value]);
 
-  useEffect(() => {
-    const clearEvent = RnKeyboard.addListener(CLEAR, () => {
-      setInputValue('0');
-    });
-    return () => {
-      clearEvent.remove();
-    };
-  }, []);
+  // useEffect(() => {
+  //   const clearEvent = RnKeyboard.addListener(CLEAR, () => {
+  //     setInputValue('0');
+  //   });
+  //   return () => {
+  //     clearEvent.remove();
+  //   };
+  // }, []);
 
-  useEffect(() => {
-    const calcEvent = RnKeyboard.addListener(CALCULATE, () => {
-      setInputValue(String(eval(inputValue)));
-    });
-    return () => {
-      calcEvent.remove();
-    };
-  }, [inputValue]);
+  // useEffect(() => {
+  //   const calcEvent = RnKeyboard.addListener(CALCULATE, () => {
+  //     setInputValue(String(eval(inputValue)));
+  //   });
+  //   return () => {
+  //     calcEvent.remove();
+  //   };
+  // }, [inputValue]);
 
-  useEffect(() => {
-    RnKeyboard.emit(CHANGESUBMIT, inputHasOperators);
-  }, [inputValue]);
+  // useEffect(() => {
+  //   RnKeyboard.emit(CHANGESUBMIT, inputHasOperators);
+  // }, [inputValue]);
 
-  useEffect(() => {
-    const operatorEvent = RnKeyboard.addListener(OPERATOR, async (operator: string) => {
-      const inputId = RnKeyboard.getFocusId();
-      const leftInput = inputValue.slice(0, cursorPosition.current);
-      const rightInput = inputValue.slice(cursorPosition.current);
-      let newInputValue = '';
-      if (isNaN(parseFloat(leftInput[leftInput.length - 1]))) {
-        newInputValue = leftInput.slice(0, leftInput.length - 1) + operator;
-      } else {
-        await RnKeyboard.insert(inputId, operator);
-        return;
-      }
-      setInputValue(newInputValue);
-    });
-    return () => {
-      operatorEvent.remove();
-    };
-  }, [inputValue]);
+  // useEffect(() => {
+  //   const operatorEvent = RnKeyboard.addListener(OPERATOR, async (operator: string) => {
+  //     console.log('run');
+
+  //     const inputId = RnKeyboard.getFocusId();
+  //     const leftInput = inputValue.slice(0, cursorPosition.current);
+  //     const rightInput = inputValue.slice(cursorPosition.current);
+  //     let newInputValue = '';
+  //     if (isNaN(parseFloat(leftInput[leftInput.length - 1]))) {
+  //       newInputValue = leftInput.slice(0, leftInput.length - 1) + operator;
+  //     } else {
+  //       await RnKeyboard.insert(inputId, operator);
+  //       return;
+  //     }
+  //     setInputValue(newInputValue);
+  //   });
+  //   return () => {
+  //     operatorEvent.remove();
+  //   };
+  // }, [inputValue]);
 
   const onHandleInputChange = (text?: any) => {
-    const formattedText = text
-      ? text.replace(/[.]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-      : text;
-    setInputValue(formattedText);
-    onChangeText && onChangeText(inputValue);
+    onChange(formatNumber(text));
+    // onChangeText && onChangeText(inputValue);
   };
 
   const handleOnSelectionChange = ({
@@ -135,33 +135,36 @@ function InputCalculator({
     }
   };
 
-  const onSubmitEditing = () => {};
+  const formatNumber = (number: string) => {
+    const numberSource = number.replace(/[.]/g, '').replace(/,/g, '.');
+    return new Intl.NumberFormat('de-DE', { style: 'decimal' }).format(+numberSource);
+  };
 
   return (
     <View style={[styles.group, { backgroundColor: colors.surface }]}>
       <RNText style={styles.amountLabel}>Số tiền</RNText>
       <View style={styles.inputGroup}>
-        {/* <TextInput
-          value={value}
+        <TextInput
+          value={value.toString()}
           style={[styles.amountInput, { color: inputTextColor }]}
-          onChangeText={onChange}
-          keyboardType="numeric"
+          keyboardType="number-pad"
           selectTextOnFocus
           autoCorrect={false}
-          // showSoftInputOnFocus={false}
-        /> */}
-        <RnKeyboard.Input
+          onChangeText={onChange}
+          onBlur={handleOnBlurInput}
+        />
+        {/* <RnKeyboard.Input
           ref={inputRef}
-          selectTextOnFocus
-          value={inputValue}
-          style={[styles.amountInput, { color: inputTextColor }]}
           rnKeyboardType={'KeyboardCalculator'}
-          onSubmitEditing={onSubmitEditing}
+          value={value.toString()}
+          keyboardType="number-pad"
           onChangeText={onHandleInputChange}
           onSelectionChange={handleOnSelectionChange}
           onBlur={handleOnBlurInput}
-        />
-        {isShowPrefix && <Text style={styles.currency}>₫</Text>}
+          selectTextOnFocus
+          style={[styles.amountInput, { color: inputTextColor }]}
+        /> */}
+        {isShowPrefix && <RNText style={styles.currency}>₫</RNText>}
       </View>
     </View>
   );
