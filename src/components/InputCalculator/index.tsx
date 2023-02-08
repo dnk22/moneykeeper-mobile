@@ -130,9 +130,9 @@ function InputCalculator({
   };
 
   const handleOnBlurInput = () => {
-    if (!Boolean(inputValue)) {
-      setInputValue('0');
-    }
+    // if (!Boolean(value)) {
+    //   setInputValue('0');
+    // }
   };
 
   const formatNumber = (number: string) => {
