@@ -8,7 +8,7 @@ import icon, { IconProps } from './const';
 import { IconSize } from './preset';
 
 interface SvgIconProps extends SvgProps {
-  name?: IconProps | any;
+  name?: IconProps;
   color?: string;
   preset?: keyof typeof IconSize;
   size?: NumberProp;
