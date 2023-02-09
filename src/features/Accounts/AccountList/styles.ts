@@ -1,34 +1,37 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  touch: {
+  groupTitle: {
+    marginTop: 5,
+    opacity: 0.7,
+  },
+  itemContainer: {
     paddingVertical: 5,
     borderBottomWidth: 0.2,
     borderColor: 'rgb(200, 200, 200)',
   },
-  container: {
+  itemContent: {
     flex: 1,
     height: 60,
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  content: {
-    flex: 1,
-    flexDirection: 'row',
     columnGap: 10,
-    alignItems: 'center',
   },
-  action: {
+  itemCenter: {
+    flex: 1,
+    rowGap: 5,
+  },
+  itemAction: {
     width: 30,
     height: 30,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  accountName: {
+  itemTitle: {
     fontWeight: '500',
     width: '100%',
   },
-  accountAmount: {
+  itemSubTitle: {
     width: '100%',
     opacity: 0.7,
   },

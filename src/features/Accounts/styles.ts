@@ -12,10 +12,6 @@ const styles = StyleSheet.create({
   totalCurrency: {
     fontWeight: '700',
   },
-  groupTitle: {
-    marginTop: 5,
-    opacity: 0.7,
-  },
   createButton: {
     position: 'absolute',
     right: 30,

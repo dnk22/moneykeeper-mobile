@@ -8,7 +8,7 @@ type WalletDetailProps = {
   navigation: NavigationProp<Record<string, object | undefined>, string>;
   route: RouteProp<Record<string, object | undefined>, string>;
 };
-function WalletDetail({ navigation, route }: WalletDetailProps) {
+function AccountDetails({ navigation, route }: WalletDetailProps) {
   const { params } = route;
   const getAccountById = useAppSelector((state) => selectAccountById(state, params?.accountId));
 
@@ -21,4 +21,4 @@ function WalletDetail({ navigation, route }: WalletDetailProps) {
 
   return <View></View>;
 }
-export default WalletDetail;
+export default AccountDetails;

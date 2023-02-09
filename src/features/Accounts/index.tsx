@@ -1,12 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  Card,
-  PressableHaptic,
-  RNText,
-  SvgIcon,
-  SectionListComponent,
-  FlatListComponent,
-} from 'components/index';
+import { Card, PressableHaptic, RNText, SvgIcon, FlatListComponent } from 'components/index';
 import { View, SectionListData } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
@@ -18,9 +11,9 @@ import {
   selectDeactivateActiveAccounts,
 } from 'store/account/account.selector';
 import { TAccount } from 'types/models';
-import Item from './Item';
 import ItemSettingsModal from './ItemSettingsModal';
 import { selectAccountViewSettings } from 'store/app/app.selector';
+import AccountList from './AccountList';
 
 function Wallet() {
   const { colors } = useCustomTheme();
@@ -78,12 +71,6 @@ function Wallet() {
     [getTotalAmount],
   );
 
-  const renderSectionHeader = useCallback(({ section }: { section: SectionListData<TAccount> }) => {
-    if (!group) return null;
-    const { data, title } = section;
-    return <RNText style={styles.groupTitle}>{`${title} (${renderTitle('', data)})`}</RNText>;
-  }, []);
-
   const onActionPress = useCallback((account: TAccount) => {
     currentAccountPressed.current = account;
     onToggleModal();
@@ -96,10 +83,6 @@ function Wallet() {
 
   const onToggleModal = () => {
     setIsShowItemSettingsModal(!isShowItemSettingsModal);
-  };
-
-  const renderItem = ({ item }: { item: TAccount }) => {
-    return <Item account={item} onActionPress={onActionPress} navigation={navigation} />;
   };
 
   const onCreateWallet = () => {
@@ -121,11 +104,7 @@ function Wallet() {
         )}
         {!!isActiveData.length && (
           <Card title={renderTitle('Đang sử dụng: ', isActiveData)}>
-            <SectionListComponent
-              sections={isActiveData}
-              renderItem={renderItem}
-              renderSectionHeader={renderSectionHeader}
-            />
+            <AccountList data={isActiveData} group={group} onActionPress={onActionPress} />
           </Card>
         )}
         {!!isDeactivateData.length && (

@@ -16,6 +16,7 @@ import {
   SwitchField,
   PressableHaptic,
   InputCalculator,
+  InputSelection,
 } from 'components/index';
 import { formatDateLocal } from 'utils/date';
 import Animated, { StretchInY } from 'react-native-reanimated';
@@ -83,6 +84,10 @@ export default function AddTransactions() {
     }
   };
 
+  const onSelectTransactionType = () => {};
+
+  const onSelectAccount = () => {};
+
   const onHandleSubmit = (data: TTransactions) => {
     console.log(data);
   };
@@ -124,13 +129,12 @@ export default function AddTransactions() {
       >
         <InputCalculator name="amount" control={control} inputTextColor={setInputTextColor} />
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
-          <View style={styles.itemGroup}>
-            <SvgIcon name="add" style={styles.icon} />
-            <View style={styles.groupContent}>
-              <RNText fontSize={20}>{watch('transactions_category') || 'Chọn danh mục'}</RNText>
-              <SvgIcon name="forward" size={18} style={styles.iconForward} />
-            </View>
-          </View>
+          <InputSelection
+            icon={watch('transactions_category_details.icon')}
+            title="Chọn danh mục"
+            value={watch('transactions_category_details.category_name')}
+            onSelect={onSelectTransactionType}
+          />
           <View style={styles.itemGroup}>
             <SvgIcon name="textWord" style={styles.icon} />
             <View style={styles.groupContent}>
@@ -158,13 +162,12 @@ export default function AddTransactions() {
               </PressableHaptic>
             </View>
           </View>
-          <View style={styles.itemGroup}>
-            <SvgIcon name="add" style={styles.icon} />
-            <View style={styles.groupContent}>
-              <RNText>{watch('transactions_category') || 'Chọn tài khoản'}</RNText>
-              <SvgIcon name="forward" size={18} style={styles.iconForward} />
-            </View>
-          </View>
+          <InputSelection
+            icon={watch('account_details.account_type_details.icon')}
+            title="Chọn tài khoản"
+            value={watch('account_details.name')}
+            onSelect={onSelectAccount}
+          />
         </View>
         {isShowDetails && (
           <Animated.View entering={StretchInY}>
@@ -217,7 +220,7 @@ export default function AddTransactions() {
               </View>
               {isShowFee && (
                 <Animated.View entering={StretchInY}>
-                  <InputCalculator />
+                  <InputCalculator name="fee" control={control} />
                 </Animated.View>
               )}
             </View>
@@ -236,7 +239,7 @@ export default function AddTransactions() {
           style={[styles.group, styles.expandGroup, { backgroundColor: colors.surface }]}
           onPress={() => setIsShowDetails(!isShowDetails)}
         >
-          <RNText>{isShowDetails ? 'Ẩn chi tiết' : 'Thêm chi tiết'}</RNText>
+          <RNText>{isShowDetails ? 'Ẩn chi tiết' : 'Hiển thị chi tiết'}</RNText>
           <SvgIcon name={isShowDetails ? 'arrowUp' : 'arrowDown'} size={16} />
         </PressableHaptic>
         <TouchableOpacity

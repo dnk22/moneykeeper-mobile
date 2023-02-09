@@ -1,9 +1,9 @@
 import React from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
-import FinancialStatement from 'modules/DashboardWidget/FinancialStatement';
+import FinancialStatement from 'features/Dashboard/Widgets/FinancialStatement';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
-import RecentTransactions from 'modules/DashboardWidget/RecentTransactions';
+import RecentTransactions from 'features/Dashboard/Widgets/RecentTransactions';
 
 function Dashboard() {
   const { colors } = useCustomTheme();

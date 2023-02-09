@@ -12,7 +12,7 @@ import AddWallet from 'features/AddWallet';
 import Submit from './component/Submit';
 import Toolbar from './component/Toolbar';
 import Search from './component/Search';
-import WalletDetail from 'features/WalletDetail';
+import AccountDetails from 'features/AccountDetails';
 
 //set up routes
 const AccountStack = createNativeStackNavigator<AccountStackParamList>();
@@ -51,7 +51,7 @@ function AccountNavigation() {
         options={({ route }) => ({
           headerRight: (props) => <Submit {...props} />,
         })}
-        component={WalletDetail}
+        component={AccountDetails}
       />
     </AccountStack.Navigator>
   );

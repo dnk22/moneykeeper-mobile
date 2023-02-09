@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     height: 100,
   },
   submit: {
-    height: 40,
+    height: 50,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
