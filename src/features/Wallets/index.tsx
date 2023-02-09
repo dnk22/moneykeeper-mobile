@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Card,
   PressableHaptic,
@@ -89,6 +89,11 @@ function Wallet() {
     onToggleModal();
   }, []);
 
+  const isHaveAccountsData = useMemo(
+    () => !!isActiveData.length || !!isDeactivateData.length,
+    [isActiveData, isDeactivateData],
+  );
+
   const onToggleModal = () => {
     setIsShowItemSettingsModal(!isShowItemSettingsModal);
   };
@@ -109,10 +114,12 @@ function Wallet() {
         account={currentAccountPressed.current}
       />
       <View style={styles.container}>
-        <View style={styles.totalBalance}>
-          <RNText style={styles.totalCurrency}>{renderTitle('Tổng tiền: ', isActiveData)}</RNText>
-        </View>
-        {Boolean(getActiveAccounts.length) && (
+        {isHaveAccountsData && (
+          <View style={styles.totalBalance}>
+            <RNText style={styles.totalCurrency}>{renderTitle('Tổng tiền: ', isActiveData)}</RNText>
+          </View>
+        )}
+        {!!isActiveData.length && (
           <Card title={renderTitle('Đang sử dụng: ', isActiveData)}>
             <SectionListComponent
               sections={isActiveData}
@@ -121,10 +128,15 @@ function Wallet() {
             />
           </Card>
         )}
-        {Boolean(getDeactivateActiveAccounts.length) && (
+        {!!isDeactivateData.length && (
           <Card title="Ngưng sử dụng">
             <FlatListComponent data={isDeactivateData} renderItem={renderItem} />
           </Card>
+        )}
+        {!isHaveAccountsData && (
+          <View style={styles.noAccounts}>
+            <RNText>Không có tài khoản nào!</RNText>
+          </View>
         )}
         <PressableHaptic
           style={[styles.createButton, { backgroundColor: colors.primary }]}
