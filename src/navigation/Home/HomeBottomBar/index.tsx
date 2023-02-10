@@ -1,10 +1,9 @@
-import React, { useCallback } from 'react';
+import { View } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { View } from 'react-native';
+import { useCustomTheme } from 'resources/theme';
 import TabBar from './TabBar';
 import styles from './styles';
-import { useCustomTheme } from 'resources/theme';
 
 type BottomBarProps = BottomTabBarProps & { circle: string };
 const BottomBar = ({
@@ -22,10 +21,6 @@ const BottomBar = ({
     },
   ];
 
-  const navigate = useCallback((route: string) => {
-    navigation.navigate(route);
-  }, []);
-
   return (
     <View
       style={[
@@ -37,15 +32,25 @@ const BottomBar = ({
     >
       <View style={[styles.tabBar, { backgroundColor: colors.surface }]}>
         {routes.map((route, index) => {
-          const active = index === activeIndex;
+          const isFocused = index === activeIndex;
           const { options } = descriptors[route.key];
           const isTransactions = route.name === circle ? circleStyle : '';
+          const navigate = () => {
+            const event = navigation.emit({
+              type: 'tabPress',
+              target: route.key,
+              canPreventDefault: true,
+            });
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate(route.name);
+            }
+          };
           return (
             <TabBar
               key={route.key}
-              active={active}
+              isFocused={isFocused}
               options={options}
-              onPress={() => navigate(route.name)}
+              onPress={navigate}
               style={isTransactions}
             />
           );
