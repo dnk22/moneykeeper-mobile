@@ -1,17 +1,7 @@
-import React, {
-  ElementRef,
-  memo,
-  useDeferredValue,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { ElementRef, memo, useEffect, useMemo, useRef, useState } from 'react';
 import isEqual from 'react-fast-compare';
 import {
   NativeSyntheticEvent,
-  Text,
-  TextInput,
   TextInputProps,
   TextInputSelectionChangeEventData,
   View,
@@ -21,9 +11,8 @@ import RNText from 'components/Text';
 import styles from './styles';
 import { Control, RegisterOptions, useController } from 'react-hook-form';
 import RnKeyboard from 'rn-keyboard';
-import { CALCULATE, CHANGESUBMIT, CLEAR, OPERATOR } from './type';
-
-// const operator = ['+', '-', '*', '/', ','];
+import { CALCULATE, ISINCLUDEOPEARATORS, CLEAR, OPERATOR, NUMBER } from './type';
+import { calculateValue } from 'utils/math';
 
 type TInputCalculator = TextInputProps & {
   name: string;
@@ -57,67 +46,99 @@ function InputCalculator({
 
   const inputRef = useRef<ElementRef<typeof RnKeyboard.Input>>(null);
   const cursorPosition = useRef<number>(0);
-  // const [inputValue, setInputValue] = useState<string>(value.toString());
+  const [inputValue, setInputValue] = useState<string>(value.toString());
+  const inputHasOperators = useMemo(() => {
+    return (
+      inputValue.includes('+') ||
+      inputValue.includes('-') ||
+      inputValue.includes('×') ||
+      inputValue.includes('÷')
+    );
+  }, [inputValue]);
 
-  // const inputHasOperators = useMemo(() => {
-  //   return (
-  //     inputValue.includes('+') ||
-  //     inputValue.includes('-') ||
-  //     inputValue.includes('*') ||
-  //     inputValue.includes('/')
-  //   );
-  // }, [inputValue]);
+  // set form value to input value
+  useEffect(() => {
+    setInputValue(value.toString());
+  }, [value]);
 
-  // useEffect(() => {
-  //   setInputValue(value.toString());
-  // }, [value]);
+  // listen for clear event
+  useEffect(() => {
+    const clearEvent = RnKeyboard.addListener(CLEAR, () => {
+      setInputValue('0');
+    });
+    return () => {
+      clearEvent.remove();
+    };
+  }, []);
 
-  // useEffect(() => {
-  //   const clearEvent = RnKeyboard.addListener(CLEAR, () => {
-  //     setInputValue('0');
-  //   });
-  //   return () => {
-  //     clearEvent.remove();
-  //   };
-  // }, []);
+  // listen for calculate input value
+  useEffect(() => {
+    const calcEvent = RnKeyboard.addListener(CALCULATE, () => {
+      const result = calculateValue(inputValue);
+      setInputValue(result.toString());
+    });
+    return () => {
+      calcEvent.remove();
+    };
+  }, [inputValue]);
 
-  // useEffect(() => {
-  //   const calcEvent = RnKeyboard.addListener(CALCULATE, () => {
-  //     setInputValue(String(eval(inputValue)));
-  //   });
-  //   return () => {
-  //     calcEvent.remove();
-  //   };
-  // }, [inputValue]);
+  // listen for operators button pressed
+  useEffect(() => {
+    const operatorEvent = RnKeyboard.addListener(OPERATOR, async (operator: string) => {
+      // if first key pressed is an operator, don't do anything
+      if (!!!inputValue) return;
+      const inputId = RnKeyboard.getFocusId();
 
-  // useEffect(() => {
-  //   RnKeyboard.emit(CHANGESUBMIT, inputHasOperators);
-  // }, [inputValue]);
+      const leftInput = inputValue.slice(0, cursorPosition.current);
+      const rightInput = inputValue.slice(cursorPosition.current);
 
-  // useEffect(() => {
-  //   const operatorEvent = RnKeyboard.addListener(OPERATOR, async (operator: string) => {
-  //     console.log('run');
+      // if in left cursor, character entered is an operator, replace it with the currently pressed one
+      if (isNaN(parseFloat(leftInput[leftInput.length - 1]))) {
+        let newInputValue = '';
+        newInputValue = leftInput.slice(0, leftInput.length - 1) + operator;
+        setInputValue(newInputValue);
+      } else {
+        // else just add the operator pressed to the input
+        await RnKeyboard.insert(inputId, operator);
+      }
+    });
+    return () => {
+      operatorEvent.remove();
+    };
+  }, [inputValue]);
 
-  //     const inputId = RnKeyboard.getFocusId();
-  //     const leftInput = inputValue.slice(0, cursorPosition.current);
-  //     const rightInput = inputValue.slice(cursorPosition.current);
-  //     let newInputValue = '';
-  //     if (isNaN(parseFloat(leftInput[leftInput.length - 1]))) {
-  //       newInputValue = leftInput.slice(0, leftInput.length - 1) + operator;
-  //     } else {
-  //       await RnKeyboard.insert(inputId, operator);
-  //       return;
-  //     }
-  //     setInputValue(newInputValue);
-  //   });
-  //   return () => {
-  //     operatorEvent.remove();
-  //   };
-  // }, [inputValue]);
+  // listen for number button pressed
+  useEffect(() => {
+    const numberPressEvent = RnKeyboard.addListener(NUMBER, async (number) => {
+      const inputId = RnKeyboard.getFocusId();
+      // case : first number button press , input value = '0'
+      if (inputValue === '0' || inputValue === '') {
+        if (number === '0' || number === '000') {
+          // case : if number pressed is '0' or '000' , replace value to '0' and return
+          setInputValue('0');
+          return;
+        } else {
+          // case : else is normal number, replace value with number without '0' in the first of value . eg : '0' => press '9' => '9' not '09'
+          setInputValue(number);
+          return;
+        }
+      }
+      // case : keyboard insert event
+      await RnKeyboard.insert(inputId, number);
+    });
+    return () => {
+      numberPressEvent.remove();
+    };
+  }, [inputValue]);
+
+  // action for change enter button in keyboard
+  useEffect(() => {
+    RnKeyboard.emit(ISINCLUDEOPEARATORS, inputHasOperators);
+  }, [inputValue]);
 
   const onHandleInputChange = (text?: any) => {
-    onChange(formatNumber(text));
-    // onChangeText && onChangeText(inputValue);
+    setInputValue(text);
+    onChangeText && onChangeText(inputValue);
   };
 
   const handleOnSelectionChange = ({
@@ -130,40 +151,28 @@ function InputCalculator({
   };
 
   const handleOnBlurInput = () => {
-    // if (!Boolean(value)) {
-    //   setInputValue('0');
-    // }
-  };
-
-  const formatNumber = (number: string) => {
-    const numberSource = number.replace(/[.]/g, '').replace(/,/g, '.');
-    return new Intl.NumberFormat('de-DE', { style: 'decimal' }).format(+numberSource);
+    if (!Boolean(inputValue)) {
+      setInputValue('0');
+    }
   };
 
   return (
     <View style={[styles.group, { backgroundColor: colors.surface }]}>
       <RNText style={styles.amountLabel}>Số tiền</RNText>
       <View style={styles.inputGroup}>
-        <TextInput
-          value={value.toString()}
-          style={[styles.amountInput, { color: inputTextColor }]}
-          keyboardType="number-pad"
-          selectTextOnFocus
-          autoCorrect={false}
-          onChangeText={onChange}
-          onBlur={handleOnBlurInput}
-        />
-        {/* <RnKeyboard.Input
+        <RnKeyboard.Input
           ref={inputRef}
+          selectTextOnFocus
+          allowFontScaling={false}
           rnKeyboardType={'KeyboardCalculator'}
-          value={value.toString()}
+          value={inputValue}
           keyboardType="number-pad"
+          autoCorrect={false}
           onChangeText={onHandleInputChange}
           onSelectionChange={handleOnSelectionChange}
           onBlur={handleOnBlurInput}
-          selectTextOnFocus
           style={[styles.amountInput, { color: inputTextColor }]}
-        /> */}
+        />
         {isShowPrefix && <RNText style={styles.currency}>₫</RNText>}
       </View>
     </View>

@@ -10,12 +10,12 @@ export const BACKSPACE = '⌫';
 export const DECIMAL = ',';
 export const CLEAR = 'C';
 
-export type OperatorProps =
+export type ActionsProps =
   | typeof OPERATOR
   | typeof BACKSPACE
   | typeof CLEAR
   | typeof DECIMAL
   | typeof ENTER;
 
-export const CHANGESUBMIT = 'changeSubmit';
+export const ISINCLUDEOPEARATORS = 'isIncludeOperators';
 export const CALCULATE = 'calculate';
