@@ -8,6 +8,7 @@ import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
 import { formatDateLocal } from 'utils/date';
 import { getHours, getMinutes, set } from 'date-fns';
+import RNText from 'components/Text';
 
 interface DateTimeModalPickerProps {
   isVisible: boolean;
@@ -76,29 +77,15 @@ function DateTimeModalPicker({
     >
       <View style={[styles.pickerHeader, { backgroundColor: colors.surface }]}>
         <PressableHaptic style={styles.itemHeader} onPress={() => setIsMode('date')}>
-          <Text
-            style={[
-              styles.dateTimeText,
-              {
-                color: isMode === 'date' ? colors.primary : colors.text,
-              },
-            ]}
-          >
+          <RNText fontSize={18} color={isMode === 'date' ? colors.primary : undefined}>
             {formatDateLocal(datePicker, 'dd/MM/yyyy')}
-          </Text>
+          </RNText>
         </PressableHaptic>
         <View style={[styles.divider, { backgroundColor: colors.divider }]} />
         <PressableHaptic style={styles.itemHeader} onPress={() => setIsMode('time')}>
-          <Text
-            style={[
-              styles.dateTimeText,
-              {
-                color: isMode === 'time' ? colors.primary : colors.text,
-              },
-            ]}
-          >
+          <RNText fontSize={18} color={isMode === 'time' ? colors.primary : undefined}>
             {formatDateLocal(datePicker, 'HH:mm')}
-          </Text>
+          </RNText>
         </PressableHaptic>
       </View>
       <View style={[styles.pickerContent, { backgroundColor: colors.surface }]}>
@@ -110,7 +97,7 @@ function DateTimeModalPicker({
         />
         <TouchableOpacity activeOpacity={0.6}>
           <PressableHaptic style={styles.bottomBar} onPress={getCurrentDateTime}>
-            <Text style={[styles.actionDate, { color: colors.primary }]}>{actionName}</Text>
+            <RNText>{actionName}</RNText>
           </PressableHaptic>
         </TouchableOpacity>
       </View>

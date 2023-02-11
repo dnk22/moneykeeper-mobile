@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     width: '90%',
     borderRadius: 0,
     padding: 0,
-    backgroundColor: 'transparent',
   },
   pickerHeader: {
     width: '100%',
@@ -36,18 +35,12 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
     borderRadius: 10,
   },
-  dateTimeText: {
-    fontSize: 18,
-  },
   bottomBar: {
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
     borderTopWidth: 0.2,
     borderTopColor: '#eee',
-  },
-  actionDate: {
-    fontSize: 16,
   },
   bright: {
     height: 30,

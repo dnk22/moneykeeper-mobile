@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 import { StyleProp, TouchableOpacity, View } from 'react-native';
 import Modal, { ModalProps } from 'react-native-modal';
 import { styles } from './styles';
-import { useCustomTheme } from 'resources/theme';
 import isEqual from 'react-fast-compare';
 import SvgIcon from 'components/SvgIcon';
 import RNText from 'components/Text';
@@ -42,8 +41,6 @@ const ModalComponent = ({
   title,
   ...rest
 }: IModalComponentProps) => {
-  const { colors } = useCustomTheme();
-
   const onHandleBackdropPress = () => {
     onBackdropPress && onBackdropPress();
     onToggleModal();
@@ -63,9 +60,7 @@ const ModalComponent = ({
       {...rest}
       useNativeDriver
     >
-      <View
-        style={[styles.modalView, { backgroundColor: colors.surface, height }, styleDefaultContent]}
-      >
+      <View style={[styles.modalView, { height }, styleDefaultContent]}>
         {title && isShowClose && (
           <View style={styles.header}>
             {title && <RNText preset="modalTitle">{title}</RNText>}
