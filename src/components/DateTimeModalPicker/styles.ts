@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     width: '90%',
     borderRadius: 0,
     padding: 0,
+    backgroundColor : 'transparent'
   },
   pickerHeader: {
     width: '100%',
