@@ -4,7 +4,7 @@ import { View, SectionListData } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
-import { ADDWALLET } from 'navigation/constants';
+import { ADDACCOUNT } from 'navigation/constants';
 import { useAppSelector } from 'store/index';
 import {
   selectActiveAccounts,
@@ -15,7 +15,7 @@ import ItemSettingsModal from './ItemSettingsModal';
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import AccountList from './AccountList';
 
-function Wallet() {
+function Accounts() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
 
@@ -86,7 +86,7 @@ function Wallet() {
   };
 
   const onCreateWallet = () => {
-    navigation.navigate(ADDWALLET);
+    navigation.navigate(ADDACCOUNT);
   };
 
   return (
@@ -128,4 +128,4 @@ function Wallet() {
   );
 }
 
-export default Wallet;
+export default Accounts;

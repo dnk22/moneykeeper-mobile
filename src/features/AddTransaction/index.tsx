@@ -24,9 +24,8 @@ import Animated, { StretchInY } from 'react-native-reanimated';
 const initialAddFormValues: TTransactions = {
   _id: '',
   amount: 0,
-  transactions_type: '1',
+  transactions_category_id: '1',
   date_time: new Date(),
-  created_date: new Date(),
 };
 
 export default function AddTransactions() {
@@ -47,7 +46,7 @@ export default function AddTransactions() {
   const { transactions_type_details, date_time } = getValues();
 
   const onHandleTransactionTypePress = useCallback((item: TTransactionType) => {
-    setValue('transactions_type', item._id);
+    setValue('transactions_category_id', item._id);
     setValue('transactions_type_details', item);
     dynamicIsland.current?.onToggle();
   }, []);
@@ -61,7 +60,7 @@ export default function AddTransactions() {
   }, []);
 
   const setInputTextColor = useMemo(() => {
-    switch (watch('transactions_type')) {
+    switch (watch('transactions_type_id')) {
       case '1':
       case '3':
         return 'red';
@@ -71,7 +70,7 @@ export default function AddTransactions() {
       default:
         return colors.primary;
     }
-  }, [watch('transactions_type')]);
+  }, [watch('transactions_type_id')]);
 
   const onToggleShowTransactionTypePicker = () => {
     dynamicIsland.current?.onToggle();
@@ -97,7 +96,7 @@ export default function AddTransactions() {
       <DynamicIsland ref={dynamicIsland}>
         <TransactionTypePicker
           onPressItem={onHandleTransactionTypePress}
-          isTypeSelected={watch('transactions_type')}
+          isTypeSelected={watch('transactions_type_id')}
         />
       </DynamicIsland>
       <DateTimeModalPicker
@@ -130,7 +129,7 @@ export default function AddTransactions() {
         <InputCalculator name="amount" control={control} inputTextColor={setInputTextColor} />
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <InputSelection
-            icon={watch('transactions_category_details.icon')}
+            icon={watch('transactions_type_details.icon')}
             title="Chọn danh mục"
             value={watch('transactions_category_details.category_name')}
             onSelect={onSelectTransactionType}

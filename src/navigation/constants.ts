@@ -8,5 +8,5 @@ export const SAVINGS = 'savings';
 export const ACCUMULATE = 'accumulate';
 export const TRANSACTIONS = 'transactions';
 export const REPORT = 'report';
-export const ADDWALLET = 'addWallet';
+export const ADDACCOUNT = 'addAccount';
 export const WALLET_DETAIL = 'walletDetail';

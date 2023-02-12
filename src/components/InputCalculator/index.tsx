@@ -154,6 +154,7 @@ function InputCalculator({
     if (!Boolean(inputValue)) {
       setInputValue('0');
     }
+    onChange(inputValue);
   };
 
   return (

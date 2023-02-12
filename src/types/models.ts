@@ -15,13 +15,13 @@ export type TUsers = {
 export type TTransactions = {
   _id: string;
   amount: number;
-  transactions_category?: string;
-  transactions_category_details?: TTransactionsCategory;
-  transactions_type?: string;
-  transactions_type_details?: TTransactionType;
+  transactions_type_id: string;
+  transactions_type_details: TTransactionType;
+  transactions_category_id: string;
+  transactions_category_details: TTransactionsCategory;
   descriptions?: string;
   date_time: Date;
-  account: string;
+  account_id: string;
   account_details: TAccount;
   location?: string;
   event?: string;
@@ -30,9 +30,25 @@ export type TTransactions = {
   fee_type?: string;
   is_not_add_report?: boolean;
   media?: any;
-  created_date: Date;
-  user_created?: string;
-  user_created_details?: TUsers;
+  user_id?: string;
+  user_details?: TUsers;
+};
+
+export type TTransactionsCategory = {
+  _id: string;
+  category_name: string;
+  parent?: string;
+  category_description: string;
+  category_type: string;
+  category_group: string;
+  icon: IconProps;
+};
+
+export type TTransactionType = {
+  _id: string;
+  name: string;
+  type: string;
+  icon: IconProps;
 };
 
 // account
@@ -70,23 +86,6 @@ export type TProvider = TAccountType;
 // bank
 export type TBank = TAccountType & {
   icon?: any;
-};
-
-export type TTransactionsCategory = {
-  _id: string;
-  category_name: string;
-  parent?: string;
-  category_description: string;
-  category_type: string;
-  category_group: string;
-  icon: IconProps;
-};
-
-export type TTransactionType = {
-  _id: string;
-  name: string;
-  type: string;
-  icon: string;
 };
 
 export type TLendTransactions = TTransactions & {
