@@ -9,9 +9,9 @@ import { ACCOUNT, DASHBOARD, SETTINGS, TRANSACTIONS, REPORT } from '../constants
 
 // routes screen
 import Settings from 'features/Settings';
-import AddTransactions from 'features/AddTransaction';
 import AccountNavigation from 'navigation/Account';
 import Dashboard from 'features/Dashboard';
+import TransactionNavigation from 'navigation/Transaction';
 
 // set up routes
 const Tab = createBottomTabNavigator();
@@ -52,7 +52,7 @@ function HomeNavigation() {
           // @ts-ignore
           tabBarIcon: () => <SvgIcon name="add" color="white" />,
         }}
-        component={AddTransactions}
+        component={TransactionNavigation}
       />
       <Tab.Screen
         name={REPORT}

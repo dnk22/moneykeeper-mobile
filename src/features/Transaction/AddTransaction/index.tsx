@@ -1,10 +1,10 @@
-import React, { ElementRef, useCallback, useMemo, useRef, useState } from 'react';
+import React, { ElementRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View, TouchableOpacity, SafeAreaView } from 'react-native';
 import { DynamicIsland } from 'resources/animations';
 import TransactionTypePicker from './TransactionTypePicker';
 import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
-import { TTransactions, TTransactionType } from 'src/types/models';
+import { TAccount, TTransactions, TTransactionType } from 'src/types/models';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useForm } from 'react-hook-form';
 import {
@@ -20,30 +20,45 @@ import {
 } from 'components/index';
 import { formatDateLocal } from 'utils/date';
 import Animated, { StretchInY } from 'react-native-reanimated';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { ACCOUNT_PICKER } from 'navigation/constants';
+import { useAppSelector } from 'store/index';
+import { selectFistAccounts } from 'store/account/account.selector';
 
 const initialAddFormValues: TTransactions = {
   _id: '',
   amount: 0,
-  transactions_category_id: '1',
   date_time: new Date(),
 };
 
 export default function AddTransactions() {
   const { colors } = useCustomTheme();
+  const navigation = useNavigation();
+  const { params } = useRoute();
+
+  const getDefaultAccountData = useAppSelector((state) => selectFistAccounts(state));
+
   const dynamicIsland = useRef<ElementRef<typeof DynamicIsland>>(null);
   const [isShowFee, setIsShowFee] = useState<boolean>(false);
   const [isShowDetails, setIsShowDetails] = useState<boolean>(false);
   const [isDateTimeModalType, setIsDateTimeModalType] = useState<'date' | 'time' | undefined>(
     undefined,
   );
-  const isShowDateTimeModal = isDateTimeModalType === 'date' || isDateTimeModalType === 'time';
+  const [accountSelected, seAccountSelected] = useState<TAccount | null>(null);
 
   const { control, handleSubmit, getValues, setValue, watch } = useForm<TTransactions>({
     defaultValues: {
       ...initialAddFormValues,
     },
   });
-  const { transactions_type_details, date_time } = getValues();
+  const { transactions_type_details, date_time, account_id } = getValues();
+
+  useEffect(() => {
+    if (!params?.transaction_id && getDefaultAccountData) {
+      setValue('account_id', getDefaultAccountData._id);
+      seAccountSelected(getDefaultAccountData);
+    }
+  }, [getDefaultAccountData]);
 
   const onHandleTransactionTypePress = useCallback((item: TTransactionType) => {
     setValue('transactions_category_id', item._id);
@@ -85,11 +100,15 @@ export default function AddTransactions() {
 
   const onSelectTransactionType = () => {};
 
-  const onSelectAccount = () => {};
+  const onSelectAccount = () => {
+    navigation.navigate(ACCOUNT_PICKER, { account_id: account_id });
+  };
 
   const onHandleSubmit = (data: TTransactions) => {
     console.log(data);
   };
+
+  const isShowDateTimeModal = isDateTimeModalType === 'date' || isDateTimeModalType === 'time';
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.primary }]}>
@@ -162,9 +181,13 @@ export default function AddTransactions() {
             </View>
           </View>
           <InputSelection
-            icon={watch('account_details.account_type_details.icon')}
+            icon={
+              accountSelected?.bank_details?.icon ||
+              accountSelected?.provider_details?.icon ||
+              accountSelected?.account_type_details?.icon
+            }
             title="Chọn tài khoản"
-            value={watch('account_details.name')}
+            value={accountSelected?.name}
             onSelect={onSelectAccount}
           />
         </View>

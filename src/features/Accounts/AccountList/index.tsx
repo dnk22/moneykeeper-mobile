@@ -8,21 +8,42 @@ import styles from './styles';
 
 interface AccountListProps {
   data: SectionListData<TAccount, any>;
+  isGroup?: boolean;
+  isItemSelected?: string;
   onActionPress?: (account: TAccount) => void;
   onItemPress?: (account: TAccount) => void;
-  group: boolean;
 }
 
-function AccountList({ data, onActionPress, group = true, onItemPress }: AccountListProps) {
+function AccountList({
+  data,
+  onActionPress,
+  isGroup = true,
+  isItemSelected,
+  onItemPress,
+}: AccountListProps) {
   const renderSectionHeader = useCallback(({ section }: { section: SectionListData<TAccount> }) => {
-    if (!group) return null;
+    if (!isGroup) return null;
     const { data, title } = section;
     return <RNText style={styles.groupTitle}>{`${title}`}</RNText>;
     // (${renderTitle('', data)})
   }, []);
 
+  // const renderTitle = useCallback(
+  //   (title: string, value: TAccount[]) => {
+  //     return `${title}${getTotalAmount(value)} ₫`;
+  //   },
+  //   [getTotalAmount],
+  // );
+
   const renderItem = ({ item }: { item: TAccount }) => {
-    return <Item account={item} onActionPress={onActionPress} onItemPress={onItemPress} />;
+    return (
+      <Item
+        account={item}
+        onActionPress={onActionPress}
+        onItemPress={onItemPress}
+        isItemSelected={isItemSelected}
+      />
+    );
   };
 
   return (

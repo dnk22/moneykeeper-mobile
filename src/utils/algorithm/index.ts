@@ -1,3 +1,5 @@
+import { TAccount } from 'src/types/models';
+
 /**
  * Find object in array with @param
  * Return value, if @param id is valid string
@@ -33,4 +35,17 @@ export const deepMerge = (target: any, source: any): any => {
     }
   }
   return target;
+};
+
+export const groupDataByValue = (data: TAccount[]) => {
+  if (!data.length) return [];
+  const groupedData: any = {};
+  data.forEach((item) => {
+    if (!groupedData[item.account_type]) {
+      groupedData[item.account_type] = { title: '', data: [] };
+    }
+    groupedData[item.account_type].title = item.account_type_details?.name;
+    groupedData[item.account_type].data.push(item);
+  });
+  return Object.values(groupedData);
 };

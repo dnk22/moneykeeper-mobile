@@ -14,24 +14,23 @@ import { TAccount } from 'types/models';
 import ItemSettingsModal from './ItemSettingsModal';
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import AccountList from './AccountList';
+import { groupDataByValue } from 'utils/algorithm';
 
 function Accounts() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
 
+  const { group } = useAppSelector((state) => selectAccountViewSettings(state));
   const getActiveAccounts = useAppSelector((state) => selectActiveAccounts(state));
   const getDeactivateActiveAccounts = useAppSelector((state) =>
     selectDeactivateActiveAccounts(state),
   );
-  const { group } = useAppSelector((state) => selectAccountViewSettings(state));
 
   const currentAccountPressed = useRef<TAccount | any>(null);
   const [isShowItemSettingsModal, setIsShowItemSettingsModal] = useState(false);
   const [isActiveData, setIsActiveData] = useState<SectionListData<TAccount, any>>([]);
-  const [isDeactivateData, setIsDeactivateData] = useState<TAccount[]>([]);
 
   useEffect(() => {
-    if (!getActiveAccounts.length) return;
     if (group) {
       const dataGroup: any = groupDataByValue(getActiveAccounts);
       setIsActiveData(dataGroup);
@@ -39,25 +38,6 @@ function Accounts() {
       setIsActiveData([{ data: getActiveAccounts }]);
     }
   }, [group, getActiveAccounts]);
-
-  useEffect(() => {
-    if (getDeactivateActiveAccounts.length) {
-      setIsDeactivateData(getDeactivateActiveAccounts);
-    }
-  }, [getDeactivateActiveAccounts]);
-
-  const groupDataByValue = useCallback((data: TAccount[]) => {
-    if (!data.length) return [];
-    const groupedData: any = {};
-    data.forEach((item) => {
-      if (!groupedData[item.account_type]) {
-        groupedData[item.account_type] = { title: '', data: [] };
-      }
-      groupedData[item.account_type].title = item.account_type_details?.name;
-      groupedData[item.account_type].data.push(item);
-    });
-    return Object.values(groupedData);
-  }, []);
 
   const getTotalAmount = useCallback((data: TAccount[]) => {
     const result = data.reduce((sum, account) => sum + account.current_amount, 0);
@@ -77,8 +57,8 @@ function Accounts() {
   }, []);
 
   const isHaveAccountsData = useMemo(
-    () => !!isActiveData.length || !!isDeactivateData.length,
-    [isActiveData, isDeactivateData],
+    () => !!isActiveData.length || !!getDeactivateActiveAccounts.length,
+    [isActiveData, getDeactivateActiveAccounts],
   );
 
   const onToggleModal = () => {
@@ -104,12 +84,16 @@ function Accounts() {
         )}
         {!!isActiveData.length && (
           <Card title={renderTitle('Đang sử dụng: ', isActiveData)}>
-            <AccountList data={isActiveData} group={group} onActionPress={onActionPress} />
+            <AccountList data={isActiveData} isGroup={group} onActionPress={onActionPress} />
           </Card>
         )}
-        {!!isDeactivateData.length && (
+        {!!getDeactivateActiveAccounts.length && (
           <Card title="Ngưng sử dụng">
-            <FlatListComponent data={isDeactivateData} renderItem={renderItem} />
+            <AccountList
+              data={[{ data: getDeactivateActiveAccounts }]}
+              isGroup={false}
+              onActionPress={onActionPress}
+            />
           </Card>
         )}
         {!isHaveAccountsData && (

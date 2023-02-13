@@ -30,6 +30,11 @@ export const selectDeactivateActiveAccounts = createSelector(
   (accounts) => accounts.filter((account) => !account.is_active),
 );
 
+export const selectFistAccounts = createSelector(
+  [accountSelectors.selectAll],
+  (accounts) => accounts.filter((account) => account.is_active)[0],
+);
+
 export const selectAccountById = createSelector(
   [accountSelectors.selectById],
   (account) => account,
@@ -39,8 +44,10 @@ export const selectAllAccountType = createSelector(
   [accountTypeSelectors.selectAll],
   (accountType) => accountType,
 );
+
 export const selectAllProvider = createSelector(
   [providerSelectors.selectAll],
   (providers) => providers,
 );
+
 export const selectAllBank = createSelector([bankSelectors.selectAll], (banks) => banks);

@@ -16,13 +16,13 @@ export type TTransactions = {
   _id: string;
   amount: number;
   transactions_type_id: string;
-  transactions_type_details: TTransactionType;
+  transactions_type_details?: TTransactionType;
   transactions_category_id: string;
-  transactions_category_details: TTransactionsCategory;
+  transactions_category_details?: TTransactionsCategory;
   descriptions?: string;
   date_time: Date;
   account_id: string;
-  account_details: TAccount;
+  account_details?: TAccount;
   location?: string;
   event?: string;
   pay_for?: string;
