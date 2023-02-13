@@ -26,7 +26,7 @@ function Selected({
 }: SelectedProps) {
   return (
     <PressableHaptic style={styles.itemGroup} onPress={onSelect}>
-      <SvgIcon name={icon} />
+      <SvgIcon name={icon} style={{ transform: [{ scale: 1.1 }] }} />
       <View style={styles.groupContent}>
         {value && !required ? (
           <View style={styles.value}>
