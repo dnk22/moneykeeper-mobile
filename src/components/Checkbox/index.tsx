@@ -19,7 +19,7 @@ type CheckboxComponentProps = {
 const CheckboxComponent = ({
   style,
   size = 25,
-  type = 'checkbox',
+  type = 'radio',
   color,
   check = false,
   onPress,
