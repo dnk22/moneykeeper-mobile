@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
   },
   iconDropdown: {
     width: 30,
+    marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },

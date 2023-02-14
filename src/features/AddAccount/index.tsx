@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   InputCalculator,
   InputField,
@@ -19,12 +19,11 @@ import { accountSelectors, accountTypeSelectors } from 'store/account/account.se
 import { addOrUpdateAccount } from 'store/account/account.slice';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AddWalletRouteProp } from 'navigation/type';
-import isEqual from 'react-fast-compare';
 import { BANK, EWALLET } from './constants';
 
 const DEFAULT_ACCOUNT_TYPE_ID = '1';
 
-const AddWallet = ({}) => {
+const AddAccount = ({}) => {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
   const useDispatch = useAppDispatch();
@@ -264,4 +263,4 @@ const AddWallet = ({}) => {
   );
 };
 
-export default memo(AddWallet, isEqual);
+export default AddAccount;

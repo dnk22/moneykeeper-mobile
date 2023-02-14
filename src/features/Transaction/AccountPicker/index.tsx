@@ -1,26 +1,32 @@
 import { View } from 'react-native';
 import AccountList from 'features/Accounts/AccountList';
 import { selectActiveAccounts } from 'store/account/account.selector';
-import { useAppSelector } from 'store/index';
+import { useAppDispatch, useAppSelector } from 'store/index';
 import { groupDataByValue } from 'utils/algorithm';
 import styles from './styles';
 import { TAccount } from 'types/models';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { setAccountSelected } from 'store/transactions/transactions.slice';
+import { selectAccountSelected } from 'store/transactions/transactions.selector';
 
 function AccountPicker() {
-  const { params } = useRoute();
+  const useDispatch = useAppDispatch();
+  const navigation = useNavigation();
+
   const getActiveAccounts = useAppSelector((state) => selectActiveAccounts(state));
   const groupAccounts = groupDataByValue(getActiveAccounts);
+  const getAccountSelected = useAppSelector((state) => selectAccountSelected(state));
 
   const handleOnItemPress = (account: TAccount) => {
-    console.log(account);
+    useDispatch(setAccountSelected(account));
+    navigation.goBack();
   };
   return (
     <View style={styles.container}>
       <AccountList
         data={groupAccounts}
         onItemPress={handleOnItemPress}
-        isItemSelected={params?.account_id}
+        isItemSelected={getAccountSelected?._id}
       />
     </View>
   );

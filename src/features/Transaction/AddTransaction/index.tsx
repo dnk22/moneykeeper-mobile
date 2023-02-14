@@ -22,12 +22,15 @@ import { formatDateLocal } from 'utils/date';
 import Animated, { StretchInY } from 'react-native-reanimated';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { ACCOUNT_PICKER } from 'navigation/constants';
-import { useAppSelector } from 'store/index';
+import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectFistAccounts } from 'store/account/account.selector';
+import { selectAccountSelected } from 'store/transactions/transactions.selector';
+import { setAccountSelected } from 'store/transactions/transactions.slice';
 
 const initialAddFormValues: TTransactions = {
   _id: '',
   amount: 0,
+  transactions_type_id: '1',
   date_time: new Date(),
 };
 
@@ -35,8 +38,10 @@ export default function AddTransactions() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
   const { params } = useRoute();
+  const useDispatch = useAppDispatch();
 
   const getDefaultAccountData = useAppSelector((state) => selectFistAccounts(state));
+  const getAccountSelected = useAppSelector((state) => selectAccountSelected(state));
 
   const dynamicIsland = useRef<ElementRef<typeof DynamicIsland>>(null);
   const [isShowFee, setIsShowFee] = useState<boolean>(false);
@@ -44,21 +49,27 @@ export default function AddTransactions() {
   const [isDateTimeModalType, setIsDateTimeModalType] = useState<'date' | 'time' | undefined>(
     undefined,
   );
-  const [accountSelected, seAccountSelected] = useState<TAccount | null>(null);
 
   const { control, handleSubmit, getValues, setValue, watch } = useForm<TTransactions>({
     defaultValues: {
       ...initialAddFormValues,
     },
   });
-  const { transactions_type_details, date_time, account_id } = getValues();
+  const { date_time, account_id } = getValues();
 
   useEffect(() => {
-    if (!params?.transaction_id && getDefaultAccountData) {
+    if (!params?.transaction_id) {
       setValue('account_id', getDefaultAccountData._id);
-      seAccountSelected(getDefaultAccountData);
+      useDispatch(setAccountSelected(getDefaultAccountData));
     }
-  }, [getDefaultAccountData]);
+  }, [params?.transaction_id]);
+
+  useEffect(() => {
+    if (getAccountSelected) {
+      setValue('account_id', getAccountSelected._id);
+    }
+  }, [getAccountSelected]);
+  console.log(getAccountSelected, 'getAccountSelected');
 
   const onHandleTransactionTypePress = useCallback((item: TTransactionType) => {
     setValue('transactions_category_id', item._id);
@@ -74,7 +85,7 @@ export default function AddTransactions() {
     setValue('date_time', date);
   }, []);
 
-  const setInputTextColor = useMemo(() => {
+  const getInputTextColor = useMemo(() => {
     switch (watch('transactions_type_id')) {
       case '1':
       case '3':
@@ -131,7 +142,7 @@ export default function AddTransactions() {
           style={[styles.actionView, styles.transactionTypePicker]}
           onPress={onToggleShowTransactionTypePicker}
         >
-          <RNText color="white">{transactions_type_details?.name || 'Chi Tiền'}</RNText>
+          <RNText color="white">{watch('transactions_type_details.name') || 'Chi Tiền'}</RNText>
         </PressableHaptic>
         <PressableHaptic
           style={[styles.actionView, styles.rightAction]}
@@ -145,7 +156,7 @@ export default function AddTransactions() {
         showsVerticalScrollIndicator={false}
         extraScrollHeight={60}
       >
-        <InputCalculator name="amount" control={control} inputTextColor={setInputTextColor} />
+        <InputCalculator name="amount" control={control} inputTextColor={getInputTextColor} />
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <InputSelection
             icon={watch('transactions_type_details.icon')}
@@ -182,12 +193,12 @@ export default function AddTransactions() {
           </View>
           <InputSelection
             icon={
-              accountSelected?.bank_details?.icon ||
-              accountSelected?.provider_details?.icon ||
-              accountSelected?.account_type_details?.icon
+              getAccountSelected?.bank_details?.icon ||
+              getAccountSelected?.provider_details?.icon ||
+              getAccountSelected?.account_type_details?.icon
             }
             title="Chọn tài khoản"
-            value={accountSelected?.name}
+            value={getAccountSelected?.name}
             onSelect={onSelectAccount}
           />
         </View>

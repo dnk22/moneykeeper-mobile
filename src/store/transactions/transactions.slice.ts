@@ -36,7 +36,7 @@ export const transactionsSlice = createSlice({
       transactionAdapter.removeAll(state.transactions);
     },
     setAccountSelected(state, { payload }: PayloadAction<TAccount>) {
-      state.accountSelected = { ...payload };
+      state.accountSelected = payload;
     },
     setTransactionCategorySelected(state, { payload }: PayloadAction<TTransactionsCategory>) {
       state.transactionCategorySelected = { ...payload };

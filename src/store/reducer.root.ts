@@ -10,13 +10,19 @@ const appPersistConfig = {
   key: 'root',
   version: 1,
   storage: reduxPersistStorage,
-  // blacklist: ['account'],
+  blacklist: ['transactions'],
+};
+
+const transactionsConfig = {
+  key: transactionsSlice.name,
+  storage: reduxPersistStorage,
+  blacklist: ['accountSelected', 'transactionCategorySelected'],
 };
 
 const allReducer = combineReducers({
   [appSlice.name]: appReducer,
   [accountSlice.name]: accountReducer,
-  [transactionsSlice.name]: transactionsReducer,
+  [transactionsSlice.name]: persistReducer(transactionsConfig, transactionsReducer),
 });
 
 export const persistedReducer = persistReducer(appPersistConfig, allReducer);

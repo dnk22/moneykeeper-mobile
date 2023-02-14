@@ -6,7 +6,7 @@ import { useCustomTheme } from 'resources/theme';
 import isEqual from 'react-fast-compare';
 
 import AccountTab from './tab';
-import AddWallet from 'features/AddWallet';
+import AddAccount from 'features/AddAccount';
 
 // header custom icon
 import Submit from './component/Submit';
@@ -44,7 +44,7 @@ function AccountNavigation() {
           title: route.params?.accountId ? 'Sửa tài khoản' : 'Thêm tài khoản',
           headerRight: (props) => <Submit {...props} />,
         })}
-        component={AddWallet}
+        component={AddAccount}
       />
       <AccountStack.Screen
         name={WALLET_DETAIL}
