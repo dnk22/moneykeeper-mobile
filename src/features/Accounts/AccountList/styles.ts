@@ -7,8 +7,6 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     paddingVertical: 5,
-    borderBottomWidth: 0.2,
-    borderColor: 'rgb(200, 200, 200)',
   },
   itemContent: {
     flex: 1,

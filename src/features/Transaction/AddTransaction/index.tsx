@@ -65,14 +65,13 @@ export default function AddTransactions() {
   }, [params?.transaction_id]);
 
   useEffect(() => {
-    if (getAccountSelected) {
-      setValue('account_id', getAccountSelected._id);
+    if (watch('account_id')) {
+      useDispatch(setAccountSelected(getDefaultAccountData));
     }
-  }, [getAccountSelected]);
-  console.log(getAccountSelected, 'getAccountSelected');
+  }, [watch('account_id')]);
 
   const onHandleTransactionTypePress = useCallback((item: TTransactionType) => {
-    setValue('transactions_category_id', item._id);
+    setValue('transactions_type_id', item._id);
     setValue('transactions_type_details', item);
     dynamicIsland.current?.onToggle();
   }, []);
@@ -112,7 +111,7 @@ export default function AddTransactions() {
   const onSelectTransactionType = () => {};
 
   const onSelectAccount = () => {
-    navigation.navigate(ACCOUNT_PICKER, { account_id: account_id });
+    navigation.navigate(ACCOUNT_PICKER);
   };
 
   const onHandleSubmit = (data: TTransactions) => {

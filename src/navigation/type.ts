@@ -34,9 +34,7 @@ export type TransactionParamList = {
   [ADD_TRANSACTION]: {
     transaction_id?: string;
   };
-  [ACCOUNT_PICKER]: {
-    isAccountIdSelected: string;
-  };
+  [ACCOUNT_PICKER]: undefined;
 };
 
 // route type props

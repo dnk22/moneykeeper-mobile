@@ -1,7 +1,7 @@
 import { RNText, SectionListComponent } from 'components/index';
 import { memo, useCallback } from 'react';
 import isEqual from 'react-fast-compare';
-import { SectionListData } from 'react-native';
+import { SectionListData, View } from 'react-native';
 import { TAccount } from 'types/models';
 import Item from './Item';
 import styles from './styles';
@@ -24,7 +24,11 @@ function AccountList({
   const renderSectionHeader = useCallback(({ section }: { section: SectionListData<TAccount> }) => {
     if (!isGroup) return null;
     const { data, title } = section;
-    return <RNText style={styles.groupTitle}>{`${title}`}</RNText>;
+    return (
+      <View style={styles.groupTitle}>
+        <RNText>{`${title}`}</RNText>
+      </View>
+    );
     // (${renderTitle('', data)})
   }, []);
 

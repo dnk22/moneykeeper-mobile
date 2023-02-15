@@ -18,11 +18,9 @@ export type TTransactions = {
   transactions_type_id: string;
   transactions_type_details?: TTransactionType;
   transactions_category_id: string;
-  transactions_category_details?: TTransactionsCategory;
   descriptions?: string;
   date_time: Date;
   account_id: string;
-  account_details?: TAccount;
   location?: string;
   event?: string;
   pay_for?: string;
@@ -31,7 +29,6 @@ export type TTransactions = {
   is_not_add_report?: boolean;
   media?: any;
   user_id?: string;
-  user_details?: TUsers;
 };
 
 export type TTransactionsCategory = {
