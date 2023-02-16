@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import type { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { HOME } from './constants';
 import HomeNavigation from './Home';
-import { RootStackParamList } from './type';
+import { RootStackParamList } from './types';
 
 //set up routes
 const RootStack = createNativeStackNavigator<RootStackParamList>();

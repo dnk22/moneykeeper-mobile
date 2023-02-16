@@ -12,8 +12,8 @@ export const ACCOUNTTAB = 'accountTab';
 export const WALLET = 'wallet';
 export const SAVINGS = 'savings';
 export const ACCUMULATE = 'accumulate';
-export const ADDACCOUNT = 'addAccount';
-export const WALLET_DETAIL = 'walletDetail';
+export const ADD_ACCOUNT = 'addAccount';
+export const ACCOUNT_DETAIL = 'accountDetail';
 
 // transaction screen constant
 export const TRANSACTIONS = 'transactions';

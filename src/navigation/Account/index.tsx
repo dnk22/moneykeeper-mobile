@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ACCOUNTTAB, ADDACCOUNT, WALLET_DETAIL } from 'navigation/constants';
-import { AccountStackParamList } from 'navigation/type';
+import { ACCOUNTTAB, ADD_ACCOUNT, ACCOUNT_DETAIL } from 'navigation/constants';
+import { AccountStackParamList } from 'navigation/types';
 import { useCustomTheme } from 'resources/theme';
 import isEqual from 'react-fast-compare';
 
@@ -39,7 +39,7 @@ function AccountNavigation() {
         component={AccountTab}
       />
       <AccountStack.Screen
-        name={ADDACCOUNT}
+        name={ADD_ACCOUNT}
         options={({ route }) => ({
           title: route.params?.accountId ? 'Sửa tài khoản' : 'Thêm tài khoản',
           headerRight: (props) => <Submit {...props} />,
@@ -47,8 +47,8 @@ function AccountNavigation() {
         component={AddAccount}
       />
       <AccountStack.Screen
-        name={WALLET_DETAIL}
-        options={({ route }) => ({
+        name={ACCOUNT_DETAIL}
+        options={() => ({
           headerRight: (props) => <Submit {...props} />,
         })}
         component={AccountDetails}

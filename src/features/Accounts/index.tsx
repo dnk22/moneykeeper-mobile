@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Card, PressableHaptic, RNText, SvgIcon, FlatListComponent } from 'components/index';
+import { Card, PressableHaptic, RNText, SvgIcon } from 'components/index';
 import { View, SectionListData } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
-import { ADDACCOUNT } from 'navigation/constants';
+import { ADD_ACCOUNT } from 'navigation/constants';
 import { useAppSelector } from 'store/index';
 import {
   selectActiveAccounts,
@@ -66,7 +66,7 @@ function Accounts() {
   };
 
   const onCreateWallet = () => {
-    navigation.navigate(ADDACCOUNT);
+    navigation.navigate(ADD_ACCOUNT);
   };
 
   return (

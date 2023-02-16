@@ -8,9 +8,9 @@ import { TAccount } from 'types/models';
 import { useAppDispatch } from 'store/index';
 import { deactivateAccountById, deleteAccountById } from 'store/account/account.slice';
 import { useNavigation } from '@react-navigation/native';
-import { ADDACCOUNT } from 'navigation/constants';
+import { ADD_ACCOUNT } from 'navigation/constants';
 
-type ItemSettingsModalProps = IModalComponentProps & { account?: TAccount };
+type ItemSettingsModalProps = IModalComponentProps & { account: TAccount };
 
 const TRANSFER = 'transfer';
 const ADJUSTMENT = 'adjustment';
@@ -30,7 +30,7 @@ function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsMo
       case ADJUSTMENT:
         break;
       case EDIT:
-        navigation.navigate(ADDACCOUNT, { accountId: account?._id });
+        navigation.navigate(ADD_ACCOUNT, { accountId: account._id });
         break;
       case DELETE:
         onConfirmDelete();

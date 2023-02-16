@@ -18,7 +18,7 @@ import { useAppDispatch, useAppSelector } from 'store/index';
 import { accountSelectors, accountTypeSelectors } from 'store/account/account.selector';
 import { addOrUpdateAccount } from 'store/account/account.slice';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { AddWalletRouteProp } from 'navigation/type';
+import { AddAccountRouteProp } from 'navigation/types';
 import { BANK, EWALLET } from './constants';
 
 const DEFAULT_ACCOUNT_TYPE_ID = '1';
@@ -27,7 +27,7 @@ const AddAccount = ({}) => {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
   const useDispatch = useAppDispatch();
-  const { params } = useRoute<AddWalletRouteProp>();
+  const { params } = useRoute<AddAccountRouteProp>();
 
   const isModalType = useRef<string | typeof BANK | typeof EWALLET>('');
   const inputNameRef = useRef<any>(null);

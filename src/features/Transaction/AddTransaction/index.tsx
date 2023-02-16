@@ -26,6 +26,7 @@ import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectFistAccounts } from 'store/account/account.selector';
 import { selectAccountSelected } from 'store/transactions/transactions.selector';
 import { setAccountSelected } from 'store/transactions/transactions.slice';
+import { AddTransactionRouteProp } from 'navigation/types';
 
 const initialAddFormValues: TTransactions = {
   _id: '',
@@ -37,7 +38,7 @@ const initialAddFormValues: TTransactions = {
 export default function AddTransactions() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
-  const { params } = useRoute();
+  const { params } = useRoute<AddTransactionRouteProp>();
   const useDispatch = useAppDispatch();
 
   const getDefaultAccountData = useAppSelector((state) => selectFistAccounts(state));

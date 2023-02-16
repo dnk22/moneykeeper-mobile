@@ -11,7 +11,7 @@ import {
   TouchableHighlightComponent,
 } from 'components/index';
 import { useNavigation } from '@react-navigation/native';
-import { WALLET_DETAIL } from 'navigation/constants';
+import { ACCOUNT_DETAIL } from 'navigation/constants';
 
 type ItemProps = {
   account: TAccount;
@@ -21,13 +21,13 @@ type ItemProps = {
 };
 
 function Item({ account, isItemSelected, onActionPress, onItemPress }: ItemProps) {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
   const handleOnItemPress = () => {
     if (onItemPress) {
       onItemPress(account);
     } else {
       const { _id } = account;
-      navigation.navigate(WALLET_DETAIL, { accountId: _id });
+      navigation.navigate(ACCOUNT_DETAIL, { accountId: _id });
     }
   };
 
