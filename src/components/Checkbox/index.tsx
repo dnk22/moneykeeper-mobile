@@ -18,7 +18,7 @@ type CheckboxComponentProps = {
 };
 const CheckboxComponent = ({
   style,
-  size = 25,
+  size = 18,
   type = 'radio',
   color,
   check = false,
