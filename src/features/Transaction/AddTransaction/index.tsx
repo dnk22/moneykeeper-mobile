@@ -1,10 +1,9 @@
-import React, { ElementRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { View, TouchableOpacity, SafeAreaView } from 'react-native';
-import { DynamicIsland } from 'resources/animations';
 import TransactionTypePicker from './TransactionTypePicker';
 import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
-import { TAccount, TTransactions, TTransactionType } from 'src/types/models';
+import { TTransactions, TTransactionType } from 'src/types/models';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useForm } from 'react-hook-form';
 import {
@@ -44,7 +43,7 @@ export default function AddTransactions() {
   const getDefaultAccountData = useAppSelector((state) => selectFistAccounts(state));
   const getAccountSelected = useAppSelector((state) => selectAccountSelected(state));
 
-  const dynamicIsland = useRef<ElementRef<typeof DynamicIsland>>(null);
+  const [isShowTransactionTypeModal, setIsShowTransactionTypeModal] = useState(false);
   const [isShowFee, setIsShowFee] = useState<boolean>(false);
   const [isShowDetails, setIsShowDetails] = useState<boolean>(false);
   const [isDateTimeModalType, setIsDateTimeModalType] = useState<'date' | 'time' | undefined>(
@@ -71,15 +70,22 @@ export default function AddTransactions() {
     }
   }, [watch('account_id')]);
 
-  const onHandleTransactionTypePress = useCallback((item: TTransactionType) => {
+  const onHandleTransactionTypeItemPress = useCallback((item: TTransactionType) => {
     setValue('transactions_type_id', item._id);
     setValue('transactions_type_details', item);
-    dynamicIsland.current?.onToggle();
+    setIsShowTransactionTypeModal(false);
   }, []);
 
-  const onToggleDateTimeModal = useCallback((type?: 'date' | 'time') => {
-    setIsDateTimeModalType(type);
-  }, []);
+  const onToggleDateTimeModal = useCallback(
+    (type?: 'date' | 'time') => {
+      setIsDateTimeModalType(type);
+    },
+    [isDateTimeModalType],
+  );
+
+  const onToggleTransactionTypeModal = useCallback(() => {
+    setIsShowTransactionTypeModal(!isShowTransactionTypeModal);
+  }, [isShowTransactionTypeModal]);
 
   const onDateTimePicker = useCallback((date: Date) => {
     setValue('date_time', date);
@@ -98,10 +104,6 @@ export default function AddTransactions() {
     }
   }, [watch('transactions_type_id')]);
 
-  const onToggleShowTransactionTypePicker = () => {
-    dynamicIsland.current?.onToggle();
-  };
-
   const onHandleFeeChange = () => {
     setIsShowFee(!isShowFee);
     if (!isShowFee) {
@@ -109,7 +111,7 @@ export default function AddTransactions() {
     }
   };
 
-  const onSelectTransactionType = () => {};
+  const handleOnSelectTransactionCategory = () => {};
 
   const onSelectAccount = () => {
     navigation.navigate(ACCOUNT_PICKER);
@@ -123,12 +125,12 @@ export default function AddTransactions() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.primary }]}>
-      <DynamicIsland ref={dynamicIsland}>
-        <TransactionTypePicker
-          onPressItem={onHandleTransactionTypePress}
-          isTypeSelected={watch('transactions_type_id')}
-        />
-      </DynamicIsland>
+      <TransactionTypePicker
+        isVisible={isShowTransactionTypeModal}
+        onToggleModal={onToggleTransactionTypeModal}
+        onPressItem={onHandleTransactionTypeItemPress}
+        isTypeSelected={watch('transactions_type_id')}
+      />
       <DateTimeModalPicker
         value={date_time}
         isVisible={isShowDateTimeModal}
@@ -140,7 +142,7 @@ export default function AddTransactions() {
         <View style={styles.actionView} />
         <PressableHaptic
           style={[styles.actionView, styles.transactionTypePicker]}
-          onPress={onToggleShowTransactionTypePicker}
+          onPress={onToggleTransactionTypeModal}
         >
           <RNText color="white">{watch('transactions_type_details.name') || 'Chi Tiền'}</RNText>
         </PressableHaptic>
@@ -159,10 +161,10 @@ export default function AddTransactions() {
         <InputCalculator name="amount" control={control} inputTextColor={getInputTextColor} />
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <InputSelection
-            icon={watch('transactions_type_details.icon')}
+            icon={watch('transactions_category_details.icon')}
             title="Chọn danh mục"
             value={watch('transactions_category_details.category_name')}
-            onSelect={onSelectTransactionType}
+            onSelect={handleOnSelectTransactionCategory}
           />
           <View style={styles.itemGroup}>
             <SvgIcon name="textWord" style={styles.icon} />

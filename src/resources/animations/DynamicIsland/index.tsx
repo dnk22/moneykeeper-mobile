@@ -28,7 +28,7 @@ const init = {
 const target = {
   height: SCREEN_HEIGHT / 2.5,
   width: SCREEN_WIDTH - 20,
-  borderRadius: 17,
+  borderRadius: 20,
   containerHeight: SCREEN_HEIGHT,
 };
 

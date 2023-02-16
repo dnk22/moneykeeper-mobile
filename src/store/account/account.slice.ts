@@ -1,6 +1,6 @@
 import { createEntityAdapter, createSlice, nanoid, PayloadAction, Update } from '@reduxjs/toolkit';
 import { TAccount, TAccountType, TProvider, TBank } from 'src/types/models';
-import { Account_Type, Provider, Bank } from 'utils/constant/data.default';
+import { Account_Type, Provider, Bank } from 'utils/data';
 
 export const accountAdapter = createEntityAdapter<TAccount>({
   selectId: (account) => account._id,

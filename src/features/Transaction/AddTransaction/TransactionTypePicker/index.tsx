@@ -1,13 +1,21 @@
 import React, { memo, useCallback, useState } from 'react';
-import { View, Text } from 'react-native';
-import { FlatListComponent, SvgIcon, TouchableHighlightComponent } from 'components/index';
+import { Image, View } from 'react-native';
+import {
+  CheckboxComponent,
+  FlatListComponent,
+  ModalComponent,
+  RNText,
+  SvgIcon,
+  TouchableHighlightComponent,
+} from 'components/index';
+import { IModalComponentProps } from 'components/Modal';
 import { useCustomTheme } from 'resources/theme';
 import isEqual from 'react-fast-compare';
 import styles from './style';
 import { TransactionTypePickerData } from './constants';
 import { TTransactionType } from 'src/types/models';
 
-interface TransactionTypePickerProps {
+interface TransactionTypePickerProps extends IModalComponentProps {
   onPressItem?: (item: TTransactionType) => void;
   isTypeSelected?: string;
   isShowCheckbox?: boolean;
@@ -17,6 +25,8 @@ function TransactionTypePicker({
   isTypeSelected = '',
   isShowCheckbox = true,
   onPressItem,
+  isVisible,
+  onToggleModal,
 }: TransactionTypePickerProps) {
   const { colors } = useCustomTheme();
   const [isSelected, setIsSelected] = useState(isTypeSelected);
@@ -36,23 +46,28 @@ function TransactionTypePicker({
         <View style={styles.item}>
           <View style={styles.itemContent}>
             <View style={styles.itemIcon}>
-              <SvgIcon name={item.icon} preset="transactionType" />
+              {/* <SvgIcon name={item.icon} preset="transactionType" /> */}
+              <Image source={item.icon} style={{ width: 24, height: 24 }} />
             </View>
-            <Text style={[styles.title, { color: colors.text }]}>{item.name}</Text>
+            <RNText>{item.name}</RNText>
           </View>
           {(isShowCheckbox || currentSelected(item._id)) && (
-            <View style={[styles.itemActive, { backgroundColor: colors.background }]}>
-              {currentSelected(item._id) && <View style={styles.itemActiveBackground} />}
-            </View>
+            <CheckboxComponent check={currentSelected(item._id)} />
           )}
         </View>
       </TouchableHighlightComponent>
     );
   };
   return (
-    <View style={styles.container}>
+    <ModalComponent
+      isVisible={isVisible}
+      onToggleModal={onToggleModal}
+      animationIn="bounceIn"
+      animationOut="bounceOut"
+      styleDefaultContent={styles.modal}
+    >
       <FlatListComponent data={TransactionTypePickerData} renderItem={renderItem} />
-    </View>
+    </ModalComponent>
   );
 }
 

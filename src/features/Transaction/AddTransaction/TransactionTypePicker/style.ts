@@ -2,7 +2,9 @@ import { StyleSheet } from 'react-native';
 import { normalize } from 'share/dimensions';
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  modal: {
+    padding: 5,
+  },
   item: {
     flex: 1,
     padding: 20,
@@ -18,8 +20,8 @@ const styles = StyleSheet.create({
     padding: 2,
     borderColor: '#787A91',
     borderWidth: 1,
-    width: normalize(14),
-    height: normalize(14),
+    width: 14,
+    height: 14,
     borderRadius: 30,
   },
   itemActiveBackground: {
