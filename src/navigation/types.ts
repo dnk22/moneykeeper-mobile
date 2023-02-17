@@ -1,4 +1,3 @@
-import {} from 'navigation/constants';
 import { RouteProp } from '@react-navigation/native';
 import {
   HOME,
@@ -12,6 +11,9 @@ import {
   ACCOUNT_DETAIL,
   ADD_TRANSACTION,
   ACCOUNT_PICKER,
+  TRANSACTION_CATEGORY,
+  TRANSACTION_CATEGORY_LIST,
+  UPDATE_TRANSACTION_CATEGORY,
 } from './constants';
 
 export type RootStackParamList = HomeStackParamList &
@@ -34,9 +36,15 @@ export type AccountStackParamList = {
   [ACCOUNT_DETAIL]: { accountId: string };
 };
 
-export type TransactionParamList = {
+export type TransactionParamList = TransactionCategoryParamList & {
   [ADD_TRANSACTION]: { transaction_id: string } | undefined;
   [ACCOUNT_PICKER]: undefined;
+  [TRANSACTION_CATEGORY]: undefined;
+};
+
+export type TransactionCategoryParamList = {
+  [TRANSACTION_CATEGORY_LIST]: undefined;
+  [UPDATE_TRANSACTION_CATEGORY]: { transaction_category_id: string } | undefined;
 };
 
 // route type props

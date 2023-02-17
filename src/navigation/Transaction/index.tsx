@@ -1,29 +1,39 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ACCOUNT_PICKER, ADD_TRANSACTION } from 'navigation/constants';
+import { ACCOUNT_PICKER, ADD_TRANSACTION, TRANSACTION_CATEGORY } from 'navigation/constants';
+import { TransactionParamList } from 'navigation/types';
 
 // import route component
 import AddTransactions from 'features/Transaction/AddTransaction';
 import AccountPicker from 'features/Transaction/AccountPicker';
+import TransactionCategoryNavigation from './TransactionCategory/Index';
 
 //set up routes
-const AddTransactionStack = createNativeStackNavigator<any>();
+const TransactionStack = createNativeStackNavigator<TransactionParamList>();
 
 function TransactionNavigation() {
-  const rootOptions = {};
+  const rootOptions = {
+    headerShown: false,
+  };
 
   return (
-    <AddTransactionStack.Navigator initialRouteName={ADD_TRANSACTION} screenOptions={rootOptions}>
-      <AddTransactionStack.Screen
-        name={ADD_TRANSACTION}
-        component={AddTransactions}
-        options={{ headerShown: false }}
-      />
-      <AddTransactionStack.Screen
-        name={ACCOUNT_PICKER}
-        component={AccountPicker}
-        options={{ presentation: 'modal', title: 'Chọn tài khoản' }}
-      />
-    </AddTransactionStack.Navigator>
+    <TransactionStack.Navigator initialRouteName={ADD_TRANSACTION} screenOptions={rootOptions}>
+      <TransactionStack.Screen name={ADD_TRANSACTION} component={AddTransactions} />
+      <TransactionStack.Group
+        screenOptions={{
+          presentation: 'modal',
+        }}
+      >
+        <TransactionStack.Screen
+          name={ACCOUNT_PICKER}
+          component={AccountPicker}
+          options={{ headerShown: true, title: 'Chọn tài khoản' }}
+        />
+        <TransactionStack.Screen
+          name={TRANSACTION_CATEGORY}
+          component={TransactionCategoryNavigation}
+        />
+      </TransactionStack.Group>
+    </TransactionStack.Navigator>
   );
 }
 
