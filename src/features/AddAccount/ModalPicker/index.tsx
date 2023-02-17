@@ -1,7 +1,13 @@
 import { memo, useEffect, useState } from 'react';
 import Modal from 'components/Modal';
 import isEqual from 'react-fast-compare';
-import { FlatListComponent, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
+import {
+  FlatListComponent,
+  InputSearch,
+  RNText,
+  SvgIcon,
+  TouchableHighlightComponent,
+} from 'components/index';
 import { IModalComponentProps } from 'components/Modal';
 import { Keyboard, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
@@ -128,14 +134,7 @@ function ModalPicker({
         title={title}
       >
         {isShowData === BANK && (
-          <View style={styles.inputGroup}>
-            <TextInput
-              placeholder="Nhập tên ngân hàng"
-              style={[styles.inputSearch, { backgroundColor: colors.background }]}
-              onChangeText={onInputChange}
-            />
-            <SvgIcon name="search" style={styles.iconSearch} size={18} color="gray" />
-          </View>
+          <InputSearch placeholder="Nhập tên ngân hàng" onChangeText={onInputChange} />
         )}
         <FlatListComponent data={data} renderItem={renderItem} />
       </Modal>
