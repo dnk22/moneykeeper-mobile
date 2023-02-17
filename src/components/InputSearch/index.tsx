@@ -5,13 +5,16 @@ import SvgIcon from 'components/SvgIcon';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 
-function InputSearch({ placeholder, onChangeText }: TextInputProps) {
+type InputSearch = TextInputProps & {
+  backgroundColor?: string;
+};
+function InputSearch({ placeholder, onChangeText, backgroundColor }: InputSearch) {
   const { colors } = useCustomTheme();
   return (
-    <View style={styles.inputGroup}>
+    <View style={[styles.inputGroup, { backgroundColor: backgroundColor || colors.background }]}>
       <TextInput
         placeholder={placeholder}
-        style={[styles.inputSearch, { backgroundColor: colors.background, color: colors.text }]}
+        style={[styles.inputSearch, { color: colors.text }]}
         onChangeText={onChangeText}
       />
       <SvgIcon name="search" style={styles.iconSearch} size={18} color="gray" />
