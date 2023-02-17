@@ -20,7 +20,7 @@ import {
 import { formatDateLocal } from 'utils/date';
 import Animated, { StretchInY } from 'react-native-reanimated';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { ACCOUNT_PICKER } from 'navigation/constants';
+import { ACCOUNT_PICKER, TRANSACTION_CATEGORY } from 'navigation/constants';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectFistAccounts } from 'store/account/account.selector';
 import { selectAccountSelected } from 'store/transactions/transactions.selector';
@@ -111,7 +111,9 @@ export default function AddTransactions() {
     }
   };
 
-  const handleOnSelectTransactionCategory = () => {};
+  const handleOnSelectTransactionCategory = () => {
+    navigation.navigate(TRANSACTION_CATEGORY);
+  };
 
   const onSelectAccount = () => {
     navigation.navigate(ACCOUNT_PICKER);
