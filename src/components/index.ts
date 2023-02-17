@@ -21,6 +21,7 @@ import Card from 'components/Card';
 import InputSelection from 'components/InputSelection';
 import CheckboxComponent from 'components/Checkbox';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
+import InputSearch from 'components/InputSearch';
 
 export {
   DateTimePicker,
@@ -46,4 +47,5 @@ export {
   InputSelection,
   CheckboxComponent,
   TouchableHighlightComponent,
+  InputSearch
 };
