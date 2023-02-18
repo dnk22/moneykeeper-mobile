@@ -12,6 +12,7 @@ import Settings from 'features/Settings';
 import AccountNavigation from 'navigation/Account';
 import Dashboard from 'features/Dashboard';
 import TransactionNavigation from 'navigation/Transaction';
+import ReportNavigation from 'navigation/Report';
 
 // set up routes
 const Tab = createBottomTabNavigator();
@@ -61,7 +62,7 @@ function HomeNavigation() {
           tabBarIcon: () => <SvgIcon name="report" size={26} />,
           tabBarLabel: 'Báo cáo',
         }}
-        component={Settings}
+        component={ReportNavigation}
       />
       <Tab.Screen
         name={SETTINGS}

@@ -28,3 +28,4 @@ export const LEND_BORROW = 'lendBorrow';
 
 // report screen constant
 export const REPORT = 'report';
+export const HOME_REPORT = 'homeReport';

@@ -14,6 +14,7 @@ import {
   TRANSACTION_CATEGORY,
   TRANSACTION_CATEGORY_LIST,
   UPDATE_TRANSACTION_CATEGORY,
+  HOME_REPORT,
 } from './constants';
 
 export type RootStackParamList = HomeStackParamList &
@@ -45,6 +46,10 @@ export type TransactionParamList = TransactionCategoryParamList & {
 export type TransactionCategoryParamList = {
   [TRANSACTION_CATEGORY_LIST]: undefined;
   [UPDATE_TRANSACTION_CATEGORY]: { transaction_category_id: string } | undefined;
+};
+
+export type ReportParamList = {
+  [HOME_REPORT]: undefined;
 };
 
 // route type props

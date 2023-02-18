@@ -58,6 +58,8 @@ import trash from 'assets/svg/icon-trash.svg';
 import trayUp from 'assets/svg/icon-trayUp.svg';
 import plusMinus from 'assets/svg/icon-plusMinus.svg';
 import lockOpen from 'assets/svg/icon-lockOpen.svg';
+import list from 'assets/svg/icon-list.svg';
+import grid from 'assets/svg/icon-grid.svg';
 
 const icon = {
   add,
@@ -120,6 +122,8 @@ const icon = {
   trayUp,
   plusMinus,
   lockOpen,
+  list,
+  grid,
 };
 
 export type IconProps = keyof typeof icon;
