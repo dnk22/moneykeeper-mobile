@@ -13,7 +13,7 @@ import {
 import { TAccount } from 'types/models';
 import ItemSettingsModal from './ItemSettingsModal';
 import { selectAccountViewSettings } from 'store/app/app.selector';
-import AccountList from './AccountList';
+import AccountList from '../AccountList';
 import { groupDataByValue } from 'utils/algorithm';
 
 function Accounts() {

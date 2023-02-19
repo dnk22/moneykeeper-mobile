@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import AccountList from 'features/Accounts/AccountList';
+import AccountList from 'features/AccountList';
 import { selectActiveAccounts } from 'store/account/account.selector';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { groupDataByValue } from 'utils/algorithm';

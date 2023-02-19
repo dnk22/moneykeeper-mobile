@@ -25,6 +25,14 @@ const styles = StyleSheet.create({
     borderColor: '#BCCEF8',
     borderRadius: 30,
   },
+  noAccountData: {
+    padding: 5,
+    alignItems: 'center',
+    borderRadius: 10,
+    borderColor: 'red',
+    borderWidth: 0.3,
+    marginBottom: 10,
+  },
   form: {
     flex: 1,
     padding: 10,

@@ -12,6 +12,7 @@ import {
 } from 'components/index';
 import { useNavigation } from '@react-navigation/native';
 import { ACCOUNT_DETAIL } from 'navigation/constants';
+import { useCustomTheme } from 'resources/theme';
 
 type ItemProps = {
   account: TAccount;
@@ -21,6 +22,7 @@ type ItemProps = {
 };
 
 function Item({ account, isItemSelected, onActionPress, onItemPress }: ItemProps) {
+  const { colors } = useCustomTheme();
   const navigation = useNavigation();
   const handleOnItemPress = () => {
     if (onItemPress) {
@@ -33,7 +35,10 @@ function Item({ account, isItemSelected, onActionPress, onItemPress }: ItemProps
 
   return (
     <View style={styles.itemContainer}>
-      <TouchableHighlightComponent onPress={handleOnItemPress}>
+      <TouchableHighlightComponent
+        style={{ backgroundColor: colors.surface }}
+        onPress={handleOnItemPress}
+      >
         <View style={styles.itemContent}>
           <SvgIcon
             name={

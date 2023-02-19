@@ -58,11 +58,11 @@ export default function AddTransactions() {
   const { date_time, account_id } = getValues();
 
   useEffect(() => {
-    if (!params?.transaction_id) {
+    if (!params?.transaction_id && getDefaultAccountData?._id) {
       setValue('account_id', getDefaultAccountData._id);
       useDispatch(setAccountSelected(getDefaultAccountData));
     }
-  }, [params?.transaction_id]);
+  }, [params?.transaction_id, getDefaultAccountData?._id]);
 
   useEffect(() => {
     if (watch('account_id')) {
@@ -160,6 +160,11 @@ export default function AddTransactions() {
         showsVerticalScrollIndicator={false}
         extraScrollHeight={60}
       >
+        {!getDefaultAccountData?._id && (
+          <View style={styles.noAccountData}>
+            <RNText color="red">Vui lòng tạo 1 tài khoản trước</RNText>
+          </View>
+        )}
         <InputCalculator name="amount" control={control} inputTextColor={getInputTextColor} />
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <InputSelection
