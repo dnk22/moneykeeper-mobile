@@ -60,6 +60,8 @@ import plusMinus from 'assets/svg/icon-plusMinus.svg';
 import lockOpen from 'assets/svg/icon-lockOpen.svg';
 import list from 'assets/svg/icon-list.svg';
 import grid from 'assets/svg/icon-grid.svg';
+import pen from 'assets/svg/icon-pen.svg';
+import group from 'assets/svg/icon-group.svg';
 
 const icon = {
   add,
@@ -124,6 +126,8 @@ const icon = {
   lockOpen,
   list,
   grid,
+  pen,
+  group,
 };
 
 export type IconProps = keyof typeof icon;

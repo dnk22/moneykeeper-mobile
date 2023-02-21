@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import isEqual from 'react-fast-compare';
-import FastImage from 'react-native-fast-image';
+import FastImage, { Source } from 'react-native-fast-image';
 import { NumberProp, SvgProps } from 'react-native-svg';
 import { useCustomTheme } from 'resources/theme';
 import { normalize } from 'share/dimensions';

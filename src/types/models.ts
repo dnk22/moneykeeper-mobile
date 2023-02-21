@@ -1,4 +1,5 @@
 import { IconProps } from 'components/SvgIcon/const';
+import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 
 // user
 export type TUsers = {
@@ -36,9 +37,9 @@ export type TTransactionsCategory = {
   category_name: string;
   parent?: string;
   category_description: string;
-  category_type: string;
-  category_group: string;
-  icon: IconProps;
+  category_type: TRANSACTION_CATEGORY_TYPE;
+  count: number;
+  icon: string;
 };
 
 export type TTransactionType = {

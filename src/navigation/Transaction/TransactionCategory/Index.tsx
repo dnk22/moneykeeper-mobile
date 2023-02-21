@@ -3,7 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TRANSACTION_CATEGORY_LIST, UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
 import { TransactionCategoryParamList } from 'navigation/types';
 import { UpdateTransactionCategory } from 'features/TransactionCategory';
-import TransactionCategoryTopBar from './TopBar';
+import TransactionCategoryTopBar from './components/TopBar';
+import UpdateTransactionCategoryHeader from './components/Update.header';
 
 //set up routes
 const TransactionCategoryStack = createNativeStackNavigator<TransactionCategoryParamList>();
@@ -14,12 +15,19 @@ function TransactionCategoryNavigation() {
       <TransactionCategoryStack.Screen
         name={TRANSACTION_CATEGORY_LIST}
         component={TransactionCategoryTopBar}
-        options={{ title: 'Danh mục' }}
+        options={{
+          title: 'Danh mục',
+          headerBackTitleVisible: false,
+          headerRight: (props) => <UpdateTransactionCategoryHeader {...props} />,
+        }}
       />
       <TransactionCategoryStack.Screen
         name={UPDATE_TRANSACTION_CATEGORY}
         options={({ route }) => ({
           title: route.params?.transaction_category_id ? 'Sửa danh mục' : 'Thêm danh mục',
+          // headerSearchBarOptions: {
+          //   placeholder: 'hihi',
+          // },
         })}
         component={UpdateTransactionCategory}
       />

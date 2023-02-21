@@ -1,19 +1,18 @@
 import { createEntityAdapter, createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 import { TTransactions, TAccount, TTransactionsCategory } from 'types/models';
-
-type TTransactionsState = {
-  transactions: any;
-  accountSelected?: TAccount | null;
-  transactionCategorySelected?: TTransactionsCategory | null;
-};
+import { TTransactionsState } from 'types/store.type';
 
 export const transactionAdapter = createEntityAdapter<TTransactions>({
   selectId: (transaction) => transaction._id,
+});
+export const transactionCategoryAdapter = createEntityAdapter<TTransactionsCategory>({
+  selectId: (tCategory) => tCategory._id,
 });
 
 //set default data
 const initialState: TTransactionsState = {
   transactions: transactionAdapter.getInitialState(),
+  transactionCategory: transactionCategoryAdapter.getInitialState(),
   accountSelected: null,
   transactionCategorySelected: null,
 };
@@ -29,8 +28,18 @@ export const transactionsSlice = createSlice({
       };
       transactionAdapter.upsertOne(state.transactions, data);
     },
+    addOrUpdateTransactionCategory: (state, { payload }: PayloadAction<TTransactionsCategory>) => {
+      const data = {
+        ...payload,
+        _id: payload._id || nanoid(),
+      };
+      transactionCategoryAdapter.upsertOne(state.transactionCategory, data);
+    },
     deleteTransactionById(state, { payload }: PayloadAction<string>) {
       transactionAdapter.removeOne(state.transactions, payload);
+    },
+    deleteTransactionCategoryById(state, { payload }: PayloadAction<string>) {
+      transactionCategoryAdapter.removeOne(state.transactionCategory, payload);
     },
     clearAllTransactions: (state) => {
       transactionAdapter.removeAll(state.transactions);
@@ -50,7 +59,9 @@ export const transactionsSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
   addOrUpdateTransaction,
+  addOrUpdateTransactionCategory,
   deleteTransactionById,
+  deleteTransactionCategoryById,
   clearAllTransactions,
   setAccountSelected,
 } = transactionsSlice.actions;

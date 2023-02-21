@@ -4,7 +4,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { EXPENSE_CATEGORY, INCOME_CATEGORY, LEND_BORROW } from 'navigation/constants';
 import { useCustomTheme } from 'resources/theme';
 import Loading from 'components/Loading';
-import styles from './styles';
+import styles from '../styles';
 
 const Tab = createMaterialTopTabNavigator();
 

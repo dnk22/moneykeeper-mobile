@@ -16,6 +16,16 @@ const styles = StyleSheet.create({
   itemCategory: {
     maxHeight: 200,
   },
+  addIcon: {
+    position: 'absolute',
+    bottom: 30,
+    right: 30,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default styles;

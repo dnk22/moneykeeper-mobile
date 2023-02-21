@@ -1,4 +1,6 @@
 import { RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
+import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 import {
   HOME,
   ADD_ACCOUNT,
@@ -45,7 +47,10 @@ export type TransactionParamList = TransactionCategoryParamList & {
 
 export type TransactionCategoryParamList = {
   [TRANSACTION_CATEGORY_LIST]: undefined;
-  [UPDATE_TRANSACTION_CATEGORY]: { transaction_category_id: string } | undefined;
+  [UPDATE_TRANSACTION_CATEGORY]: {
+    transaction_category_id?: string;
+    transaction_category_type: TRANSACTION_CATEGORY_TYPE;
+  };
 };
 
 export type ReportParamList = {
@@ -55,6 +60,16 @@ export type ReportParamList = {
 // route type props
 export type AddAccountRouteProp = RouteProp<AccountStackParamList, typeof ADD_ACCOUNT>;
 export type AddTransactionRouteProp = RouteProp<TransactionParamList, typeof ADD_TRANSACTION>;
+export type UpdateTransactionCategoryRouteProps = RouteProp<
+  TransactionCategoryParamList,
+  typeof UPDATE_TRANSACTION_CATEGORY
+>;
+
+// navigation type props
+export type UpdateTransactionCategoryProps = NativeStackNavigationProp<
+  TransactionCategoryParamList,
+  typeof UPDATE_TRANSACTION_CATEGORY
+>;
 
 declare global {
   namespace ReactNavigation {
