@@ -3,7 +3,7 @@ import { View, TouchableOpacity, SafeAreaView } from 'react-native';
 import TransactionTypePicker from './TransactionTypePicker';
 import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
-import { TTransactions, TTransactionType } from 'src/types/models';
+import { TTransactions, TTransactionType } from 'database/types/index';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useForm } from 'react-hook-form';
 import {

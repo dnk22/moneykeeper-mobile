@@ -1,4 +1,4 @@
-import { TAccountType, TBank, TProvider } from 'types/models';
+import { TAccountType, TBank, TProvider } from 'database/types/index';
 
 export const Account_Type: TAccountType[] = [
   {

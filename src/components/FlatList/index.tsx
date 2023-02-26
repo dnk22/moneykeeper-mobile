@@ -17,7 +17,7 @@ const FlatListComponent: PropsFlatList = (props) => {
     hasPull = false,
     ...rest
   } = props;
-  const keyExtractor = useCallback((item: any) => item._id, []);
+  const keyExtractor = useCallback((item: any) => item.id, []);
 
   const renderRefreshControl = useMemo(
     () => (

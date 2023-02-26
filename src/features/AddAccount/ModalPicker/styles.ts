@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { normalize } from 'share/dimensions';
 
 const styles = StyleSheet.create({
-  bankModal: { maxHeight: '90%', height: '90%' },
+  bankModal: { maxHeight: '90%' },
   item: {
     flex: 1,
     paddingVertical: 15,

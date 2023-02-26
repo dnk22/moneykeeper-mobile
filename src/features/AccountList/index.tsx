@@ -2,7 +2,7 @@ import { RNText, SectionListComponent } from 'components/index';
 import { memo, useCallback } from 'react';
 import isEqual from 'react-fast-compare';
 import { SectionListData, View } from 'react-native';
-import { TAccount } from 'types/models';
+import { TAccount } from 'database/types/index';
 import Item from './Item';
 import styles from './styles';
 

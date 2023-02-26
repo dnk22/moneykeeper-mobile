@@ -1,6 +1,6 @@
 import { createEntityAdapter, createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
-import { TTransactions, TAccount, TTransactionsCategory } from 'types/models';
-import { TTransactionsState } from 'types/store.type';
+import { TTransactions, TAccount, TTransactionsCategory } from 'database/types/index';
+import { TTransactionsState } from 'utils/types';
 
 export const transactionAdapter = createEntityAdapter<TTransactions>({
   selectId: (transaction) => transaction._id,

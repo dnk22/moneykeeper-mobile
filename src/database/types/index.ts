@@ -20,10 +20,10 @@ export type TTransactions = {
   transactions_type_details?: TTransactionType;
   transactions_category_id: string;
   descriptions?: string;
-  date_time: Date;
+  date_time_at: Date;
   account_id: string;
   location?: string;
-  event?: string;
+  event_name?: string;
   pay_for?: string;
   fee?: number;
   fee_type?: string;
@@ -51,47 +51,46 @@ export type TTransactionType = {
 
 // account
 export type TAccount = {
-  _id: string;
-  name: string;
-  initial_amount: number;
-  current_amount: number;
-  account_type: string;
-  account_type_details: TAccountType;
-  bank?: string;
-  bank_details?: TBank;
-  provider?: string;
-  provider_details?: TProvider;
+  id: string;
+  accountName: string;
+  initialAmount: number;
+  currentAmount: number;
+  accountTypeId: string;
+  bankId?: string;
   currency?: string;
   descriptions?: string;
-  is_active: boolean;
-  is_not_add_report?: boolean;
-  user_created: string;
-  created_date: Date;
+  isActive: boolean;
+  isNotAddReport?: boolean;
+  userId: string;
+  accountIcon: string;
+  sortOrder?: number;
+  termType?: number;
+  termMonth?: number;
+  interestRate?: number;
+  interestPaymentType?: number;
+  dueType?: number;
+  startDate?: Date;
+  endDate?: Date;
+  interestPaymentToAccount?: string;
+  savingFromAccountId?: string;
+  numberDayOfYear?: number;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 // account type
 export type TAccountType = {
-  _id: string;
+  id: string;
   name: string;
   value: string;
+  icon: IconProps | any;
+};
+export type TBank = {
+  id: string;
+  bankCode: string;
+  bankName: string;
   shortName?: string;
-  icon: IconProps;
-};
-
-// provider
-export type TProvider = TAccountType;
-
-// bank
-export type TBank = TAccountType & {
-  icon?: any;
-};
-
-export type TLendTransactions = TTransactions & {
-  borrower: string;
-  collection_date?: Date;
-};
-
-export type TBorrowTransactions = TTransactions & {
-  lender: string;
-  repayment_date?: Date;
+  icon: string;
+  isSystem: boolean;
+  isWallet?: boolean;
 };

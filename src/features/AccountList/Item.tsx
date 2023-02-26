@@ -2,7 +2,7 @@ import { memo } from 'react';
 import isEqual from 'react-fast-compare';
 import { View } from 'react-native';
 import styles from './styles';
-import { TAccount } from 'types/models';
+import { TAccount } from 'database/types/index';
 import {
   CheckboxComponent,
   PressableHaptic,

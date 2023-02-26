@@ -13,7 +13,7 @@ import { useCustomTheme } from 'resources/theme';
 import isEqual from 'react-fast-compare';
 import styles from './style';
 import { TransactionTypePickerData } from './constants';
-import { TTransactionType } from 'src/types/models';
+import { TTransactionType } from 'database/types/index';
 
 interface TransactionTypePickerProps extends IModalComponentProps {
   onPressItem?: (item: TTransactionType) => void;

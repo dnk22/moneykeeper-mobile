@@ -10,11 +10,12 @@ import {
   selectActiveAccounts,
   selectDeactivateActiveAccounts,
 } from 'store/account/account.selector';
-import { TAccount } from 'types/models';
+import { TAccount } from 'database/types/index';
 import ItemSettingsModal from './ItemSettingsModal';
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import AccountList from '../AccountList';
 import { groupDataByValue } from 'utils/algorithm';
+import { getAllActiveAccount } from 'database/querying/accounts.query';
 
 function Accounts() {
   const { colors } = useCustomTheme();
@@ -38,6 +39,10 @@ function Accounts() {
       setIsActiveData([{ data: getActiveAccounts }]);
     }
   }, [group, getActiveAccounts]);
+
+  useEffect(() => {
+    getAllActiveAccount();
+  }, []);
 
   const getTotalAmount = useCallback((data: TAccount[]) => {
     const result = data.reduce((sum, account) => sum + account.current_amount, 0);

@@ -4,7 +4,7 @@ import { IModalComponentProps } from 'components/Modal';
 import isEqual from 'react-fast-compare';
 import { Alert, View } from 'react-native';
 import styles from './styles';
-import { TAccount } from 'types/models';
+import { TAccount } from 'database/types/index';
 import { useAppDispatch } from 'store/index';
 import { deactivateAccountById, deleteAccountById } from 'store/account/account.slice';
 import { useNavigation } from '@react-navigation/native';

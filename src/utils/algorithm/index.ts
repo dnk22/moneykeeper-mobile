@@ -1,4 +1,4 @@
-import { TAccount } from 'src/types/models';
+import { TAccount } from 'database/types/index';
 
 /**
  * Find object in array with @param

@@ -10,7 +10,7 @@ import { TouchableOpacity, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { useAppDispatch } from 'store/index';
 import { addOrUpdateTransactionCategory } from 'store/transactions/transactions.slice';
-import { TTransactionsCategory } from 'types/models';
+import { TTransactionsCategory } from 'database/types/index';
 import ParentList from './ParentList';
 import styles from './styles';
 

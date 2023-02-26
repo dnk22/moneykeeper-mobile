@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
+    "experimentalDecorators": true,
     "skipLibCheck": true,
     "baseUrl": ".",
     "strict": true,
@@ -14,8 +15,7 @@
       "share/*": ["src/share/*"],
       "store/*": ["src/store/*"],
       "utils/*": ["src/utils/*"],
-      "types/*": ["src/types/*"],
-      "modules/*": ["src/modules/*"],
+      "database/*": ["src/database/*"],
     }
-  }
+  },
 }

@@ -4,7 +4,7 @@ import { selectActiveAccounts } from 'store/account/account.selector';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { groupDataByValue } from 'utils/algorithm';
 import styles from './styles';
-import { TAccount } from 'types/models';
+import { TAccount } from 'database/types/index';
 import { useNavigation } from '@react-navigation/native';
 import { setAccountSelected } from 'store/transactions/transactions.slice';
 import { selectAccountSelected } from 'store/transactions/transactions.selector';
