@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   InputCalculator,
   InputField,
@@ -17,15 +17,21 @@ import ModalPicker from './ModalPicker';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import {
   accountSelectors,
-  accountTypeSelectors,
   selectAllAccountType,
   selectAllBank,
 } from 'store/account/account.selector';
-import { addOrUpdateAccount } from 'store/account/account.slice';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AddAccountRouteProp } from 'navigation/types';
 import { addAccount } from 'database/querying/accounts.query';
 import { ACCOUNT_TYPE, BANK_TYPE, DEFAULT_ACCOUNT_TYPE_ID } from './constants';
+
+type ModalConfigProps = {
+  title: string;
+  type: typeof ACCOUNT_TYPE | typeof BANK_TYPE;
+  isShowSearch?: boolean;
+  itemSelected: string;
+  dataSource: any[];
+};
 
 const AddAccount = ({}) => {
   const { colors } = useCustomTheme();
@@ -42,13 +48,11 @@ const AddAccount = ({}) => {
     accountSelectors.selectById(state, params?.accountId || ''),
   );
 
-  const isModalTitle = useRef<string>('');
-  const isModalType = useRef<string>(ACCOUNT_TYPE);
-  const isItemSelected = useRef<any>(defaultAccountType?.id);
+  const modalConfig = useRef<ModalConfigProps>(null);
   const inputNameRef = useRef<any>(null);
 
   const [isShowModalPicker, setIsShowModalPicker] = useState<boolean>(false);
-  const [dataModal, setDataModal] = useState<any>(Object.values(getAccountTypeState));
+  const [dataModal, setDataModal] = useState<any[]>([]);
 
   const {
     control,
@@ -84,70 +88,55 @@ const AddAccount = ({}) => {
     }
   }, [errors?.accountName]);
 
-  const isShowSearch = useMemo(() => isModalType.current === BANK_TYPE, [isModalType]);
-
   const onSelectAccountType = useCallback(() => {
-    isModalType.current = ACCOUNT_TYPE;
-    isModalTitle.current = 'Chọn loại tài khoản';
-    isItemSelected.current = accountTypeId;
-    setDataModal(Object.values(getAccountTypeState));
+    modalConfig.current = {
+      title: 'Chọn loại tài khoản',
+      type: ACCOUNT_TYPE,
+      itemSelected: accountTypeId,
+      isShowSearch: false,
+      dataSource: Object.values(getAccountTypeState),
+    };
     setIsShowModalPicker(true);
   }, []);
 
   const onSelectBank = useCallback(() => {
-    isModalType.current = BANK_TYPE;
-    isModalTitle.current = 'Chọn nhà cung cấp';
-    isItemSelected.current = bankId;
-    setDataModal(Object.values(getBankState));
+    modalConfig.current = {
+      title: 'Chọn nhà cung cấp',
+      type: BANK_TYPE,
+      itemSelected: bankId,
+      isShowSearch: true,
+      dataSource: Object.values(getBankState),
+    };
     setIsShowModalPicker(true);
   }, [accountTypeId]);
 
   const handleItemModalPickerPress = useCallback((item: TAccountType) => {
-    switch (isModalType.current) {
+    switch (modalConfig.current?.type) {
       case BANK_TYPE:
-        setSelectedBank(item.id, item);
+        setValue('bankId', item.id);
         break;
       default:
-        setSelectedAccountType(item.id, item);
+        setValue('accountTypeId', item.id);
         if (item.id !== accountTypeId) {
           resetSelectedBank();
         }
         break;
     }
+    setValue('accountIcon', item.icon);
     setIsShowModalPicker(false);
   }, []);
-
-  const setSelectedBank = (bankId: string, bankDetails: TAccountType) => {
-    setSelectedValues({
-      bankId,
-    });
-  };
-
-  const setSelectedAccountType = (accountTypeId: string, accountTypeDetails: TAccountType) => {
-    setSelectedValues({
-      accountTypeId,
-    });
-  };
-
-  const resetSelectedBank = () => {
-    setSelectedValues({
-      bankId: '',
-    });
-  };
-
-  const setSelectedValues = (values: Partial<TAccount>) => {
-    Object.entries(values).forEach(([key, value]) => {
-      setValue(key as keyof TAccount, value);
-    });
-  };
 
   const onCloseModal = useCallback(() => {
     setIsShowModalPicker(false);
   }, []);
 
+  const resetSelectedBank = () => {
+    setValue('bankId', '');
+    setValue('accountIcon', getAccountTypeState[accountTypeId]?.icon);
+  };
+
   const onHandleSubmit = (data: TAccount) => {
-    console.log(data, 'data');
-    // addAccount(data);
+    addAccount(data);
     // useDispatch(addOrUpdateAccount(data));
     // navigation.goBack();
   };
@@ -155,13 +144,13 @@ const AddAccount = ({}) => {
   return (
     <View style={styles.container}>
       <ModalPicker
-        dataSource={dataModal}
+        dataSource={modalConfig.current?.dataSource}
+        title={modalConfig.current?.title}
+        isShowSearch={modalConfig.current?.isShowSearch}
+        isItemSelected={modalConfig.current?.itemSelected}
         isVisible={isShowModalPicker}
-        title={isModalTitle.current}
-        isShowSearch={isShowSearch}
         onToggleModal={onCloseModal}
         onPressItem={handleItemModalPickerPress}
-        isItemSelected={isItemSelected.current}
       />
       <KeyboardAwareScrollView
         style={[styles.form, { backgroundColor: colors.background }]}
@@ -206,17 +195,16 @@ const AddAccount = ({}) => {
             value={getAccountTypeState[watch('accountTypeId')]?.name}
             onSelect={onSelectAccountType}
           />
-          {watch('accountTypeId') === '1' ||
-            (watch('accountTypeId') === '3' && (
-              <InputSelection
-                icon={watch('bankIcon')}
-                value={watch('bankName')}
-                title={watch('accountTypeId') === '1' ? 'Chọn ngân hàng' : 'Chọn nhà cung cấp'}
-                onSelect={onSelectBank}
-                required={false}
-                onDelete={resetSelectedBank}
-              />
-            ))}
+          {(watch('accountTypeId') === '2' || watch('accountTypeId') === '5') && (
+            <InputSelection
+              icon={getBankState[watch('bankId')]?.icon}
+              value={getBankState[watch('bankId')]?.bankName}
+              title="Chọn nhà cung cấp"
+              onSelect={onSelectBank}
+              required={false}
+              onDelete={resetSelectedBank}
+            />
+          )}
         </View>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={[styles.itemGroup, styles.itemGroupBetween]}>

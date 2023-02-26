@@ -85,6 +85,7 @@ export type TAccountType = {
   value: string;
   icon: IconProps | any;
 };
+
 export type TBank = {
   id: string;
   bankCode: string;

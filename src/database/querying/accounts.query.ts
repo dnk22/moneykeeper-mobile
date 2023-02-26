@@ -17,7 +17,7 @@ export const addAccount = async (account: TAccount) => {
   });
 };
 
-export const getAllActiveAccount = async ({ isActive = true }: { isActive: boolean }) => {
+export const getAccounts = async ({ isActive = true }: { isActive: boolean }) => {
   return await database.read(async () => {
     return await accountsTable.query(Q.where('is_active', isActive)).fetch();
   });

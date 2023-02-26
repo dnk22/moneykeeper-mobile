@@ -15,15 +15,15 @@ import styles from './styles';
 
 type ModalPickerProps = IModalComponentProps & {
   dataSource: any;
-  title: string;
+  title?: string;
   isItemSelected?: string;
-  isShowSearch: boolean;
+  isShowSearch?: boolean;
   onPressItem?: (item: any) => void;
 };
 
 function ModalPicker({
   dataSource,
-  title,
+  title = 'Vui lòng chọn',
   isVisible,
   onToggleModal,
   isItemSelected,
@@ -32,8 +32,11 @@ function ModalPicker({
 }: ModalPickerProps) {
   const { colors } = useCustomTheme();
   const [isSelected, setIsSelected] = useState(isItemSelected);
-
   const [data, setData] = useState(dataSource);
+
+  useEffect(() => {
+    setData(dataSource);
+  }, [dataSource]);
 
   useEffect(() => {
     setIsSelected(isItemSelected);

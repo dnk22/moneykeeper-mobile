@@ -15,7 +15,7 @@ import ItemSettingsModal from './ItemSettingsModal';
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import AccountList from '../AccountList';
 import { groupDataByValue } from 'utils/algorithm';
-import { getAllActiveAccount } from 'database/querying/accounts.query';
+import { getAccounts } from 'database/querying/accounts.query';
 
 function Accounts() {
   const { colors } = useCustomTheme();
@@ -41,11 +41,13 @@ function Accounts() {
   }, [group, getActiveAccounts]);
 
   useEffect(() => {
-    getAllActiveAccount();
+    fetchAccountData();
   }, []);
 
+  const fetchAccountData = () => {};
+
   const getTotalAmount = useCallback((data: TAccount[]) => {
-    const result = data.reduce((sum, account) => sum + account.current_amount, 0);
+    const result = data.reduce((sum, account) => sum + account.currentAmount, 0);
     return result;
   }, []);
 
