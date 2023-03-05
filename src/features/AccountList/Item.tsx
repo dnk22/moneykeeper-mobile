@@ -28,8 +28,8 @@ function Item({ account, isItemSelected, onActionPress, onItemPress }: ItemProps
     if (onItemPress) {
       onItemPress(account);
     } else {
-      const { _id } = account;
-      navigation.navigate(ACCOUNT_DETAIL, { accountId: _id });
+      const { id } = account;
+      navigation.navigate(ACCOUNT_DETAIL, { accountId: id });
     }
   };
 
@@ -42,21 +42,19 @@ function Item({ account, isItemSelected, onActionPress, onItemPress }: ItemProps
         <View style={styles.itemContent}>
           <SvgIcon
             name={
-              account?.provider_details?.icon ||
-              account?.bank_details?.icon ||
-              account?.account_type_details?.icon
+              account.accountLogo
             }
             size={34}
           />
           <View style={styles.itemCenter}>
             <RNText numberOfLines={1} style={styles.itemTitle}>
-              {account.name}
+              {account.accountName}
             </RNText>
             <RNText numberOfLines={1} style={styles.itemSubTitle}>
-              {account.current_amount?.toString()}
+              {account.currentAmount?.toString()}
             </RNText>
           </View>
-          {isItemSelected && isItemSelected === account._id && <CheckboxComponent check={true} />}
+          {isItemSelected && isItemSelected === account.id && <CheckboxComponent check={true} />}
           {!isItemSelected && (
             <PressableHaptic
               style={styles.itemAction}

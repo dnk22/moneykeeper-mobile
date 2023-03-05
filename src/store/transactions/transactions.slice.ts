@@ -3,10 +3,10 @@ import { TTransactions, TAccount, TTransactionsCategory } from 'database/types/i
 import { TTransactionsState } from 'utils/types';
 
 export const transactionAdapter = createEntityAdapter<TTransactions>({
-  selectId: (transaction) => transaction._id,
+  selectId: (transaction) => transaction.id,
 });
 export const transactionCategoryAdapter = createEntityAdapter<TTransactionsCategory>({
-  selectId: (tCategory) => tCategory._id,
+  selectId: (tCategory) => tCategory.id,
 });
 
 //set default data
@@ -24,14 +24,14 @@ export const transactionsSlice = createSlice({
     addOrUpdateTransaction: (state, { payload }: PayloadAction<TTransactions>) => {
       const data = {
         ...payload,
-        _id: payload._id || nanoid(),
+        id: payload.id || nanoid(),
       };
       transactionAdapter.upsertOne(state.transactions, data);
     },
     addOrUpdateTransactionCategory: (state, { payload }: PayloadAction<TTransactionsCategory>) => {
       const data = {
         ...payload,
-        _id: payload._id || nanoid(),
+        id: payload.id || nanoid(),
       };
       transactionCategoryAdapter.upsertOne(state.transactionCategory, data);
     },

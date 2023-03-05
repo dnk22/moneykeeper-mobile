@@ -11,14 +11,14 @@ export default class AccountModel extends Model {
   };
 
   @text('account_name') accountName!: string;
+  @text('account_logo') accountLogo!: string;
   @field('initial_amount') initialAmount!: number;
   @field('current_amount') currentAmount!: number;
   @field('account_type_id') accountTypeId!: string;
   @field('account_type_name') accountTypeName!: string;
-  @field('account_type_icon') accountTypeIcon!: string;
   @field('bank_id') bankId!: string;
   @field('bank_name') bankName!: string;
-  @field('bank_icon') bankIcon!: string;
+  @field('bank_code') bankCode!: string;
   @field('currency') currency!: string;
   @text('descriptions') descriptions!: string;
   @field('is_active') isActive!: boolean;
@@ -38,5 +38,5 @@ export default class AccountModel extends Model {
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;
 
-  @children('transactions') transactions!: any;
+  @children('transactions') transactions!: object;
 }

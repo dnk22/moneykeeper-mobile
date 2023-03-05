@@ -20,7 +20,7 @@ const FlatListComponent: PropsSectionList = (props) => {
     ...rest
   } = props;
 
-  const keyExtractor = useCallback((item: any) => item._id, []);
+  const keyExtractor = useCallback((item: any) => item.id, []);
 
   const renderRefreshControl = useMemo(
     () => (

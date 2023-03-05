@@ -3,7 +3,7 @@ import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 
 // user
 export type TUsers = {
-  _id: string;
+  id: string;
   user_name: string;
   full_name: string;
   email: string;
@@ -14,14 +14,14 @@ export type TUsers = {
 
 // transactions
 export type TTransactions = {
-  _id: string;
+  id: string;
   amount: number;
-  transactions_type_id: string;
+  transactions_typeid: string;
   transactions_type_details?: TTransactionType;
-  transactions_category_id: string;
+  transactions_categoryid: string;
   descriptions?: string;
   date_time_at: Date;
-  account_id: string;
+  accountid: string;
   location?: string;
   event_name?: string;
   pay_for?: string;
@@ -29,11 +29,11 @@ export type TTransactions = {
   fee_type?: string;
   is_not_add_report?: boolean;
   media?: any;
-  user_id?: string;
+  userid?: string;
 };
 
 export type TTransactionsCategory = {
-  _id: string;
+  id: string;
   category_name: string;
   parent?: string;
   category_description: string;
@@ -43,7 +43,7 @@ export type TTransactionsCategory = {
 };
 
 export type TTransactionType = {
-  _id: string;
+  id: string;
   name: string;
   type: string;
   icon: IconProps;
@@ -56,13 +56,16 @@ export type TAccount = {
   initialAmount: number;
   currentAmount: number;
   accountTypeId: string;
+  accountTypeName: string;
   bankId?: string;
+  bankName?: string;
+  bankCode?: string;
   currency?: string;
   descriptions?: string;
   isActive: boolean;
   isNotAddReport?: boolean;
   userId: string;
-  accountIcon: string;
+  accountLogo: string;
   sortOrder?: number;
   termType?: number;
   termMonth?: number;

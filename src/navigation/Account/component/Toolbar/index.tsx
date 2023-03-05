@@ -1,4 +1,3 @@
-import { HeaderButtonProps } from '@react-navigation/native-stack/lib/typescript/src/types';
 import {
   SvgIcon,
   PressableHaptic,
@@ -15,11 +14,11 @@ import { updateAccountViewSettings } from 'store/app/app.slice';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import styles from './styles';
 
-function Toolbar({}: HeaderButtonProps) {
+function Toolbar() {
   const { group, sort } = useAppSelector((state) => selectAccountViewSettings(state));
+  const useDispatch = useAppDispatch();
 
   const [isShowModal, setIsShowModal] = useState(false);
-  const useDispatch = useAppDispatch();
 
   const onToggleModal = () => {
     setIsShowModal(!isShowModal);
@@ -30,8 +29,10 @@ function Toolbar({}: HeaderButtonProps) {
   };
 
   const onSort = (value: 'name' | 'custom') => {
-    useDispatch(updateAccountViewSettings({ sort: value }));
-    onToggleModal();
+    if (!group) {
+      useDispatch(updateAccountViewSettings({ sort: value }));
+      onToggleModal();
+    }
   };
 
   return (
@@ -51,13 +52,13 @@ function Toolbar({}: HeaderButtonProps) {
             <RNText style={styles.groupHeader} preset="linkXSmall">
               Sắp xếp
             </RNText>
-            <TouchableHighlightComponent onPress={() => onSort('name')}>
+            <TouchableHighlightComponent onPress={() => onSort('name')} isActive={!group}>
               <View style={styles.groupContent}>
                 <RNText preset="textMedium">Tên tài khoản</RNText>
                 {sort === 'name' && <CheckboxComponent type="radio" check />}
               </View>
             </TouchableHighlightComponent>
-            <TouchableHighlightComponent onPress={() => onSort('custom')}>
+            <TouchableHighlightComponent onPress={() => onSort('custom')} isActive={!group}>
               <View style={styles.groupContent}>
                 <RNText preset="textMedium">Tự chọn</RNText>
                 {sort === 'custom' && <CheckboxComponent type="radio" check />}

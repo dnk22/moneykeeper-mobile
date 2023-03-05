@@ -28,9 +28,9 @@ import { setAccountSelected } from 'store/transactions/transactions.slice';
 import { AddTransactionRouteProp } from 'navigation/types';
 
 const initialAddFormValues: TTransactions = {
-  _id: '',
+  id: '',
   amount: 0,
-  transactions_type_id: '1',
+  transactions_typeid: '1',
   date_time: new Date(),
 };
 
@@ -55,23 +55,23 @@ export default function AddTransactions() {
       ...initialAddFormValues,
     },
   });
-  const { date_time, account_id } = getValues();
+  const { date_time, accountid } = getValues();
 
   useEffect(() => {
-    if (!params?.transaction_id && getDefaultAccountData?._id) {
-      setValue('account_id', getDefaultAccountData._id);
+    if (!params?.transactionid && getDefaultAccountData?.id) {
+      setValue('accountid', getDefaultAccountData.id);
       useDispatch(setAccountSelected(getDefaultAccountData));
     }
-  }, [params?.transaction_id, getDefaultAccountData?._id]);
+  }, [params?.transactionid, getDefaultAccountData?.id]);
 
   useEffect(() => {
-    if (watch('account_id')) {
+    if (watch('accountid')) {
       useDispatch(setAccountSelected(getDefaultAccountData));
     }
-  }, [watch('account_id')]);
+  }, [watch('accountid')]);
 
   const onHandleTransactionTypeItemPress = useCallback((item: TTransactionType) => {
-    setValue('transactions_type_id', item._id);
+    setValue('transactions_typeid', item.id);
     setValue('transactions_type_details', item);
     setIsShowTransactionTypeModal(false);
   }, []);
@@ -92,7 +92,7 @@ export default function AddTransactions() {
   }, []);
 
   const getInputTextColor = useMemo(() => {
-    switch (watch('transactions_type_id')) {
+    switch (watch('transactions_typeid')) {
       case '1':
       case '3':
         return 'red';
@@ -102,7 +102,7 @@ export default function AddTransactions() {
       default:
         return colors.primary;
     }
-  }, [watch('transactions_type_id')]);
+  }, [watch('transactions_typeid')]);
 
   const onHandleFeeChange = () => {
     setIsShowFee(!isShowFee);
@@ -131,7 +131,7 @@ export default function AddTransactions() {
         isVisible={isShowTransactionTypeModal}
         onToggleModal={onToggleTransactionTypeModal}
         onPressItem={onHandleTransactionTypeItemPress}
-        isTypeSelected={watch('transactions_type_id')}
+        isTypeSelected={watch('transactions_typeid')}
       />
       <DateTimeModalPicker
         value={date_time}
@@ -160,7 +160,7 @@ export default function AddTransactions() {
         showsVerticalScrollIndicator={false}
         extraScrollHeight={60}
       >
-        {!getDefaultAccountData?._id && (
+        {!getDefaultAccountData?.id && (
           <View style={styles.noAccountData}>
             <RNText color="red">Vui lòng tạo 1 tài khoản trước</RNText>
           </View>

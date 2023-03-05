@@ -54,11 +54,11 @@ export function getLunarDate() {
   };
 
   LunarDate.prototype.getMonthPillar = function () {
-    var branch_id, stem_id;
-    stem_id =
+    var branchid, stemid;
+    stemid =
       LunarDate.month_stem_lookup[this.year_in_epoch % 5][this.lunar_month - 1];
-    branch_id = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2][this.lunar_month - 1];
-    return LunarDate.stems_and_branches[stem_id - 1][branch_id - 1];
+    branchid = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2][this.lunar_month - 1];
+    return LunarDate.stems_and_branches[stemid - 1][branchid - 1];
   };
 
   LunarDate.prototype.getDayPillar = function () {

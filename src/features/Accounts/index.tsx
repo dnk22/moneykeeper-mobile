@@ -6,45 +6,48 @@ import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { ADD_ACCOUNT } from 'navigation/constants';
 import { useAppSelector } from 'store/index';
-import {
-  selectActiveAccounts,
-  selectDeactivateActiveAccounts,
-} from 'store/account/account.selector';
 import { TAccount } from 'database/types/index';
 import ItemSettingsModal from './ItemSettingsModal';
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import AccountList from '../AccountList';
 import { groupDataByValue } from 'utils/algorithm';
-import { getAccounts } from 'database/querying/accounts.query';
+import { observeAccountsTable } from 'database/querying/accounts.query';
+import withObservables from '@nozbe/with-observables';
+import { AccountModel } from 'database/models';
+import { Observable } from '@nozbe/watermelondb/utils/rx';
 
-function Accounts() {
+type AccountProps = {
+  activeAccountsObservables: Observable<AccountModel[]>;
+  deactivateAccountsObservables: Observable<AccountModel[]>;
+};
+function Accounts({ activeAccountsObservables, deactivateAccountsObservables }: AccountProps) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
 
   const { group } = useAppSelector((state) => selectAccountViewSettings(state));
-  const getActiveAccounts = useAppSelector((state) => selectActiveAccounts(state));
-  const getDeactivateActiveAccounts = useAppSelector((state) =>
-    selectDeactivateActiveAccounts(state),
-  );
 
   const currentAccountPressed = useRef<TAccount | any>(null);
   const [isShowItemSettingsModal, setIsShowItemSettingsModal] = useState(false);
-  const [isActiveData, setIsActiveData] = useState<SectionListData<TAccount, any>>([]);
+  const [activeAccounts, setActiveAccounts] = useState<SectionListData<TAccount, any>>([]);
+  const [deactivateAccounts, seDeactivateAccounts] = useState<SectionListData<TAccount, any>>([]);
 
   useEffect(() => {
+    fetchActiveAccount();
+  }, [group, activeAccountsObservables]);
+
+  useEffect(() => {
+    console.log('run deactivate');
+    seDeactivateAccounts(deactivateAccountsObservables);
+  }, [deactivateAccountsObservables]);
+
+  const fetchActiveAccount = async () => {
     if (group) {
-      const dataGroup: any = groupDataByValue(getActiveAccounts);
-      setIsActiveData(dataGroup);
+      const dataGroup: any[] = groupDataByValue(activeAccountsObservables);
+      setActiveAccounts(dataGroup);
     } else {
-      setIsActiveData([{ data: getActiveAccounts }]);
+      setActiveAccounts([{ data: activeAccountsObservables, title: '' }]);
     }
-  }, [group, getActiveAccounts]);
-
-  useEffect(() => {
-    fetchAccountData();
-  }, []);
-
-  const fetchAccountData = () => {};
+  };
 
   const getTotalAmount = useCallback((data: TAccount[]) => {
     const result = data.reduce((sum, account) => sum + account.currentAmount, 0);
@@ -64,15 +67,15 @@ function Accounts() {
   }, []);
 
   const isHaveAccountsData = useMemo(
-    () => !!isActiveData.length || !!getDeactivateActiveAccounts.length,
-    [isActiveData, getDeactivateActiveAccounts],
+    () => !!activeAccounts.length || !!deactivateAccounts.length,
+    [activeAccounts, deactivateAccounts],
   );
 
   const onToggleModal = () => {
     setIsShowItemSettingsModal(!isShowItemSettingsModal);
   };
 
-  const onCreateWallet = () => {
+  const handleOnCreateAccount = () => {
     navigation.navigate(ADD_ACCOUNT);
   };
 
@@ -86,18 +89,20 @@ function Accounts() {
       <View style={styles.container}>
         {isHaveAccountsData && (
           <View style={styles.totalBalance}>
-            <RNText style={styles.totalCurrency}>{renderTitle('Tổng tiền: ', isActiveData)}</RNText>
+            <RNText style={styles.totalCurrency}>
+              {renderTitle('Tổng tiền: ', activeAccounts)}
+            </RNText>
           </View>
         )}
-        {!!isActiveData.length && (
-          <Card title={renderTitle('Đang sử dụng: ', isActiveData)}>
-            <AccountList data={isActiveData} isGroup={group} onActionPress={onActionPress} />
+        {!!activeAccounts.length && (
+          <Card title={renderTitle('Đang sử dụng: ', activeAccounts)}>
+            <AccountList data={activeAccounts} isGroup={group} onActionPress={onActionPress} />
           </Card>
         )}
-        {!!getDeactivateActiveAccounts.length && (
+        {!!deactivateAccounts.length && (
           <Card title="Ngưng sử dụng">
             <AccountList
-              data={[{ data: getDeactivateActiveAccounts }]}
+              data={[{ data: deactivateAccounts }]}
               isGroup={false}
               onActionPress={onActionPress}
             />
@@ -110,7 +115,7 @@ function Accounts() {
         )}
         <PressableHaptic
           style={[styles.createButton, { backgroundColor: colors.primary }]}
-          onPress={onCreateWallet}
+          onPress={handleOnCreateAccount}
         >
           <SvgIcon name="add" size={30} color="white" />
         </PressableHaptic>
@@ -119,4 +124,7 @@ function Accounts() {
   );
 }
 
-export default Accounts;
+export default withObservables([], () => ({
+  activeAccountsObservables: observeAccountsTable(true),
+  deactivateAccountsObservables: observeAccountsTable(false),
+}))(Accounts);

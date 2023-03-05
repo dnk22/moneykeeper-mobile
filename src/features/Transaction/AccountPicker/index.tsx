@@ -26,7 +26,7 @@ function AccountPicker() {
       <AccountList
         data={groupAccounts}
         onItemPress={handleOnItemPress}
-        isItemSelected={getAccountSelected?._id}
+        isItemSelected={getAccountSelected?.id}
       />
     </View>
   );

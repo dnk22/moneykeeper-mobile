@@ -2,14 +2,14 @@ import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 
 import schema from './schema';
-import migrations from './migrations';
+// import migrations from './migrations';
 import { AccountModel, Transaction, TransactionCategory } from './models';
 
 // First, create the adapter to the underlying database:
 const adapter = new SQLiteAdapter({
   schema,
   // (You might want to comment it out for development purposes -- see Migrations documentation)
-  migrations,
+  // migrations,
   // (optional database name or file system path)
   dbName: 'personalExpense',
   // (recommended option, should work flawlessly out of the box on iOS. On Android,

@@ -5,10 +5,9 @@ import isEqual from 'react-fast-compare';
 import { Alert, View } from 'react-native';
 import styles from './styles';
 import { TAccount } from 'database/types/index';
-import { useAppDispatch } from 'store/index';
-import { deactivateAccountById, deleteAccountById } from 'store/account/account.slice';
 import { useNavigation } from '@react-navigation/native';
 import { ADD_ACCOUNT } from 'navigation/constants';
+import { changeAccountStatusById, deleteAccountById } from 'database/querying/accounts.query';
 
 type ItemSettingsModalProps = IModalComponentProps & { account: TAccount };
 
@@ -19,9 +18,8 @@ const DELETE = 'delete';
 const INACTIVE = 'inactive';
 
 function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsModalProps) {
-  const useDispatch = useAppDispatch();
   const navigation = useNavigation();
-  const isAccountActive = account?.is_active;
+  const isAccountActive = account?.isActive;
 
   const onItemPress = (type: string) => {
     switch (type) {
@@ -30,16 +28,14 @@ function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsMo
       case ADJUSTMENT:
         break;
       case EDIT:
-        navigation.navigate(ADD_ACCOUNT, { accountId: account._id });
+        navigation.navigate(ADD_ACCOUNT, { accountId: account.id });
         break;
       case DELETE:
         onConfirmDelete();
         break;
       default:
         if (account) {
-          useDispatch(
-            deactivateAccountById({ id: account._id, changes: { is_active: !account.is_active } }),
-          );
+          changeAccountStatusById({ id: account.id });
         }
         break;
     }
@@ -47,12 +43,13 @@ function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsMo
   };
 
   const onOk = () => {
-    account?._id && useDispatch(deleteAccountById(account._id));
+    account?.id && deleteAccountById({ id: account.id });
+    onToggleModal();
   };
 
   const onConfirmDelete = () =>
     Alert.alert(
-      `Xóa ${account?.name}`,
+      `Xóa ${account?.accountName}`,
       'Xóa tài khoản đồng này nghĩa với việc tất cả các ghi chép của tài khoản này sẽ bị xóa theo, HÃY CẨN THẬN!',
       [
         {

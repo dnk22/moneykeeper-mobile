@@ -24,7 +24,7 @@ function TransactionCategoryNavigation() {
       <TransactionCategoryStack.Screen
         name={UPDATE_TRANSACTION_CATEGORY}
         options={({ route }) => ({
-          title: route.params?.transaction_category_id ? 'Sửa danh mục' : 'Thêm danh mục',
+          title: route.params?.transaction_categoryid ? 'Sửa danh mục' : 'Thêm danh mục',
           // headerSearchBarOptions: {
           //   placeholder: 'hihi',
           // },

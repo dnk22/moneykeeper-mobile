@@ -35,7 +35,7 @@ function TransactionTypePicker({
 
   const renderItem = ({ item }: { item: TTransactionType }) => {
     const onPress = () => {
-      setIsSelected(item._id);
+      setIsSelected(item.id);
       if (onPressItem) {
         onPressItem(item);
       }
@@ -51,8 +51,8 @@ function TransactionTypePicker({
             </View>
             <RNText>{item.name}</RNText>
           </View>
-          {(isShowCheckbox || currentSelected(item._id)) && (
-            <CheckboxComponent check={currentSelected(item._id)} />
+          {(isShowCheckbox || currentSelected(item.id)) && (
+            <CheckboxComponent check={currentSelected(item.id)} />
           )}
         </View>
       </TouchableHighlightComponent>

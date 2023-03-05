@@ -12,9 +12,9 @@ import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useForm } from 'react-hook-form';
-import { TAccountType, TAccount } from 'database/types/index';
+import { TAccountType, TAccount, TBank } from 'database/types/index';
 import ModalPicker from './ModalPicker';
-import { useAppDispatch, useAppSelector } from 'store/index';
+import { useAppSelector } from 'store/index';
 import {
   accountSelectors,
   selectAllAccountType,
@@ -22,7 +22,7 @@ import {
 } from 'store/account/account.selector';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AddAccountRouteProp } from 'navigation/types';
-import { addAccount } from 'database/querying/accounts.query';
+import { addAccount, deleteAllAccount } from 'database/querying/accounts.query';
 import { ACCOUNT_TYPE, BANK_TYPE, DEFAULT_ACCOUNT_TYPE_ID } from './constants';
 
 type ModalConfigProps = {
@@ -33,10 +33,11 @@ type ModalConfigProps = {
   dataSource: any[];
 };
 
+type ItemSelectedProps = TAccountType & TBank;
+
 const AddAccount = ({}) => {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
-  const useDispatch = useAppDispatch();
   const { params } = useRoute<AddAccountRouteProp>();
 
   // state from store
@@ -52,7 +53,6 @@ const AddAccount = ({}) => {
   const inputNameRef = useRef<any>(null);
 
   const [isShowModalPicker, setIsShowModalPicker] = useState<boolean>(false);
-  const [dataModal, setDataModal] = useState<any[]>([]);
 
   const {
     control,
@@ -64,11 +64,12 @@ const AddAccount = ({}) => {
     formState: { errors },
   } = useForm<TAccount>({
     defaultValues: {
-      id: '',
       accountName: '',
       initialAmount: 0,
       currentAmount: 0,
       accountTypeId: defaultAccountType?.id,
+      accountTypeName: defaultAccountType?.name,
+      accountLogo: defaultAccountType?.icon,
       isNotAddReport: false,
       isActive: true,
       currency: 'vnd',
@@ -110,19 +111,26 @@ const AddAccount = ({}) => {
     setIsShowModalPicker(true);
   }, [accountTypeId]);
 
-  const handleItemModalPickerPress = useCallback((item: TAccountType) => {
+  const handleItemModalPickerPress = useCallback((item: ItemSelectedProps) => {
     switch (modalConfig.current?.type) {
       case BANK_TYPE:
-        setValue('bankId', item.id);
+        setValuesForm({
+          bankId: item.id,
+          bankName: item.bankName,
+          bankCode: item.bankCode,
+        });
         break;
       default:
-        setValue('accountTypeId', item.id);
+        setValuesForm({
+          accountTypeId: item.id,
+          accountTypeName: item.name,
+        });
         if (item.id !== accountTypeId) {
           resetSelectedBank();
         }
         break;
     }
-    setValue('accountIcon', item.icon);
+    setValue('accountLogo', item.icon);
     setIsShowModalPicker(false);
   }, []);
 
@@ -131,14 +139,23 @@ const AddAccount = ({}) => {
   }, []);
 
   const resetSelectedBank = () => {
-    setValue('bankId', '');
-    setValue('accountIcon', getAccountTypeState[accountTypeId]?.icon);
+    setValuesForm({
+      bankId: '',
+      bankName: '',
+      bankCode: '',
+    });
+    setValue('accountLogo', getAccountTypeState[accountTypeId]?.icon);
+  };
+
+  const setValuesForm = (values: Partial<TAccount>) => {
+    Object.entries(values).forEach(([key, value]) => {
+      setValue(key as keyof TAccount, value);
+    });
   };
 
   const onHandleSubmit = (data: TAccount) => {
     addAccount(data);
-    // useDispatch(addOrUpdateAccount(data));
-    // navigation.goBack();
+    navigation.goBack();
   };
 
   return (

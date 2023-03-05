@@ -60,7 +60,7 @@ function ModalPicker({
               <View>
                 <RNText style={[styles.title, { color: colors.text }]}>{item.shortName}</RNText>
                 <RNText fontSize={12} style={[styles.subTitle, { color: colors.text }]}>
-                  {item.name}
+                  {item.bankName || item.name}
                 </RNText>
               </View>
             ) : (

@@ -2,10 +2,14 @@ import React, { memo, useMemo } from 'react';
 import isEqual from 'react-fast-compare';
 import FastImage, { Source } from 'react-native-fast-image';
 import { NumberProp, SvgProps } from 'react-native-svg';
+import { Image } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { normalize } from 'share/dimensions';
 import icon, { IconProps } from './const';
 import { IconSize } from './preset';
+import { BANKS_ICON } from 'assets/images/banks';
+
+const imgSrc = { ...BANKS_ICON };
 
 interface SvgIconProps extends SvgProps {
   name?: IconProps;
@@ -23,15 +27,16 @@ function SvgIcon({ name, color, size, preset = 'default', ...rest }: SvgIconProp
     width: normalize(size) || presetStyle,
     height: normalize(size) || presetStyle,
   };
+
   const isImage = useMemo(() => name && !icon.hasOwnProperty(name), [name]);
 
   return (
     <>
       {isImage && (
-        <FastImage
+        <Image
           style={{ width: dimension.width, height: dimension.height }}
           resizeMode={FastImage.resizeMode.contain}
-          source={name}
+          source={imgSrc[name]}
         />
       )}
       {!isImage && (

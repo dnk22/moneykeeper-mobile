@@ -45,7 +45,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Ngoai Thuong VN',
     bankCode: 'VCB',
     shortName: 'VietcomBank',
-    icon: require('assets/images/banks/VCB.png'),
+    icon: 'VCB',
     isSystem: true,
   },
   {
@@ -53,7 +53,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Cong Thuong VN',
     bankCode: 'CTG',
     shortName: 'VietinBank',
-    icon: require('assets/images/banks/CTG.png'),
+    icon: 'CTG',
     isSystem: true,
   },
   {
@@ -61,7 +61,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Ky Thuong VN',
     bankCode: 'TCB',
     shortName: 'Techcombank',
-    icon: require('assets/images/banks/TCB.png'),
+    icon: 'TCB',
     isSystem: true,
   },
   {
@@ -69,7 +69,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Dau Tu va Phat Trien VN',
     bankCode: 'BIDV',
     shortName: 'BIDV',
-    icon: require('assets/images/banks/BIDV.png'),
+    icon: 'BIDV',
     isSystem: true,
   },
   {
@@ -77,7 +77,7 @@ export const Bank: TBank[] = [
     bankName: 'NH Nong Nghiep va Phat Trien Nong Thon Viet Nam',
     bankCode: 'VARB',
     shortName: 'AgriBank',
-    icon: require('assets/images/banks/VARB.png'),
+    icon: 'VARB',
     isSystem: true,
   },
   {
@@ -85,7 +85,7 @@ export const Bank: TBank[] = [
     bankName: 'Ngan hang Thuong Mai Co Phan Quoc Dan',
     bankCode: 'NVB',
     shortName: 'Navibank',
-    icon: require('assets/images/banks/NVB.png'),
+    icon: 'NVB',
     isSystem: true,
   },
   {
@@ -93,7 +93,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Sai Gon Thuong Tin',
     bankCode: 'STB',
     shortName: 'Sacombank',
-    icon: require('assets/images/banks/STB.png'),
+    icon: 'STB',
     isSystem: true,
   },
   {
@@ -101,7 +101,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP A Chau',
     bankCode: 'ACB',
     shortName: 'ACB',
-    icon: require('assets/images/banks/ACB.png'),
+    icon: 'ACB',
     isSystem: true,
   },
   {
@@ -109,7 +109,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Quan Doi',
     bankCode: 'MB',
     shortName: 'MBBank',
-    icon: require('assets/images/banks/MB.png'),
+    icon: 'MB',
     isSystem: true,
   },
   {
@@ -117,7 +117,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Tien Phong',
     bankCode: 'TPB',
     shortName: 'TPBank',
-    icon: require('assets/images/banks/TPB.png'),
+    icon: 'TPB',
     isSystem: true,
   },
   {
@@ -125,7 +125,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TNHH MTV Shinhan VN',
     bankCode: 'SVB',
     shortName: 'Shinhan Bank',
-    icon: require('assets/images/banks/SVB.png'),
+    icon: 'SVB',
     isSystem: true,
   },
   {
@@ -133,7 +133,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Quoc Te VN',
     bankCode: 'VIB',
     shortName: 'VIB Bank',
-    icon: require('assets/images/banks/VIB.png'),
+    icon: 'VIB',
     isSystem: true,
   },
   {
@@ -141,7 +141,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Viet Nam Thinh Vuong',
     bankCode: 'VPB',
     shortName: 'VPBank',
-    icon: require('assets/images/banks/VPB.png'),
+    icon: 'VPB',
     isSystem: true,
   },
   {
@@ -149,7 +149,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Sai Gon Ha Noi',
     bankCode: 'SHB',
     shortName: 'SHB',
-    icon: require('assets/images/banks/SHB.png'),
+    icon: 'SHB',
     isSystem: true,
   },
   {
@@ -157,7 +157,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Xuat Nhap khau VN',
     bankCode: 'EIB',
     shortName: 'Eximbank',
-    icon: require('assets/images/banks/EIB.png'),
+    icon: 'EIB',
     isSystem: true,
   },
   {
@@ -165,7 +165,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Bao Viet',
     bankCode: 'BVB',
     shortName: 'BaoVietBank',
-    icon: require('assets/images/banks/BVB.png'),
+    icon: 'BVB',
     isSystem: true,
   },
   {
@@ -173,7 +173,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Ban Viet',
     bankCode: 'VCCB',
     shortName: 'VietcapitalBank',
-    icon: require('assets/images/banks/VCCB.png'),
+    icon: 'VCCB',
     isSystem: true,
   },
   {
@@ -181,7 +181,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Sai Gon',
     bankCode: 'SCB',
     shortName: 'SCB',
-    icon: require('assets/images/banks/SCB.png'),
+    icon: 'SCB',
     isSystem: true,
   },
   {
@@ -189,7 +189,7 @@ export const Bank: TBank[] = [
     bankName: 'NH Lien Doanh Viet Nga',
     bankCode: 'VRB',
     shortName: 'VietNam - Russia Bank',
-    icon: require('assets/images/banks/VRB.png'),
+    icon: 'VRB',
     isSystem: true,
   },
   {
@@ -197,7 +197,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP An Binh',
     bankCode: 'ABB',
     shortName: 'ABBank',
-    icon: require('assets/images/banks/ABB.png'),
+    icon: 'ABB',
     isSystem: true,
   },
   {
@@ -205,7 +205,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Dai Chung VN',
     bankCode: 'PVCB',
     shortName: 'PVCombank',
-    icon: require('assets/images/banks/PVCB.png'),
+    icon: 'PVCB',
     isSystem: true,
   },
   {
@@ -213,7 +213,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TM TNHH MTV Dai Duong',
     bankCode: 'OJB',
     shortName: 'OceanBank',
-    icon: require('assets/images/banks/OJB.png'),
+    icon: 'OJB',
     isSystem: true,
   },
   {
@@ -221,7 +221,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Nam A',
     bankCode: 'NAB',
     shortName: 'NamA bank',
-    icon: require('assets/images/banks/NAB.png'),
+    icon: 'NAB',
     isSystem: true,
   },
   {
@@ -229,7 +229,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Phat Trien TP HCM',
     bankCode: 'HDB',
     shortName: 'HDBank',
-    icon: require('assets/images/banks/HDB.png'),
+    icon: 'HDB',
     isSystem: true,
   },
   {
@@ -237,7 +237,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Viet Nam Thuong Tin',
     bankCode: 'VB',
     shortName: 'VietBank',
-    icon: require('assets/images/banks/VB.png'),
+    icon: 'VB',
     isSystem: true,
   },
   {
@@ -245,7 +245,7 @@ export const Bank: TBank[] = [
     bankName: 'Công ty Tài chính Cổ Phần Tín Việt',
     bankCode: 'CFC',
     shortName: 'VietCredit',
-    icon: require('assets/images/banks/CFC.png'),
+    icon: 'CFC',
     isSystem: true,
   },
   {
@@ -253,7 +253,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TNHH MTV Public VN',
     bankCode: 'PBVN',
     shortName: 'Public bank',
-    icon: require('assets/images/banks/PBVN.png'),
+    icon: 'PBVN',
     isSystem: true,
   },
   {
@@ -261,7 +261,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TNHH MTV Hongleong VN',
     bankCode: 'HLB',
     shortName: 'Hongleong Bank',
-    icon: require('assets/images/banks/HLB.png'),
+    icon: 'HLB',
     isSystem: true,
   },
   {
@@ -269,7 +269,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Xang Dau Petrolimex',
     bankCode: 'PGB',
     shortName: 'PG Bank',
-    icon: require('assets/images/banks/PGB.png'),
+    icon: 'PGB',
     isSystem: true,
   },
   {
@@ -277,7 +277,7 @@ export const Bank: TBank[] = [
     bankName: 'NH Hop Tac',
     bankCode: 'COB',
     shortName: 'Co.op Bank',
-    icon: require('assets/images/banks/COB.png'),
+    icon: 'COB',
     isSystem: true,
   },
   {
@@ -285,7 +285,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TNHH MTV CIMB Viet Nam',
     bankCode: 'CIMB',
     shortName: 'CIMB',
-    icon: require('assets/images/banks/CIMB.png'),
+    icon: 'CIMB',
     isSystem: true,
   },
   {
@@ -293,7 +293,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TNHH Indovina',
     bankCode: 'IVB',
     shortName: 'Indovina',
-    icon: require('assets/images/banks/IVB.png'),
+    icon: 'IVB',
     isSystem: true,
   },
   {
@@ -301,7 +301,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Dong A',
     bankCode: 'DAB',
     shortName: 'DongABank',
-    icon: require('assets/images/banks/DAB.png'),
+    icon: 'DAB',
     isSystem: true,
   },
   {
@@ -309,7 +309,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TM TNHH MTV Dau Khi Toan Cau',
     bankCode: 'GPB',
     shortName: 'GPBank',
-    icon: require('assets/images/banks/GPB.png'),
+    icon: 'GPB',
     isSystem: true,
   },
   {
@@ -317,7 +317,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Bac A',
     bankCode: 'NASB',
     shortName: 'BacABank',
-    icon: require('assets/images/banks/NASB.png'),
+    icon: 'NASB',
     isSystem: true,
   },
   {
@@ -325,7 +325,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Viet A',
     bankCode: 'VAB',
     shortName: 'VietABank',
-    icon: require('assets/images/banks/VAB.png'),
+    icon: 'VAB',
     isSystem: true,
   },
   {
@@ -333,7 +333,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Sai Gon Cong Thuong',
     bankCode: 'SGB',
     shortName: 'SaigonBank',
-    icon: require('assets/images/banks/SGB.png'),
+    icon: 'SGB',
     isSystem: true,
   },
   {
@@ -341,7 +341,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Hang Hai VN',
     bankCode: 'MSB',
     shortName: 'Maritime Bank',
-    icon: require('assets/images/banks/MSB.png'),
+    icon: 'MSB',
     isSystem: true,
   },
   {
@@ -349,7 +349,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Buu Dien Lien Viet',
     bankCode: 'LPB',
     shortName: 'LienVietPostBank',
-    icon: require('assets/images/banks/LPB.png'),
+    icon: 'LPB',
     isSystem: true,
   },
   {
@@ -357,7 +357,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Kien Long',
     bankCode: 'KLB',
     shortName: 'KienLongBank',
-    icon: require('assets/images/banks/KLB.png'),
+    icon: 'KLB',
     isSystem: true,
   },
   {
@@ -365,7 +365,7 @@ export const Bank: TBank[] = [
     bankName: 'NH Cong Nghiep Han Quoc CN Ha Noi',
     bankCode: 'IBKHN',
     shortName: 'IBK - Ha Noi',
-    icon: require('assets/images/banks/IBKHN.png'),
+    icon: 'IBKHN',
     isSystem: true,
   },
   {
@@ -373,7 +373,7 @@ export const Bank: TBank[] = [
     bankName: 'NH Wooribank',
     bankCode: 'WOO',
     shortName: 'Woori bank',
-    icon: require('assets/images/banks/WOO.png'),
+    icon: 'WOO',
     isSystem: true,
   },
   {
@@ -381,7 +381,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Dong Nam A',
     bankCode: 'SEAB',
     shortName: 'SeABank',
-    icon: require('assets/images/banks/SEAB.png'),
+    icon: 'SEAB',
     isSystem: true,
   },
   {
@@ -389,7 +389,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TNHH MTV United Overseas Bank',
     bankCode: 'UOB',
     shortName: 'UOB',
-    icon: require('assets/images/banks/UOB.png'),
+    icon: 'UOB',
     isSystem: true,
   },
   {
@@ -397,7 +397,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TMCP Phuong Dong',
     bankCode: 'OCB',
     shortName: 'OCB',
-    icon: require('assets/images/banks/OCB.png'),
+    icon: 'OCB',
     isSystem: true,
   },
   {
@@ -405,7 +405,7 @@ export const Bank: TBank[] = [
     bankName: 'Cong ty Tai chinh TNHH MTV Mirae Asset (Viet Nam)',
     bankCode: 'MAFC',
     shortName: 'Mirae Asset',
-    icon: require('assets/images/banks/MAFC.png'),
+    icon: 'MAFC',
     isSystem: true,
   },
   {
@@ -413,7 +413,7 @@ export const Bank: TBank[] = [
     bankName: 'Ngan hang Keb Hana',
     bankCode: 'KEBHANA',
     shortName: 'Keb Hana - Ho Chi Minh',
-    icon: require('assets/images/banks/KEBHANA.png'),
+    icon: 'KEBHANA',
     isSystem: true,
   },
   {
@@ -421,7 +421,7 @@ export const Bank: TBank[] = [
     bankName: 'Standard Chartered',
     bankCode: 'STANDARD',
     shortName: 'Standard Chartered',
-    icon: require('assets/images/banks/STANDARD.png'),
+    icon: 'STANDARD',
     isSystem: true,
   },
   {
@@ -429,7 +429,7 @@ export const Bank: TBank[] = [
     bankName: 'NH So CAKE by VPBank',
     bankCode: 'CAKE',
     shortName: 'CAKE',
-    icon: require('assets/images/banks/CAKE.png'),
+    icon: 'CAKE',
     isSystem: true,
   },
   {
@@ -437,7 +437,7 @@ export const Bank: TBank[] = [
     bankName: 'NH So Ubank by VPBank',
     bankCode: 'Ubank',
     shortName: 'Ubank',
-    icon: require('assets/images/banks/Ubank.png'),
+    icon: 'Ubank',
     isSystem: true,
   },
   {
@@ -445,7 +445,7 @@ export const Bank: TBank[] = [
     bankName: 'NH Nonghyup - Chi nhanh Ha Noi',
     bankCode: 'NonghyupBankHN',
     shortName: 'Nonghyup Bank - HN',
-    icon: require('assets/images/banks/NonghyupBankHN.png'),
+    icon: 'NonghyupBankHN',
     isSystem: true,
   },
   {
@@ -453,7 +453,7 @@ export const Bank: TBank[] = [
     bankName: 'NH Kookmin - Chi nhanh Ha Noi',
     bankCode: 'KBHN',
     shortName: 'Kookmin - HN',
-    icon: require('assets/images/banks/KBHN.png'),
+    icon: 'KBHN',
     isSystem: true,
   },
   {
@@ -461,7 +461,7 @@ export const Bank: TBank[] = [
     bankName: 'NH Kookmin - Chi nhanh TP. HCM',
     bankCode: 'KBHCM',
     shortName: 'Kookmin - HCM',
-    icon: require('assets/images/banks/KBHCM.png'),
+    icon: 'KBHCM',
     isSystem: true,
   },
   {
@@ -469,7 +469,7 @@ export const Bank: TBank[] = [
     bankName: 'NH DBS - Chi nhanh TP. HCM',
     bankCode: 'DBSHCM',
     shortName: 'DBS - HCM',
-    icon: require('assets/images/banks/DBSHCM.png'),
+    icon: 'DBSHCM',
     isSystem: true,
   },
   {
@@ -477,7 +477,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TM TNHH MTV Xay Dung Viet Nam',
     bankCode: 'CBBank',
     shortName: 'CBBank',
-    icon: require('assets/images/banks/CBBank.png'),
+    icon: 'CBBank',
     isSystem: true,
   },
   {
@@ -485,7 +485,7 @@ export const Bank: TBank[] = [
     bankName: 'NH Dai chung TNHH Kasikornbank - Chi nhanh TP. HCM',
     bankCode: 'KBankHCM',
     shortName: 'KBank - HCM',
-    icon: require('assets/images/banks/KBankHCM.png'),
+    icon: 'KBankHCM',
     isSystem: true,
   },
   {
@@ -493,7 +493,7 @@ export const Bank: TBank[] = [
     bankName: 'NH TNHH MTV HSBC Viet Nam',
     bankCode: 'HSBC',
     shortName: 'HSBC',
-    icon: require('assets/images/banks/HSBC.png'),
+    icon: 'HSBC',
     isSystem: true,
   },
   {

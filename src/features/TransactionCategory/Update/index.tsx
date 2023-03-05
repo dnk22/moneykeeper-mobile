@@ -23,7 +23,7 @@ function UpdateTransactionCategory() {
 
   const { control, handleSubmit, getValues, setValue } = useForm<TTransactionsCategory>({
     defaultValues: {
-      _id: '',
+      id: '',
     },
   });
 

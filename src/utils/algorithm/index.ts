@@ -37,15 +37,15 @@ export const deepMerge = (target: any, source: any): any => {
   return target;
 };
 
-export const groupDataByValue = (data: TAccount[]) => {
+export const groupDataByValue = (data: any) => {
   if (!data.length) return [];
   const groupedData: any = {};
-  data.forEach((item) => {
-    if (!groupedData[item.account_type]) {
-      groupedData[item.account_type] = { title: '', data: [] };
+  data.forEach((item: TAccount) => {
+    if (!groupedData[item.accountTypeId]) {
+      groupedData[item.accountTypeId] = { title: '', data: [] };
     }
-    groupedData[item.account_type].title = item.account_type_details?.name;
-    groupedData[item.account_type].data.push(item);
+    groupedData[item.accountTypeId].title = item.accountTypeName;
+    groupedData[item.accountTypeId].data.push(item);
   });
   return Object.values(groupedData);
 };

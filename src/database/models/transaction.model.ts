@@ -11,7 +11,7 @@ export default class Transaction extends Model {
   };
 
   @field('amount') amount!: number;
-  @field('transactions_type_id') transactionsTypeId!: string;
+  @field('transactions_typeid') transactionsTypeId!: string;
   @field('transactions_category_id') transactionsCategoryId!: string;
   @text('descriptions') descriptions!: string;
   @date('date_time_at') dateTimeAt!: Date;
@@ -24,7 +24,7 @@ export default class Transaction extends Model {
   @field('fee_type') feeType!: string;
   @field('is_not_add_report') isNotAddReport!: boolean;
   @field('attachment') attachment!: string;
-  @field('user_id') userId!: string;
+  @field('userid') userId!: string;
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;
 }

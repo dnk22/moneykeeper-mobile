@@ -40,7 +40,7 @@ export type AccountStackParamList = {
 };
 
 export type TransactionParamList = TransactionCategoryParamList & {
-  [ADD_TRANSACTION]: { transaction_id: string } | undefined;
+  [ADD_TRANSACTION]: { transactionId: string } | undefined;
   [ACCOUNT_PICKER]: undefined;
   [TRANSACTION_CATEGORY]: undefined;
 };
@@ -48,7 +48,7 @@ export type TransactionParamList = TransactionCategoryParamList & {
 export type TransactionCategoryParamList = {
   [TRANSACTION_CATEGORY_LIST]: undefined;
   [UPDATE_TRANSACTION_CATEGORY]: {
-    transaction_category_id?: string;
+    transaction_categoryid?: string;
     transaction_category_type: TRANSACTION_CATEGORY_TYPE;
   };
 };
