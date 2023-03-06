@@ -11,7 +11,7 @@ import ItemSettingsModal from './ItemSettingsModal';
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import AccountList from '../AccountList';
 import { groupDataByValue } from 'utils/algorithm';
-import { observeAccountsTable } from 'database/querying/accounts.query';
+import { observeAllActiveAccountsTable } from 'database/querying/accounts.query';
 import withObservables from '@nozbe/with-observables';
 import { AccountModel } from 'database/models';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
@@ -29,15 +29,14 @@ function Accounts({ activeAccountsObservables, deactivateAccountsObservables }: 
   const currentAccountPressed = useRef<TAccount | any>(null);
   const [isShowItemSettingsModal, setIsShowItemSettingsModal] = useState(false);
   const [activeAccounts, setActiveAccounts] = useState<SectionListData<TAccount, any>>([]);
-  const [deactivateAccounts, seDeactivateAccounts] = useState<SectionListData<TAccount, any>>([]);
+  const [deactivateAccounts, setDeactivateAccounts] = useState<SectionListData<TAccount, any>>([]);
 
   useEffect(() => {
     fetchActiveAccount();
   }, [group, activeAccountsObservables]);
 
   useEffect(() => {
-    console.log('run deactivate');
-    seDeactivateAccounts(deactivateAccountsObservables);
+    setDeactivateAccounts(deactivateAccountsObservables);
   }, [deactivateAccountsObservables]);
 
   const fetchActiveAccount = async () => {
@@ -99,7 +98,7 @@ function Accounts({ activeAccountsObservables, deactivateAccountsObservables }: 
             <AccountList data={activeAccounts} isGroup={group} onActionPress={onActionPress} />
           </Card>
         )}
-        {!!deactivateAccounts.length && (
+        {/* {!!deactivateAccounts.length && (
           <Card title="Ngưng sử dụng">
             <AccountList
               data={[{ data: deactivateAccounts }]}
@@ -107,7 +106,7 @@ function Accounts({ activeAccountsObservables, deactivateAccountsObservables }: 
               onActionPress={onActionPress}
             />
           </Card>
-        )}
+        )} */}
         {!isHaveAccountsData && (
           <View style={styles.noAccounts}>
             <RNText>Không có tài khoản nào!</RNText>
@@ -125,6 +124,6 @@ function Accounts({ activeAccountsObservables, deactivateAccountsObservables }: 
 }
 
 export default withObservables([], () => ({
-  activeAccountsObservables: observeAccountsTable(true),
-  deactivateAccountsObservables: observeAccountsTable(false),
+  activeAccountsObservables: observeAllActiveAccountsTable(true),
+  deactivateAccountsObservables: observeAllActiveAccountsTable(false),
 }))(Accounts);

@@ -72,6 +72,12 @@ function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsMo
             <RNText>Chuyển khoản</RNText>
           </View>
         </TouchableHighlightComponent>
+        <TouchableHighlightComponent onPress={() => onItemPress(EDIT)} isActive={isAccountActive}>
+          <View style={styles.item}>
+            <SvgIcon name="pencil" size={18} />
+            <RNText>Sửa tài khoản</RNText>
+          </View>
+        </TouchableHighlightComponent>
         <TouchableHighlightComponent
           onPress={() => onItemPress(ADJUSTMENT)}
           isActive={isAccountActive}
@@ -81,21 +87,15 @@ function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsMo
             <RNText>Điều chỉnh số dư tài khoản</RNText>
           </View>
         </TouchableHighlightComponent>
-        <TouchableHighlightComponent onPress={() => onItemPress(EDIT)} isActive={isAccountActive}>
-          <View style={styles.item}>
-            <SvgIcon name="pencil" size={18} />
-            <RNText>Sửa tài khoản</RNText>
-          </View>
-        </TouchableHighlightComponent>
         <TouchableHighlightComponent onPress={() => onItemPress(DELETE)} isActive={isAccountActive}>
           <View style={styles.item}>
-            <SvgIcon name="trash" size={18} />
+            <SvgIcon name="trash" size={18} color="red" />
             <RNText>Xóa tài khoản</RNText>
           </View>
         </TouchableHighlightComponent>
         <TouchableHighlightComponent onPress={() => onItemPress(INACTIVE)}>
           <View style={styles.item}>
-            <SvgIcon name={isAccountActive ? 'lock' : 'lockOpen'} size={18} />
+            <SvgIcon name={isAccountActive ? 'lock' : 'lockOpen'} size={18} color="red" />
             <RNText>{isAccountActive ? 'Ngưng sử dụng' : 'Tái sử dụng'}</RNText>
           </View>
         </TouchableHighlightComponent>

@@ -15,14 +15,10 @@ import { useForm } from 'react-hook-form';
 import { TAccountType, TAccount, TBank } from 'database/types/index';
 import ModalPicker from './ModalPicker';
 import { useAppSelector } from 'store/index';
-import {
-  accountSelectors,
-  selectAllAccountType,
-  selectAllBank,
-} from 'store/account/account.selector';
+import { selectAllAccountType, selectAllBank } from 'store/account/account.selector';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AddAccountRouteProp } from 'navigation/types';
-import { addAccount, deleteAllAccount } from 'database/querying/accounts.query';
+import { addAccount, getAccountById, updateAccount } from 'database/querying/accounts.query';
 import { ACCOUNT_TYPE, BANK_TYPE, DEFAULT_ACCOUNT_TYPE_ID } from './constants';
 
 type ModalConfigProps = {
@@ -42,12 +38,18 @@ const AddAccount = ({}) => {
 
   // state from store
   const getAccountTypeState = useAppSelector((state) => selectAllAccountType(state));
-  const defaultAccountType = getAccountTypeState[DEFAULT_ACCOUNT_TYPE_ID];
+  const defaultFormData = {
+    accountName: '',
+    initialAmount: 0,
+    currentAmount: 0,
+    accountTypeId: getAccountTypeState[DEFAULT_ACCOUNT_TYPE_ID]?.id,
+    accountTypeName: getAccountTypeState[DEFAULT_ACCOUNT_TYPE_ID]?.name,
+    accountLogo: getAccountTypeState[DEFAULT_ACCOUNT_TYPE_ID]?.icon,
+    isNotAddReport: false,
+    isActive: true,
+    currency: 'vnd',
+  };
   const getBankState = useAppSelector((state) => selectAllBank(state));
-
-  const accountDataForEditScreen = useAppSelector((state) =>
-    accountSelectors.selectById(state, params?.accountId || ''),
-  );
 
   const modalConfig = useRef<ModalConfigProps>(null);
   const inputNameRef = useRef<any>(null);
@@ -63,23 +65,45 @@ const AddAccount = ({}) => {
     reset,
     formState: { errors },
   } = useForm<TAccount>({
-    defaultValues: {
-      accountName: '',
-      initialAmount: 0,
-      currentAmount: 0,
-      accountTypeId: defaultAccountType?.id,
-      accountTypeName: defaultAccountType?.name,
-      accountLogo: defaultAccountType?.icon,
-      isNotAddReport: false,
-      isActive: true,
-      currency: 'vnd',
-    },
+    defaultValues: { ...defaultFormData },
   });
   const { accountTypeId, bankId } = getValues();
 
+  const fetchDataInEditMode = async (id: string) => {
+    const getAccountEdit = await getAccountById(id);
+    let result = {
+      accountName: getAccountEdit?.accountName,
+      initialAmount: getAccountEdit?.initialAmount,
+      currentAmount: getAccountEdit?.currentAmount,
+      accountTypeId: getAccountEdit?.accountTypeId,
+      accountTypeName: getAccountEdit?.accountTypeName,
+      bankId: getAccountEdit?.bankId,
+      bankName: getAccountEdit?.bankName,
+      bankCode: getAccountEdit?.bankCode,
+      currency: getAccountEdit?.currency,
+      descriptions: getAccountEdit?.descriptions,
+      isActive: getAccountEdit?.isActive,
+      isNotAddReport: getAccountEdit?.isNotAddReport,
+      userId: getAccountEdit?.userId,
+      accountLogo: getAccountEdit?.accountLogo,
+      sortOrder: getAccountEdit?.sortOrder,
+      termType: getAccountEdit?.termType,
+      termMonth: getAccountEdit?.termMonth,
+      interestRate: getAccountEdit?.interestRate,
+      interestPaymentType: getAccountEdit?.interestPaymentType,
+      dueType: getAccountEdit?.dueType,
+      startDate: getAccountEdit?.startDate,
+      endDate: getAccountEdit?.endDate,
+      interestPaymentToAccount: getAccountEdit?.interestPaymentToAccount,
+      savingFromAccountId: getAccountEdit?.savingFromAccountId,
+      numberDayOfYear: getAccountEdit?.numberDayOfYear,
+    };
+    reset(result);
+  };
+
   useEffect(() => {
     if (params?.accountId) {
-      reset(accountDataForEditScreen);
+      fetchDataInEditMode(params?.accountId);
     }
   }, [params?.accountId, reset]);
 
@@ -143,8 +167,8 @@ const AddAccount = ({}) => {
       bankId: '',
       bankName: '',
       bankCode: '',
+      accountLogo: getAccountTypeState[accountTypeId]?.icon,
     });
-    setValue('accountLogo', getAccountTypeState[accountTypeId]?.icon);
   };
 
   const setValuesForm = (values: Partial<TAccount>) => {
@@ -154,7 +178,11 @@ const AddAccount = ({}) => {
   };
 
   const onHandleSubmit = (data: TAccount) => {
-    addAccount(data);
+    if (params?.accountId) {
+      updateAccount({ id: params.accountId, account: data });
+    } else {
+      addAccount(data);
+    }
     navigation.goBack();
   };
 

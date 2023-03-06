@@ -21,23 +21,18 @@ function AccountList({
   isItemSelected,
   onItemPress,
 }: AccountListProps) {
-  const renderSectionHeader = useCallback(({ section }: { section: SectionListData<TAccount> }) => {
-    if (!isGroup) return null;
-    const { data, title } = section;
-    return (
-      <View style={styles.groupTitle}>
-        <RNText>{`${title}`}</RNText>
-      </View>
-    );
-    // (${renderTitle('', data)})
-  }, []);
-
-  // const renderTitle = useCallback(
-  //   (title: string, value: TAccount[]) => {
-  //     return `${title}${getTotalAmount(value)} ₫`;
-  //   },
-  //   [getTotalAmount],
-  // );
+  const renderSectionHeader = useCallback(
+    ({ section }: { section: SectionListData<TAccount> }) => {
+      if (!isGroup) return null;
+      const { title } = section;
+      return (
+        <View style={styles.groupTitle}>
+          <RNText>{`${title}`}</RNText>
+        </View>
+      );
+    },
+    [isGroup],
+  );
 
   const renderItem = ({ item }: { item: TAccount }) => {
     return (

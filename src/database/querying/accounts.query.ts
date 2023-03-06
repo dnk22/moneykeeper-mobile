@@ -6,8 +6,28 @@ import { Q } from '@nozbe/watermelondb';
 
 const accountsTable = database.get<AccountModel>(ACCOUNTS);
 
-export const observeAccountsTable = (isActive: boolean) =>
+export const observeAllActiveAccountsTable = (isActive: boolean) =>
   accountsTable.query(Q.where('is_active', isActive)).observe();
+
+export const getAccountById = async (id: string) => {
+  try {
+    return await database.read(async () => {
+      return await accountsTable.find(id);
+    });
+  } catch (error) {
+    console.log(error, 'read by id err');
+  }
+};
+
+export const getAccounts = async ({ isActive = true }: { isActive: boolean }) => {
+  try {
+    return await database.read(async () => {
+      return await accountsTable.query(Q.where('is_active', isActive)).fetch();
+    });
+  } catch (error) {
+    console.log(error, 'read err');
+  }
+};
 
 export const addAccount = async (account: TAccount) => {
   try {
@@ -22,13 +42,16 @@ export const addAccount = async (account: TAccount) => {
   }
 };
 
-export const getAccounts = async ({ isActive = true }: { isActive: boolean }) => {
+export const updateAccount = async ({ id, account }: { id: string; account: TAccount }) => {
   try {
-    return await database.read(async () => {
-      return await accountsTable.query(Q.where('is_active', isActive)).fetch();
+    await database.write(async () => {
+      const res = await accountsTable.find(id);
+      await res.update((item) => {
+        Object.assign(item, account);
+      });
     });
   } catch (error) {
-    console.log(error, 'read err');
+    console.log(error, 'update err');
   }
 };
 

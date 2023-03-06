@@ -24,6 +24,7 @@ type ItemProps = {
 function Item({ account, isItemSelected, onActionPress, onItemPress }: ItemProps) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
+  
   const handleOnItemPress = () => {
     if (onItemPress) {
       onItemPress(account);
