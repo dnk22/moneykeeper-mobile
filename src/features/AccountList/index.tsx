@@ -4,6 +4,7 @@ import isEqual from 'react-fast-compare';
 import { SectionListData, View } from 'react-native';
 import { TAccount } from 'database/types/index';
 import Item from './Item';
+import withObservables from '@nozbe/with-observables';
 import styles from './styles';
 
 interface AccountListProps {
@@ -13,6 +14,10 @@ interface AccountListProps {
   onActionPress?: (account: TAccount) => void;
   onItemPress?: (account: TAccount) => void;
 }
+
+const AccountItemObserve = withObservables(['account'], ({ account }) => ({
+  account: account.observe(),
+}))(Item);
 
 function AccountList({
   data,
@@ -36,7 +41,7 @@ function AccountList({
 
   const renderItem = ({ item }: { item: TAccount }) => {
     return (
-      <Item
+      <AccountItemObserve
         account={item}
         onActionPress={onActionPress}
         onItemPress={onItemPress}

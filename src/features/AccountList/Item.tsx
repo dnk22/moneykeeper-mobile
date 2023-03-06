@@ -1,5 +1,3 @@
-import { memo } from 'react';
-import isEqual from 'react-fast-compare';
 import { View } from 'react-native';
 import styles from './styles';
 import { TAccount } from 'database/types/index';
@@ -24,7 +22,7 @@ type ItemProps = {
 function Item({ account, isItemSelected, onActionPress, onItemPress }: ItemProps) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
-  
+
   const handleOnItemPress = () => {
     if (onItemPress) {
       onItemPress(account);
@@ -41,12 +39,7 @@ function Item({ account, isItemSelected, onActionPress, onItemPress }: ItemProps
         onPress={handleOnItemPress}
       >
         <View style={styles.itemContent}>
-          <SvgIcon
-            name={
-              account.accountLogo
-            }
-            size={34}
-          />
+          <SvgIcon name={account.accountLogo} size={34} />
           <View style={styles.itemCenter}>
             <RNText numberOfLines={1} style={styles.itemTitle}>
               {account.accountName}
@@ -69,4 +62,4 @@ function Item({ account, isItemSelected, onActionPress, onItemPress }: ItemProps
     </View>
   );
 }
-export default memo(Item, isEqual);
+export default Item;

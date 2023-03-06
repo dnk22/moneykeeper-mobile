@@ -29,15 +29,10 @@ function Accounts({ activeAccountsObservables, deactivateAccountsObservables }: 
   const currentAccountPressed = useRef<TAccount | any>(null);
   const [isShowItemSettingsModal, setIsShowItemSettingsModal] = useState(false);
   const [activeAccounts, setActiveAccounts] = useState<SectionListData<TAccount, any>>([]);
-  const [deactivateAccounts, setDeactivateAccounts] = useState<SectionListData<TAccount, any>>([]);
 
   useEffect(() => {
     fetchActiveAccount();
   }, [group, activeAccountsObservables]);
-
-  useEffect(() => {
-    setDeactivateAccounts(deactivateAccountsObservables);
-  }, [deactivateAccountsObservables]);
 
   const fetchActiveAccount = async () => {
     if (group) {
@@ -66,8 +61,8 @@ function Accounts({ activeAccountsObservables, deactivateAccountsObservables }: 
   }, []);
 
   const isHaveAccountsData = useMemo(
-    () => !!activeAccounts.length || !!deactivateAccounts.length,
-    [activeAccounts, deactivateAccounts],
+    () => !!activeAccounts.length || !!deactivateAccountsObservables.length,
+    [activeAccounts, deactivateAccountsObservables],
   );
 
   const onToggleModal = () => {
@@ -98,15 +93,15 @@ function Accounts({ activeAccountsObservables, deactivateAccountsObservables }: 
             <AccountList data={activeAccounts} isGroup={group} onActionPress={onActionPress} />
           </Card>
         )}
-        {/* {!!deactivateAccounts.length && (
+        {!!deactivateAccountsObservables.length && (
           <Card title="Ngưng sử dụng">
             <AccountList
-              data={[{ data: deactivateAccounts }]}
+              data={[{ data: deactivateAccountsObservables }]}
               isGroup={false}
               onActionPress={onActionPress}
             />
           </Card>
-        )} */}
+        )}
         {!isHaveAccountsData && (
           <View style={styles.noAccounts}>
             <RNText>Không có tài khoản nào!</RNText>
