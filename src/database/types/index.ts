@@ -16,20 +16,22 @@ export type TUsers = {
 export type TTransactions = {
   id: string;
   amount: number;
-  transactions_typeid: string;
-  transactions_type_details?: TTransactionType;
-  transactions_categoryid: string;
+  transactionsTypeId: string;
+  transactionsCategoryId: string;
   descriptions?: string;
-  date_time_at: Date;
-  accountid: string;
+  dateTimeAt: Date;
+  accountId: string;
   location?: string;
-  event_name?: string;
-  pay_for?: string;
+  eventName?: string;
+  payFor?: string;
+  relatedPerson?: string;
   fee?: number;
-  fee_type?: string;
-  is_not_add_report?: boolean;
-  media?: any;
-  userid?: string;
+  feeType?: string;
+  isNotAddReport?: boolean;
+  attachment?: any;
+  userId?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export type TTransactionsCategory = {
@@ -77,8 +79,8 @@ export type TAccount = {
   interestPaymentToAccount?: string;
   savingFromAccountId?: string;
   numberDayOfYear?: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 // account type

@@ -4,15 +4,18 @@ import { ACCOUNTS } from 'database/constants';
 import { database } from 'database/index';
 import { Q } from '@nozbe/watermelondb';
 
-const accountsTable = database.get<AccountModel>(ACCOUNTS);
+/** OBSERVE  */
+export const getActiveAccountObserve = (isActive: boolean) =>
+  database.get<AccountModel>(ACCOUNTS).query(Q.where('is_active', isActive)).observe();
 
-export const observeAllActiveAccountsTable = (isActive: boolean) =>
-  accountsTable.query(Q.where('is_active', isActive)).observe();
+export const getCountAccountObserve = () =>
+  database.get<AccountModel>(ACCOUNTS).query().observeCount();
 
+/** READ */
 export const getAccountById = async (id: string) => {
   try {
     return await database.read(async () => {
-      return await accountsTable.find(id);
+      return await database.get<AccountModel>(ACCOUNTS).find(id);
     });
   } catch (error) {
     console.log(error, 'read by id err');
@@ -22,17 +25,35 @@ export const getAccountById = async (id: string) => {
 export const getAccounts = async ({ isActive = true }: { isActive: boolean }) => {
   try {
     return await database.read(async () => {
-      return await accountsTable.query(Q.where('is_active', isActive)).fetch();
+      return await database
+        .get<AccountModel>(ACCOUNTS)
+        .query(Q.where('is_active', isActive))
+        .fetch();
     });
   } catch (error) {
     console.log(error, 'read err');
   }
 };
 
+export const getFirstAccount = async () => {
+  try {
+    return await database.read(async () => {
+      return await database
+        .get<AccountModel>(ACCOUNTS)
+        .query(Q.where('is_active', true), Q.take(1))
+        .fetch();
+    });
+  } catch (error) {
+    console.log(error, 'read first account err');
+  }
+};
+
+/** CREATE */
+
 export const addAccount = async (account: TAccount) => {
   try {
     await database.write(async () => {
-      const post = accountsTable.create((item) => {
+      const post = database.get<AccountModel>(ACCOUNTS).create((item) => {
         Object.assign(item, account);
       });
       return post;
@@ -42,10 +63,12 @@ export const addAccount = async (account: TAccount) => {
   }
 };
 
+/** UPDATE */
+
 export const updateAccount = async ({ id, account }: { id: string; account: TAccount }) => {
   try {
     await database.write(async () => {
-      const res = await accountsTable.find(id);
+      const res = await database.get<AccountModel>(ACCOUNTS).find(id);
       await res.update((item) => {
         Object.assign(item, account);
       });
@@ -55,10 +78,25 @@ export const updateAccount = async ({ id, account }: { id: string; account: TAcc
   }
 };
 
+export const changeAccountStatusById = async ({ id }: { id: string }) => {
+  try {
+    await database.write(async () => {
+      const account = await database.get<AccountModel>(ACCOUNTS).find(id);
+      account.update(() => {
+        account.isActive = !account.isActive;
+      });
+    });
+  } catch (error) {
+    console.log(error, 'change status err');
+  }
+};
+
+/** DELETE */
+
 export const deleteAccountById = async ({ id }: { id: string }) => {
   try {
     await database.write(async () => {
-      await accountsTable.query(Q.where('id', id)).destroyAllPermanently();
+      await database.get<AccountModel>(ACCOUNTS).query(Q.where('id', id)).destroyAllPermanently();
     });
   } catch (error) {
     console.log(error, 'delete err');
@@ -67,19 +105,6 @@ export const deleteAccountById = async ({ id }: { id: string }) => {
 
 export const deleteAllAccount = async () => {
   await database.write(async () => {
-    await accountsTable.query().destroyAllPermanently();
+    await database.get<AccountModel>(ACCOUNTS).query().destroyAllPermanently();
   });
-};
-
-export const changeAccountStatusById = async ({ id }: { id: string }) => {
-  try {
-    await database.write(async () => {
-      const account = await accountsTable.find(id);
-      account.update(() => {
-        account.isActive = !account.isActive;
-      });
-    });
-  } catch (error) {
-    console.log(error, 'change status err');
-  }
 };

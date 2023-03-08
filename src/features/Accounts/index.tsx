@@ -11,7 +11,7 @@ import ItemSettingsModal from './ItemSettingsModal';
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import AccountList from '../AccountList';
 import { groupDataByValue } from 'utils/algorithm';
-import { observeAllActiveAccountsTable } from 'database/querying/accounts.query';
+import { getActiveAccountObserve } from 'database/querying/accounts.query';
 import withObservables from '@nozbe/with-observables';
 import { AccountModel } from 'database/models';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
@@ -119,6 +119,6 @@ function Accounts({ activeAccountsObservables, deactivateAccountsObservables }: 
 }
 
 export default withObservables([], () => ({
-  activeAccountsObservables: observeAllActiveAccountsTable(true),
-  deactivateAccountsObservables: observeAllActiveAccountsTable(false),
-}))(Accounts);
+  activeAccountsObservables: getActiveAccountObserve(true),
+  deactivateAccountsObservables: getActiveAccountObserve(false),
+}))<any>(Accounts);

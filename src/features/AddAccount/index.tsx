@@ -22,11 +22,11 @@ import { addAccount, getAccountById, updateAccount } from 'database/querying/acc
 import { ACCOUNT_TYPE, BANK_TYPE, DEFAULT_ACCOUNT_TYPE_ID } from './constants';
 
 type ModalConfigProps = {
-  title: string;
-  type: typeof ACCOUNT_TYPE | typeof BANK_TYPE;
+  title?: string;
+  type?: typeof ACCOUNT_TYPE | typeof BANK_TYPE;
   isShowSearch?: boolean;
-  itemSelected: string;
-  dataSource: any[];
+  itemSelected?: string;
+  dataSource?: any[];
 };
 
 type ItemSelectedProps = TAccountType & TBank;
@@ -51,7 +51,7 @@ const AddAccount = ({}) => {
   };
   const getBankState = useAppSelector((state) => selectAllBank(state));
 
-  const modalConfig = useRef<ModalConfigProps>(null);
+  const modalConfig = useRef<ModalConfigProps>({});
   const inputNameRef = useRef<any>(null);
 
   const [isShowModalPicker, setIsShowModalPicker] = useState<boolean>(false);
@@ -68,6 +68,18 @@ const AddAccount = ({}) => {
     defaultValues: { ...defaultFormData },
   });
   const { accountTypeId, bankId } = getValues();
+
+  useEffect(() => {
+    if (params?.accountId) {
+      fetchDataInEditMode(params?.accountId);
+    }
+  }, [params?.accountId, reset]);
+
+  useEffect(() => {
+    if (errors?.accountName) {
+      inputNameRef.current.focus();
+    }
+  }, [errors?.accountName]);
 
   const fetchDataInEditMode = async (id: string) => {
     const getAccountEdit = await getAccountById(id);
@@ -100,18 +112,6 @@ const AddAccount = ({}) => {
     };
     reset(result);
   };
-
-  useEffect(() => {
-    if (params?.accountId) {
-      fetchDataInEditMode(params?.accountId);
-    }
-  }, [params?.accountId, reset]);
-
-  useEffect(() => {
-    if (errors?.accountName) {
-      inputNameRef.current.focus();
-    }
-  }, [errors?.accountName]);
 
   const onSelectAccountType = useCallback(() => {
     modalConfig.current = {

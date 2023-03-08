@@ -22,26 +22,36 @@ import Animated, { StretchInY } from 'react-native-reanimated';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { ACCOUNT_PICKER, TRANSACTION_CATEGORY } from 'navigation/constants';
 import { useAppDispatch, useAppSelector } from 'store/index';
-import { selectFistAccounts } from 'store/account/account.selector';
 import { selectAccountSelected } from 'store/transactions/transactions.selector';
 import { setAccountSelected } from 'store/transactions/transactions.slice';
 import { AddTransactionRouteProp } from 'navigation/types';
+import withObservables from '@nozbe/with-observables';
+import { Observable } from '@nozbe/watermelondb/utils/rx';
+import { TransactionModel } from 'database/models';
+import {
+  getAccountById,
+  getCountAccountObserve,
+  getFirstAccount,
+} from 'database/querying/accounts.query';
 
 const initialAddFormValues: TTransactions = {
   id: '',
   amount: 0,
-  transactions_typeid: '1',
-  date_time: new Date(),
+  transactionsTypeId: '1',
+  dateTimeAt: new Date(),
 };
 
-export default function AddTransactions() {
+type AddTransactionsProps = {
+  isAccountWalletExist: Observable<TransactionModel[]>;
+};
+
+function AddTransactions({ isAccountWalletExist }: AddTransactionsProps) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
   const { params } = useRoute<AddTransactionRouteProp>();
   const useDispatch = useAppDispatch();
 
-  const getDefaultAccountData = useAppSelector((state) => selectFistAccounts(state));
-  const getAccountSelected = useAppSelector((state) => selectAccountSelected(state));
+  const accountSelected = useAppSelector((state) => selectAccountSelected(state));
 
   const [isShowTransactionTypeModal, setIsShowTransactionTypeModal] = useState(false);
   const [isShowFee, setIsShowFee] = useState<boolean>(false);
@@ -55,24 +65,28 @@ export default function AddTransactions() {
       ...initialAddFormValues,
     },
   });
-  const { date_time, accountid } = getValues();
+  const { dateTimeAt, accountId, transactionsTypeId } = getValues();
+
+  /** lifecycle hook */
+  useEffect(() => {
+    if (!params?.transactionId) {
+      setDefaultAccountInModeAdd();
+    }
+  }, [params?.transactionId]);
 
   useEffect(() => {
-    if (!params?.transactionid && getDefaultAccountData?.id) {
-      setValue('accountid', getDefaultAccountData.id);
-      useDispatch(setAccountSelected(getDefaultAccountData));
+    if (accountId) {
+      getAccountSelected();
     }
-  }, [params?.transactionid, getDefaultAccountData?.id]);
+  }, [watch('accountId')]);
 
-  useEffect(() => {
-    if (watch('accountid')) {
-      useDispatch(setAccountSelected(getDefaultAccountData));
-    }
-  }, [watch('accountid')]);
+  /** memoized function */
+  const onToggleTransactionTypeModal = useCallback(() => {
+    setIsShowTransactionTypeModal(!isShowTransactionTypeModal);
+  }, [isShowTransactionTypeModal]);
 
   const onHandleTransactionTypeItemPress = useCallback((item: TTransactionType) => {
-    setValue('transactions_typeid', item.id);
-    setValue('transactions_type_details', item);
+    setValue('transactionsTypeId', item.id);
     setIsShowTransactionTypeModal(false);
   }, []);
 
@@ -83,16 +97,13 @@ export default function AddTransactions() {
     [isDateTimeModalType],
   );
 
-  const onToggleTransactionTypeModal = useCallback(() => {
-    setIsShowTransactionTypeModal(!isShowTransactionTypeModal);
-  }, [isShowTransactionTypeModal]);
-
   const onDateTimePicker = useCallback((date: Date) => {
-    setValue('date_time', date);
+    setValue('dateTimeAt', date);
   }, []);
 
-  const getInputTextColor = useMemo(() => {
-    switch (watch('transactions_typeid')) {
+  /** memoized value */
+  const memoizedInputTextColorValue = useMemo(() => {
+    switch (transactionsTypeId) {
       case '1':
       case '3':
         return 'red';
@@ -102,7 +113,25 @@ export default function AddTransactions() {
       default:
         return colors.primary;
     }
-  }, [watch('transactions_typeid')]);
+  }, [watch('transactionsTypeId')]);
+
+  /** pure function */
+  const getAccountSelected = async () => {
+    const res = await getAccountById(accountId);
+    const accountInfo = {
+      id: res?.id,
+      accountName: res?.accountName,
+      accountLogo: res?.accountLogo,
+    };
+    useDispatch(setAccountSelected(accountInfo));
+  };
+
+  const setDefaultAccountInModeAdd = async () => {
+    const firstAccount = await getFirstAccount();
+    if (firstAccount && firstAccount.length) {
+      setValue('accountId', firstAccount[0].id);
+    }
+  };
 
   const onHandleFeeChange = () => {
     setIsShowFee(!isShowFee);
@@ -122,20 +151,19 @@ export default function AddTransactions() {
   const onHandleSubmit = (data: TTransactions) => {
     console.log(data);
   };
-
-  const isShowDateTimeModal = isDateTimeModalType === 'date' || isDateTimeModalType === 'time';
-
+  console.log('index render');
+  
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.primary }]}>
       <TransactionTypePicker
         isVisible={isShowTransactionTypeModal}
+        isTypeSelected={transactionsTypeId}
         onToggleModal={onToggleTransactionTypeModal}
         onPressItem={onHandleTransactionTypeItemPress}
-        isTypeSelected={watch('transactions_typeid')}
       />
       <DateTimeModalPicker
-        value={date_time}
-        isVisible={isShowDateTimeModal}
+        value={dateTimeAt}
+        isVisible={isDateTimeModalType === 'date' || isDateTimeModalType === 'time'}
         mode={isDateTimeModalType}
         onToggleModal={onToggleDateTimeModal}
         onDateTimePicker={onDateTimePicker}
@@ -146,7 +174,7 @@ export default function AddTransactions() {
           style={[styles.actionView, styles.transactionTypePicker]}
           onPress={onToggleTransactionTypeModal}
         >
-          <RNText color="white">{watch('transactions_type_details.name') || 'Chi Tiền'}</RNText>
+          <RNText color="white">{'Chi Tiền'}</RNText>
         </PressableHaptic>
         <PressableHaptic
           style={[styles.actionView, styles.rightAction]}
@@ -160,17 +188,21 @@ export default function AddTransactions() {
         showsVerticalScrollIndicator={false}
         extraScrollHeight={60}
       >
-        {!getDefaultAccountData?.id && (
+        {!isAccountWalletExist && (
           <View style={styles.noAccountData}>
             <RNText color="red">Vui lòng tạo 1 tài khoản trước</RNText>
           </View>
         )}
-        <InputCalculator name="amount" control={control} inputTextColor={getInputTextColor} />
+        <InputCalculator
+          name="amount"
+          control={control}
+          inputTextColor={memoizedInputTextColorValue}
+        />
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <InputSelection
-            icon={watch('transactions_category_details.icon')}
+            icon={''}
             title="Chọn danh mục"
-            value={watch('transactions_category_details.category_name')}
+            value={''}
             onSelect={handleOnSelectTransactionCategory}
           />
           <View style={styles.itemGroup}>
@@ -190,24 +222,20 @@ export default function AddTransactions() {
             <SvgIcon name="calendarHoliday" style={styles.icon} />
             <View style={styles.groupContent}>
               <PressableHaptic onPress={() => onToggleDateTimeModal('date')}>
-                <RNText>{formatDateLocal(watch('date_time'), 'EEEE, dd/MM/yyyy')}</RNText>
+                <RNText>{formatDateLocal(watch('dateTimeAt'), 'EEEE, dd/MM/yyyy')}</RNText>
               </PressableHaptic>
               <PressableHaptic
                 style={styles.iconForward}
                 onPress={() => onToggleDateTimeModal('time')}
               >
-                <RNText>{formatDateLocal(watch('date_time'), 'HH:mm')}</RNText>
+                <RNText>{formatDateLocal(watch('dateTimeAt'), 'HH:mm')}</RNText>
               </PressableHaptic>
             </View>
           </View>
           <InputSelection
-            icon={
-              getAccountSelected?.bank_details?.icon ||
-              getAccountSelected?.provider_details?.icon ||
-              getAccountSelected?.account_type_details?.icon
-            }
+            icon={accountSelected?.accountLogo}
             title="Chọn tài khoản"
-            value={getAccountSelected?.name}
+            value={accountSelected?.accountName}
             onSelect={onSelectAccount}
           />
         </View>
@@ -299,3 +327,7 @@ export default function AddTransactions() {
     </SafeAreaView>
   );
 }
+
+export default withObservables([], () => ({
+  isAccountWalletExist: getCountAccountObserve(),
+}))<any>(AddTransactions);
