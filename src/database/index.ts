@@ -3,7 +3,7 @@ import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 
 import schema from './schema';
 // import migrations from './migrations';
-import { AccountModel, TransactionModel, TransactionCategory } from './models';
+import { AccountModel, TransactionModel, TransactionCategory, BankModel } from './models';
 
 // First, create the adapter to the underlying database:
 const adapter = new SQLiteAdapter({
@@ -24,5 +24,5 @@ const adapter = new SQLiteAdapter({
 // Then, make a Watermelon database from it!
 export const database = new Database({
   adapter,
-  modelClasses: [AccountModel, TransactionModel, TransactionCategory],
+  modelClasses: [AccountModel, TransactionModel, TransactionCategory, BankModel],
 });

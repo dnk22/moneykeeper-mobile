@@ -2,7 +2,16 @@ import { StyleSheet } from 'react-native';
 import { normalize } from 'share/dimensions';
 
 const styles = StyleSheet.create({
-  bankModal: { maxHeight: '90%' },
+  body: {
+    padding: 10,
+  },
+  header: {
+    height: 40,
+    borderBottomWidth: 0.3,
+    borderColor: 'gray',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   item: {
     flex: 1,
     paddingVertical: 15,
@@ -15,19 +24,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: 10,
-  },
-  itemActive: {
-    marginRight: 13,
-    padding: 2,
-    borderColor: '#787A91',
-    borderWidth: 1,
-    width: normalize(14),
-    height: normalize(14),
-    borderRadius: 30,
-  },
-  itemActiveBackground: {
-    flex: 1,
-    borderRadius: 30,
   },
   title: {
     fontSize: normalize(16),

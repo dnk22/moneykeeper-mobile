@@ -22,7 +22,7 @@ function Selected({
   onSelect,
   value,
   onDelete,
-  required = true,
+  required = false,
 }: SelectedProps) {
   return (
     <PressableHaptic style={styles.itemGroup} onPress={onSelect}>

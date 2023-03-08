@@ -1,4 +1,4 @@
-import { Account_Type, Bank, Provider } from './account.default';
+import { Account_Type, BankDefaultData } from './account.default';
 
 export enum TRANSACTION_CATEGORY_TYPE {
   EXPENSE,
@@ -6,4 +6,4 @@ export enum TRANSACTION_CATEGORY_TYPE {
   LEND_BORROW,
 }
 
-export { Account_Type, Bank, Provider };
+export { Account_Type, BankDefaultData };

@@ -2,46 +2,46 @@ import { TAccountType, TBank } from 'database/types/index';
 
 export const Account_Type: TAccountType[] = [
   {
-    id: '1',
+    id: '0',
     name: 'Tiền mặt',
     value: 'cash',
     icon: 'cash',
   },
   {
-    id: '2',
+    id: '1',
     name: 'Tài khoản ngân hàng',
     value: 'bank',
     icon: 'bank',
   },
   {
-    id: '3',
+    id: '2',
     name: 'Thẻ tín dụng',
     value: 'credit',
     icon: 'credit',
   },
   {
-    id: '4',
+    id: '3',
     name: 'Tài khoản đầu tư',
     value: 'investment',
     icon: 'investment',
   },
   {
-    id: '5',
+    id: '4',
     name: 'Ví điện tử',
     value: 'eWallet',
     icon: 'eWallet',
   },
   {
-    id: '6',
+    id: '5',
     name: 'Khác',
     value: 'other',
     icon: 'money',
   },
 ];
 
-export const Bank: TBank[] = [
+export const BankDefaultData = [
   {
-    id: '1',
+    bankId: '1',
     bankName: 'NH TMCP Ngoai Thuong VN',
     bankCode: 'VCB',
     shortName: 'VietcomBank',
@@ -49,7 +49,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '2',
+    bankId: '2',
     bankName: 'NH TMCP Cong Thuong VN',
     bankCode: 'CTG',
     shortName: 'VietinBank',
@@ -57,7 +57,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '3',
+    bankId: '3',
     bankName: 'NH TMCP Ky Thuong VN',
     bankCode: 'TCB',
     shortName: 'Techcombank',
@@ -65,7 +65,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '4',
+    bankId: '4',
     bankName: 'NH TMCP Dau Tu va Phat Trien VN',
     bankCode: 'BIDV',
     shortName: 'BIDV',
@@ -73,7 +73,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '5',
+    bankId: '5',
     bankName: 'NH Nong Nghiep va Phat Trien Nong Thon Viet Nam',
     bankCode: 'VARB',
     shortName: 'AgriBank',
@@ -81,7 +81,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '6',
+    bankId: '6',
     bankName: 'Ngan hang Thuong Mai Co Phan Quoc Dan',
     bankCode: 'NVB',
     shortName: 'Navibank',
@@ -89,7 +89,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '7',
+    bankId: '7',
     bankName: 'NH TMCP Sai Gon Thuong Tin',
     bankCode: 'STB',
     shortName: 'Sacombank',
@@ -97,7 +97,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '8',
+    bankId: '8',
     bankName: 'NH TMCP A Chau',
     bankCode: 'ACB',
     shortName: 'ACB',
@@ -105,7 +105,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '9',
+    bankId: '9',
     bankName: 'NH TMCP Quan Doi',
     bankCode: 'MB',
     shortName: 'MBBank',
@@ -113,7 +113,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '10',
+    bankId: '10',
     bankName: 'NH TMCP Tien Phong',
     bankCode: 'TPB',
     shortName: 'TPBank',
@@ -121,7 +121,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '11',
+    bankId: '11',
     bankName: 'NH TNHH MTV Shinhan VN',
     bankCode: 'SVB',
     shortName: 'Shinhan Bank',
@@ -129,7 +129,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '12',
+    bankId: '12',
     bankName: 'NH TMCP Quoc Te VN',
     bankCode: 'VIB',
     shortName: 'VIB Bank',
@@ -137,7 +137,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '13',
+    bankId: '13',
     bankName: 'NH TMCP Viet Nam Thinh Vuong',
     bankCode: 'VPB',
     shortName: 'VPBank',
@@ -145,7 +145,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '14',
+    bankId: '14',
     bankName: 'NH TMCP Sai Gon Ha Noi',
     bankCode: 'SHB',
     shortName: 'SHB',
@@ -153,7 +153,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '15',
+    bankId: '15',
     bankName: 'NH TMCP Xuat Nhap khau VN',
     bankCode: 'EIB',
     shortName: 'Eximbank',
@@ -161,7 +161,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '16',
+    bankId: '16',
     bankName: 'NH TMCP Bao Viet',
     bankCode: 'BVB',
     shortName: 'BaoVietBank',
@@ -169,7 +169,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '17',
+    bankId: '17',
     bankName: 'NH TMCP Ban Viet',
     bankCode: 'VCCB',
     shortName: 'VietcapitalBank',
@@ -177,7 +177,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '18',
+    bankId: '18',
     bankName: 'NH TMCP Sai Gon',
     bankCode: 'SCB',
     shortName: 'SCB',
@@ -185,7 +185,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '19',
+    bankId: '19',
     bankName: 'NH Lien Doanh Viet Nga',
     bankCode: 'VRB',
     shortName: 'VietNam - Russia Bank',
@@ -193,7 +193,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '20',
+    bankId: '20',
     bankName: 'NH TMCP An Binh',
     bankCode: 'ABB',
     shortName: 'ABBank',
@@ -201,7 +201,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '21',
+    bankId: '21',
     bankName: 'NH TMCP Dai Chung VN',
     bankCode: 'PVCB',
     shortName: 'PVCombank',
@@ -209,7 +209,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '22',
+    bankId: '22',
     bankName: 'NH TM TNHH MTV Dai Duong',
     bankCode: 'OJB',
     shortName: 'OceanBank',
@@ -217,7 +217,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '23',
+    bankId: '23',
     bankName: 'NH TMCP Nam A',
     bankCode: 'NAB',
     shortName: 'NamA bank',
@@ -225,7 +225,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '24',
+    bankId: '24',
     bankName: 'NH TMCP Phat Trien TP HCM',
     bankCode: 'HDB',
     shortName: 'HDBank',
@@ -233,7 +233,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '25',
+    bankId: '25',
     bankName: 'NH TMCP Viet Nam Thuong Tin',
     bankCode: 'VB',
     shortName: 'VietBank',
@@ -241,7 +241,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '26',
+    bankId: '26',
     bankName: 'Công ty Tài chính Cổ Phần Tín Việt',
     bankCode: 'CFC',
     shortName: 'VietCredit',
@@ -249,7 +249,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '27',
+    bankId: '27',
     bankName: 'NH TNHH MTV Public VN',
     bankCode: 'PBVN',
     shortName: 'Public bank',
@@ -257,7 +257,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '28',
+    bankId: '28',
     bankName: 'NH TNHH MTV Hongleong VN',
     bankCode: 'HLB',
     shortName: 'Hongleong Bank',
@@ -265,7 +265,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '29',
+    bankId: '29',
     bankName: 'NH TMCP Xang Dau Petrolimex',
     bankCode: 'PGB',
     shortName: 'PG Bank',
@@ -273,7 +273,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '30',
+    bankId: '30',
     bankName: 'NH Hop Tac',
     bankCode: 'COB',
     shortName: 'Co.op Bank',
@@ -281,7 +281,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '31',
+    bankId: '31',
     bankName: 'NH TNHH MTV CIMB Viet Nam',
     bankCode: 'CIMB',
     shortName: 'CIMB',
@@ -289,7 +289,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '32',
+    bankId: '32',
     bankName: 'NH TNHH Indovina',
     bankCode: 'IVB',
     shortName: 'Indovina',
@@ -297,7 +297,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '33',
+    bankId: '33',
     bankName: 'NH TMCP Dong A',
     bankCode: 'DAB',
     shortName: 'DongABank',
@@ -305,7 +305,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '34',
+    bankId: '34',
     bankName: 'NH TM TNHH MTV Dau Khi Toan Cau',
     bankCode: 'GPB',
     shortName: 'GPBank',
@@ -313,7 +313,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '35',
+    bankId: '35',
     bankName: 'NH TMCP Bac A',
     bankCode: 'NASB',
     shortName: 'BacABank',
@@ -321,7 +321,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '36',
+    bankId: '36',
     bankName: 'NH TMCP Viet A',
     bankCode: 'VAB',
     shortName: 'VietABank',
@@ -329,7 +329,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '37',
+    bankId: '37',
     bankName: 'NH TMCP Sai Gon Cong Thuong',
     bankCode: 'SGB',
     shortName: 'SaigonBank',
@@ -337,7 +337,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '38',
+    bankId: '38',
     bankName: 'NH TMCP Hang Hai VN',
     bankCode: 'MSB',
     shortName: 'Maritime Bank',
@@ -345,7 +345,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '39',
+    bankId: '39',
     bankName: 'NH TMCP Buu Dien Lien Viet',
     bankCode: 'LPB',
     shortName: 'LienVietPostBank',
@@ -353,7 +353,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '40',
+    bankId: '40',
     bankName: 'NH TMCP Kien Long',
     bankCode: 'KLB',
     shortName: 'KienLongBank',
@@ -361,7 +361,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '41',
+    bankId: '41',
     bankName: 'NH Cong Nghiep Han Quoc CN Ha Noi',
     bankCode: 'IBKHN',
     shortName: 'IBK - Ha Noi',
@@ -369,7 +369,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '42',
+    bankId: '42',
     bankName: 'NH Wooribank',
     bankCode: 'WOO',
     shortName: 'Woori bank',
@@ -377,7 +377,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '43',
+    bankId: '43',
     bankName: 'NH TMCP Dong Nam A',
     bankCode: 'SEAB',
     shortName: 'SeABank',
@@ -385,7 +385,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '44',
+    bankId: '44',
     bankName: 'NH TNHH MTV United Overseas Bank',
     bankCode: 'UOB',
     shortName: 'UOB',
@@ -393,7 +393,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '45',
+    bankId: '45',
     bankName: 'NH TMCP Phuong Dong',
     bankCode: 'OCB',
     shortName: 'OCB',
@@ -401,7 +401,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '46',
+    bankId: '46',
     bankName: 'Cong ty Tai chinh TNHH MTV Mirae Asset (Viet Nam)',
     bankCode: 'MAFC',
     shortName: 'Mirae Asset',
@@ -409,7 +409,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '47',
+    bankId: '47',
     bankName: 'Ngan hang Keb Hana',
     bankCode: 'KEBHANA',
     shortName: 'Keb Hana - Ho Chi Minh',
@@ -417,7 +417,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '49',
+    bankId: '49',
     bankName: 'Standard Chartered',
     bankCode: 'STANDARD',
     shortName: 'Standard Chartered',
@@ -425,7 +425,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '50',
+    bankId: '50',
     bankName: 'NH So CAKE by VPBank',
     bankCode: 'CAKE',
     shortName: 'CAKE',
@@ -433,7 +433,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '51',
+    bankId: '51',
     bankName: 'NH So Ubank by VPBank',
     bankCode: 'Ubank',
     shortName: 'Ubank',
@@ -441,7 +441,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '52',
+    bankId: '52',
     bankName: 'NH Nonghyup - Chi nhanh Ha Noi',
     bankCode: 'NonghyupBankHN',
     shortName: 'Nonghyup Bank - HN',
@@ -449,7 +449,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '53',
+    bankId: '53',
     bankName: 'NH Kookmin - Chi nhanh Ha Noi',
     bankCode: 'KBHN',
     shortName: 'Kookmin - HN',
@@ -457,7 +457,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '54',
+    bankId: '54',
     bankName: 'NH Kookmin - Chi nhanh TP. HCM',
     bankCode: 'KBHCM',
     shortName: 'Kookmin - HCM',
@@ -465,7 +465,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '55',
+    bankId: '55',
     bankName: 'NH DBS - Chi nhanh TP. HCM',
     bankCode: 'DBSHCM',
     shortName: 'DBS - HCM',
@@ -473,7 +473,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '56',
+    bankId: '56',
     bankName: 'NH TM TNHH MTV Xay Dung Viet Nam',
     bankCode: 'CBBank',
     shortName: 'CBBank',
@@ -481,7 +481,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '57',
+    bankId: '57',
     bankName: 'NH Dai chung TNHH Kasikornbank - Chi nhanh TP. HCM',
     bankCode: 'KBankHCM',
     shortName: 'KBank - HCM',
@@ -489,7 +489,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '58',
+    bankId: '58',
     bankName: 'NH TNHH MTV HSBC Viet Nam',
     bankCode: 'HSBC',
     shortName: 'HSBC',
@@ -497,7 +497,7 @@ export const Bank: TBank[] = [
     isSystem: true,
   },
   {
-    id: '59',
+    bankId: '59',
     bankName: 'Shopee Pay',
     bankCode: 'shopeepay',
     icon: 'shopeepay',
@@ -505,7 +505,7 @@ export const Bank: TBank[] = [
     isWallet: true,
   },
   {
-    id: '60',
+    bankId: '60',
     bankName: 'Viettel Pay',
     bankCode: 'viettelpay',
     icon: 'viettelpay',
@@ -513,7 +513,7 @@ export const Bank: TBank[] = [
     isWallet: true,
   },
   {
-    id: '61',
+    bankId: '61',
     bankName: 'Zalo Pay',
     bankCode: 'zalopay',
     icon: 'zalopay',
@@ -521,7 +521,7 @@ export const Bank: TBank[] = [
     isWallet: true,
   },
   {
-    id: '62',
+    bankId: '62',
     bankName: 'Momo',
     bankCode: 'momo',
     icon: 'momo',
@@ -529,7 +529,7 @@ export const Bank: TBank[] = [
     isWallet: true,
   },
   {
-    id: '63',
+    bankId: '63',
     bankName: 'VNPT Pay',
     bankCode: 'vnptpay',
     icon: 'vnptpay',

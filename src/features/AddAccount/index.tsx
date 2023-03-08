@@ -12,24 +12,24 @@ import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useForm } from 'react-hook-form';
-import { TAccountType, TAccount, TBank } from 'database/types/index';
-import ModalPicker from './ModalPicker';
+import { TAccountType, TAccount } from 'database/types/index';
+import AccountTypeModalPicker from './AccountTypeModalPicker';
 import { useAppSelector } from 'store/index';
-import { selectAllAccountType, selectAllBank } from 'store/account/account.selector';
+import { selectDefaultAccountType } from 'store/account/account.selector';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AddAccountRouteProp } from 'navigation/types';
 import { addAccount, getAccountById, updateAccount } from 'database/querying/accounts.query';
-import { ACCOUNT_TYPE, BANK_TYPE, DEFAULT_ACCOUNT_TYPE_ID } from './constants';
+import { DEFAULT_ACCOUNT_TYPE_ID } from './constants';
+import { BANK_NAVIGATION } from 'navigation/constants';
 
-type ModalConfigProps = {
-  title?: string;
-  type?: typeof ACCOUNT_TYPE | typeof BANK_TYPE;
-  isShowSearch?: boolean;
-  itemSelected?: string;
-  dataSource?: any[];
+const defaultValues = {
+  accountName: '',
+  initialAmount: 0,
+  accountTypeId: DEFAULT_ACCOUNT_TYPE_ID,
+  isNotAddReport: false,
+  isActive: true,
+  currency: 'vnd',
 };
-
-type ItemSelectedProps = TAccountType & TBank;
 
 const AddAccount = ({}) => {
   const { colors } = useCustomTheme();
@@ -37,24 +37,14 @@ const AddAccount = ({}) => {
   const { params } = useRoute<AddAccountRouteProp>();
 
   // state from store
-  const getAccountTypeState = useAppSelector((state) => selectAllAccountType(state));
-  const defaultFormData = {
-    accountName: '',
-    initialAmount: 0,
-    currentAmount: 0,
-    accountTypeId: getAccountTypeState[DEFAULT_ACCOUNT_TYPE_ID]?.id,
-    accountTypeName: getAccountTypeState[DEFAULT_ACCOUNT_TYPE_ID]?.name,
-    accountLogo: getAccountTypeState[DEFAULT_ACCOUNT_TYPE_ID]?.icon,
-    isNotAddReport: false,
-    isActive: true,
-    currency: 'vnd',
-  };
-  const getBankState = useAppSelector((state) => selectAllBank(state));
-
-  const modalConfig = useRef<ModalConfigProps>({});
+  const initAccountType = useAppSelector((state) =>
+    selectDefaultAccountType(state, DEFAULT_ACCOUNT_TYPE_ID),
+  );
   const inputNameRef = useRef<any>(null);
-
-  const [isShowModalPicker, setIsShowModalPicker] = useState<boolean>(false);
+  const [isShowAccountTypeModal, setIsShowAccountTypeModal] = useState<boolean>(false);
+  const [accountTypeSelected, setAccountTypeSelected] = useState<TAccountType | undefined>(
+    initAccountType,
+  );
 
   const {
     control,
@@ -65,9 +55,9 @@ const AddAccount = ({}) => {
     reset,
     formState: { errors },
   } = useForm<TAccount>({
-    defaultValues: { ...defaultFormData },
+    defaultValues,
   });
-  const { accountTypeId, bankId } = getValues();
+  const { accountTypeId } = getValues();
 
   useEffect(() => {
     if (params?.accountId) {
@@ -113,61 +103,36 @@ const AddAccount = ({}) => {
     reset(result);
   };
 
+  /** open account type modal */
   const onSelectAccountType = useCallback(() => {
-    modalConfig.current = {
-      title: 'Chọn loại tài khoản',
-      type: ACCOUNT_TYPE,
-      itemSelected: accountTypeId,
-      isShowSearch: false,
-      dataSource: Object.values(getAccountTypeState),
-    };
-    setIsShowModalPicker(true);
-  }, []);
-
-  const onSelectBank = useCallback(() => {
-    modalConfig.current = {
-      title: 'Chọn nhà cung cấp',
-      type: BANK_TYPE,
-      itemSelected: bankId,
-      isShowSearch: true,
-      dataSource: Object.values(getBankState),
-    };
-    setIsShowModalPicker(true);
-  }, [accountTypeId]);
-
-  const handleItemModalPickerPress = useCallback((item: ItemSelectedProps) => {
-    switch (modalConfig.current?.type) {
-      case BANK_TYPE:
-        setValuesForm({
-          bankId: item.id,
-          bankName: item.bankName,
-          bankCode: item.bankCode,
-        });
-        break;
-      default:
-        setValuesForm({
-          accountTypeId: item.id,
-          accountTypeName: item.name,
-        });
-        if (item.id !== accountTypeId) {
-          resetSelectedBank();
-        }
-        break;
-    }
-    setValue('accountLogo', item.icon);
-    setIsShowModalPicker(false);
+    setIsShowAccountTypeModal(true);
   }, []);
 
   const onCloseModal = useCallback(() => {
-    setIsShowModalPicker(false);
+    setIsShowAccountTypeModal(false);
   }, []);
+
+  const handleOnItemModalPress = (item: TAccountType) => {
+    setValuesForm({
+      accountTypeId: item.id,
+      accountLogo: item.icon,
+    });
+    if (item.id !== accountTypeId) {
+      resetSelectedBank();
+    }
+    setAccountTypeSelected(item);
+    setIsShowAccountTypeModal(false);
+  };
+
+  const onSelectBank = () => {
+    navigation.navigate(BANK_NAVIGATION);
+  };
 
   const resetSelectedBank = () => {
     setValuesForm({
       bankId: '',
       bankName: '',
       bankCode: '',
-      accountLogo: getAccountTypeState[accountTypeId]?.icon,
     });
   };
 
@@ -188,14 +153,11 @@ const AddAccount = ({}) => {
 
   return (
     <View style={styles.container}>
-      <ModalPicker
-        dataSource={modalConfig.current?.dataSource}
-        title={modalConfig.current?.title}
-        isShowSearch={modalConfig.current?.isShowSearch}
-        isItemSelected={modalConfig.current?.itemSelected}
-        isVisible={isShowModalPicker}
+      <AccountTypeModalPicker
+        isVisible={isShowAccountTypeModal}
+        isItemSelected={accountTypeId}
         onToggleModal={onCloseModal}
-        onPressItem={handleItemModalPickerPress}
+        onPressItem={handleOnItemModalPress}
       />
       <KeyboardAwareScrollView
         style={[styles.form, { backgroundColor: colors.background }]}
@@ -235,18 +197,17 @@ const AddAccount = ({}) => {
         </View>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <InputSelection
-            icon={getAccountTypeState[watch('accountTypeId')]?.icon}
-            title="Chọn loại tài khoản"
-            value={getAccountTypeState[watch('accountTypeId')]?.name}
+            required
+            icon={accountTypeSelected?.icon}
+            value={accountTypeSelected?.name}
             onSelect={onSelectAccountType}
           />
-          {(watch('accountTypeId') === '2' || watch('accountTypeId') === '5') && (
+          {(watch('accountTypeId') === '1' || watch('accountTypeId') === '4') && (
             <InputSelection
-              icon={getBankState[watch('bankId')]?.icon}
-              value={getBankState[watch('bankId')]?.bankName}
+              icon={watch('bankLogo')}
+              value={watch('bankName')}
               title="Chọn nhà cung cấp"
               onSelect={onSelectBank}
-              required={false}
               onDelete={resetSelectedBank}
             />
           )}

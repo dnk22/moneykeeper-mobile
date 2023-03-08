@@ -62,6 +62,7 @@ export type TAccount = {
   bankId?: string;
   bankName?: string;
   bankCode?: string;
+  bankLogo?: string;
   currency?: string;
   descriptions?: string;
   isActive: boolean;
@@ -93,6 +94,7 @@ export type TAccountType = {
 
 export type TBank = {
   id: string;
+  bankId: string;
   bankCode: string;
   bankName: string;
   shortName?: string;
