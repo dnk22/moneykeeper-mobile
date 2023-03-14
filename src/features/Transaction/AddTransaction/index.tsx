@@ -25,14 +25,7 @@ import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectAccountSelected } from 'store/transactions/transactions.selector';
 import { setAccountSelected } from 'store/transactions/transactions.slice';
 import { AddTransactionRouteProp } from 'navigation/types';
-import withObservables from '@nozbe/with-observables';
-import { Observable } from '@nozbe/watermelondb/utils/rx';
-import { TransactionModel } from 'database/models';
-import {
-  getAccountById,
-  getCountAccountObserve,
-  getFirstAccount,
-} from 'database/querying/accounts.query';
+import { getAccountById, getFirstAccount } from 'database/querying/accounts.query';
 
 const initialAddFormValues: TTransactions = {
   id: '',
@@ -41,11 +34,7 @@ const initialAddFormValues: TTransactions = {
   dateTimeAt: new Date(),
 };
 
-type AddTransactionsProps = {
-  isAccountWalletExist: Observable<TransactionModel[]>;
-};
-
-function AddTransactions({ isAccountWalletExist }: AddTransactionsProps) {
+function AddTransactions() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
   const { params } = useRoute<AddTransactionRouteProp>();
@@ -103,15 +92,17 @@ function AddTransactions({ isAccountWalletExist }: AddTransactionsProps) {
 
   /** memoized value */
   const memoizedInputTextColorValue = useMemo(() => {
-    switch (transactionsTypeId) {
-      case '1':
-      case '3':
-        return 'red';
-      case '2':
-      case '4':
-        return '#1fc600';
-      default:
-        return colors.primary;
+    if(transactionsTypeId){
+      switch (transactionsTypeId) {
+        case '1':
+        case '3':
+          return 'red';
+        case '2':
+        case '4':
+          return '#1fc600';
+        default:
+          return colors.primary;
+      }
     }
   }, [watch('transactionsTypeId')]);
 
@@ -151,8 +142,7 @@ function AddTransactions({ isAccountWalletExist }: AddTransactionsProps) {
   const onHandleSubmit = (data: TTransactions) => {
     console.log(data);
   };
-  console.log('index render');
-  
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.primary }]}>
       <TransactionTypePicker
@@ -188,11 +178,6 @@ function AddTransactions({ isAccountWalletExist }: AddTransactionsProps) {
         showsVerticalScrollIndicator={false}
         extraScrollHeight={60}
       >
-        {!isAccountWalletExist && (
-          <View style={styles.noAccountData}>
-            <RNText color="red">Vui lòng tạo 1 tài khoản trước</RNText>
-          </View>
-        )}
         <InputCalculator
           name="amount"
           control={control}
@@ -200,7 +185,7 @@ function AddTransactions({ isAccountWalletExist }: AddTransactionsProps) {
         />
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <InputSelection
-            icon={''}
+            icon={'questionCircle'}
             title="Chọn danh mục"
             value={''}
             onSelect={handleOnSelectTransactionCategory}
@@ -237,6 +222,7 @@ function AddTransactions({ isAccountWalletExist }: AddTransactionsProps) {
             title="Chọn tài khoản"
             value={accountSelected?.accountName}
             onSelect={onSelectAccount}
+            required
           />
         </View>
         {isShowDetails && (
@@ -328,6 +314,4 @@ function AddTransactions({ isAccountWalletExist }: AddTransactionsProps) {
   );
 }
 
-export default withObservables([], () => ({
-  isAccountWalletExist: getCountAccountObserve(),
-}))<any>(AddTransactions);
+export default AddTransactions;

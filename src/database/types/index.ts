@@ -94,7 +94,6 @@ export type TAccountType = {
 
 export type TBank = {
   id: string;
-  bankId: string;
   bankCode: string;
   bankName: string;
   shortName?: string;

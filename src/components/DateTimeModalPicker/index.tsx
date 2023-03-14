@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import isEqual from 'react-fast-compare';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import ModalComponent from 'components/Modal';
 import DateTimePicker from 'components/DateTimePicker';
 import PressableHaptic from 'components/PressableHaptic';

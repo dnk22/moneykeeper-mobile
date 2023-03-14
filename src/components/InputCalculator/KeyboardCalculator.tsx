@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import TouchableHighlight from 'components/TouchableHighlight';
 import { Text, View } from 'react-native';
 import RnKeyboard from 'rn-keyboard';
@@ -14,7 +14,6 @@ import {
   CALCULATE,
   NUMBER,
 } from './type';
-import isEqual from 'react-fast-compare';
 
 type onPushKeyboardEventProps = {
   value: string;
@@ -124,4 +123,4 @@ function KeyboardCalculator() {
   );
 }
 
-export default memo(KeyboardCalculator, isEqual);
+export default KeyboardCalculator;

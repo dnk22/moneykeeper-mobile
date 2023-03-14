@@ -31,7 +31,7 @@ const defaultValues = {
   currency: 'vnd',
 };
 
-const AddAccount = ({}) => {
+const AddAccount = () => {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
   const { params } = useRoute<AddAccountRouteProp>();
@@ -55,7 +55,11 @@ const AddAccount = ({}) => {
     reset,
     formState: { errors },
   } = useForm<TAccount>({
-    defaultValues,
+    defaultValues: {
+      ...defaultValues,
+      accountLogo: accountTypeSelected?.icon,
+      accountTypeName: accountTypeSelected?.name,
+    },
   });
   const { accountTypeId } = getValues();
 
@@ -116,6 +120,7 @@ const AddAccount = ({}) => {
     setValuesForm({
       accountTypeId: item.id,
       accountLogo: item.icon,
+      accountTypeName: item.name,
     });
     if (item.id !== accountTypeId) {
       resetSelectedBank();

@@ -19,4 +19,4 @@ function Loading({
   return <ActivityIndicator size={size} color={color} {...rest} />;
 }
 
-export default memo(Loading, isEqual);
+export default Loading;

@@ -5,7 +5,6 @@ import {
   FlatListComponent,
   ModalComponent,
   RNText,
-  SvgIcon,
   TouchableHighlightComponent,
 } from 'components/index';
 import { IModalComponentProps } from 'components/Modal';
