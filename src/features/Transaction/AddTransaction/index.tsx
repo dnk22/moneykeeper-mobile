@@ -57,17 +57,17 @@ function AddTransactions() {
   const { dateTimeAt, accountId, transactionsTypeId } = getValues();
 
   /** lifecycle hook */
-  useEffect(() => {
-    if (!params?.transactionId) {
-      setDefaultAccountInModeAdd();
-    }
-  }, [params?.transactionId]);
+  // useEffect(() => {
+  //   if (!params?.transactionId) {
+  //     setDefaultAccountInModeAdd();
+  //   }
+  // }, [params?.transactionId]);
 
-  useEffect(() => {
-    if (accountId) {
-      getAccountSelected();
-    }
-  }, [watch('accountId')]);
+  // useEffect(() => {
+  //   if (accountId) {
+  //     getAccountSelected();
+  //   }
+  // }, [watch('accountId')]);
 
   /** memoized function */
   const onToggleTransactionTypeModal = useCallback(() => {
@@ -92,7 +92,7 @@ function AddTransactions() {
 
   /** memoized value */
   const memoizedInputTextColorValue = useMemo(() => {
-    if(transactionsTypeId){
+    if (transactionsTypeId) {
       switch (transactionsTypeId) {
         case '1':
         case '3':
@@ -308,7 +308,6 @@ function AddTransactions() {
             Lưu
           </RNText>
         </TouchableOpacity>
-        <View style={styles.spacer}></View>
       </KeyboardAwareScrollView>
     </SafeAreaView>
   );

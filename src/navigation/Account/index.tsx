@@ -33,7 +33,7 @@ function AccountNavigation() {
         options={{
           title: 'Tài khoản',
           headerBackTitleVisible: false,
-          headerLeft: (props) => <Toolbar {...props} />,
+          headerLeft: () => <Toolbar />,
           headerRight: (props) => <Search {...props} />,
         }}
         component={AccountTab}

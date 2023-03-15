@@ -1,9 +1,10 @@
-import React from 'react';
+import { memo } from 'react';
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import styles from './styles';
 import PressableHaptic from 'components/PressableHaptic';
 import { RNText } from 'components/index';
+import isEqual from 'react-fast-compare';
 
 type ITabBarProps = {
   isFocused?: boolean;
@@ -32,4 +33,4 @@ const TabBar = ({ isFocused, options, onPress, style }: ITabBarProps) => {
   );
 };
 
-export default TabBar;
+export default memo(TabBar, isEqual);

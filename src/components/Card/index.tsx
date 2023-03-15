@@ -49,4 +49,4 @@ function Card({ children, title }: CardProps) {
     </View>
   );
 }
-export default memo(Card, isEqual);
+export default Card;

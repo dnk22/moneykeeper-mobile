@@ -1,9 +1,11 @@
+import { memo } from 'react';
 import { View } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCustomTheme } from 'resources/theme';
 import TabBar from './TabBar';
 import styles from './styles';
+import isEqual from 'react-fast-compare';
 
 type BottomBarProps = BottomTabBarProps & { circle: string };
 const BottomBar = ({
@@ -60,4 +62,4 @@ const BottomBar = ({
   );
 };
 
-export default BottomBar;
+export default memo(BottomBar, isEqual);

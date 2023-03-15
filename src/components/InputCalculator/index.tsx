@@ -44,7 +44,6 @@ function InputCalculator({
     rules,
   });
 
-  const inputRef = useRef<ElementRef<typeof RnKeyboard.Input>>(null);
   const cursorPosition = useRef<number>(0);
   const [inputValue, setInputValue] = useState<string>(value.toString());
   const inputHasOperators = useMemo(() => {
@@ -162,13 +161,13 @@ function InputCalculator({
       <RNText style={styles.amountLabel}>Số tiền</RNText>
       <View style={styles.inputGroup}>
         <RnKeyboard.Input
-          ref={inputRef}
           selectTextOnFocus
           allowFontScaling={false}
           rnKeyboardType={'KeyboardCalculator'}
-          value={inputValue}
+          defaultValue={inputValue}
           keyboardType="number-pad"
           autoCorrect={false}
+          autoFocus={false}
           onChangeText={onHandleInputChange}
           onSelectionChange={handleOnSelectionChange}
           onBlur={handleOnBlurInput}

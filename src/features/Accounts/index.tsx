@@ -65,13 +65,15 @@ function Accounts({ activeAccountsObservables, deactivateAccountsObservables }: 
     [activeAccounts, deactivateAccountsObservables],
   );
 
-  const onToggleModal = () => {
+  const onToggleModal = useCallback(() => {
     setIsShowItemSettingsModal(!isShowItemSettingsModal);
-  };
+  }, [isShowItemSettingsModal]);
 
   const handleOnCreateAccount = () => {
     navigation.navigate(ADD_ACCOUNT);
   };
+
+  console.log('render');
 
   return (
     <>
@@ -81,15 +83,19 @@ function Accounts({ activeAccountsObservables, deactivateAccountsObservables }: 
         account={currentAccountPressed.current}
       />
       <View style={styles.container}>
-        {isHaveAccountsData && (
+        {isHaveAccountsData ? (
           <View style={styles.totalBalance}>
             <RNText style={styles.totalCurrency}>
               {renderTitle('Tổng tiền: ', activeAccounts)}
             </RNText>
           </View>
+        ) : (
+          <View style={styles.noAccounts}>
+            <RNText>Không có tài khoản nào!</RNText>
+          </View>
         )}
         {!!activeAccounts.length && (
-          <Card title={renderTitle('Đang sử dụng: ', activeAccounts)}>
+          <Card title={'Đang sử dụng: '}>
             <AccountList data={activeAccounts} isGroup={group} onActionPress={onActionPress} />
           </Card>
         )}
@@ -101,11 +107,6 @@ function Accounts({ activeAccountsObservables, deactivateAccountsObservables }: 
               onActionPress={onActionPress}
             />
           </Card>
-        )}
-        {!isHaveAccountsData && (
-          <View style={styles.noAccounts}>
-            <RNText>Không có tài khoản nào!</RNText>
-          </View>
         )}
         <PressableHaptic
           style={[styles.createButton, { backgroundColor: colors.primary }]}

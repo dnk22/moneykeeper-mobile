@@ -1,7 +1,7 @@
-import { RNText, SectionListComponent } from 'components/index';
 import { memo, useCallback } from 'react';
-import isEqual from 'react-fast-compare';
 import { SectionListData, View } from 'react-native';
+import { RNText, SectionListComponent } from 'components/index';
+import isEqual from 'react-fast-compare';
 import { TAccount } from 'database/types/index';
 import Item from './Item';
 import withObservables from '@nozbe/with-observables';
@@ -52,6 +52,7 @@ function AccountList({
 
   return (
     <SectionListComponent
+      style={{ maxHeight: 350 }}
       sections={data}
       renderItem={renderItem}
       renderSectionHeader={renderSectionHeader}

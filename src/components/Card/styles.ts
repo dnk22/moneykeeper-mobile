@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   wrapper: {
-    maxHeight: '80%',
+    maxHeight: 400,
     margin: 5,
     paddingHorizontal: 10,
     borderRadius: 10,

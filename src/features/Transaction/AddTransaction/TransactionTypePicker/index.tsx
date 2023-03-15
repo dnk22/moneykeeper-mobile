@@ -45,7 +45,6 @@ function TransactionTypePicker({
         <View style={styles.item}>
           <View style={styles.itemContent}>
             <View style={styles.itemIcon}>
-              {/* <SvgIcon name={item.icon} preset="transactionType" /> */}
               <Image source={item.icon} style={{ width: 24, height: 24 }} />
             </View>
             <RNText>{item.name}</RNText>

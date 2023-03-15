@@ -76,9 +76,6 @@ const styles = StyleSheet.create({
   subText: {
     opacity: 0.5,
   },
-  spacer: {
-    height: 100,
-  },
   submit: {
     height: 50,
     alignItems: 'center',
