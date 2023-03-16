@@ -1,18 +1,15 @@
 import { View } from 'react-native';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { useEffect } from 'react';
 
-type WalletDetailProps = {
-  navigation: NavigationProp<Record<string, object | undefined>, string>;
-  route: RouteProp<Record<string, object | undefined>, string>;
-};
-function AccountDetails({ navigation, route }: WalletDetailProps) {
-  const { params } = route;
-
+function AccountDetails() {
+  const navigation = useNavigation();
+  const { params } = useRoute();
+  
   useEffect(() => {
     // set title screen
     navigation.setOptions({
-      title: 'hihi',
+      title: params?.accountName,
     });
   }, []);
 

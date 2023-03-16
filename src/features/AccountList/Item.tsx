@@ -27,8 +27,8 @@ function Item({ account, isItemSelected, onActionPress, onItemPress }: ItemProps
     if (onItemPress) {
       onItemPress(account);
     } else {
-      const { id } = account;
-      navigation.navigate(ACCOUNT_DETAIL, { accountId: id });
+      const { id, accountName } = account;
+      navigation.navigate(ACCOUNT_DETAIL, { accountId: id, accountName });
     }
   };
 

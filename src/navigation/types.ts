@@ -36,7 +36,7 @@ export type HomeStackParamList = {
 export type AccountStackParamList = {
   [ACCOUNTTAB]: undefined;
   [ADD_ACCOUNT]: { accountId: string } | undefined;
-  [ACCOUNT_DETAIL]: { accountId: string };
+  [ACCOUNT_DETAIL]: { accountId: string; accountName: string };
   [BANK_NAVIGATION]: { screen: keyof BankParamList; params: any };
 };
 
