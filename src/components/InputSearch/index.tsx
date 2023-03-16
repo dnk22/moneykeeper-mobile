@@ -11,7 +11,7 @@ type InputSearch = TextInputProps & {
 function InputSearch({ placeholder, onChangeText, backgroundColor }: InputSearch) {
   const { colors } = useCustomTheme();
   return (
-    <View style={[styles.inputGroup, { backgroundColor: backgroundColor || colors.background }]}>
+    <View style={[styles.inputGroup, { backgroundColor: backgroundColor || colors.surface }]}>
       <TextInput
         placeholder={placeholder}
         style={[styles.inputSearch, { color: colors.text }]}

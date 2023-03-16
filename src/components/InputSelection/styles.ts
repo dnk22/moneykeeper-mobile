@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
   iconForward: {
     position: 'absolute',
     right: 6,
+    opacity: 0.8,
   },
   value: {
     maxWidth: '80%',

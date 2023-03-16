@@ -3,9 +3,9 @@
  */
 export default {
   transparent: 'transparent',
-  surface: 'white',
-  background: 'rgb(242, 242, 242)',
-  primary: '#937DC2',
+  surface: '#FFFFFF',
+  background: '#F6F7F8',
+  primary: '#029C8E',
   card: 'rgb(255, 255, 255)',
   text: 'rgb(28, 28, 30)',
   border: 'rgb(216, 216, 216)',

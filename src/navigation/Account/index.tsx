@@ -1,9 +1,7 @@
-import React, { memo } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ACCOUNTTAB, ADD_ACCOUNT, ACCOUNT_DETAIL } from 'navigation/constants';
+import { ACCOUNTTAB, ADD_ACCOUNT, ACCOUNT_DETAIL, BANK_NAVIGATION } from 'navigation/constants';
 import { AccountStackParamList } from 'navigation/types';
 import { useCustomTheme } from 'resources/theme';
-import isEqual from 'react-fast-compare';
 
 import AccountTab from './tab';
 import AddAccount from 'features/AddAccount';
@@ -13,6 +11,7 @@ import Submit from './component/Submit';
 import Toolbar from './component/Toolbar';
 import Search from './component/Search';
 import AccountDetails from 'features/AccountDetails';
+import BankNavigation from 'navigation/Bank';
 
 //set up routes
 const AccountStack = createNativeStackNavigator<AccountStackParamList>();
@@ -53,8 +52,16 @@ function AccountNavigation() {
         })}
         component={AccountDetails}
       />
+      <AccountStack.Screen
+        name={BANK_NAVIGATION}
+        component={BankNavigation}
+        options={{
+          headerShown: false,
+          presentation: 'modal',
+        }}
+      />
     </AccountStack.Navigator>
   );
 }
 
-export default memo(AccountNavigation, isEqual);
+export default AccountNavigation;

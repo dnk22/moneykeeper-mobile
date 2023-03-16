@@ -1,15 +1,15 @@
 import { RootState } from 'store/index';
 import { createSelector } from '@reduxjs/toolkit';
-import { accountSlice, accountTypeAdapter, bankAdapter } from './account.slice';
+import { accountSlice, accountTypeAdapter } from './account.slice';
 
 const accountTypeState = (state: RootState) => state[accountSlice.name].accountType;
-const bankState = (state: RootState) => state[accountSlice.name].bank;
+const bankIdSelectedState = (state: RootState) => state[accountSlice.name].bankIdSelected;
 
 // export selectors
 export const accountTypeSelectors = accountTypeAdapter.getSelectors(accountTypeState);
-export const bankSelectors = bankAdapter.getSelectors(bankState);
 
 // export custom selector
+export const selectBankIdSelected = createSelector(bankIdSelectedState, (bank) => bank);
 
 export const selectDefaultAccountType = createSelector(
   [accountTypeSelectors.selectById],
@@ -20,5 +20,3 @@ export const selectAllAccountType = createSelector(
   [accountTypeSelectors.selectAll],
   (accountType) => accountType,
 );
-
-export const selectAllBank = createSelector([bankSelectors.selectEntities], (banks) => banks);

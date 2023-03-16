@@ -14,13 +14,19 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useForm } from 'react-hook-form';
 import { TAccountType, TAccount } from 'database/types/index';
 import AccountTypeModalPicker from './AccountTypeModalPicker';
-import { useAppSelector } from 'store/index';
-import { selectDefaultAccountType } from 'store/account/account.selector';
+import { useAppDispatch, useAppSelector } from 'store/index';
+import { selectBankIdSelected, selectDefaultAccountType } from 'store/account/account.selector';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AddAccountRouteProp } from 'navigation/types';
 import { addAccount, getAccountById, updateAccount } from 'database/querying/accounts.query';
-import { DEFAULT_ACCOUNT_TYPE_ID } from './constants';
-import { BANK_NAVIGATION } from 'navigation/constants';
+import { BANK_HOME_LIST, BANK_NAVIGATION } from 'navigation/constants';
+import { getBankById } from 'database/querying/banks.query';
+import { setBankSelected } from 'store/account/account.slice';
+import { BankModel } from 'database/models';
+
+const DEFAULT_ACCOUNT_TYPE_ID = '0';
+const BANK_ID = '1';
+const WALLET_ID = '4';
 
 const defaultValues = {
   accountName: '',
@@ -34,17 +40,22 @@ const defaultValues = {
 const AddAccount = () => {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
+  const dispatch = useAppDispatch();
   const { params } = useRoute<AddAccountRouteProp>();
 
   // state from store
   const initAccountType = useAppSelector((state) =>
     selectDefaultAccountType(state, DEFAULT_ACCOUNT_TYPE_ID),
   );
+  const bankIdSelected = useAppSelector((state) => selectBankIdSelected(state));
+
+  // state local
   const inputNameRef = useRef<any>(null);
   const [isShowAccountTypeModal, setIsShowAccountTypeModal] = useState<boolean>(false);
   const [accountTypeSelected, setAccountTypeSelected] = useState<TAccountType | undefined>(
     initAccountType,
   );
+  const [bankSelectedState, setBankSelectedState] = useState<BankModel | undefined>(undefined);
 
   const {
     control,
@@ -75,6 +86,25 @@ const AddAccount = () => {
     }
   }, [errors?.accountName]);
 
+  /** set bankId value and reset redux state for next call */
+  useEffect(() => {
+    setBankSelectedValue(bankIdSelected);
+    return () => {
+      dispatch(setBankSelected(''));
+    };
+  }, [bankIdSelected]);
+
+  const setBankSelectedValue = async (id: string) => {
+    if (id) {
+      const res = await getBankById(id);
+      setBankSelectedState(res);
+      setValuesForm({
+        bankId: id,
+        accountLogo: res?.icon,
+      });
+    }
+  };
+
   const fetchDataInEditMode = async (id: string) => {
     const getAccountEdit = await getAccountById(id);
     let result = {
@@ -84,8 +114,6 @@ const AddAccount = () => {
       accountTypeId: getAccountEdit?.accountTypeId,
       accountTypeName: getAccountEdit?.accountTypeName,
       bankId: getAccountEdit?.bankId,
-      bankName: getAccountEdit?.bankName,
-      bankCode: getAccountEdit?.bankCode,
       currency: getAccountEdit?.currency,
       descriptions: getAccountEdit?.descriptions,
       isActive: getAccountEdit?.isActive,
@@ -116,11 +144,20 @@ const AddAccount = () => {
     setIsShowAccountTypeModal(false);
   }, []);
 
+  const getInputBankPlaceHolder = () => {
+    switch (accountTypeId) {
+      case BANK_ID:
+        return 'Chọn ngân hàng';
+      default:
+        return 'Chọn nhà cung cấp';
+    }
+  };
+
   const handleOnItemModalPress = (item: TAccountType) => {
     setValuesForm({
       accountTypeId: item.id,
-      accountLogo: item.icon,
       accountTypeName: item.name,
+      accountLogo: item.icon,
     });
     if (item.id !== accountTypeId) {
       resetSelectedBank();
@@ -130,15 +167,28 @@ const AddAccount = () => {
   };
 
   const onSelectBank = () => {
-    navigation.navigate(BANK_NAVIGATION);
+    switch (accountTypeId) {
+      case BANK_ID:
+        navigation.navigate(BANK_NAVIGATION, {
+          screen: BANK_HOME_LIST,
+          params: { isWallet: false },
+        });
+        break;
+      default:
+        navigation.navigate(BANK_NAVIGATION, {
+          screen: BANK_HOME_LIST,
+          params: { isWallet: true },
+        });
+        break;
+    }
   };
 
   const resetSelectedBank = () => {
     setValuesForm({
       bankId: '',
-      bankName: '',
-      bankCode: '',
+      accountLogo: accountTypeSelected?.icon,
     });
+    setBankSelectedState(undefined);
   };
 
   const setValuesForm = (values: Partial<TAccount>) => {
@@ -207,11 +257,11 @@ const AddAccount = () => {
             value={accountTypeSelected?.name}
             onSelect={onSelectAccountType}
           />
-          {(watch('accountTypeId') === '1' || watch('accountTypeId') === '4') && (
+          {(watch('accountTypeId') === BANK_ID || watch('accountTypeId') === WALLET_ID) && (
             <InputSelection
-              icon={watch('bankLogo')}
-              value={watch('bankName')}
-              title="Chọn nhà cung cấp"
+              icon={bankSelectedState?.icon}
+              value={bankSelectedState?.bankName}
+              title={getInputBankPlaceHolder()}
               onSelect={onSelectBank}
               onDelete={resetSelectedBank}
             />
@@ -234,7 +284,6 @@ const AddAccount = () => {
             Lưu
           </RNText>
         </TouchableOpacity>
-        <View style={styles.spacer} />
       </KeyboardAwareScrollView>
     </View>
   );

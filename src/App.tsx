@@ -11,14 +11,27 @@ import { Loading, StatusBar } from 'components/index';
 
 import RnKeyboard from 'rn-keyboard'; // <-- Import here
 import KeyboardCalculator from 'components/InputCalculator/KeyboardCalculator';
+import { getIsBankDataExist, importDefaultBanksData } from 'database/querying/banks.query';
 
 LogBox.ignoreLogs(logBoxIgnore);
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
+
   useEffect(() => {
     RnKeyboard.registerKeyboard('KeyboardCalculator', KeyboardCalculator);
   }, []);
+
+  useEffect(() => {
+    prepareBankData();
+  }, []);
+
+  async function prepareBankData() {
+    const isBankExist = await getIsBankDataExist();
+    if (!!!isBankExist) {
+      importDefaultBanksData();
+    }
+  }
   return (
     <Provider store={store}>
       <PersistGate loading={<Loading />} persistor={persistor}>

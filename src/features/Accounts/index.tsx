@@ -73,8 +73,6 @@ function Accounts({ activeAccountsObservables, deactivateAccountsObservables }: 
     navigation.navigate(ADD_ACCOUNT);
   };
 
-  console.log('render');
-
   return (
     <>
       <ItemSettingsModal

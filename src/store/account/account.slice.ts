@@ -1,29 +1,37 @@
-import { createEntityAdapter, createSlice, nanoid, PayloadAction, Update } from '@reduxjs/toolkit';
-import { TAccount, TAccountType, TBank } from 'database/types/index';
-import { Account_Type, BankDefaultData } from 'utils/data';
+import { createEntityAdapter, createSlice, EntityState, PayloadAction } from '@reduxjs/toolkit';
+import { TAccountType, TBank } from 'database/types/index';
+import { Account_Type } from 'utils/data';
 
-export const accountAdapter = createEntityAdapter<TAccount>({});
+type AccountProps = {
+  accountType: EntityState<TAccountType>;
+  bankIdSelected: string;
+};
+
 export const accountTypeAdapter = createEntityAdapter<TAccountType>({});
-export const bankAdapter = createEntityAdapter<TBank>({});
 
 //set default data
 const setInitAccountType = accountTypeAdapter.upsertMany(
   accountTypeAdapter.getInitialState(),
   Account_Type,
 );
-const setInitBankAdapter = bankAdapter.upsertMany(bankAdapter.getInitialState(), BankDefaultData);
+
+const initialState: AccountProps = {
+  accountType: setInitAccountType,
+  bankIdSelected: '',
+};
 
 export const accountSlice = createSlice({
   name: 'account',
-  initialState: {
-    accountType: setInitAccountType,
-    bank: setInitBankAdapter,
+  initialState,
+  reducers: {
+    setBankSelected(state, { payload }: PayloadAction<string>) {
+      state.bankIdSelected = payload;
+    },
   },
-  reducers: {},
 });
 
 // Action creators are generated for each case reducer function
-export const {} = accountSlice.actions;
+export const { setBankSelected } = accountSlice.actions;
 
 export type TAccountSlice = {
   [accountSlice.name]: ReturnType<(typeof accountSlice)['reducer']>;

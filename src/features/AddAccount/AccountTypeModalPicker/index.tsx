@@ -1,5 +1,6 @@
 import { memo, useEffect, useState } from 'react';
 import isEqual from 'react-fast-compare';
+import { View } from 'react-native';
 import {
   ModalComponent,
   CheckboxComponent,
@@ -9,8 +10,6 @@ import {
   TouchableHighlightComponent,
 } from 'components/index';
 import { IModalComponentProps } from 'components/Modal';
-import { View } from 'react-native';
-import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import { useAppSelector } from 'store/index';
 import { selectAllAccountType } from 'store/account/account.selector';
@@ -27,7 +26,6 @@ function AccountTypeModalPicker({
   isItemSelected,
   onPressItem,
 }: AccountTypeModalPickerProps) {
-  const { colors } = useCustomTheme();
   const accountTypeState = useAppSelector((state) => selectAllAccountType(state));
 
   const [isSelected, setIsSelected] = useState(isItemSelected);
@@ -43,15 +41,12 @@ function AccountTypeModalPicker({
         onPressItem(item);
       }
     };
-
     return (
       <TouchableHighlightComponent onPress={onPress}>
         <View style={styles.item}>
           <View style={styles.itemContent}>
-            <SvgIcon name={item.icon} preset="transactionType" />
-            <RNText style={[styles.title, { color: colors.text }]} numberOfLines={1}>
-              {item.name}
-            </RNText>
+            <SvgIcon name={item.icon} size={32} preset="transactionType" />
+            <RNText>{item.name}</RNText>
           </View>
           {currentSelected(item.id) && <CheckboxComponent check />}
         </View>

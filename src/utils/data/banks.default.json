@@ -1,0 +1,555 @@
+[
+  {
+    "id": "1",
+    "bank_name": "NH TMCP Ngoai Thuong VN",
+    "bank_code": "VCB",
+    "short_name": "VietcomBank",
+    "icon": "VCB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "2",
+    "bank_name": "NH TMCP Cong Thuong VN",
+    "bank_code": "CTG",
+    "short_name": "VietinBank",
+    "icon": "CTG",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "3",
+    "bank_name": "NH TMCP Ky Thuong VN",
+    "bank_code": "TCB",
+    "short_name": "Techcombank",
+    "icon": "TCB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "4",
+    "bank_name": "NH TMCP Dau Tu va Phat Trien VN",
+    "bank_code": "BIDV",
+    "short_name": "BIDV",
+    "icon": "BIDV",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "5",
+    "bank_name": "NH Nong Nghiep va Phat Trien Nong Thon Viet Nam",
+    "bank_code": "VARB",
+    "short_name": "AgriBank",
+    "icon": "VARB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "6",
+    "bank_name": "Ngan hang Thuong Mai Co Phan Quoc Dan",
+    "bank_code": "NVB",
+    "short_name": "Navibank",
+    "icon": "NVB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "7",
+    "bank_name": "NH TMCP Sai Gon Thuong Tin",
+    "bank_code": "STB",
+    "short_name": "Sacombank",
+    "icon": "STB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "8",
+    "bank_name": "NH TMCP A Chau",
+    "bank_code": "ACB",
+    "short_name": "ACB",
+    "icon": "ACB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "9",
+    "bank_name": "NH TMCP Quan Doi",
+    "bank_code": "MB",
+    "short_name": "MBBank",
+    "icon": "MB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "10",
+    "bank_name": "NH TMCP Tien Phong",
+    "bank_code": "TPB",
+    "short_name": "TPBank",
+    "icon": "TPB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "11",
+    "bank_name": "NH TNHH MTV Shinhan VN",
+    "bank_code": "SVB",
+    "short_name": "Shinhan Bank",
+    "icon": "SVB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "12",
+    "bank_name": "NH TMCP Quoc Te VN",
+    "bank_code": "VIB",
+    "short_name": "VIB Bank",
+    "icon": "VIB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "13",
+    "bank_name": "NH TMCP Viet Nam Thinh Vuong",
+    "bank_code": "VPB",
+    "short_name": "VPBank",
+    "icon": "VPB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "14",
+    "bank_name": "NH TMCP Sai Gon Ha Noi",
+    "bank_code": "SHB",
+    "short_name": "SHB",
+    "icon": "SHB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "15",
+    "bank_name": "NH TMCP Xuat Nhap khau VN",
+    "bank_code": "EIB",
+    "short_name": "Eximbank",
+    "icon": "EIB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "16",
+    "bank_name": "NH TMCP Bao Viet",
+    "bank_code": "BVB",
+    "short_name": "BaoVietBank",
+    "icon": "BVB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "17",
+    "bank_name": "NH TMCP Ban Viet",
+    "bank_code": "VCCB",
+    "short_name": "VietcapitalBank",
+    "icon": "VCCB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "18",
+    "bank_name": "NH TMCP Sai Gon",
+    "bank_code": "SCB",
+    "short_name": "SCB",
+    "icon": "SCB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "19",
+    "bank_name": "NH Lien Doanh Viet Nga",
+    "bank_code": "VRB",
+    "short_name": "VietNam - Russia Bank",
+    "icon": "VRB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "20",
+    "bank_name": "NH TMCP An Binh",
+    "bank_code": "ABB",
+    "short_name": "ABBank",
+    "icon": "ABB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "21",
+    "bank_name": "NH TMCP Dai Chung VN",
+    "bank_code": "PVCB",
+    "short_name": "PVCombank",
+    "icon": "PVCB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "22",
+    "bank_name": "NH TM TNHH MTV Dai Duong",
+    "bank_code": "OJB",
+    "short_name": "OceanBank",
+    "icon": "OJB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "23",
+    "bank_name": "NH TMCP Nam A",
+    "bank_code": "NAB",
+    "short_name": "NamA bank",
+    "icon": "NAB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "24",
+    "bank_name": "NH TMCP Phat Trien TP HCM",
+    "bank_code": "HDB",
+    "short_name": "HDBank",
+    "icon": "HDB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "25",
+    "bank_name": "NH TMCP Viet Nam Thuong Tin",
+    "bank_code": "VB",
+    "short_name": "VietBank",
+    "icon": "VB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "26",
+    "bank_name": "Công ty Tài chính Cổ Phần Tín Việt",
+    "bank_code": "CFC",
+    "short_name": "VietCredit",
+    "icon": "CFC",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "27",
+    "bank_name": "NH TNHH MTV Public VN",
+    "bank_code": "PBVN",
+    "short_name": "Public bank",
+    "icon": "PBVN",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "28",
+    "bank_name": "NH TNHH MTV Hongleong VN",
+    "bank_code": "HLB",
+    "short_name": "Hongleong Bank",
+    "icon": "HLB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "29",
+    "bank_name": "NH TMCP Xang Dau Petrolimex",
+    "bank_code": "PGB",
+    "short_name": "PG Bank",
+    "icon": "PGB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "30",
+    "bank_name": "NH Hop Tac",
+    "bank_code": "COB",
+    "short_name": "Co.op Bank",
+    "icon": "COB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "31",
+    "bank_name": "NH TNHH MTV CIMB Viet Nam",
+    "bank_code": "CIMB",
+    "short_name": "CIMB",
+    "icon": "CIMB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "32",
+    "bank_name": "NH TNHH Indovina",
+    "bank_code": "IVB",
+    "short_name": "Indovina",
+    "icon": "IVB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "33",
+    "bank_name": "NH TMCP Dong A",
+    "bank_code": "DAB",
+    "short_name": "DongABank",
+    "icon": "DAB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "34",
+    "bank_name": "NH TM TNHH MTV Dau Khi Toan Cau",
+    "bank_code": "GPB",
+    "short_name": "GPBank",
+    "icon": "GPB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "35",
+    "bank_name": "NH TMCP Bac A",
+    "bank_code": "NASB",
+    "short_name": "BacABank",
+    "icon": "NASB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "36",
+    "bank_name": "NH TMCP Viet A",
+    "bank_code": "VAB",
+    "short_name": "VietABank",
+    "icon": "VAB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "37",
+    "bank_name": "NH TMCP Sai Gon Cong Thuong",
+    "bank_code": "SGB",
+    "short_name": "SaigonBank",
+    "icon": "SGB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "38",
+    "bank_name": "NH TMCP Hang Hai VN",
+    "bank_code": "MSB",
+    "short_name": "Maritime Bank",
+    "icon": "MSB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "39",
+    "bank_name": "NH TMCP Buu Dien Lien Viet",
+    "bank_code": "LPB",
+    "short_name": "LienVietPostBank",
+    "icon": "LPB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "40",
+    "bank_name": "NH TMCP Kien Long",
+    "bank_code": "KLB",
+    "short_name": "KienLongBank",
+    "icon": "KLB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "41",
+    "bank_name": "NH Cong Nghiep Han Quoc CN Ha Noi",
+    "bank_code": "IBKHN",
+    "short_name": "IBK - Ha Noi",
+    "icon": "IBKHN",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "42",
+    "bank_name": "NH Wooribank",
+    "bank_code": "WOO",
+    "short_name": "Woori bank",
+    "icon": "WOO",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "43",
+    "bank_name": "NH TMCP Dong Nam A",
+    "bank_code": "SEAB",
+    "short_name": "SeABank",
+    "icon": "SEAB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "44",
+    "bank_name": "NH TNHH MTV United Overseas Bank",
+    "bank_code": "UOB",
+    "short_name": "UOB",
+    "icon": "UOB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "45",
+    "bank_name": "NH TMCP Phuong Dong",
+    "bank_code": "OCB",
+    "short_name": "OCB",
+    "icon": "OCB",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "46",
+    "bank_name": "Cong ty Tai chinh TNHH MTV Mirae Asset (Viet Nam)",
+    "bank_code": "MAFC",
+    "short_name": "Mirae Asset",
+    "icon": "MAFC",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "47",
+    "bank_name": "Ngan hang Keb Hana",
+    "bank_code": "KEBHANA",
+    "short_name": "Keb Hana - Ho Chi Minh",
+    "icon": "KEBHANA",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "49",
+    "bank_name": "Standard Chartered",
+    "bank_code": "STANDARD",
+    "short_name": "Standard Chartered",
+    "icon": "STANDARD",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "50",
+    "bank_name": "NH So CAKE by VPBank",
+    "bank_code": "CAKE",
+    "short_name": "CAKE",
+    "icon": "CAKE",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "51",
+    "bank_name": "NH So Ubank by VPBank",
+    "bank_code": "Ubank",
+    "short_name": "Ubank",
+    "icon": "Ubank",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "52",
+    "bank_name": "NH Nonghyup - Chi nhanh Ha Noi",
+    "bank_code": "NonghyupBankHN",
+    "short_name": "Nonghyup Bank - HN",
+    "icon": "NonghyupBankHN",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "53",
+    "bank_name": "NH Kookmin - Chi nhanh Ha Noi",
+    "bank_code": "KBHN",
+    "short_name": "Kookmin - HN",
+    "icon": "KBHN",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "54",
+    "bank_name": "NH Kookmin - Chi nhanh TP. HCM",
+    "bank_code": "KBHCM",
+    "short_name": "Kookmin - HCM",
+    "icon": "KBHCM",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "55",
+    "bank_name": "NH DBS - Chi nhanh TP. HCM",
+    "bank_code": "DBSHCM",
+    "short_name": "DBS - HCM",
+    "icon": "DBSHCM",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "56",
+    "bank_name": "NH TM TNHH MTV Xay Dung Viet Nam",
+    "bank_code": "CBBank",
+    "short_name": "CBBank",
+    "icon": "CBBank",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "57",
+    "bank_name": "NH Dai chung TNHH Kasikornbank - Chi nhanh TP. HCM",
+    "bank_code": "KBankHCM",
+    "short_name": "KBank - HCM",
+    "icon": "KBankHCM",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "58",
+    "bank_name": "NH TNHH MTV HSBC Viet Nam",
+    "bank_code": "HSBC",
+    "short_name": "HSBC",
+    "icon": "HSBC",
+    "is_system": true,
+    "is_wallet": false
+  },
+  {
+    "id": "59",
+    "bank_name": "Shopee Pay",
+    "bank_code": "shopeepay",
+    "icon": "shopeepay",
+    "is_system": true,
+    "is_wallet": true
+  },
+  {
+    "id": "60",
+    "bank_name": "Viettel Pay",
+    "bank_code": "viettelpay",
+    "icon": "viettelpay",
+    "is_system": true,
+    "is_wallet": true
+  },
+  {
+    "id": "61",
+    "bank_name": "Zalo Pay",
+    "bank_code": "zalopay",
+    "icon": "zalopay",
+    "is_system": true,
+    "is_wallet": true
+  },
+  {
+    "id": "62",
+    "bank_name": "Momo",
+    "bank_code": "momo",
+    "icon": "momo",
+    "is_system": true,
+    "is_wallet": true
+  },
+  {
+    "id": "63",
+    "bank_name": "VNPT Pay",
+    "bank_code": "vnptpay",
+    "icon": "vnptpay",
+    "is_system": true,
+    "is_wallet": true
+  }
+]

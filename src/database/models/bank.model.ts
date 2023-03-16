@@ -7,10 +7,10 @@ export default class BankModel extends Model {
 
   @field('bank_code') bankCode!: string;
   @text('bank_name') bankName!: string;
-  @field('short_name') shortName!: number;
-  @field('icon') icon!: number;
-  @field('is_system') isSystem!: string;
-  @field('is_wallet') isWallet!: string;
+  @field('short_name') shortName!: boolean;
+  @field('icon') icon!: string;
+  @field('is_system') isSystem!: boolean;
+  @field('is_wallet') isWallet!: boolean;
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;
 }

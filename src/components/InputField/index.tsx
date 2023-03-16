@@ -47,29 +47,5 @@ const InputField = React.forwardRef<any, any>(function InputField(
     />
   );
 });
-// function InputField({ name, control, rules, style, ...rest }: IInputField) {
-//   const { colors } = useCustomTheme();
-//   const inputRef = useRef(null);
-//   const {
-//     field: { value, onChange, onBlur },
-//     fieldState: { error },
-//   } = useController({
-//     name,
-//     control,
-//     rules,
-//   });
-
-//   return (
-//     <TextInput
-//       ref={inputRef}
-//       value={value}
-//       onChangeText={onChange}
-//       onBlur={onBlur}
-//       placeholderTextColor={error?.type ? 'red' : '#9999'}
-//       style={[stylesInline, style, { color: colors.text }]}
-//       {...rest}
-//     />
-//   );
-// }
 
 export default memo(InputField, isEqual);

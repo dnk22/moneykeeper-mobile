@@ -25,11 +25,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     columnGap: 10,
   },
-  title: {
-    fontSize: normalize(16),
-  },
   subTitle: {
     opacity: 0.5,
+  },
+  list: {
+    height: '90%',
+    marginHorizontal: 10,
   },
 });
 

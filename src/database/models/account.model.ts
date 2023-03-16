@@ -17,8 +17,6 @@ export default class AccountModel extends Model {
   @field('account_type_id') accountTypeId!: string;
   @field('account_type_name') accountTypeName!: string;
   @field('bank_id') bankId!: string;
-  @field('bank_name') bankName!: string;
-  @field('bank_code') bankCode!: string;
   @field('currency') currency!: string;
   @text('descriptions') descriptions!: string;
   @field('is_active') isActive!: boolean;

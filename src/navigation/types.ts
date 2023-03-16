@@ -23,7 +23,6 @@ import {
 
 export type RootStackParamList = {
   [HOME]: undefined;
-  [BANK_NAVIGATION]: undefined;
 };
 
 export type HomeStackParamList = {
@@ -38,6 +37,7 @@ export type AccountStackParamList = {
   [ACCOUNTTAB]: undefined;
   [ADD_ACCOUNT]: { accountId: string } | undefined;
   [ACCOUNT_DETAIL]: { accountId: string };
+  [BANK_NAVIGATION]: { screen: keyof BankParamList; params: any };
 };
 
 export type TransactionParamList = TransactionCategoryParamList & {
@@ -82,7 +82,9 @@ export type UpdateTransactionCategoryProps = NativeStackNavigationProp<
 export type ExtendsParamList = RootStackParamList &
   HomeStackParamList &
   AccountStackParamList &
-  TransactionParamList;
+  TransactionParamList &
+  TransactionCategoryParamList &
+  BankParamList;
 
 declare global {
   namespace ReactNavigation {

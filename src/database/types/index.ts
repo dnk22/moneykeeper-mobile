@@ -60,9 +60,6 @@ export type TAccount = {
   accountTypeId: string;
   accountTypeName: string;
   bankId?: string;
-  bankName?: string;
-  bankCode?: string;
-  bankLogo?: string;
   currency?: string;
   descriptions?: string;
   isActive: boolean;

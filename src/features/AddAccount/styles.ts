@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
   itemGroupBetween: {
     justifyContent: 'space-between',
   },
-
   groupContent: {
     flex: 1,
     flexDirection: 'row',
@@ -32,17 +31,10 @@ const styles = StyleSheet.create({
   icon: {
     opacity: 0.6,
   },
-  iconForward: {
-    position: 'absolute',
-    right: 6,
-  },
   formInput: {
     height: 50,
     fontSize: 20,
     width: '100%',
-  },
-  spacer: {
-    height: 100,
   },
   submit: {
     height: 40,

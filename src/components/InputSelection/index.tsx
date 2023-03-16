@@ -42,7 +42,7 @@ function Selected({
             {value || title}
           </RNText>
         )}
-        <SvgIcon name="forward" size={16} style={styles.iconForward} />
+        <SvgIcon name="forward" preset="forwardLink" style={styles.iconForward} />
       </View>
     </PressableHaptic>
   );

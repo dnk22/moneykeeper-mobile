@@ -9,13 +9,15 @@ import BankList from 'features/BankList';
 const TransactionStack = createNativeStackNavigator<BankParamList>();
 
 function BankNavigation() {
-  const rootOptions = {
-    headerShown: false,
-  };
-
   return (
-    <TransactionStack.Navigator initialRouteName={BANK_HOME_LIST} screenOptions={rootOptions}>
-      <TransactionStack.Screen name={BANK_HOME_LIST} component={BankList} />
+    <TransactionStack.Navigator initialRouteName={BANK_HOME_LIST}>
+      <TransactionStack.Screen
+        name={BANK_HOME_LIST}
+        component={BankList}
+        options={({ route }) => ({
+          title: route.params?.isWallet ? 'Nhà cung cấp' : 'Ngân hàng',
+        })}
+      />
     </TransactionStack.Navigator>
   );
 }

@@ -15,7 +15,6 @@ function ExpenseCategory() {
   const getExpenseCategoryState = useAppSelector((state) =>
     selectExpenseTransactionCategory(state),
   );
-  console.log(getExpenseCategoryState, 'getExpenseCategoryState');
 
   const handleOnSearch = () => {};
 
