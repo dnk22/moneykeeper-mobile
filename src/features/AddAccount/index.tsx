@@ -15,7 +15,7 @@ import { useForm } from 'react-hook-form';
 import { TAccountType, TAccount } from 'database/types/index';
 import AccountTypeModalPicker from './AccountTypeModalPicker';
 import { useAppDispatch, useAppSelector } from 'store/index';
-import { selectBankIdSelected, selectDefaultAccountType } from 'store/account/account.selector';
+import { selectBankIdSelected, selectAllAccountType } from 'store/account/account.selector';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AddAccountRouteProp } from 'navigation/types';
 import { addAccount, getAccountById, updateAccount } from 'database/querying/accounts.query';
@@ -44,16 +44,14 @@ const AddAccount = () => {
   const { params } = useRoute<AddAccountRouteProp>();
 
   // state from store
-  const initAccountType = useAppSelector((state) =>
-    selectDefaultAccountType(state, DEFAULT_ACCOUNT_TYPE_ID),
-  );
+  const accountTypeState = useAppSelector((state) => selectAllAccountType(state));
   const bankIdSelected = useAppSelector((state) => selectBankIdSelected(state));
 
   // state local
   const inputNameRef = useRef<any>(null);
   const [isShowAccountTypeModal, setIsShowAccountTypeModal] = useState<boolean>(false);
   const [accountTypeSelected, setAccountTypeSelected] = useState<TAccountType | undefined>(
-    initAccountType,
+    accountTypeState[DEFAULT_ACCOUNT_TYPE_ID],
   );
   const [bankSelectedState, setBankSelectedState] = useState<BankModel | undefined>(undefined);
 
@@ -106,33 +104,37 @@ const AddAccount = () => {
   };
 
   const fetchDataInEditMode = async (id: string) => {
-    const getAccountEdit = await getAccountById(id);
-    let result = {
-      accountName: getAccountEdit?.accountName,
-      initialAmount: getAccountEdit?.initialAmount,
-      currentAmount: getAccountEdit?.currentAmount,
-      accountTypeId: getAccountEdit?.accountTypeId,
-      accountTypeName: getAccountEdit?.accountTypeName,
-      bankId: getAccountEdit?.bankId,
-      currency: getAccountEdit?.currency,
-      descriptions: getAccountEdit?.descriptions,
-      isActive: getAccountEdit?.isActive,
-      isNotAddReport: getAccountEdit?.isNotAddReport,
-      userId: getAccountEdit?.userId,
-      accountLogo: getAccountEdit?.accountLogo,
-      sortOrder: getAccountEdit?.sortOrder,
-      termType: getAccountEdit?.termType,
-      termMonth: getAccountEdit?.termMonth,
-      interestRate: getAccountEdit?.interestRate,
-      interestPaymentType: getAccountEdit?.interestPaymentType,
-      dueType: getAccountEdit?.dueType,
-      startDate: getAccountEdit?.startDate,
-      endDate: getAccountEdit?.endDate,
-      interestPaymentToAccount: getAccountEdit?.interestPaymentToAccount,
-      savingFromAccountId: getAccountEdit?.savingFromAccountId,
-      numberDayOfYear: getAccountEdit?.numberDayOfYear,
-    };
-    reset(result);
+    const editAccountData = await getAccountById(id);
+    if (editAccountData?.id) {
+      let result = {
+        accountName: editAccountData.accountName,
+        initialAmount: editAccountData.initialAmount,
+        currentAmount: editAccountData.currentAmount,
+        accountTypeId: editAccountData.accountTypeId,
+        accountTypeName: editAccountData.accountTypeName,
+        bankId: editAccountData.bankId,
+        currency: editAccountData.currency,
+        descriptions: editAccountData.descriptions,
+        isActive: editAccountData.isActive,
+        isNotAddReport: editAccountData.isNotAddReport,
+        userId: editAccountData.userId,
+        accountLogo: editAccountData.accountLogo,
+        sortOrder: editAccountData.sortOrder,
+        termType: editAccountData.termType,
+        termMonth: editAccountData.termMonth,
+        interestRate: editAccountData.interestRate,
+        interestPaymentType: editAccountData.interestPaymentType,
+        dueType: editAccountData.dueType,
+        startDate: editAccountData.startDate,
+        endDate: editAccountData.endDate,
+        interestPaymentToAccount: editAccountData.interestPaymentToAccount,
+        savingFromAccountId: editAccountData.savingFromAccountId,
+        numberDayOfYear: editAccountData.numberDayOfYear,
+      };
+      reset(result);
+      setAccountTypeSelected(accountTypeState[+editAccountData.accountTypeId]);
+      setBankSelectedValue(editAccountData?.bankId);
+    }
   };
 
   /** open account type modal */
@@ -154,16 +156,16 @@ const AddAccount = () => {
   };
 
   const handleOnItemModalPress = (item: TAccountType) => {
-    setValuesForm({
-      accountTypeId: item.id,
-      accountTypeName: item.name,
-      accountLogo: item.icon,
-    });
-    if (item.id !== accountTypeId) {
-      resetSelectedBank();
-    }
-    setAccountTypeSelected(item);
     setIsShowAccountTypeModal(false);
+    if (item.id !== accountTypeId) {
+      setAccountTypeSelected(item);
+      resetSelectedBank();
+      setValuesForm({
+        accountTypeId: item.id,
+        accountTypeName: item.name,
+        accountLogo: item.icon,
+      });
+    }
   };
 
   const onSelectBank = () => {

@@ -1,7 +1,5 @@
 import { View } from 'react-native';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
-import { useAppSelector } from 'store/index';
-import { selectAccountById } from 'store/account/account.selector';
 import { useEffect } from 'react';
 
 type WalletDetailProps = {
@@ -10,14 +8,13 @@ type WalletDetailProps = {
 };
 function AccountDetails({ navigation, route }: WalletDetailProps) {
   const { params } = route;
-  const getAccountById = useAppSelector((state) => selectAccountById(state, params?.accountId));
 
   useEffect(() => {
     // set title screen
     navigation.setOptions({
-      title: getAccountById?.name,
+      title: 'hihi',
     });
-  }, [getAccountById]);
+  }, []);
 
   return <View></View>;
 }

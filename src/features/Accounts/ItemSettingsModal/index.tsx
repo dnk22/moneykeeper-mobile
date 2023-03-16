@@ -19,7 +19,7 @@ const INACTIVE = 'inactive';
 
 function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsModalProps) {
   const navigation = useNavigation();
-  const isAccountActive = account?.isActive;
+  const isAccountDisable = !account?.isActive;
 
   const onItemPress = (type: string) => {
     switch (type) {
@@ -65,14 +65,14 @@ function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsMo
       <View>
         <TouchableHighlightComponent
           onPress={() => onItemPress(TRANSFER)}
-          isActive={isAccountActive}
+          isDisable={isAccountDisable}
         >
           <View style={styles.item}>
             <SvgIcon name="trayUp" size={18} />
             <RNText>Chuyển khoản</RNText>
           </View>
         </TouchableHighlightComponent>
-        <TouchableHighlightComponent onPress={() => onItemPress(EDIT)} isActive={isAccountActive}>
+        <TouchableHighlightComponent onPress={() => onItemPress(EDIT)} isDisable={isAccountDisable}>
           <View style={styles.item}>
             <SvgIcon name="pencil" size={18} />
             <RNText>Sửa tài khoản</RNText>
@@ -80,14 +80,17 @@ function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsMo
         </TouchableHighlightComponent>
         <TouchableHighlightComponent
           onPress={() => onItemPress(ADJUSTMENT)}
-          isActive={isAccountActive}
+          isDisable={isAccountDisable}
         >
           <View style={styles.item}>
             <SvgIcon name="plusMinus" size={18} />
             <RNText>Điều chỉnh số dư tài khoản</RNText>
           </View>
         </TouchableHighlightComponent>
-        <TouchableHighlightComponent onPress={() => onItemPress(DELETE)} isActive={isAccountActive}>
+        <TouchableHighlightComponent
+          onPress={() => onItemPress(DELETE)}
+          isDisable={isAccountDisable}
+        >
           <View style={styles.item}>
             <SvgIcon name="trash" size={18} color="red" />
             <RNText>Xóa tài khoản</RNText>
@@ -95,8 +98,8 @@ function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsMo
         </TouchableHighlightComponent>
         <TouchableHighlightComponent onPress={() => onItemPress(INACTIVE)}>
           <View style={styles.item}>
-            <SvgIcon name={isAccountActive ? 'lock' : 'lockOpen'} size={18} color="red" />
-            <RNText>{isAccountActive ? 'Ngưng sử dụng' : 'Tái sử dụng'}</RNText>
+            <SvgIcon name={isAccountDisable ? 'lockOpen' : 'lock'} size={18} color="red" />
+            <RNText>{isAccountDisable ? 'Tái sử dụng' : 'Ngưng sử dụng'}</RNText>
           </View>
         </TouchableHighlightComponent>
       </View>
