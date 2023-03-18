@@ -21,7 +21,10 @@ export const transactionsSlice = createSlice({
     setTransactionCategorySelected(state, { payload }: PayloadAction<TTransactionsCategory>) {
       state.transactionCategorySelected = payload;
     },
-    setTransactionAccountSelected(state, { payload }: PayloadAction<Partial<TAccount>>) {
+    setTransactionAccountSelected(
+      state,
+      { payload }: PayloadAction<{ id: string; accountName: string; accountLogo: string }>,
+    ) {
       state.transactionAccountSelected = payload;
     },
   },

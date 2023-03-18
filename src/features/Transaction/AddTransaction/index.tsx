@@ -59,7 +59,7 @@ function AddTransactions() {
       ...initialAddFormValues,
     },
   });
-  const { dateTimeAt, accountId, transactionsTypeId } = getValues();
+  const { dateTimeAt } = getValues();
 
   /** watch transactionsTypeId from redux store and setValue to form */
   useLayoutEffect(() => {
@@ -74,13 +74,20 @@ function AddTransactions() {
     setValue('transactionsTypeId', transactionTypeSelected);
   }, [transactionTypeSelected]);
 
+  /** set accountId*/
   useEffect(() => {
-    if (accountId) {
+    if (params?.transactionId) {
       getAccountSelected();
     } else {
       setDefaultAccountInModeAdd();
     }
-  }, [watch('accountId')]);
+  }, [params?.transactionId]);
+
+  useEffect(() => {
+    if (accountSelected?.id) {
+      setValue('accountId', accountSelected.id);
+    }
+  }, [accountSelected?.id]);
 
   /** memoized function */
   const onToggleDateTimeModal = useCallback(
@@ -96,6 +103,7 @@ function AddTransactions() {
 
   /** memoized value */
   const memoizedInputTextColorValue = useMemo(() => {
+    const { transactionsTypeId } = getValues();
     if (transactionsTypeId) {
       switch (transactionsTypeId) {
         case '1':
@@ -112,36 +120,40 @@ function AddTransactions() {
 
   /** pure function */
   const onSelectAccount = () => {
-    navigation.navigate(ACCOUNT_PICKER, { accountSelectedId: accountId });
-  };
-
-  const setDefaultAccountInModeAdd = async () => {
-    let accountId = '';
-    if (params?.accountId) {
-      const account = await getAccountById(params.accountId);
-      if (account?.id) {
-        accountId = account?.id;
-      }
-    } else {
-      const firstAccount = await getFirstAccount();
-      if (firstAccount && firstAccount.length) {
-        accountId = firstAccount[0]?.id;
-      }
-    }
-    if (accountId) {
-      setValue('accountId', accountId);
-    }
+    navigation.navigate(ACCOUNT_PICKER, { accountSelectedId: getValues('accountId') });
   };
 
   const getAccountSelected = async () => {
-    const account = await getAccountById(accountId);
+    const account = await getAccountById(getValues('accountId'));
     if (account?.id) {
       const result = {
+        id: account?.id,
         accountName: account?.accountName,
         accountLogo: account.accountLogo,
       };
       useDispatch(setTransactionAccountSelected(result));
     }
+  };
+
+  const setDefaultAccountInModeAdd = async () => {
+    let accountInfo: any = {};
+    // if accountId param is exist - set it , else set with first account in database
+    if (params?.accountId) {
+      const account = await getAccountById(params.accountId);
+      if (account?.id) {
+        accountInfo.id = account?.id;
+        accountInfo.accountName = account.accountName;
+        accountInfo.accountLogo = account?.accountLogo;
+      }
+    } else {
+      const firstAccount = await getFirstAccount();
+      if (firstAccount && firstAccount.length) {
+        accountInfo.id = firstAccount[0]?.id;
+        accountInfo.accountName = firstAccount[0]?.accountName;
+        accountInfo.accountLogo = firstAccount[0]?.accountLogo;
+      }
+    }
+    useDispatch(setTransactionAccountSelected(accountInfo));
   };
 
   const onHandleFeeChange = () => {
@@ -213,11 +225,10 @@ function AddTransactions() {
             </View>
           </View>
           <InputSelection
+            required
             icon={accountSelected?.accountLogo}
-            title="Chọn tài khoản"
             value={accountSelected?.accountName}
             onSelect={onSelectAccount}
-            required
           />
         </View>
         {isShowDetails && (

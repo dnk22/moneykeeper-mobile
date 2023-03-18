@@ -13,6 +13,7 @@ function AccountPicker() {
 
   const handleOnItemPress = (account: TAccount) => {
     const result = {
+      id: account.id,
       accountName: account.accountName,
       accountLogo: account.accountLogo,
     };
