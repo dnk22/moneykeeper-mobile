@@ -1,4 +1,4 @@
-import React, { useCallback, memo, useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { PropsFlatList } from './model';
 import isEqual from 'react-fast-compare';
@@ -17,7 +17,7 @@ const FlatListComponent: PropsFlatList = (props) => {
     hasPull = false,
     ...rest
   } = props;
-  const keyExtractor = useCallback((item: any) => item.id, []);
+  const keyExtractor = (item: any) => item.id;
 
   const renderRefreshControl = useMemo(
     () => (
@@ -33,7 +33,6 @@ const FlatListComponent: PropsFlatList = (props) => {
 
   return (
     <FlatList
-      {...props}
       data={data}
       keyExtractor={keyExtractor}
       extraData={data}

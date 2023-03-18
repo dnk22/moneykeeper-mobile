@@ -19,6 +19,7 @@ import {
   HOME_REPORT,
   BANK_NAVIGATION,
   BANK_HOME_LIST,
+  CREATE_TRANSACTION_FROM_ACCOUNT,
 } from './constants';
 
 export type RootStackParamList = {
@@ -38,19 +39,36 @@ export type AccountStackParamList = {
   [ADD_ACCOUNT]: { accountId: string } | undefined;
   [ACCOUNT_DETAIL]: { accountId: string; accountName: string };
   [BANK_NAVIGATION]: { screen: keyof BankParamList; params: any };
+  [CREATE_TRANSACTION_FROM_ACCOUNT]:
+    | {
+        screen: keyof TransactionParamList;
+        params: TransactionParamList[keyof TransactionParamList];
+      }
+    | undefined;
 };
 
-export type TransactionParamList = TransactionCategoryParamList & {
-  [ADD_TRANSACTION]: { transactionId: string } | undefined;
-  [ACCOUNT_PICKER]: undefined;
-  [TRANSACTION_CATEGORY]: undefined;
+export type TransactionParamList = {
+  [ADD_TRANSACTION]:
+    | {
+        transactionId?: string;
+        accountId?: string;
+        hideHeader?: boolean;
+      }
+    | undefined;
+  [ACCOUNT_PICKER]: { accountSelectedId?: string } | undefined;
+  [TRANSACTION_CATEGORY]:
+    | {
+        screen: keyof TransactionCategoryParamList;
+        params: TransactionCategoryParamList[keyof TransactionCategoryParamList];
+      }
+    | undefined;
 };
 
 export type TransactionCategoryParamList = {
   [TRANSACTION_CATEGORY_LIST]: undefined;
   [UPDATE_TRANSACTION_CATEGORY]: {
     transaction_category_id?: string;
-    transaction_category_type: TRANSACTION_CATEGORY_TYPE;
+    transaction_category_type?: TRANSACTION_CATEGORY_TYPE;
   };
 };
 
@@ -72,6 +90,8 @@ export type UpdateTransactionCategoryRouteProps = RouteProp<
   TransactionCategoryParamList,
   typeof UPDATE_TRANSACTION_CATEGORY
 >;
+export type AccountDetailProp = RouteProp<AccountStackParamList, typeof ACCOUNT_DETAIL>;
+export type AccountPickerProp = RouteProp<TransactionParamList, typeof ACCOUNT_PICKER>;
 
 // navigation type props
 export type UpdateTransactionCategoryProps = NativeStackNavigationProp<

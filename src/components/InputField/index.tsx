@@ -30,20 +30,19 @@ const InputField = React.forwardRef<any, any>(function InputField(
     rules,
   });
 
-  useEffect(()=> {
-    
-  },[error?.type])
+  useEffect(() => {}, [error?.type]);
 
   return (
     <TextInput
       ref={ref}
       value={value}
-      onChangeText={onChange}
-      onBlur={onBlur}
+      autoCorrect={false}
+      allowFontScaling={false}
       placeholderTextColor={error?.type ? 'red' : '#9999'}
       style={[stylesInline, style, { color: colors.text }]}
+      onChangeText={onChange}
+      onBlur={onBlur}
       {...rest}
-      autoCorrect={false}
     />
   );
 });

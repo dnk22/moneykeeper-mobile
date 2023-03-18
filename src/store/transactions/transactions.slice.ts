@@ -1,66 +1,37 @@
-import { createEntityAdapter, createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
-import { TTransactions, TAccount, TTransactionsCategory } from 'database/types/index';
-import { TTransactionsState } from 'utils/types';
-
-export const transactionAdapter = createEntityAdapter<TTransactions>({
-  selectId: (transaction) => transaction.id,
-});
-export const transactionCategoryAdapter = createEntityAdapter<TTransactionsCategory>({
-  selectId: (tCategory) => tCategory.id,
-});
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { TAccount, TTransactionsCategory } from 'database/types/index';
+import { TransactionTypeData } from 'utils/data';
+import { TTransactionsState } from 'utils/types/store.type';
 
 //set default data
 const initialState: TTransactionsState = {
-  transactions: transactionAdapter.getInitialState(),
-  transactionCategory: transactionCategoryAdapter.getInitialState(),
-  accountSelected: null,
+  transactionType: TransactionTypeData,
+  transactionTypeIdSelected: TransactionTypeData[0].id,
   transactionCategorySelected: null,
+  transactionAccountSelected: null,
 };
 
 export const transactionsSlice = createSlice({
   name: 'transactions',
   initialState,
   reducers: {
-    addOrUpdateTransaction: (state, { payload }: PayloadAction<TTransactions>) => {
-      const data = {
-        ...payload,
-        id: payload.id || nanoid(),
-      };
-      transactionAdapter.upsertOne(state.transactions, data);
-    },
-    addOrUpdateTransactionCategory: (state, { payload }: PayloadAction<TTransactionsCategory>) => {
-      const data = {
-        ...payload,
-        id: payload.id || nanoid(),
-      };
-      transactionCategoryAdapter.upsertOne(state.transactionCategory, data);
-    },
-    deleteTransactionById(state, { payload }: PayloadAction<string>) {
-      transactionAdapter.removeOne(state.transactions, payload);
-    },
-    deleteTransactionCategoryById(state, { payload }: PayloadAction<string>) {
-      transactionCategoryAdapter.removeOne(state.transactionCategory, payload);
-    },
-    clearAllTransactions: (state) => {
-      transactionAdapter.removeAll(state.transactions);
-    },
-    setAccountSelected(state, { payload }: PayloadAction<Partial<TAccount>>) {
-      state.accountSelected = payload;
+    setTransactionTypeSelected(state, { payload }: PayloadAction<string>) {
+      state.transactionTypeIdSelected = payload;
     },
     setTransactionCategorySelected(state, { payload }: PayloadAction<TTransactionsCategory>) {
-      state.transactionCategorySelected = { ...payload };
+      state.transactionCategorySelected = payload;
+    },
+    setTransactionAccountSelected(state, { payload }: PayloadAction<Partial<TAccount>>) {
+      state.transactionAccountSelected = payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
 export const {
-  addOrUpdateTransaction,
-  addOrUpdateTransactionCategory,
-  deleteTransactionById,
-  deleteTransactionCategoryById,
-  clearAllTransactions,
-  setAccountSelected,
+  setTransactionTypeSelected,
+  setTransactionAccountSelected,
+  setTransactionCategorySelected,
 } = transactionsSlice.actions;
 
 export type TTransactionsSlice = {

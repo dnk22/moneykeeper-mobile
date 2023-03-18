@@ -15,6 +15,7 @@ type CheckboxComponentProps = {
   size?: number;
   color?: string;
   onPress?: (check: boolean) => void;
+  disabled?: boolean;
 };
 const CheckboxComponent = ({
   style,
@@ -22,6 +23,7 @@ const CheckboxComponent = ({
   type = 'radio',
   color,
   check = false,
+  disabled = false,
   onPress,
 }: CheckboxComponentProps) => {
   const {
@@ -34,6 +36,7 @@ const CheckboxComponent = ({
   }, [check]);
 
   const onClick = () => {
+    if (disabled) return;
     setValue(!value);
     if (onPress) {
       onPress(!value);

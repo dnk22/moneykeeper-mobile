@@ -165,9 +165,6 @@ function InputCalculator({
           allowFontScaling={false}
           rnKeyboardType={'KeyboardCalculator'}
           defaultValue={inputValue}
-          keyboardType="number-pad"
-          autoCorrect={false}
-          autoFocus={false}
           onChangeText={onHandleInputChange}
           onSelectionChange={handleOnSelectionChange}
           onBlur={handleOnBlurInput}

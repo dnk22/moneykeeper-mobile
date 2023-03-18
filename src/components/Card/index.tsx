@@ -1,6 +1,5 @@
-import { memo, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Animated, View } from 'react-native';
-import isEqual from 'react-fast-compare';
 import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
 import Collapsible from 'react-native-collapsible';
@@ -8,18 +7,23 @@ import PressableHaptic from 'components/PressableHaptic';
 import RNText from 'components/Text';
 import SvgIcon from 'components/SvgIcon';
 
-type CardProps = {
-  children?: React.ReactElement;
+export type CardProps = {
+  children?: React.ReactNode;
   title?: string;
+  collapse: boolean;
 };
 
-function Card({ children, title }: CardProps) {
+function Card({ children, title, collapse = false }: CardProps) {
   const { colors } = useCustomTheme();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapse, setIsCollapse] = useState(collapse);
   const rotateAnim = useRef(new Animated.Value(1)).current;
 
+  useEffect(() => {
+    setIsCollapse(collapse);
+  }, [collapse]);
+
   const onCardToggle = () => {
-    setIsCollapsed(!isCollapsed);
+    setIsCollapse(!isCollapse);
   };
 
   const rotate = rotateAnim.interpolate({
@@ -29,11 +33,11 @@ function Card({ children, title }: CardProps) {
 
   useEffect(() => {
     Animated.timing(rotateAnim, {
-      toValue: isCollapsed ? 0 : 1,
+      toValue: isCollapse ? 0 : 1,
       duration: 500,
       useNativeDriver: true,
     }).start();
-  }, [isCollapsed]);
+  }, [isCollapse]);
 
   return (
     <View style={[styles.wrapper, { backgroundColor: colors.surface }]}>
@@ -43,7 +47,7 @@ function Card({ children, title }: CardProps) {
           <SvgIcon name="arrowDown" size={16} />
         </Animated.View>
       </PressableHaptic>
-      <Collapsible style={styles.content} collapsed={isCollapsed}>
+      <Collapsible style={styles.content} collapsed={isCollapse}>
         {children}
       </Collapsible>
     </View>

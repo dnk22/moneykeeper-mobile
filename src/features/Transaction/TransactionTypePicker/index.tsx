@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useState } from 'react';
 import { Image, View } from 'react-native';
 import {
   CheckboxComponent,
@@ -8,31 +8,28 @@ import {
   TouchableHighlightComponent,
 } from 'components/index';
 import { IModalComponentProps } from 'components/Modal';
-import { useCustomTheme } from 'resources/theme';
 import isEqual from 'react-fast-compare';
 import styles from './style';
-import { TransactionTypePickerData } from './constants';
 import { TTransactionType } from 'database/types/index';
 
 interface TransactionTypePickerProps extends IModalComponentProps {
+  data: TTransactionType[];
   onPressItem?: (item: TTransactionType) => void;
   isTypeSelected?: string;
-  isShowCheckbox?: boolean;
 }
 
 function TransactionTypePicker({
+  data,
   isTypeSelected = '',
-  isShowCheckbox = true,
   onPressItem,
   isVisible,
   onToggleModal,
 }: TransactionTypePickerProps) {
-  const { colors } = useCustomTheme();
   const [isSelected, setIsSelected] = useState(isTypeSelected);
 
-  const currentSelected = useCallback((itemId: string) => isSelected === itemId, [isSelected]);
+  const currentSelected = (itemId: string) => isSelected === itemId;
 
-  const renderItem = ({ item }: { item: TTransactionType }) => {
+  function renderItem({ item }: { item: TTransactionType }) {
     const onPress = () => {
       setIsSelected(item.id);
       if (onPressItem) {
@@ -49,22 +46,24 @@ function TransactionTypePicker({
             </View>
             <RNText>{item.name}</RNText>
           </View>
-          {(isShowCheckbox || currentSelected(item.id)) && (
-            <CheckboxComponent check={currentSelected(item.id)} />
-          )}
+          <CheckboxComponent check={currentSelected(item.id)} disabled />
         </View>
       </TouchableHighlightComponent>
     );
-  };
+  }
   return (
     <ModalComponent
       isVisible={isVisible}
       onToggleModal={onToggleModal}
-      animationIn="bounceIn"
-      animationOut="bounceOut"
+      animationIn="zoomIn"
       styleDefaultContent={styles.modal}
     >
-      <FlatListComponent data={TransactionTypePickerData} renderItem={renderItem} />
+      <FlatListComponent
+        data={data}
+        renderItem={renderItem}
+        initialNumToRender={6}
+        maxToRenderPerBatch={6}
+      />
     </ModalComponent>
   );
 }

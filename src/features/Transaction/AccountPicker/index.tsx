@@ -1,45 +1,32 @@
-import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import AccountList from 'features/AccountList';
-import { useAppDispatch, useAppSelector } from 'store/index';
-import { groupDataByValue } from 'utils/algorithm';
-import styles from './styles';
+import { useAppDispatch } from 'store/index';
 import { TAccount } from 'database/types/index';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { setAccountSelected } from 'store/transactions/transactions.slice';
-import { selectAccountSelected } from 'store/transactions/transactions.selector';
-import { getAccounts } from 'database/querying/accounts.query';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { setTransactionAccountSelected } from 'store/transactions/transactions.slice';
+import { AccountPickerProp } from 'navigation/types';
 
 function AccountPicker() {
   const useDispatch = useAppDispatch();
   const navigation = useNavigation();
-  const [activeAccount, setActiveAccount] = useState<any>([]);
-  const getAccountSelected = useAppSelector((state) => selectAccountSelected(state));
-
-  useFocusEffect(
-    useCallback(() => {
-      getActiveAccount();
-    }, []),
-  );
-
-  const groupAccount = useCallback((account: any) => groupDataByValue(account), []);
-
-  const getActiveAccount = async () => {
-    const activateAccount = await getAccounts({ isActive: true });
-    const group = groupAccount(activateAccount);
-    setActiveAccount(group);
-  };
+  const { params } = useRoute<AccountPickerProp>();
 
   const handleOnItemPress = (account: TAccount) => {
-    useDispatch(setAccountSelected(account));
+    const result = {
+      accountName: account.accountName,
+      accountLogo: account.accountLogo,
+    };
+    useDispatch(setTransactionAccountSelected(result));
     navigation.goBack();
   };
+
   return (
-    <View style={styles.container}>
+    <View style={{ padding: 10 }}>
       <AccountList
-        data={activeAccount}
+        isGroup
+        isShowSearch
+        isItemSelected={params?.accountSelectedId}
         onItemPress={handleOnItemPress}
-        isItemSelected={getAccountSelected?.id}
       />
     </View>
   );

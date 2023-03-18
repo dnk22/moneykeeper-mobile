@@ -3,8 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TRANSACTION_CATEGORY_LIST, UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
 import { TransactionCategoryParamList } from 'navigation/types';
 import { UpdateTransactionCategory } from 'features/TransactionCategory';
-import TransactionCategoryTopBar from './components/TopBar';
-import UpdateTransactionCategoryHeader from './components/Update.header';
+import TransactionCategoryTopBar from '../components/TopBar';
+import UpdateTransactionCategoryHeader from '../components/Update.header';
 
 //set up routes
 const TransactionCategoryStack = createNativeStackNavigator<TransactionCategoryParamList>();

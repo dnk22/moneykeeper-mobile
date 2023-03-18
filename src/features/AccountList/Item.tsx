@@ -48,8 +48,10 @@ function Item({ account, isItemSelected, onActionPress, onItemPress }: ItemProps
               {account.currentAmount?.toString()}
             </RNText>
           </View>
-          {isItemSelected && isItemSelected === account.id && <CheckboxComponent check={true} />}
-          {!isItemSelected && (
+          {isItemSelected && isItemSelected === account.id && (
+            <CheckboxComponent check={true} disabled />
+          )}
+          {!isItemSelected && !onItemPress && (
             <PressableHaptic
               style={styles.itemAction}
               onPress={() => onActionPress && onActionPress(account)}

@@ -8,7 +8,7 @@ import styles from './styles';
 type InputSearch = TextInputProps & {
   backgroundColor?: string;
 };
-function InputSearch({ placeholder, onChangeText, backgroundColor }: InputSearch) {
+function InputSearch({ placeholder = 'Tìm kiếm...', onChangeText, backgroundColor }: InputSearch) {
   const { colors } = useCustomTheme();
   return (
     <View style={[styles.inputGroup, { backgroundColor: backgroundColor || colors.surface }]}>

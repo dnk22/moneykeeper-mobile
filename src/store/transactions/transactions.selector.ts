@@ -1,40 +1,35 @@
 import { RootState } from 'store/index';
 import { createSelector } from '@reduxjs/toolkit';
-import { transactionCategoryAdapter, transactionsSlice } from './transactions.slice';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
+import { transactionsSlice } from './transactions.slice';
 
-const transactionsState = (state: RootState) => state[transactionsSlice.name].transactions;
-const transactionsCategoryState = (state: RootState) =>
-  state[transactionsSlice.name].transactionCategory;
-const accountSelectedState = (state: RootState) => state[transactionsSlice.name].accountSelected;
+const transactionTypeState = (state: RootState) => state[transactionsSlice.name].transactionType;
+
+const transactionTypeSelectedState = (state: RootState) =>
+  state[transactionsSlice.name].transactionTypeIdSelected;
+
+const transactionAccountSelectedState = (state: RootState) =>
+  state[transactionsSlice.name].transactionAccountSelected;
+
 const transactionCategorySelectedState = (state: RootState) =>
   state[transactionsSlice.name].transactionCategorySelected;
 
-// adapterSelector
-export const transactionsCategorySelectors =
-  transactionCategoryAdapter.getSelectors(transactionsCategoryState);
-
 // export custom selector
-export const selectAllTransactions = createSelector(
-  transactionsState,
-  (transactions) => transactions,
+export const selectTransactionType = createSelector(
+  transactionTypeState,
+  (tAccountType) => tAccountType,
 );
 
-export const selectExpenseTransactionCategory = createSelector(
-  [transactionsCategorySelectors.selectAll],
-  (category) =>
-    category.filter((category) => category.category_type === TRANSACTION_CATEGORY_TYPE.EXPENSE),
+export const selectTransactionTypeSelected = createSelector(
+  transactionTypeSelectedState,
+  (tAccountTypeSelected) => tAccountTypeSelected,
 );
 
-export const selectIncomeTransactionCategory = createSelector(
-  [transactionsCategorySelectors.selectAll],
-  (category) =>
-    category.filter((category) => category.category_type === TRANSACTION_CATEGORY_TYPE.INCOME),
+export const selectTransactionAccountSelected = createSelector(
+  transactionAccountSelectedState,
+  (tAccount) => tAccount,
 );
-
-export const selectAccountSelected = createSelector(accountSelectedState, (account) => account);
 
 export const selectTransactionCategorySelected = createSelector(
   transactionCategorySelectedState,
-  (transactionCategory) => transactionCategory,
+  (tCategory) => tCategory,
 );

@@ -16,7 +16,7 @@ const appPersistConfig = {
 const transactionsConfig = {
   key: transactionsSlice.name,
   storage: reduxPersistStorage,
-  blacklist: ['accountSelected', 'transactionCategorySelected'],
+  blacklist: ['transactionAccountSelected', 'transactionCategorySelected'],
 };
 
 const accountConfig = {

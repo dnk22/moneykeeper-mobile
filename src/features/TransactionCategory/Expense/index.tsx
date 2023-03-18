@@ -6,15 +6,11 @@ import { useNavigation } from '@react-navigation/native';
 import { UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 import { UpdateTransactionCategoryProps } from 'navigation/types';
-import { useAppSelector } from 'store/index';
-import { selectExpenseTransactionCategory } from 'store/transactions/transactions.selector';
 
 function ExpenseCategory() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation<UpdateTransactionCategoryProps>();
-  const getExpenseCategoryState = useAppSelector((state) =>
-    selectExpenseTransactionCategory(state),
-  );
+  
 
   const handleOnSearch = () => {};
 

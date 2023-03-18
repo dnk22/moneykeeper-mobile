@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { View, TouchableOpacity, SafeAreaView } from 'react-native';
-import TransactionTypePicker from './TransactionTypePicker';
 import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
-import { TTransactions, TTransactionType } from 'database/types/index';
+import { TTransactions } from 'database/types/index';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useForm } from 'react-hook-form';
 import {
@@ -22,8 +21,11 @@ import Animated, { StretchInY } from 'react-native-reanimated';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { ACCOUNT_PICKER, TRANSACTION_CATEGORY } from 'navigation/constants';
 import { useAppDispatch, useAppSelector } from 'store/index';
-import { selectAccountSelected } from 'store/transactions/transactions.selector';
-import { setAccountSelected } from 'store/transactions/transactions.slice';
+import {
+  selectTransactionTypeSelected,
+  selectTransactionAccountSelected,
+} from 'store/transactions/transactions.selector';
+import { setTransactionAccountSelected } from 'store/transactions/transactions.slice';
 import { AddTransactionRouteProp } from 'navigation/types';
 import { getAccountById, getFirstAccount } from 'database/querying/accounts.query';
 
@@ -40,15 +42,18 @@ function AddTransactions() {
   const { params } = useRoute<AddTransactionRouteProp>();
   const useDispatch = useAppDispatch();
 
-  const accountSelected = useAppSelector((state) => selectAccountSelected(state));
+  /** get redux state */
+  const transactionTypeSelected = useAppSelector((state) => selectTransactionTypeSelected(state));
+  const accountSelected = useAppSelector((state) => selectTransactionAccountSelected(state));
 
-  const [isShowTransactionTypeModal, setIsShowTransactionTypeModal] = useState(false);
+  /** local state */
   const [isShowFee, setIsShowFee] = useState<boolean>(false);
   const [isShowDetails, setIsShowDetails] = useState<boolean>(false);
   const [isDateTimeModalType, setIsDateTimeModalType] = useState<'date' | 'time' | undefined>(
     undefined,
   );
 
+  /** setup form */
   const { control, handleSubmit, getValues, setValue, watch } = useForm<TTransactions>({
     defaultValues: {
       ...initialAddFormValues,
@@ -56,29 +61,28 @@ function AddTransactions() {
   });
   const { dateTimeAt, accountId, transactionsTypeId } = getValues();
 
-  /** lifecycle hook */
-  // useEffect(() => {
-  //   if (!params?.transactionId) {
-  //     setDefaultAccountInModeAdd();
-  //   }
-  // }, [params?.transactionId]);
+  /** watch transactionsTypeId from redux store and setValue to form */
+  useLayoutEffect(() => {
+    if (params?.hideHeader) {
+      navigation.setOptions({
+        headerShown: !params?.hideHeader,
+      });
+    }
+  }, [params?.hideHeader]);
 
-  // useEffect(() => {
-  //   if (accountId) {
-  //     getAccountSelected();
-  //   }
-  // }, [watch('accountId')]);
+  useEffect(() => {
+    setValue('transactionsTypeId', transactionTypeSelected);
+  }, [transactionTypeSelected]);
+
+  useEffect(() => {
+    if (accountId) {
+      getAccountSelected();
+    } else {
+      setDefaultAccountInModeAdd();
+    }
+  }, [watch('accountId')]);
 
   /** memoized function */
-  const onToggleTransactionTypeModal = useCallback(() => {
-    setIsShowTransactionTypeModal(!isShowTransactionTypeModal);
-  }, [isShowTransactionTypeModal]);
-
-  const onHandleTransactionTypeItemPress = useCallback((item: TTransactionType) => {
-    setValue('transactionsTypeId', item.id);
-    setIsShowTransactionTypeModal(false);
-  }, []);
-
   const onToggleDateTimeModal = useCallback(
     (type?: 'date' | 'time') => {
       setIsDateTimeModalType(type);
@@ -107,20 +111,36 @@ function AddTransactions() {
   }, [watch('transactionsTypeId')]);
 
   /** pure function */
-  const getAccountSelected = async () => {
-    const res = await getAccountById(accountId);
-    const accountInfo = {
-      id: res?.id,
-      accountName: res?.accountName,
-      accountLogo: res?.accountLogo,
-    };
-    useDispatch(setAccountSelected(accountInfo));
+  const onSelectAccount = () => {
+    navigation.navigate(ACCOUNT_PICKER, { accountSelectedId: accountId });
   };
 
   const setDefaultAccountInModeAdd = async () => {
-    const firstAccount = await getFirstAccount();
-    if (firstAccount && firstAccount.length) {
-      setValue('accountId', firstAccount[0].id);
+    let accountId = '';
+    if (params?.accountId) {
+      const account = await getAccountById(params.accountId);
+      if (account?.id) {
+        accountId = account?.id;
+      }
+    } else {
+      const firstAccount = await getFirstAccount();
+      if (firstAccount && firstAccount.length) {
+        accountId = firstAccount[0]?.id;
+      }
+    }
+    if (accountId) {
+      setValue('accountId', accountId);
+    }
+  };
+
+  const getAccountSelected = async () => {
+    const account = await getAccountById(accountId);
+    if (account?.id) {
+      const result = {
+        accountName: account?.accountName,
+        accountLogo: account.accountLogo,
+      };
+      useDispatch(setTransactionAccountSelected(result));
     }
   };
 
@@ -135,22 +155,12 @@ function AddTransactions() {
     navigation.navigate(TRANSACTION_CATEGORY);
   };
 
-  const onSelectAccount = () => {
-    navigation.navigate(ACCOUNT_PICKER);
-  };
-
   const onHandleSubmit = (data: TTransactions) => {
     console.log(data);
   };
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.primary }]}>
-      <TransactionTypePicker
-        isVisible={isShowTransactionTypeModal}
-        isTypeSelected={transactionsTypeId}
-        onToggleModal={onToggleTransactionTypeModal}
-        onPressItem={onHandleTransactionTypeItemPress}
-      />
       <DateTimeModalPicker
         value={dateTimeAt}
         isVisible={isDateTimeModalType === 'date' || isDateTimeModalType === 'time'}
@@ -158,21 +168,6 @@ function AddTransactions() {
         onToggleModal={onToggleDateTimeModal}
         onDateTimePicker={onDateTimePicker}
       />
-      <View style={[styles.headerBar, { backgroundColor: colors.primary }]}>
-        <View style={styles.actionView} />
-        <PressableHaptic
-          style={[styles.actionView, styles.transactionTypePicker]}
-          onPress={onToggleTransactionTypeModal}
-        >
-          <RNText color="white">{'Chi Tiền'}</RNText>
-        </PressableHaptic>
-        <PressableHaptic
-          style={[styles.actionView, styles.rightAction]}
-          onPress={handleSubmit(onHandleSubmit)}
-        >
-          <RNText color="white">Xong</RNText>
-        </PressableHaptic>
-      </View>
       <KeyboardAwareScrollView
         style={[styles.form, { backgroundColor: colors.background }]}
         showsVerticalScrollIndicator={false}

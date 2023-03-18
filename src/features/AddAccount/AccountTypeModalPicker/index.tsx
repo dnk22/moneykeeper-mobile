@@ -48,7 +48,7 @@ function AccountTypeModalPicker({
             <SvgIcon name={item.icon} size={32} preset="transactionType" />
             <RNText>{item.name}</RNText>
           </View>
-          {currentSelected(item.id) && <CheckboxComponent check />}
+          {currentSelected(item.id) && <CheckboxComponent check disabled />}
         </View>
       </TouchableHighlightComponent>
     );

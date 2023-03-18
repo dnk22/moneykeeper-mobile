@@ -1,5 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ACCOUNTTAB, ADD_ACCOUNT, ACCOUNT_DETAIL, BANK_NAVIGATION } from 'navigation/constants';
+import {
+  ACCOUNTTAB,
+  ADD_ACCOUNT,
+  ACCOUNT_DETAIL,
+  BANK_NAVIGATION,
+  CREATE_TRANSACTION_FROM_ACCOUNT,
+} from 'navigation/constants';
 import { AccountStackParamList } from 'navigation/types';
 import { useCustomTheme } from 'resources/theme';
 
@@ -12,6 +18,9 @@ import Toolbar from './component/Toolbar';
 import Search from './component/Search';
 import AccountDetails from 'features/AccountDetails';
 import BankNavigation from 'navigation/Bank';
+import TransactionNavigation from 'navigation/Transaction';
+import SelectTransactionType from 'navigation/common/SelectTransactionType';
+import Done from 'navigation/common/Done';
 
 //set up routes
 const AccountStack = createNativeStackNavigator<AccountStackParamList>();
@@ -48,6 +57,7 @@ function AccountNavigation() {
       <AccountStack.Screen
         name={ACCOUNT_DETAIL}
         options={() => ({
+          headerBackTitleVisible: false,
           headerRight: (props) => <Submit {...props} />,
         })}
         component={AccountDetails}
@@ -58,6 +68,14 @@ function AccountNavigation() {
         options={{
           headerShown: false,
           presentation: 'modal',
+        }}
+      />
+      <AccountStack.Screen
+        name={CREATE_TRANSACTION_FROM_ACCOUNT}
+        component={TransactionNavigation}
+        options={{
+          headerTitle: () => <SelectTransactionType />,
+          headerRight: () => <Done />,
         }}
       />
     </AccountStack.Navigator>

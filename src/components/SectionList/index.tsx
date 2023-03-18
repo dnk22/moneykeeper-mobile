@@ -1,9 +1,14 @@
 import React, { useCallback, memo, useMemo } from 'react';
-import { RefreshControl, SectionList } from 'react-native';
-import { PropsSectionList } from './model';
+import { RefreshControl, SectionList, SectionListProps } from 'react-native';
 import isEqual from 'react-fast-compare';
 
-const FlatListComponent: PropsSectionList = (props) => {
+export type TSectionListProps = SectionListProps<any> & {
+  onRefresh?: () => void;
+  onLoadMore?: () => void;
+  hasPull?: boolean;
+};
+
+function FlatListComponent(props: TSectionListProps) {
   const {
     sections,
     renderItem,
@@ -52,6 +57,6 @@ const FlatListComponent: PropsSectionList = (props) => {
       {...rest}
     />
   );
-};
+}
 
 export default memo(FlatListComponent, isEqual);

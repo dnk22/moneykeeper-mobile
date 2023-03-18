@@ -14,6 +14,7 @@ export const SAVINGS = 'savings';
 export const ACCUMULATE = 'accumulate';
 export const ADD_ACCOUNT = 'addAccount';
 export const ACCOUNT_DETAIL = 'accountDetail';
+export const CREATE_TRANSACTION_FROM_ACCOUNT = 'createTransactionFromAccount';
 
 // transaction screen constants
 export const TRANSACTIONS = 'transactions';

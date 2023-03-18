@@ -8,10 +8,32 @@ import { Q } from '@nozbe/watermelondb';
 export const getActiveAccountObserve = (isActive: boolean) =>
   database.get<AccountModel>(ACCOUNTS).query(Q.where('is_active', isActive)).observe();
 
-export const getCountAccountObserve = () =>
-  database.get<AccountModel>(ACCOUNTS).query().observeCount();
+export const getAccountCountObserve = (isActive: boolean) =>
+  database.get<AccountModel>(ACCOUNTS).query(Q.where('is_active', isActive)).observeCount();
 
 /** READ */
+export const getAccounts = async ({
+  isActive = true,
+  text = '',
+}: {
+  isActive?: boolean;
+  text: string;
+}) => {
+  try {
+    return await database.read(async () => {
+      return await database
+        .get<AccountModel>(ACCOUNTS)
+        .query(
+          Q.where('is_active', isActive),
+          Q.where('account_name', Q.like(`${Q.sanitizeLikeString(text)}%`)),
+        )
+        .fetch();
+    });
+  } catch (error) {
+    console.log(error, 'read accounts err');
+  }
+};
+
 export const getAccountById = async (id: string) => {
   try {
     return await database.read(async () => {
@@ -19,19 +41,6 @@ export const getAccountById = async (id: string) => {
     });
   } catch (error) {
     console.log(error, 'read by id err');
-  }
-};
-
-export const getAccounts = async ({ isActive = true }: { isActive: boolean }) => {
-  try {
-    return await database.read(async () => {
-      return await database
-        .get<AccountModel>(ACCOUNTS)
-        .query(Q.where('is_active', isActive))
-        .fetch();
-    });
-  } catch (error) {
-    console.log(error, 'read err');
   }
 };
 

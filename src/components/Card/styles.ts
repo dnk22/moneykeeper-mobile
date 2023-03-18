@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
   wrapper: {
     maxHeight: 400,
     margin: 5,
+    marginBottom: 10,
     paddingHorizontal: 10,
     borderRadius: 10,
     shadowColor: '#000',
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   header: {
-    height: 40,
+    height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
