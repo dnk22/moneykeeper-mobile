@@ -1,16 +1,14 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ACCOUNT_PICKER, ADD_TRANSACTION, TRANSACTION_CATEGORY } from 'navigation/constants';
 import { TransactionParamList } from 'navigation/types';
+import { HEADER_TITLE } from 'resources/theme/constants';
+import { useCustomTheme } from 'resources/theme';
 
 // import route component
+import { Done, Cancel, SelectTransactionType } from 'navigation/common';
 import AddTransactions from 'features/Transaction/AddTransaction';
 import AccountPicker from 'features/Transaction/AccountPicker';
-import TransactionCategoryNavigation from './TransactionCategory/Index';
-import Cancel from 'navigation/common/Cancel';
-import { HEADER_TITLE } from 'resources/theme/constants';
-import SelectTransactionType from 'navigation/common/SelectTransactionType';
-import { useCustomTheme } from 'resources/theme';
-import Done from 'navigation/common/Done';
+import TransactionCategoryNavigation from 'navigation/TransactionCategory';
 
 //set up routes
 const TransactionStack = createNativeStackNavigator<TransactionParamList>();

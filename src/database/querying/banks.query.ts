@@ -1,4 +1,3 @@
-import { TBank } from 'database/types/index';
 import { database } from 'database/index';
 import { Q } from '@nozbe/watermelondb';
 import { BankModel } from 'database/models';

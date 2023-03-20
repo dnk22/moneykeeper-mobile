@@ -79,10 +79,10 @@ export default appSchema({
       columns: [
         { name: 'category_name', type: 'string' },
         { name: 'category_type', type: 'number' },
-        { name: 'transaction_category_parent_id', type: 'string', isOptional: true },
-        { name: 'category_description', type: 'string', isOptional: true },
+        { name: 'parent_id', type: 'string', isOptional: true },
+        { name: 'description', type: 'string', isOptional: true },
         { name: 'use_count', type: 'number', isOptional: true },
-        { name: 'icon_name', type: 'string', isOptional: true },
+        { name: 'icon', type: 'string', isOptional: true },
         { name: 'is_system', type: 'boolean', isOptional: true },
         { name: 'create_at', type: 'number' },
       ],

@@ -76,12 +76,6 @@ const styles = StyleSheet.create({
   subText: {
     opacity: 0.5,
   },
-  submit: {
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
 });
 
 export default styles;

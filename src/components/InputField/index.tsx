@@ -15,9 +15,10 @@ interface IInputField extends TextInputProps {
       >
     | undefined;
   style?: StyleProp<TextStyle> | any;
+  clearButtonMode?: 'never' | 'while-editing' | 'unless-editing' | 'always' | undefined;
 }
 const InputField = React.forwardRef<any, any>(function InputField(
-  { name, control, rules, style, ...rest }: IInputField,
+  { name, control, rules, style, clearButtonMode = 'always', ...rest }: IInputField,
   ref,
 ) {
   const { colors } = useCustomTheme();
@@ -42,6 +43,7 @@ const InputField = React.forwardRef<any, any>(function InputField(
       style={[stylesInline, style, { color: colors.text }]}
       onChangeText={onChange}
       onBlur={onBlur}
+      clearButtonMode={clearButtonMode}
       {...rest}
     />
   );

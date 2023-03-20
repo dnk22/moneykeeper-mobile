@@ -2,15 +2,15 @@ import { Model } from '@nozbe/watermelondb';
 import { field, text, date, readonly } from '@nozbe/watermelondb/decorators';
 import { TRANSACTION_CATEGORY } from 'database/constants';
 
-export default class TransactionCategory extends Model {
+export default class TransactionCategoryModel extends Model {
   static table = TRANSACTION_CATEGORY;
 
   @text('category_name') categoryName!: string;
   @field('category_type') categoryType!: string;
-  @field('transaction_category_parent_id') transactionCategoryParentId!: string;
-  @text('category_description') categoryDescription!: string;
+  @field('parent_id') parentId!: string;
+  @text('description') description!: string;
   @field('use_count') useCount!: number;
-  @field('icon_name') iconName!: string;
+  @field('icon') icon!: string;
   @field('is_system') isSystem!: boolean;
   @readonly @date('create_at') createAt!: Date;
 }

@@ -10,7 +10,7 @@ import {
 import styles from './styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { BankRouteProp } from 'navigation/types';
-import { getBanksDataLocal } from 'database/querying/banks.query';
+import { getBanksDataLocal } from 'database/querying';
 import { useAppDispatch } from 'store/index';
 import { setBankSelected } from 'store/account/account.slice';
 import { TBank } from 'database/types';

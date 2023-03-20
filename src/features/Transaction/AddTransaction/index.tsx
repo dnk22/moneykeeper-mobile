@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, SafeAreaView } from 'react-native';
 import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types/index';
@@ -15,6 +15,7 @@ import {
   PressableHaptic,
   InputCalculator,
   InputSelection,
+  Submit,
 } from 'components/index';
 import { formatDateLocal } from 'utils/date';
 import Animated, { StretchInY } from 'react-native-reanimated';
@@ -27,7 +28,7 @@ import {
 } from 'store/transactions/transactions.selector';
 import { setTransactionAccountSelected } from 'store/transactions/transactions.slice';
 import { AddTransactionRouteProp } from 'navigation/types';
-import { getAccountById, getFirstAccount } from 'database/querying/accounts.query';
+import { getAccountById, getFirstAccount } from 'database/querying';
 
 const initialAddFormValues: TTransactions = {
   id: '',
@@ -205,7 +206,6 @@ function AddTransactions() {
                 control={control}
                 placeholder="Chi tiết"
                 style={styles.formInput}
-                clearButtonMode="always"
                 maxLength={50}
               />
             </View>
@@ -228,6 +228,7 @@ function AddTransactions() {
             required
             icon={accountSelected?.accountLogo}
             value={accountSelected?.accountName}
+            title="Chọn tài khoản"
             onSelect={onSelectAccount}
           />
         </View>
@@ -242,7 +243,6 @@ function AddTransactions() {
                     control={control}
                     placeholder="Chi cho ai"
                     style={styles.formInput}
-                    clearButtonMode="always"
                     maxLength={50}
                   />
                 </View>
@@ -255,7 +255,6 @@ function AddTransactions() {
                     control={control}
                     placeholder="Địa điểm"
                     style={[styles.formInput, { width: '90%' }]}
-                    clearButtonMode="always"
                     maxLength={50}
                   />
                   <SvgIcon name="location" size={18} style={styles.iconForward} />
@@ -269,7 +268,6 @@ function AddTransactions() {
                     control={control}
                     placeholder="Chuyến đi / Sự kiện"
                     style={styles.formInput}
-                    clearButtonMode="always"
                     maxLength={50}
                   />
                 </View>
@@ -304,16 +302,7 @@ function AddTransactions() {
           <RNText>{isShowDetails ? 'Ẩn chi tiết' : 'Hiển thị chi tiết'}</RNText>
           <SvgIcon name={isShowDetails ? 'arrowUp' : 'arrowDown'} size={16} />
         </PressableHaptic>
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={[styles.group, styles.submit, { backgroundColor: colors.primary }]}
-          onPress={handleSubmit(onHandleSubmit)}
-        >
-          <SvgIcon name="doneCircle" color="white" />
-          <RNText color="white" style={{ marginLeft: 5 }}>
-            Lưu
-          </RNText>
-        </TouchableOpacity>
+        <Submit onPress={handleSubmit(onHandleSubmit)} />
       </KeyboardAwareScrollView>
     </SafeAreaView>
   );

@@ -36,12 +36,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     width: '100%',
   },
-  submit: {
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
   subText: {
     opacity: 0.5,
   },

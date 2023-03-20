@@ -5,7 +5,7 @@ import { TAccount } from 'database/types/index';
 import Item from './Item';
 import withObservables from '@nozbe/with-observables';
 import styles from './styles';
-import { getAccounts, getActiveAccountObserve } from 'database/querying/accounts.query';
+import { getAccounts, getActiveAccountObserve } from 'database/querying';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
 import { AccountModel } from 'database/models';
 import { groupDataByValue } from 'utils/algorithm';

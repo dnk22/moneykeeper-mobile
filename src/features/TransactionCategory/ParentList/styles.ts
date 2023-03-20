@@ -5,16 +5,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
   },
-  group: {
+  item: {
     borderRadius: 10,
-    padding: 10,
-    marginBottom: 20,
-  },
-  mostRecent: {
-    height: 100,
-  },
-  itemCategory: {
-    maxHeight: 200,
+    padding: 5,
+    paddingVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: 10,
   },
 });
 

@@ -11,7 +11,7 @@ import { Loading, StatusBar } from 'components/index';
 
 import RnKeyboard from 'rn-keyboard'; // <-- Import here
 import KeyboardCalculator from 'components/InputCalculator/KeyboardCalculator';
-import { getIsBankDataExist, importDefaultBanksData } from 'database/querying/banks.query';
+import { getIsBankDataExist, importDefaultBanksData } from 'database/querying';
 
 LogBox.ignoreLogs(logBoxIgnore);
 

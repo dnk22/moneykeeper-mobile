@@ -2,7 +2,7 @@ import React from 'react';
 import Card from 'components/Card';
 import withObservables from '@nozbe/with-observables';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
-import { getAccountCountObserve } from 'database/querying/accounts.query';
+import { getAccountCountObserve } from 'database/querying';
 
 type AccountCardProps = {
   accountCount?: Observable<number>;

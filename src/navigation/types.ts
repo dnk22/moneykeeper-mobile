@@ -1,3 +1,4 @@
+import { TTransactionsCategory } from 'database/types';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
@@ -20,6 +21,8 @@ import {
   BANK_NAVIGATION,
   BANK_HOME_LIST,
   CREATE_TRANSACTION_FROM_ACCOUNT,
+  PARENT_LIST,
+  ICON_SELECT,
 } from './constants';
 
 export type RootStackParamList = {
@@ -65,11 +68,20 @@ export type TransactionParamList = {
 };
 
 export type TransactionCategoryParamList = {
-  [TRANSACTION_CATEGORY_LIST]: undefined;
-  [UPDATE_TRANSACTION_CATEGORY]: {
-    transaction_category_id?: string;
-    transaction_category_type?: TRANSACTION_CATEGORY_TYPE;
-  };
+  [TRANSACTION_CATEGORY_LIST]:
+    | {
+        tabActive?: TRANSACTION_CATEGORY_TYPE;
+      }
+    | undefined;
+  [UPDATE_TRANSACTION_CATEGORY]:
+    | {
+        transactionCategoryId?: string;
+        transactionCategoryTypeId?: TRANSACTION_CATEGORY_TYPE;
+        parentId?: string;
+      }
+    | undefined;
+  [PARENT_LIST]: undefined;
+  [ICON_SELECT]: undefined;
 };
 
 export type ReportParamList = {

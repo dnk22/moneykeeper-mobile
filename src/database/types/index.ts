@@ -36,12 +36,13 @@ export type TTransactions = {
 
 export type TTransactionsCategory = {
   id: string;
-  category_name: string;
-  parent?: string;
-  category_description: string;
-  category_type: TRANSACTION_CATEGORY_TYPE;
-  count: number;
+  categoryName: string;
+  categoryType: TRANSACTION_CATEGORY_TYPE;
+  parentId?: string;
+  description: string;
+  isSystem?: boolean;
   icon: string;
+  count: number;
 };
 
 export type TTransactionType = {

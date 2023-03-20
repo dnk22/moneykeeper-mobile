@@ -6,21 +6,21 @@ import {
   InputSelection,
   SvgIcon,
   SwitchField,
+  Submit,
 } from 'components/index';
-import { TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useForm } from 'react-hook-form';
-import { TAccountType, TAccount } from 'database/types/index';
+import { TAccountType, TAccount } from 'database/types';
 import AccountTypeModalPicker from './AccountTypeModalPicker';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectBankIdSelected, selectAllAccountType } from 'store/account/account.selector';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AddAccountRouteProp } from 'navigation/types';
-import { addAccount, getAccountById, updateAccount } from 'database/querying/accounts.query';
+import { addAccount, getAccountById, updateAccount, getBankById } from 'database/querying';
 import { BANK_HOME_LIST, BANK_NAVIGATION } from 'navigation/constants';
-import { getBankById } from 'database/querying/banks.query';
 import { setBankSelected } from 'store/account/account.slice';
 import { BankModel } from 'database/models';
 
@@ -231,7 +231,6 @@ const AddAccount = () => {
                 control={control}
                 placeholder="Tên tài khoản"
                 style={styles.formInput}
-                clearButtonMode="always"
                 maxLength={50}
                 rules={{ required: true }}
                 ref={inputNameRef}
@@ -246,7 +245,6 @@ const AddAccount = () => {
                 control={control}
                 placeholder="Ghi chú"
                 style={styles.formInput}
-                clearButtonMode="always"
                 maxLength={50}
               />
             </View>
@@ -276,16 +274,7 @@ const AddAccount = () => {
           </View>
           <RNText style={styles.subText}>Ghi chép này sẽ không thống kê vào các báo cáo.</RNText>
         </View>
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={[styles.group, styles.submit, { backgroundColor: colors.primary }]}
-          onPress={handleSubmit(onHandleSubmit)}
-        >
-          <SvgIcon name="doneCircle" color="white" />
-          <RNText color="white" style={{ marginLeft: 5 }}>
-            Lưu
-          </RNText>
-        </TouchableOpacity>
+        <Submit onPress={handleSubmit(onHandleSubmit)} />
       </KeyboardAwareScrollView>
     </View>
   );

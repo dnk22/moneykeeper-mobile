@@ -22,6 +22,7 @@ import InputSelection from 'components/InputSelection';
 import CheckboxComponent from 'components/Checkbox';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import InputSearch from 'components/InputSearch';
+import Submit from 'components/Submit';
 
 export {
   DateTimePicker,
@@ -47,5 +48,6 @@ export {
   InputSelection,
   CheckboxComponent,
   TouchableHighlightComponent,
-  InputSearch
+  InputSearch,
+  Submit
 };
