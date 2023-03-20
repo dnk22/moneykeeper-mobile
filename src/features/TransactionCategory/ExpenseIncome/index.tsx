@@ -12,7 +12,11 @@ const CategoryGroupItemObserve = withObservables(['item'], ({ item }) => ({
   item: item.observe(),
 }))(CategoryGroupItem);
 
-function ExpenseCategory({ expenseCategoryObserve }: { expenseCategoryObserve: any }) {
+type ExpenseCategoryProps = {
+  expenseCategoryObserve?: any;
+  type: TRANSACTION_CATEGORY_TYPE;
+};
+function ExpenseIncome({ expenseCategoryObserve }: ExpenseCategoryProps) {
   const { colors } = useCustomTheme();
 
   const renderItem = ({ item }: { item: TTransactionsCategory }) => {
@@ -38,6 +42,6 @@ function ExpenseCategory({ expenseCategoryObserve }: { expenseCategoryObserve: a
   );
 }
 
-export default withObservables(['expenseCategoryObserve'], () => ({
-  expenseCategoryObserve: getTransactionCategoryParentObserve(TRANSACTION_CATEGORY_TYPE.EXPENSE),
-}))<any>(ExpenseCategory);
+export default withObservables([], ({ type }: ExpenseCategoryProps) => ({
+  expenseCategoryObserve: getTransactionCategoryParentObserve(type),
+}))<any>(ExpenseIncome);

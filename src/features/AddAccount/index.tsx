@@ -70,7 +70,6 @@ const AddAccount = () => {
       accountTypeName: accountTypeSelected?.name,
     },
   });
-  const { accountTypeId } = getValues();
 
   useEffect(() => {
     if (params?.accountId) {
@@ -147,7 +146,7 @@ const AddAccount = () => {
   }, []);
 
   const getInputBankPlaceHolder = () => {
-    switch (accountTypeId) {
+    switch (getValues('accountTypeId')) {
       case BANK_ID:
         return 'Chọn ngân hàng';
       default:
@@ -157,7 +156,7 @@ const AddAccount = () => {
 
   const handleOnItemModalPress = (item: TAccountType) => {
     setIsShowAccountTypeModal(false);
-    if (item.id !== accountTypeId) {
+    if (item.id !== getValues('accountTypeId')) {
       setAccountTypeSelected(item);
       resetSelectedBank();
       setValuesForm({
@@ -169,7 +168,7 @@ const AddAccount = () => {
   };
 
   const onSelectBank = () => {
-    switch (accountTypeId) {
+    switch (getValues('accountTypeId')) {
       case BANK_ID:
         navigation.navigate(BANK_NAVIGATION, {
           screen: BANK_HOME_LIST,
@@ -212,7 +211,7 @@ const AddAccount = () => {
     <View style={styles.container}>
       <AccountTypeModalPicker
         isVisible={isShowAccountTypeModal}
-        isItemSelected={accountTypeId}
+        isItemSelected={getValues('accountTypeId')}
         onToggleModal={onCloseModal}
         onPressItem={handleOnItemModalPress}
       />

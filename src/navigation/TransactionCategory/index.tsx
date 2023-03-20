@@ -6,9 +6,12 @@ import {
 } from 'navigation/constants';
 import { HEADER_TITLE } from 'resources/theme/constants';
 import { TransactionCategoryParamList } from 'navigation/types';
-import { UpdateTransactionCategory, ParentList } from 'features/TransactionCategory';
 import TransactionCategoryTapBar from './components/TabBar';
 import UpdateTransactionCategoryHeader from './components/Update';
+import React from 'react';
+
+const UpdateTransactionCategory = React.lazy(() => import('features/TransactionCategory/Update'));
+const ParentList = React.lazy(() => import('features/TransactionCategory/ParentList'));
 
 //set up routes
 const TransactionCategoryStack = createNativeStackNavigator<TransactionCategoryParamList>();

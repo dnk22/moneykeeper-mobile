@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useLayoutEffect } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect } from 'react';
 import { SafeAreaView } from 'react-native';
-import { ExpenseCategory, IncomeCategory, LendBorrowCategory } from 'features/TransactionCategory';
 import {
   EXPENSE_CATEGORY,
   INCOME_CATEGORY,
@@ -16,6 +15,9 @@ import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 import { useAppDispatch } from 'store/index';
 import { updateTabView } from 'store/transactionCategory/transactionCategory.slice';
 import { TransactionCategoryListParams, TransactionCategoryListProp } from 'navigation/types';
+
+const HOCTransactionCategory = React.lazy(() => import('./HOC'));
+const LendBorrowCategory = React.lazy(() => import('features/TransactionCategory/LendBorrow'));
 
 const TabBar = createMaterialTopTabNavigator<TransactionCategoryListParams>();
 
@@ -34,20 +36,18 @@ function TransactionCategoryTapBar() {
   };
 
   useEffect(() => {
-    if (route.params?.tabActive) {
-      switch (route.params.tabActive) {
-        case TRANSACTION_CATEGORY_TYPE.EXPENSE:
-          navigation.navigate(EXPENSE_CATEGORY);
-          break;
-        case TRANSACTION_CATEGORY_TYPE.INCOME:
-          navigation.navigate(INCOME_CATEGORY);
-          break;
-        case TRANSACTION_CATEGORY_TYPE.LEND_BORROW:
-          navigation.navigate(LEND_BORROW);
-          break;
-        default:
-          break;
-      }
+    switch (route.params.tabActive) {
+      case TRANSACTION_CATEGORY_TYPE.EXPENSE:
+        navigation.navigate(EXPENSE_CATEGORY);
+        break;
+      case TRANSACTION_CATEGORY_TYPE.INCOME:
+        navigation.navigate(INCOME_CATEGORY);
+        break;
+      case TRANSACTION_CATEGORY_TYPE.LEND_BORROW:
+        navigation.navigate(LEND_BORROW);
+        break;
+      default:
+        break;
     }
   }, []);
 
@@ -91,21 +91,20 @@ function TransactionCategoryTapBar() {
           <SvgIcon name="add" color="white" />
         </PressableHaptic>
       )}
-
       <TabBar.Navigator
         initialRouteName={EXPENSE_CATEGORY}
         tabBarPosition="bottom"
         screenOptions={tabBarOptions}
       >
         <TabBar.Screen
-          name={EXPENSE_CATEGORY}
-          options={{ title: 'Danh mục chi' }}
-          component={ExpenseCategory}
-        />
-        <TabBar.Screen
           name={INCOME_CATEGORY}
           options={{ title: 'Danh mục thu' }}
-          component={IncomeCategory}
+          component={HOCTransactionCategory}
+        />
+        <TabBar.Screen
+          name={EXPENSE_CATEGORY}
+          options={{ title: 'Danh mục chi' }}
+          component={HOCTransactionCategory}
         />
         <TabBar.Screen
           name={LEND_BORROW}

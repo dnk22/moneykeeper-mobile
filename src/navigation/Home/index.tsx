@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  BottomTabNavigationOptions,
-  createBottomTabNavigator,
-} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeBottomBar from './HomeBottomBar';
 import { SvgIcon } from 'components/index';
 import { ACCOUNT, DASHBOARD, SETTINGS, TRANSACTIONS, REPORT } from '../constants';
@@ -17,15 +14,10 @@ import ReportNavigation from 'navigation/Report';
 // set up routes
 const Tab = createBottomTabNavigator();
 
-// header config
-const homeOptions: BottomTabNavigationOptions = {
-  headerShown: false,
-};
-
 function HomeNavigation() {
   return (
     <Tab.Navigator
-      screenOptions={homeOptions}
+      screenOptions={{ headerShown: false }}
       initialRouteName={DASHBOARD}
       tabBar={(props) => <HomeBottomBar {...props} circle={TRANSACTIONS} />}
     >
