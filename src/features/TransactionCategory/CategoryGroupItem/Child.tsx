@@ -1,13 +1,17 @@
-import { RNText } from 'components/index';
-import SvgIcon from 'components/SvgIcon';
-import { memo, useMemo } from 'react';
-import isEqual from 'react-fast-compare';
+import { memo } from 'react';
 import { View } from 'react-native';
+import { RNText, SvgIcon } from 'components/index';
+import { TTransactionsCategory } from 'database/types';
+import isEqual from 'react-fast-compare';
 import { SCREEN_WIDTH } from 'share/dimensions';
 import styles from './styles';
+const width = (SCREEN_WIDTH - 40) / 4;
 
-function Child({ item }) {
-  const width = useMemo(() => (SCREEN_WIDTH - 40) / 4, []);
+type ChildProps = {
+  item: TTransactionsCategory;
+};
+
+function Child({ item }: ChildProps) {
   return (
     <View style={[styles.itemChild, { width }]}>
       <SvgIcon name={item.icon} size={28} />
@@ -15,4 +19,4 @@ function Child({ item }) {
     </View>
   );
 }
-export default memo(Child,isEqual);
+export default memo(Child, isEqual);

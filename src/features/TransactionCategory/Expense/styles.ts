@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
   group: {
     borderRadius: 10,
     padding: 10,
-    marginBottom: 20,
+    marginBottom: 15,
   },
   mostRecent: {
     height: 100,

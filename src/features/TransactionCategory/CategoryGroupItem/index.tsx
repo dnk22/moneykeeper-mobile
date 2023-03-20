@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 import { FlatListComponent, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
 import isEqual from 'react-fast-compare';
 import { View } from 'react-native';
@@ -24,7 +24,7 @@ const CategoryChildItemObserve = withObservables(['item'], ({ item }) => ({
 
 function CategoryGroupItem({ expenseCategoryChildObserve, item }: CategoryGroupItemProps) {
   const { colors } = useCustomTheme();
-
+  
   const renderItem = ({ item }: { item: TTransactionsCategory }) => {
     return <CategoryChildItemObserve item={item} />;
   };
