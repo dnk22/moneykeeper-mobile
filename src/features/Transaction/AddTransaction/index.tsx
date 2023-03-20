@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } fro
 import { View, SafeAreaView } from 'react-native';
 import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
-import { TTransactions } from 'database/types/index';
+import { TTransactions } from 'database/types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useForm } from 'react-hook-form';
 import {
@@ -20,34 +20,45 @@ import {
 import { formatDateLocal } from 'utils/date';
 import Animated, { StretchInY } from 'react-native-reanimated';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { ACCOUNT_PICKER, TRANSACTION_CATEGORY } from 'navigation/constants';
-import { useAppDispatch, useAppSelector } from 'store/index';
 import {
-  selectTransactionTypeSelected,
-  selectTransactionAccountSelected,
-} from 'store/transactions/transactions.selector';
-import { setTransactionAccountSelected } from 'store/transactions/transactions.slice';
+  ACCOUNT_PICKER,
+  TRANSACTION_CATEGORY,
+  TRANSACTION_CATEGORY_LIST,
+} from 'navigation/constants';
+import { useAppSelector } from 'store/index';
+import { selectTransactionTypeSelected } from 'store/transactions/transactions.selector';
 import { AddTransactionRouteProp } from 'navigation/types';
-import { getAccountById, getFirstAccount } from 'database/querying';
+import {
+  addNewTransaction,
+  getAccountById,
+  getFirstAccount,
+  getTransactionCategoryById,
+} from 'database/querying';
+import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
+import TransactionCategoryModel from 'database/models/transactionCategory.model';
+import { AccountModel } from 'database/models';
 
 const initialAddFormValues: TTransactions = {
-  id: '',
   amount: 0,
   transactionsTypeId: '1',
   dateTimeAt: new Date(),
+  transactionsCategoryId: '',
+  accountId: '',
 };
 
 function AddTransactions() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
   const { params } = useRoute<AddTransactionRouteProp>();
-  const useDispatch = useAppDispatch();
 
   /** get redux state */
   const transactionTypeSelected = useAppSelector((state) => selectTransactionTypeSelected(state));
-  const accountSelected = useAppSelector((state) => selectTransactionAccountSelected(state));
 
   /** local state */
+  const [transactionCategorySelected, setTransactionCategorySelected] = useState<
+    TransactionCategoryModel | undefined
+  >();
+  const [accountSelected, setTransactionAccountSelected] = useState<AccountModel | undefined>();
   const [isShowFee, setIsShowFee] = useState<boolean>(false);
   const [isShowDetails, setIsShowDetails] = useState<boolean>(false);
   const [isDateTimeModalType, setIsDateTimeModalType] = useState<'date' | 'time' | undefined>(
@@ -60,7 +71,6 @@ function AddTransactions() {
       ...initialAddFormValues,
     },
   });
-  const { dateTimeAt } = getValues();
 
   /** watch transactionsTypeId from redux store and setValue to form */
   useLayoutEffect(() => {
@@ -71,24 +81,26 @@ function AddTransactions() {
     }
   }, [params?.hideHeader]);
 
+  /** set transactionsTypeId form value */
   useEffect(() => {
     setValue('transactionsTypeId', transactionTypeSelected);
   }, [transactionTypeSelected]);
 
-  /** set accountId*/
+  /** get transaction category selected data */
   useEffect(() => {
-    if (params?.transactionId) {
-      getAccountSelected();
+    if (params?.categoryId) {
+      setCategorySelected(params.categoryId);
+    }
+  }, [params?.categoryId]);
+
+  /** set accountId */
+  useEffect(() => {
+    if (params?.accountId) {
+      setAccountSelected(params?.accountId);
     } else {
       setDefaultAccountInModeAdd();
     }
-  }, [params?.transactionId]);
-
-  useEffect(() => {
-    if (accountSelected?.id) {
-      setValue('accountId', accountSelected.id);
-    }
-  }, [accountSelected?.id]);
+  }, [params?.accountId]);
 
   /** memoized function */
   const onToggleDateTimeModal = useCallback(
@@ -98,7 +110,7 @@ function AddTransactions() {
     [isDateTimeModalType],
   );
 
-  const onDateTimePicker = useCallback((date: Date) => {
+  const handleOnDateTimePicker = useCallback((date: Date) => {
     setValue('dateTimeAt', date);
   }, []);
 
@@ -120,44 +132,33 @@ function AddTransactions() {
   }, [watch('transactionsTypeId')]);
 
   /** pure function */
-  const onSelectAccount = () => {
-    navigation.navigate(ACCOUNT_PICKER, { accountSelectedId: getValues('accountId') });
+  const setCategorySelected = async (id: string) => {
+    setValue('transactionsCategoryId', id);
+    const res = await getTransactionCategoryById(id);
+    setTransactionCategorySelected(res);
   };
 
-  const getAccountSelected = async () => {
-    const account = await getAccountById(getValues('accountId'));
+  const setAccountSelected = async (id: string) => {
+    const account = await getAccountById(id);
     if (account?.id) {
-      const result = {
-        id: account?.id,
-        accountName: account?.accountName,
-        accountLogo: account.accountLogo,
-      };
-      useDispatch(setTransactionAccountSelected(result));
+      setValue('accountId', account.id);
+      setTransactionAccountSelected(account);
     }
   };
 
   const setDefaultAccountInModeAdd = async () => {
-    let accountInfo: any = {};
-    // if accountId param is exist - set it , else set with first account in database
-    if (params?.accountId) {
-      const account = await getAccountById(params.accountId);
-      if (account?.id) {
-        accountInfo.id = account?.id;
-        accountInfo.accountName = account.accountName;
-        accountInfo.accountLogo = account?.accountLogo;
-      }
-    } else {
-      const firstAccount = await getFirstAccount();
-      if (firstAccount && firstAccount.length) {
-        accountInfo.id = firstAccount[0]?.id;
-        accountInfo.accountName = firstAccount[0]?.accountName;
-        accountInfo.accountLogo = firstAccount[0]?.accountLogo;
-      }
+    const firstAccount = await getFirstAccount();
+    if (firstAccount && firstAccount.length) {
+      setValue('accountId', firstAccount[0].id);
+      setTransactionAccountSelected(firstAccount[0]);
     }
-    useDispatch(setTransactionAccountSelected(accountInfo));
   };
 
-  const onHandleFeeChange = () => {
+  const handleOnSelectAccount = () => {
+    navigation.navigate(ACCOUNT_PICKER, { accountSelectedId: getValues('accountId') });
+  };
+
+  const handleOnFeeChange = () => {
     setIsShowFee(!isShowFee);
     if (!isShowFee) {
       setValue('fee', 0);
@@ -165,21 +166,37 @@ function AddTransactions() {
   };
 
   const handleOnSelectTransactionCategory = () => {
-    navigation.navigate(TRANSACTION_CATEGORY);
+    let categoryType = TRANSACTION_CATEGORY_TYPE.EXPENSE;
+    switch (getValues('transactionsTypeId')) {
+      case '1':
+        categoryType = TRANSACTION_CATEGORY_TYPE.INCOME;
+        break;
+      case '2':
+      case '3':
+        categoryType = TRANSACTION_CATEGORY_TYPE.LEND_BORROW;
+        break;
+      default:
+        break;
+    }
+    navigation.navigate(TRANSACTION_CATEGORY, {
+      screen: TRANSACTION_CATEGORY_LIST,
+      params: { tabActive: categoryType },
+    });
   };
 
-  const onHandleSubmit = (data: TTransactions) => {
+  const onSubmit = (data: TTransactions) => {
     console.log(data);
+    addNewTransaction(data);
   };
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.primary }]}>
       <DateTimeModalPicker
-        value={dateTimeAt}
+        value={getValues('dateTimeAt')}
         isVisible={isDateTimeModalType === 'date' || isDateTimeModalType === 'time'}
         mode={isDateTimeModalType}
         onToggleModal={onToggleDateTimeModal}
-        onDateTimePicker={onDateTimePicker}
+        onDateTimePicker={handleOnDateTimePicker}
       />
       <KeyboardAwareScrollView
         style={[styles.form, { backgroundColor: colors.background }]}
@@ -193,9 +210,10 @@ function AddTransactions() {
         />
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <InputSelection
-            icon={'questionCircle'}
+            required
+            icon={transactionCategorySelected?.icon}
             title="Chọn danh mục"
-            value={''}
+            value={transactionCategorySelected?.categoryName}
             onSelect={handleOnSelectTransactionCategory}
           />
           <View style={styles.itemGroup}>
@@ -229,7 +247,7 @@ function AddTransactions() {
             icon={accountSelected?.accountLogo}
             value={accountSelected?.accountName}
             title="Chọn tài khoản"
-            onSelect={onSelectAccount}
+            onSelect={handleOnSelectAccount}
           />
         </View>
         {isShowDetails && (
@@ -276,7 +294,7 @@ function AddTransactions() {
             <View style={[styles.group, { backgroundColor: colors.surface }]}>
               <View style={[styles.itemGroup, styles.itemGroupBetween]}>
                 <RNText>Phí</RNText>
-                <Switch value={isShowFee} onValueChange={onHandleFeeChange} />
+                <Switch value={isShowFee} onValueChange={handleOnFeeChange} />
               </View>
               {isShowFee && (
                 <Animated.View entering={StretchInY}>
@@ -302,7 +320,7 @@ function AddTransactions() {
           <RNText>{isShowDetails ? 'Ẩn chi tiết' : 'Hiển thị chi tiết'}</RNText>
           <SvgIcon name={isShowDetails ? 'arrowUp' : 'arrowDown'} size={16} />
         </PressableHaptic>
-        <Submit onPress={handleSubmit(onHandleSubmit)} />
+        <Submit onPress={handleSubmit(onSubmit)} />
       </KeyboardAwareScrollView>
     </SafeAreaView>
   );

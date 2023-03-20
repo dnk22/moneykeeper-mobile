@@ -12,8 +12,6 @@ type AccountCardProps = {
 };
 function AccountCard({ accountCount, children, title }: AccountCardProps) {
   const titleWithCount = `${title} (${accountCount})`;
-  console.log(!Boolean(accountCount), 'show');
-
   return (
     <Card title={titleWithCount} collapse={!Boolean(accountCount)}>
       {children}

@@ -6,8 +6,6 @@ import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 import { getTransactionCategoryParentObserve } from 'database/querying';
 import CategoryGroupItem from '../CategoryGroupItem';
 import withObservables from '@nozbe/with-observables';
-import isEqual from 'react-fast-compare';
-import { memo } from 'react';
 import { TTransactionsCategory } from 'database/types';
 
 const CategoryGroupItemObserve = withObservables(['item'], ({ item }) => ({
@@ -42,4 +40,4 @@ function ExpenseCategory({ expenseCategoryObserve }: { expenseCategoryObserve: a
 
 export default withObservables(['expenseCategoryObserve'], () => ({
   expenseCategoryObserve: getTransactionCategoryParentObserve(TRANSACTION_CATEGORY_TYPE.EXPENSE),
-}))<any>(memo(ExpenseCategory, isEqual));
+}))<any>(ExpenseCategory);

@@ -101,7 +101,7 @@ function AccountList({
 function Empty() {
   return (
     <View style={{ alignItems: 'center' }}>
-      <RNText>Không có tài khoản nào!</RNText>
+      <RNText color="red">Không có tài khoản nào!</RNText>
     </View>
   );
 }

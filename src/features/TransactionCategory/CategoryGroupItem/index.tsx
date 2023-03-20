@@ -1,19 +1,19 @@
 import { memo } from 'react';
+import { View } from 'react-native';
 import { FlatListComponent, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
 import isEqual from 'react-fast-compare';
-import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
-import styles from './styles';
-import { TTransactionsCategory } from 'database/types';
+import { useNavigation } from '@react-navigation/native';
 import withObservables from '@nozbe/with-observables';
+import { TTransactionsCategory } from 'database/types';
 import { getTransactionCategoryChildrenObserve } from 'database/querying';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
-import { Observable } from '@nozbe/watermelondb/utils/rx';
-import TransactionCategoryModel from 'database/models/transactionCategory.model';
+import styles from './styles';
 import Child from './Child';
+import { ADD_TRANSACTION } from 'navigation/constants';
 
 type CategoryGroupItemProps = {
-  expenseCategoryChildObserve?: Observable<TransactionCategoryModel>;
+  expenseCategoryChildObserve?: any;
   item: TTransactionsCategory;
   id: string;
 };
@@ -24,14 +24,19 @@ const CategoryChildItemObserve = withObservables(['item'], ({ item }) => ({
 
 function CategoryGroupItem({ expenseCategoryChildObserve, item }: CategoryGroupItemProps) {
   const { colors } = useCustomTheme();
-  
+  const navigation = useNavigation();
+
+  const onItemCategoryPress = (category: TTransactionsCategory) => {
+    navigation.navigate(ADD_TRANSACTION, { categoryId: category.id });
+  };
+
   const renderItem = ({ item }: { item: TTransactionsCategory }) => {
-    return <CategoryChildItemObserve item={item} />;
+    return <CategoryChildItemObserve item={item} onPress={() => onItemCategoryPress(item)} />;
   };
 
   return (
     <View style={[styles.group, { backgroundColor: colors.surface }]}>
-      <TouchableHighlightComponent>
+      <TouchableHighlightComponent onPress={() => onItemCategoryPress(item)}>
         <View style={[styles.itemHeader, { borderColor: colors.background }]}>
           <SvgIcon name={item.icon} size={28} />
           <RNText numberOfLines={1} style={styles.headerTitle}>

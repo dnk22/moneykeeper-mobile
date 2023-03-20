@@ -1,4 +1,3 @@
-import { TTransactionsCategory } from 'database/types';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
@@ -23,6 +22,9 @@ import {
   CREATE_TRANSACTION_FROM_ACCOUNT,
   PARENT_LIST,
   ICON_SELECT,
+  EXPENSE_CATEGORY,
+  INCOME_CATEGORY,
+  LEND_BORROW,
 } from './constants';
 
 export type RootStackParamList = {
@@ -54,6 +56,7 @@ export type TransactionParamList = {
   [ADD_TRANSACTION]:
     | {
         transactionId?: string;
+        categoryId?: string;
         accountId?: string;
         hideHeader?: boolean;
       }
@@ -68,11 +71,9 @@ export type TransactionParamList = {
 };
 
 export type TransactionCategoryParamList = {
-  [TRANSACTION_CATEGORY_LIST]:
-    | {
-        tabActive?: TRANSACTION_CATEGORY_TYPE;
-      }
-    | undefined;
+  [TRANSACTION_CATEGORY_LIST]: {
+    tabActive: TRANSACTION_CATEGORY_TYPE;
+  };
   [UPDATE_TRANSACTION_CATEGORY]:
     | {
         transactionCategoryId?: string;
@@ -82,6 +83,12 @@ export type TransactionCategoryParamList = {
     | undefined;
   [PARENT_LIST]: undefined;
   [ICON_SELECT]: undefined;
+};
+
+export type TransactionCategoryListParams = {
+  [EXPENSE_CATEGORY]: undefined;
+  [INCOME_CATEGORY]: undefined;
+  [LEND_BORROW]: undefined;
 };
 
 export type ReportParamList = {
@@ -104,6 +111,10 @@ export type UpdateTransactionCategoryRouteProps = RouteProp<
 >;
 export type AccountDetailProp = RouteProp<AccountStackParamList, typeof ACCOUNT_DETAIL>;
 export type AccountPickerProp = RouteProp<TransactionParamList, typeof ACCOUNT_PICKER>;
+export type TransactionCategoryListProp = RouteProp<
+  TransactionCategoryParamList,
+  typeof TRANSACTION_CATEGORY_LIST
+>;
 
 // navigation type props
 export type UpdateTransactionCategoryProps = NativeStackNavigationProp<
@@ -116,7 +127,8 @@ export type ExtendsParamList = RootStackParamList &
   AccountStackParamList &
   TransactionParamList &
   TransactionCategoryParamList &
-  BankParamList;
+  BankParamList &
+  TransactionCategoryListParams;
 
 declare global {
   namespace ReactNavigation {

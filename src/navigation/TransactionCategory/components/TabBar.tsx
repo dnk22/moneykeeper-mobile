@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect } from 'react';
+import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { SafeAreaView } from 'react-native';
 import { ExpenseCategory, IncomeCategory, LendBorrowCategory } from 'features/TransactionCategory';
 import {
@@ -15,11 +15,12 @@ import { getFocusedRouteNameFromRoute, useNavigation, useRoute } from '@react-na
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 import { useAppDispatch } from 'store/index';
 import { updateTabView } from 'store/transactionCategory/transactionCategory.slice';
+import { TransactionCategoryListParams, TransactionCategoryListProp } from 'navigation/types';
 
-const TabBar = createMaterialTopTabNavigator();
+const TabBar = createMaterialTopTabNavigator<TransactionCategoryListParams>();
 
 function TransactionCategoryTapBar() {
-  const route = useRoute();
+  const route = useRoute<TransactionCategoryListProp>();
   const navigation = useNavigation();
   const useDispatch = useAppDispatch();
   const { colors } = useCustomTheme();
@@ -32,8 +33,26 @@ function TransactionCategoryTapBar() {
     tabBarStyle: { backgroundColor: colors.surface },
   };
 
+  useEffect(() => {
+    if (route.params?.tabActive) {
+      switch (route.params.tabActive) {
+        case TRANSACTION_CATEGORY_TYPE.EXPENSE:
+          navigation.navigate(EXPENSE_CATEGORY);
+          break;
+        case TRANSACTION_CATEGORY_TYPE.INCOME:
+          navigation.navigate(INCOME_CATEGORY);
+          break;
+        case TRANSACTION_CATEGORY_TYPE.LEND_BORROW:
+          navigation.navigate(LEND_BORROW);
+          break;
+        default:
+          break;
+      }
+    }
+  }, []);
+
   useLayoutEffect(() => {
-    navigation.setOptions({ headerTitle: updateTabActive(route) });
+    updateTabActive(route);
   }, [navigation, route]);
 
   const focusedRoute = useCallback(
@@ -50,11 +69,14 @@ function TransactionCategoryTapBar() {
     switch (routeName) {
       case INCOME_CATEGORY:
         useDispatch(updateTabView(TRANSACTION_CATEGORY_TYPE.INCOME));
-        return 'Danh Mục Thu';
+        navigation.setOptions({ headerTitle: 'Danh Mục Thu' });
+        break;
       case EXPENSE_CATEGORY:
+        navigation.setOptions({ headerTitle: 'Danh Mục Chi' });
         useDispatch(updateTabView(TRANSACTION_CATEGORY_TYPE.EXPENSE));
         return 'Danh Mục Chi';
       default:
+        navigation.setOptions({ headerTitle: 'Danh Mục Vay Mượn' });
         break;
     }
   }

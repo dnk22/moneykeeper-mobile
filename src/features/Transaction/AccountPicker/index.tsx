@@ -1,24 +1,16 @@
 import { View } from 'react-native';
 import AccountList from 'features/AccountList';
-import { useAppDispatch } from 'store/index';
 import { TAccount } from 'database/types/index';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { setTransactionAccountSelected } from 'store/transactions/transactions.slice';
 import { AccountPickerProp } from 'navigation/types';
+import { ADD_TRANSACTION } from 'navigation/constants';
 
 function AccountPicker() {
-  const useDispatch = useAppDispatch();
   const navigation = useNavigation();
   const { params } = useRoute<AccountPickerProp>();
 
   const handleOnItemPress = (account: TAccount) => {
-    const result = {
-      id: account.id,
-      accountName: account.accountName,
-      accountLogo: account.accountLogo,
-    };
-    useDispatch(setTransactionAccountSelected(result));
-    navigation.goBack();
+    navigation.navigate(ADD_TRANSACTION, { accountId: account.id });
   };
 
   return (
