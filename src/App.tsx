@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { LogBox, useColorScheme } from 'react-native';
+import { LogBox, useColorScheme, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 import { persistor, store } from './store';
@@ -17,6 +17,7 @@ LogBox.ignoreLogs(logBoxIgnore);
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const theme = MyAppTheme[isDarkMode ? 'dark' : 'default'];
 
   useEffect(() => {
     RnKeyboard.registerKeyboard('KeyboardCalculator', KeyboardCalculator);
@@ -32,15 +33,18 @@ const App = () => {
       importDefaultBanksData();
     }
   }
+
   return (
-    <Provider store={store}>
-      <PersistGate loading={<Loading />} persistor={persistor}>
-        <NavigationContainer theme={MyAppTheme[isDarkMode ? 'dark' : 'default']}>
-          <StatusBar />
-          <AppNavigators />
-        </NavigationContainer>
-      </PersistGate>
-    </Provider>
+    <View style={{ flex: 1 }}>
+      <Provider store={store}>
+        <StatusBar />
+        <PersistGate loading={<Loading />} persistor={persistor}>
+          <NavigationContainer theme={theme}>
+            <AppNavigators />
+          </NavigationContainer>
+        </PersistGate>
+      </Provider>
+    </View>
   );
 };
 
