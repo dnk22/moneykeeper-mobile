@@ -1,4 +1,4 @@
-import { RouteProp } from '@react-navigation/native';
+import { NavigatorScreenParams, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 import {
@@ -28,13 +28,16 @@ import {
 } from './constants';
 
 export type RootStackParamList = {
-  [HOME]: undefined;
+  [HOME]: NavigatorScreenParams<HomeStackParamList>;
+  [BANK_NAVIGATION]: NavigatorScreenParams<BankParamList>;
+  [ACCOUNT_PICKER]: { accountSelectedId?: string } | undefined;
+  [TRANSACTION_CATEGORY]: NavigatorScreenParams<TransactionCategoryParamList>;
 };
 
 export type HomeStackParamList = {
   [DASHBOARD]: undefined;
-  [ACCOUNT]: undefined;
-  [TRANSACTIONS]: undefined;
+  [ACCOUNT]: NavigatorScreenParams<AccountStackParamList>;
+  [TRANSACTIONS]: NavigatorScreenParams<TransactionParamList>;
   [REPORT]: undefined;
   [SETTINGS]: undefined;
 };
@@ -43,13 +46,7 @@ export type AccountStackParamList = {
   [ACCOUNTTAB]: undefined;
   [ADD_ACCOUNT]: { accountId: string } | undefined;
   [ACCOUNT_DETAIL]: { accountId: string; accountName: string };
-  [BANK_NAVIGATION]: { screen: keyof BankParamList; params: any };
-  [CREATE_TRANSACTION_FROM_ACCOUNT]:
-    | {
-        screen: keyof TransactionParamList;
-        params: TransactionParamList[keyof TransactionParamList];
-      }
-    | undefined;
+  [CREATE_TRANSACTION_FROM_ACCOUNT]: NavigatorScreenParams<TransactionParamList>;
 };
 
 export type TransactionParamList = {
@@ -59,13 +56,6 @@ export type TransactionParamList = {
         categoryId?: string;
         accountId?: string;
         hideHeader?: boolean;
-      }
-    | undefined;
-  [ACCOUNT_PICKER]: { accountSelectedId?: string } | undefined;
-  [TRANSACTION_CATEGORY]:
-    | {
-        screen: keyof TransactionCategoryParamList;
-        params: TransactionCategoryParamList[keyof TransactionCategoryParamList];
       }
     | undefined;
 };
@@ -110,7 +100,7 @@ export type UpdateTransactionCategoryRouteProps = RouteProp<
   typeof UPDATE_TRANSACTION_CATEGORY
 >;
 export type AccountDetailProp = RouteProp<AccountStackParamList, typeof ACCOUNT_DETAIL>;
-export type AccountPickerProp = RouteProp<TransactionParamList, typeof ACCOUNT_PICKER>;
+export type AccountPickerProp = RouteProp<RootStackParamList, typeof ACCOUNT_PICKER>;
 export type TransactionCategoryListProp = RouteProp<
   TransactionCategoryParamList,
   typeof TRANSACTION_CATEGORY_LIST
@@ -122,16 +112,8 @@ export type UpdateTransactionCategoryProps = NativeStackNavigationProp<
   typeof UPDATE_TRANSACTION_CATEGORY
 >;
 
-export type ExtendsParamList = RootStackParamList &
-  HomeStackParamList &
-  AccountStackParamList &
-  TransactionParamList &
-  TransactionCategoryParamList &
-  BankParamList &
-  TransactionCategoryListParams;
-
 declare global {
   namespace ReactNavigation {
-    interface RootParamList extends ExtendsParamList {}
+    interface RootParamList extends RootStackParamList {}
   }
 }

@@ -9,18 +9,19 @@ import AccountNavigation from 'navigation/Account';
 import Dashboard from 'features/Dashboard';
 import TransactionNavigation from 'navigation/Transaction';
 import ReportNavigation from 'navigation/Report';
+import { HomeStackParamList } from 'navigation/types';
 
 // set up routes
-const Tab = createBottomTabNavigator();
+const BottomTab = createBottomTabNavigator<HomeStackParamList>();
 
 function HomeNavigation() {
   return (
-    <Tab.Navigator
+    <BottomTab.Navigator
       screenOptions={{ headerShown: false }}
       initialRouteName={DASHBOARD}
       tabBar={(props) => <HomeBottomBar {...props} circle={TRANSACTIONS} />}
     >
-      <Tab.Screen
+      <BottomTab.Screen
         name={DASHBOARD}
         options={{
           // @ts-ignore
@@ -29,7 +30,7 @@ function HomeNavigation() {
         }}
         component={Dashboard}
       />
-      <Tab.Screen
+      <BottomTab.Screen
         name={ACCOUNT}
         options={{
           // @ts-ignore
@@ -38,7 +39,7 @@ function HomeNavigation() {
         }}
         component={AccountNavigation}
       />
-      <Tab.Screen
+      <BottomTab.Screen
         name={TRANSACTIONS}
         options={{
           // @ts-ignore
@@ -46,7 +47,7 @@ function HomeNavigation() {
         }}
         component={TransactionNavigation}
       />
-      <Tab.Screen
+      <BottomTab.Screen
         name={REPORT}
         options={{
           // @ts-ignore
@@ -55,7 +56,7 @@ function HomeNavigation() {
         }}
         component={ReportNavigation}
       />
-      <Tab.Screen
+      <BottomTab.Screen
         name={SETTINGS}
         options={{
           // @ts-ignore
@@ -64,7 +65,7 @@ function HomeNavigation() {
         }}
         component={Settings}
       />
-    </Tab.Navigator>
+    </BottomTab.Navigator>
   );
 }
 

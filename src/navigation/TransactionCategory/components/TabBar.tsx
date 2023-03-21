@@ -51,7 +51,7 @@ function TransactionCategoryTapBar() {
     }
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     updateTabActive(route);
   }, [navigation, route]);
 

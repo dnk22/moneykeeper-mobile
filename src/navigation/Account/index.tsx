@@ -3,7 +3,6 @@ import {
   ACCOUNTTAB,
   ADD_ACCOUNT,
   ACCOUNT_DETAIL,
-  BANK_NAVIGATION,
   CREATE_TRANSACTION_FROM_ACCOUNT,
 } from 'navigation/constants';
 import { AccountStackParamList } from 'navigation/types';
@@ -12,7 +11,6 @@ import { useCustomTheme } from 'resources/theme';
 import AccountTab from './tab';
 import AddAccount from 'features/AddAccount';
 import AccountDetails from 'features/AccountDetails';
-import BankNavigation from 'navigation/Bank';
 import TransactionNavigation from 'navigation/Transaction';
 
 // header custom icon
@@ -34,14 +32,16 @@ const AccountStack = createNativeStackNavigator<AccountStackParamList>();
 
 function AccountNavigation() {
   const { colors } = useCustomTheme();
-
   return (
-    <AccountStack.Navigator initialRouteName={ACCOUNTTAB} screenOptions={{
-      headerStyle: {
-        backgroundColor: colors.primary,
-      },
-      headerTintColor: 'white',
-    }}>
+    <AccountStack.Navigator
+      initialRouteName={ACCOUNTTAB}
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: colors.primary,
+        },
+        headerTintColor: 'white',
+      }}
+    >
       <AccountStack.Screen
         name={ACCOUNTTAB}
         options={{
@@ -67,14 +67,6 @@ function AccountNavigation() {
           headerRight: (props) => <Submit {...props} />,
         })}
         component={AccountDetails}
-      />
-      <AccountStack.Screen
-        name={BANK_NAVIGATION}
-        options={{
-          headerShown: false,
-          presentation: 'modal',
-        }}
-        component={BankNavigation}
       />
       <AccountStack.Screen
         name={CREATE_TRANSACTION_FROM_ACCOUNT}

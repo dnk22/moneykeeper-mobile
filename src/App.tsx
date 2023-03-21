@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { LogBox, useColorScheme, View } from 'react-native';
+import { LogBox, useColorScheme } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 import { persistor, store } from './store';
@@ -35,7 +35,6 @@ const App = () => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
       <Provider store={store}>
         <StatusBar />
         <PersistGate loading={<Loading />} persistor={persistor}>
@@ -44,7 +43,6 @@ const App = () => {
           </NavigationContainer>
         </PersistGate>
       </Provider>
-    </View>
   );
 };
 
