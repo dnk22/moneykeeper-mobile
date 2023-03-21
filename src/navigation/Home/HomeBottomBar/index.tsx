@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,6 +16,8 @@ const BottomBar = ({
 }: BottomBarProps) => {
   const { colors } = useCustomTheme();
   const { bottom: bottomSafeAreaHeight } = useSafeAreaInsets();
+  const paddingBottom = useMemo(() => bottomSafeAreaHeight / 2, []);
+
   const circleStyle = [
     styles.circle,
     {
@@ -28,7 +30,7 @@ const BottomBar = ({
       style={[
         styles.bottomBarContainer,
         {
-          paddingBottom: bottomSafeAreaHeight / 2,
+          paddingBottom,
         },
       ]}
     >

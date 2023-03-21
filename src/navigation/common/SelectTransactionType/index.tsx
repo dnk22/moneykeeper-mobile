@@ -1,17 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { RNText, PressableHaptic } from 'components/index';
 import { TTransactionType } from 'database/types';
 import { useAppDispatch, useAppSelector } from 'store/index';
+import TransactionTypePicker from 'features/Transaction/TransactionTypePicker';
 import {
   selectTransactionType,
   selectTransactionTypeSelected,
 } from 'store/transactions/transactions.selector';
 import { setTransactionTypeSelected } from 'store/transactions/transactions.slice';
 import styles from './styles';
-
-const TransactionTypePicker = React.lazy(
-  () => import('features/Transaction/TransactionTypePicker'),
-);
 
 function SelectTransactionType() {
   const dispatch = useAppDispatch();

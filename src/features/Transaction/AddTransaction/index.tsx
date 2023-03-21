@@ -1,10 +1,10 @@
+import { View } from 'react-native';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { View, SafeAreaView } from 'react-native';
 import styles from './styles';
+import { useForm } from 'react-hook-form';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useForm } from 'react-hook-form';
 import {
   DateTimeModalPicker,
   InputField,
@@ -190,7 +190,7 @@ function AddTransactions() {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.primary }]}>
+    <View style={styles.container}>
       <DateTimeModalPicker
         value={getValues('dateTimeAt')}
         isVisible={isDateTimeModalType === 'date' || isDateTimeModalType === 'time'}
@@ -322,7 +322,7 @@ function AddTransactions() {
         </PressableHaptic>
         <Submit onPress={handleSubmit(onSubmit)} />
       </KeyboardAwareScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 

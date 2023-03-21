@@ -1,4 +1,3 @@
-import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   ACCOUNTTAB,
@@ -10,11 +9,11 @@ import {
 import { AccountStackParamList } from 'navigation/types';
 import { useCustomTheme } from 'resources/theme';
 
-// import AccountTab from './tab';
-// import AddAccount from 'features/AddAccount';
-// import AccountDetails from 'features/AccountDetails';
-// import BankNavigation from 'navigation/Bank';
-// import TransactionNavigation from 'navigation/Transaction';
+import AccountTab from './tab';
+import AddAccount from 'features/AddAccount';
+import AccountDetails from 'features/AccountDetails';
+import BankNavigation from 'navigation/Bank';
+import TransactionNavigation from 'navigation/Transaction';
 
 // header custom icon
 import Done from 'navigation/common/Done';
@@ -24,26 +23,25 @@ import Search from 'navigation/common/Search';
 import Toolbar from './component/Toolbar';
 
 // lazy import
-const AccountTab = React.lazy(() => import('./tab'));
-const AddAccount = React.lazy(() => import('features/AddAccount'));
-const AccountDetails = React.lazy(() => import('features/AccountDetails'));
-const BankNavigation = React.lazy(() => import('navigation/Bank'));
-const TransactionNavigation = React.lazy(() => import('navigation/Transaction'));
+// const AccountTab = React.lazy(() => import('./tab'));
+// const AddAccount = React.lazy(() => import('features/AddAccount'));
+// const AccountDetails = React.lazy(() => import('features/AccountDetails'));
+// const BankNavigation = React.lazy(() => import('navigation/Bank'));
+// const TransactionNavigation = React.lazy(() => import('navigation/Transaction'));
 
 //set up routes
 const AccountStack = createNativeStackNavigator<AccountStackParamList>();
 
 function AccountNavigation() {
   const { colors } = useCustomTheme();
-  const rootOptions = {
-    headerStyle: {
-      backgroundColor: colors.primary,
-    },
-    headerTintColor: 'white',
-  };
 
   return (
-    <AccountStack.Navigator initialRouteName={ACCOUNTTAB} screenOptions={rootOptions}>
+    <AccountStack.Navigator initialRouteName={ACCOUNTTAB} screenOptions={{
+      headerStyle: {
+        backgroundColor: colors.primary,
+      },
+      headerTintColor: 'white',
+    }}>
       <AccountStack.Screen
         name={ACCOUNTTAB}
         options={{

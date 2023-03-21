@@ -1,4 +1,3 @@
-import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeBottomBar from './HomeBottomBar';
 import { SvgIcon } from 'components/index';
