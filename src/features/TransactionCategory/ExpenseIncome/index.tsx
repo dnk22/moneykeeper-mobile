@@ -1,5 +1,5 @@
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
-import { FlatListComponent, InputSearch, RNText } from 'components/index';
+import { FlatListComponent, InputSearch } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
@@ -7,6 +7,7 @@ import { getTransactionCategoryParentObserve } from 'database/querying';
 import CategoryGroupItem from '../CategoryGroupItem';
 import withObservables from '@nozbe/with-observables';
 import { TTransactionsCategory } from 'database/types';
+import Recent from './Recent';
 
 const CategoryGroupItemObserve = withObservables(['item'], ({ item }) => ({
   item: item.observe(),
@@ -33,9 +34,7 @@ function ExpenseIncome({ expenseCategoryObserve }: ExpenseCategoryProps) {
           onChangeText={handleOnSearch}
           backgroundColor={colors.surface}
         />
-        <View style={[styles.group, styles.mostRecent, { backgroundColor: colors.surface }]}>
-          <RNText preset="subTitle">Dùng gần đây</RNText>
-        </View>
+        <Recent />
         <FlatListComponent data={expenseCategoryObserve} renderItem={renderItem} />
       </View>
     </TouchableWithoutFeedback>

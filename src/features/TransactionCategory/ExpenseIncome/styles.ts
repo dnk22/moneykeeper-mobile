@@ -16,6 +16,11 @@ const styles = StyleSheet.create({
   itemCategory: {
     maxHeight: 200,
   },
+  menu: {
+    paddingBottom: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });
 
 export default styles;
