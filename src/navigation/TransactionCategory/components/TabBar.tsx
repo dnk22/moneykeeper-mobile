@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { SafeAreaView } from 'react-native';
 import {
   EXPENSE_CATEGORY,
@@ -10,20 +10,18 @@ import { Loading, PressableHaptic, SvgIcon } from 'components/index';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import styles from '../styles';
 import { useCustomTheme } from 'resources/theme';
-import { getFocusedRouteNameFromRoute, useNavigation, useRoute } from '@react-navigation/native';
+import { getFocusedRouteNameFromRoute, useRoute } from '@react-navigation/native';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 import { useAppDispatch } from 'store/index';
 import { updateTabView } from 'store/transactionCategory/transactionCategory.slice';
 import { TransactionCategoryListParams, TransactionCategoryListProp } from 'navigation/types';
-
-const HOCTransactionCategory = React.lazy(() => import('./HOC'));
-const LendBorrowCategory = React.lazy(() => import('features/TransactionCategory/LendBorrow'));
+import HOCTransactionCategory from './HOC';
+import LendBorrowCategory from 'features/TransactionCategory/LendBorrow';
 
 const TabBar = createMaterialTopTabNavigator<TransactionCategoryListParams>();
 
-function TransactionCategoryTapBar() {
+function TransactionCategoryTapBar({ navigation }) {
   const route = useRoute<TransactionCategoryListProp>();
-  const navigation = useNavigation();
   const useDispatch = useAppDispatch();
   const { colors } = useCustomTheme();
 

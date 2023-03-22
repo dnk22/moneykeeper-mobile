@@ -75,7 +75,7 @@ const AddAccount = () => {
     if (params?.accountId) {
       fetchDataInEditMode(params?.accountId);
     }
-  }, [params?.accountId, reset]);
+  }, [params?.accountId]);
 
   useEffect(() => {
     if (errors?.accountName) {

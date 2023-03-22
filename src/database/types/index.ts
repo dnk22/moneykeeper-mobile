@@ -42,7 +42,7 @@ export type TTransactionsCategory = {
   description: string;
   isSystem?: boolean;
   icon: string;
-  count: number;
+  useCount: number;
 };
 
 export type TTransactionType = {

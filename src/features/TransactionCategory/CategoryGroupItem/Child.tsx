@@ -1,8 +1,6 @@
-import { memo } from 'react';
 import { View } from 'react-native';
 import { RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
 import { TTransactionsCategory } from 'database/types';
-import isEqual from 'react-fast-compare';
 import { SCREEN_WIDTH } from 'share/dimensions';
 import styles from './styles';
 
@@ -23,4 +21,4 @@ function Child({ item, onPress }: ChildProps) {
     </TouchableHighlightComponent>
   );
 }
-export default memo(Child, isEqual);
+export default Child;

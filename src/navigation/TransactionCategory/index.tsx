@@ -11,9 +11,6 @@ import UpdateTransactionCategoryHeader from './components/Update';
 import UpdateTransactionCategory from 'features/TransactionCategory/Update';
 import ParentList from 'features/TransactionCategory/ParentList';
 
-// const UpdateTransactionCategory = React.lazy(() => import('features/TransactionCategory/Update'));
-// const ParentList = React.lazy(() => import('features/TransactionCategory/ParentList'));
-
 //set up routes
 const TransactionCategoryStack = createNativeStackNavigator<TransactionCategoryParamList>();
 
@@ -28,7 +25,7 @@ function TransactionCategoryNavigation() {
             fontSize: HEADER_TITLE,
           },
           headerBackTitleVisible: false,
-          headerRight: (props) => <UpdateTransactionCategoryHeader {...props} />,
+          headerRight: () => <UpdateTransactionCategoryHeader />,
         }}
       />
       <TransactionCategoryStack.Screen

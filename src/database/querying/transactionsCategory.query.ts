@@ -75,4 +75,34 @@ export const addTransactionCategory = async (tCategory: TTransactionsCategory) =
 };
 /** update */
 
+export const updateTransactionCategory = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: TTransactionsCategory;
+}) => {
+  try {
+    await database.write(async () => {
+      const res = await database.get<TransactionCategoryModel>(TRANSACTION_CATEGORY).find(id);
+      await res.update((item) => {
+        Object.assign(item, data);
+      });
+    });
+  } catch (error) {
+    console.log(error, 'update err');
+  }
+};
 /** delete */
+export const deleteTransactionCategoryById = async (id?: string) => {
+  if (!id) return;
+  try {
+    return await database.write(async () => {
+      const res = await database.get<TransactionCategoryModel>(TRANSACTION_CATEGORY).find(id);
+      await res.markAsDeleted();
+      return 'delete success';
+    });
+  } catch (error) {
+    console.log(error, 'delete transaction category err');
+  }
+};

@@ -30,29 +30,24 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignSelf: 'center',
   },
-  selectIconPlaceHolder: {
-    width: 60,
-    height: 40,
-    borderRadius: 60,
-    backgroundColor: 'blue',
-  },
-  icon: {
-    opacity: 0.6,
-  },
-  iconForward: {
-    position: 'absolute',
-    right: 6,
-  },
   formInput: {
     height: 50,
     fontSize: 20,
     width: '100%',
   },
-  submit: {
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
+  action: {
+    flex: 1,
+    columnGap: 10,
     flexDirection: 'row',
+  },
+  buttonDel: {
+    flex: 1,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    borderColor: 'red',
+    borderWidth: 1,
   },
 });
 

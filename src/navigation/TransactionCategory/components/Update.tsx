@@ -1,14 +1,15 @@
-import { useNavigation } from '@react-navigation/native';
-import { HeaderButtonProps } from '@react-navigation/native-stack/lib/typescript/src/types';
-import { UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
 import { Button } from 'react-native';
+import { useAppDispatch, useAppSelector } from 'store/index';
+import { selectUpdateModeStatus } from 'store/transactionCategory/transactionCategory.selector';
+import { toggleUpdateMode } from 'store/transactionCategory/transactionCategory.slice';
 
-function UpdateTransactionCategoryHeader({}: HeaderButtonProps) {
-  const navigation = useNavigation();
+function UpdateTransactionCategoryHeader() {
+  const useDispatch = useAppDispatch();
+  const isUpdateMode = useAppSelector((state) => selectUpdateModeStatus(state));
 
   const handleOnIconPress = () => {
-    navigation.navigate(UPDATE_TRANSACTION_CATEGORY);
+    useDispatch(toggleUpdateMode(!isUpdateMode));
   };
-  return <Button title="Sửa" onPress={handleOnIconPress} />;
+  return <Button title={isUpdateMode ? 'Hủy' : 'Sửa'} onPress={handleOnIconPress} />;
 }
 export default UpdateTransactionCategoryHeader;

@@ -11,8 +11,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: 10,
-    marginBottom: 5,
-    borderBottomWidth: 1,
     paddingVertical: 5,
   },
   headerTitle: {
