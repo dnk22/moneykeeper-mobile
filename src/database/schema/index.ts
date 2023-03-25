@@ -79,7 +79,7 @@ export default appSchema({
       columns: [
         { name: 'category_name', type: 'string' },
         { name: 'category_type', type: 'number' },
-        { name: 'parent_id', type: 'string', isOptional: true },
+        { name: 'parent_id', type: 'number', isOptional: true },
         { name: 'description', type: 'string', isOptional: true },
         { name: 'use_count', type: 'number', isOptional: true },
         { name: 'icon', type: 'string', isOptional: true },

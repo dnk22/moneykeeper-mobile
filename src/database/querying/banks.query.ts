@@ -38,7 +38,7 @@ export const getIsBankDataExist = async () => {
       return await database.get<BankModel>(BANKS).query().fetchCount();
     });
   } catch (error) {
-    console.log(error, 'get bank exist err');
+    console.log(error, 'get bank count exist err');
   }
 };
 

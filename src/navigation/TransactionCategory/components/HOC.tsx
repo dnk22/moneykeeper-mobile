@@ -1,13 +1,15 @@
-import ExpenseIncome from 'features/TransactionCategory/ExpenseIncome';
-import { EXPENSE_CATEGORY } from 'navigation/constants';
+import CategoryTab from 'features/TransactionCategory/CategoryTab';
+import { EXPENSE_CATEGORY, INCOME_CATEGORY } from 'navigation/constants';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 
 function HOCTransactionCategory({ route }) {
   const type =
     route.name === EXPENSE_CATEGORY
       ? TRANSACTION_CATEGORY_TYPE.EXPENSE
-      : TRANSACTION_CATEGORY_TYPE.INCOME;
+      : route.name === INCOME_CATEGORY
+      ? TRANSACTION_CATEGORY_TYPE.INCOME
+      : TRANSACTION_CATEGORY_TYPE.LEND_BORROW;
 
-  return <ExpenseIncome type={type} />;
+  return <CategoryTab type={type} />;
 }
 export default HOCTransactionCategory;

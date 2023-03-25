@@ -13,11 +13,11 @@ const CategoryGroupItemObserve = withObservables(['item'], ({ item }) => ({
   item: item.observe(),
 }))(CategoryGroupItem);
 
-type ExpenseCategoryProps = {
+type CategoryTabProps = {
   expenseCategoryObserve?: any;
   type: TRANSACTION_CATEGORY_TYPE;
 };
-function ExpenseIncome({ expenseCategoryObserve }: ExpenseCategoryProps) {
+function CategoryTab({ expenseCategoryObserve, type }: CategoryTabProps) {
   const { colors } = useCustomTheme();
 
   const renderItem = ({ item }: { item: TTransactionsCategory }) => {
@@ -29,12 +29,16 @@ function ExpenseIncome({ expenseCategoryObserve }: ExpenseCategoryProps) {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
-        <InputSearch
-          placeholder="Nhập tên"
-          onChangeText={handleOnSearch}
-          backgroundColor={colors.surface}
-        />
-        <Recent />
+        {type !== TRANSACTION_CATEGORY_TYPE.LEND_BORROW && (
+          <>
+            <InputSearch
+              placeholder="Nhập tên"
+              onChangeText={handleOnSearch}
+              backgroundColor={colors.surface}
+            />
+            <Recent />
+          </>
+        )}
         <FlatListComponent data={expenseCategoryObserve} renderItem={renderItem} />
       </View>
     </TouchableWithoutFeedback>
@@ -43,4 +47,4 @@ function ExpenseIncome({ expenseCategoryObserve }: ExpenseCategoryProps) {
 
 export default withObservables([], ({ type }: ExpenseCategoryProps) => ({
   expenseCategoryObserve: getTransactionCategoryParentObserve(type),
-}))<any>(ExpenseIncome);
+}))<any>(CategoryTab);

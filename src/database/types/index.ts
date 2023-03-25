@@ -40,7 +40,7 @@ export type TTransactionsCategory = {
   categoryType: TRANSACTION_CATEGORY_TYPE;
   parentId?: string;
   description: string;
-  isSystem?: boolean;
+  isSystem: boolean;
   icon: string;
   useCount: number;
 };

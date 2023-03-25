@@ -7,9 +7,9 @@ import { useCustomTheme } from 'resources/theme';
 import { normalize } from 'share/dimensions';
 import icon, { IconProps } from './const';
 import { IconSize } from './preset';
-import { BANKS_ICON } from 'assets/images/banks';
+import { imagesPath } from 'assets/images';
 
-const imgSrc = { ...BANKS_ICON };
+const imgSrc = imagesPath;
 
 interface SvgIconProps extends SvgProps {
   name?: IconProps;
@@ -20,6 +20,8 @@ interface SvgIconProps extends SvgProps {
 
 function SvgIcon({ name, color, size, preset = 'default', ...rest }: SvgIconProps) {
   const { colors } = useCustomTheme();
+  const isImage = useMemo(() => name && !icon.hasOwnProperty(name), [name]);
+
   // import svg icon by name
   const Icon: React.FC<SvgProps> = (name && icon[name]) || icon.questionCircle;
   const presetStyle = IconSize[preset];
@@ -27,16 +29,13 @@ function SvgIcon({ name, color, size, preset = 'default', ...rest }: SvgIconProp
     width: normalize(size) || presetStyle,
     height: normalize(size) || presetStyle,
   };
-
-  const isImage = useMemo(() => name && !icon.hasOwnProperty(name), [name]);
-
   return (
     <>
       {isImage && (
         <Image
           style={{ width: dimension.width, height: dimension.height }}
           resizeMode={FastImage.resizeMode.contain}
-          source={imgSrc[name]}
+          source={imgSrc[name] && imgSrc[name]}
         />
       )}
       {!isImage && (

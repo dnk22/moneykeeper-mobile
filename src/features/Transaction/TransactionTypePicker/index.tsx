@@ -5,6 +5,7 @@ import {
   FlatListComponent,
   ModalComponent,
   RNText,
+  SvgIcon,
   TouchableHighlightComponent,
 } from 'components/index';
 import { IModalComponentProps } from 'components/Modal';
@@ -42,7 +43,7 @@ function TransactionTypePicker({
         <View style={styles.item}>
           <View style={styles.itemContent}>
             <View style={styles.itemIcon}>
-              <Image source={item.icon} style={{ width: 24, height: 24 }} />
+              <SvgIcon name={item.icon} size={24} />
             </View>
             <RNText>{item.name}</RNText>
           </View>

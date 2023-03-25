@@ -11,7 +11,12 @@ import { Loading, StatusBar } from 'components/index';
 
 import RnKeyboard from 'rn-keyboard'; // <-- Import here
 import KeyboardCalculator from 'components/InputCalculator/KeyboardCalculator';
-import { getIsBankDataExist, importDefaultBanksData } from 'database/querying';
+import {
+  getIsBankDataExist,
+  getIsTransactionCategoryDataExist,
+  importDefaultBanksData,
+  importDefaultTransactionCategory,
+} from 'database/querying';
 
 LogBox.ignoreLogs(logBoxIgnore);
 
@@ -25,6 +30,7 @@ const App = () => {
 
   useEffect(() => {
     prepareBankData();
+    prepareTransactionCategoryData();
   }, []);
 
   async function prepareBankData() {
@@ -33,16 +39,22 @@ const App = () => {
       importDefaultBanksData();
     }
   }
+  async function prepareTransactionCategoryData() {
+    const isTransactionCategoryExist = await getIsTransactionCategoryDataExist();
+    if (!!!isTransactionCategoryExist) {
+      importDefaultTransactionCategory();
+    }
+  }
 
   return (
-      <Provider store={store}>
-        <StatusBar />
-        <PersistGate loading={<Loading />} persistor={persistor}>
-          <NavigationContainer theme={theme}>
-            <AppNavigators />
-          </NavigationContainer>
-        </PersistGate>
-      </Provider>
+    <Provider store={store}>
+      <StatusBar />
+      <PersistGate loading={<Loading />} persistor={persistor}>
+        <NavigationContainer theme={theme}>
+          <AppNavigators />
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
   );
 };
 

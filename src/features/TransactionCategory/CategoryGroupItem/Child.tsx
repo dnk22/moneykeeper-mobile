@@ -21,4 +21,5 @@ function Child({ item, onPress }: ChildProps) {
     </TouchableHighlightComponent>
   );
 }
+
 export default Child;

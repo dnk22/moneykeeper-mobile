@@ -72,7 +72,7 @@ function TransactionCategoryTapBar({ navigation }) {
       case EXPENSE_CATEGORY:
         navigation.setOptions({ headerTitle: 'Danh Mục Chi' });
         useDispatch(updateTabView(TRANSACTION_CATEGORY_TYPE.EXPENSE));
-        return 'Danh Mục Chi';
+        break;
       default:
         navigation.setOptions({ headerTitle: 'Danh Mục Vay Mượn' });
         break;
@@ -107,7 +107,7 @@ function TransactionCategoryTapBar({ navigation }) {
         <TabBar.Screen
           name={LEND_BORROW}
           options={{ title: 'Vay mượn' }}
-          component={LendBorrowCategory}
+          component={HOCTransactionCategory}
         />
       </TabBar.Navigator>
     </SafeAreaView>

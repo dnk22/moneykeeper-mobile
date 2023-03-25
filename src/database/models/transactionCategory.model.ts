@@ -6,8 +6,8 @@ export default class TransactionCategoryModel extends Model {
   static table = TRANSACTION_CATEGORY;
 
   @text('category_name') categoryName!: string;
-  @field('category_type') categoryType!: string;
-  @field('parent_id') parentId!: string;
+  @field('category_type') categoryType!: number;
+  @field('parent_id') parentId!: string | undefined;
   @text('description') description!: string;
   @field('use_count') useCount!: number;
   @field('icon') icon!: string;

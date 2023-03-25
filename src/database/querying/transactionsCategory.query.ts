@@ -1,9 +1,9 @@
 import { database } from 'database/index';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
 import { TRANSACTION_CATEGORY } from 'database/constants';
-import { Q } from '@nozbe/watermelondb';
 import { TTransactionsCategory } from 'database/types';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
+import { TransactionCategoryData, TRANSACTION_CATEGORY_TYPE } from 'utils/data';
+import { Q } from '@nozbe/watermelondb';
 
 /** observe */
 export const getTransactionCategoryParentObserve = (type: TRANSACTION_CATEGORY_TYPE) =>
@@ -60,6 +60,19 @@ export const fetchGroupTransactionCategory = async () => {
     console.log(error, 'fetch group transaction category err');
   }
 };
+
+export const getIsTransactionCategoryDataExist = async () => {
+  try {
+    return await database.read(async () => {
+      return await database
+        .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
+        .query()
+        .fetchCount();
+    });
+  } catch (error) {
+    console.log(error, 'get transaction category exist err');
+  }
+};
 /** create */
 export const addTransactionCategory = async (tCategory: TTransactionsCategory) => {
   try {
@@ -71,6 +84,26 @@ export const addTransactionCategory = async (tCategory: TTransactionsCategory) =
     });
   } catch (error) {
     console.log(error, 'add transaction category err');
+  }
+};
+
+export const importDefaultTransactionCategory = async () => {
+  try {
+    await database.write(async () => {
+      for (const record of TransactionCategoryData) {
+        await database.get<TransactionCategoryModel>(TRANSACTION_CATEGORY).create((tCategory) => {
+          tCategory.categoryName = record.categoryName;
+          tCategory.categoryType = record.categoryType;
+          tCategory.parentId = record.parentId;
+          tCategory.description = record.description;
+          tCategory.isSystem = record.isSystem;
+          tCategory.useCount = record.useCount;
+        });
+      }
+    });
+    console.log('Import transaction category completed!');
+  } catch (error) {
+    console.log('Import transaction category failed: ', error);
   }
 };
 /** update */

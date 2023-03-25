@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TAccount, TTransactionsCategory } from 'database/types/index';
+import { TTransactionsCategory } from 'database/types/index';
 import { TransactionTypeData } from 'utils/data';
 import { TTransactionsState } from 'utils/types/store.type';
 

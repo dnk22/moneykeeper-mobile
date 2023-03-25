@@ -8,22 +8,22 @@ const datas = [
   {
     name: 'Tình hình tài chính',
     link: 'financial-statement',
-    icon: require('assets/images/report/statement.png'),
+    icon: 'statementReport',
   },
   {
     name: 'Báo cáo thu chi',
     link: 'income-expense-report',
-    icon: require('assets/images/report/expenseIncome.png'),
+    icon: 'expenseIncomeReport',
   },
   {
     name: 'Phân tích thu',
     link: 'income-analyze',
-    icon: require('assets/images/report/income.png'),
+    icon: 'incomeReport',
   },
   {
     name: 'Phân tích chi',
     link: 'expense-analyze',
-    icon: require('assets/images/report/expense.png'),
+    icon: 'expenseReport',
   },
 ];
 function HomeReport() {
