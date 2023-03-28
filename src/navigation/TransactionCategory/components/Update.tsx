@@ -1,5 +1,7 @@
 import SvgIcon from 'components/SvgIcon';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
+import { memo } from 'react';
+import isEqual from 'react-fast-compare';
 import { Button } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectUpdateModeStatus } from 'store/transactionCategory/transactionCategory.selector';
@@ -12,6 +14,7 @@ function UpdateTransactionCategoryHeader() {
   const handleOnIconPress = () => {
     useDispatch(toggleUpdateMode(!isUpdateMode));
   };
+
   return (
     <>
       {isUpdateMode ? (
@@ -24,4 +27,4 @@ function UpdateTransactionCategoryHeader() {
     </>
   );
 }
-export default UpdateTransactionCategoryHeader;
+export default memo(UpdateTransactionCategoryHeader, isEqual);

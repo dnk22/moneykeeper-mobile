@@ -1,1 +1,1 @@
-export const HEADER_TITLE = 20;
+export const HEADER_TITLE_FONT_SIZE = 20;

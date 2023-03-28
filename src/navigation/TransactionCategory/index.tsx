@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   ICON_SELECT,
@@ -5,18 +6,32 @@ import {
   TRANSACTION_CATEGORY_LIST,
   UPDATE_TRANSACTION_CATEGORY,
 } from 'navigation/constants';
-import { HEADER_TITLE } from 'resources/theme/constants';
+import { HEADER_TITLE_FONT_SIZE } from 'resources/theme/constants';
 import { TransactionCategoryParams } from 'navigation/types';
 import TransactionCategoryTapBar from './components/TabBar';
 import UpdateTransactionCategoryHeader from './components/Update';
 import UpdateTransactionCategory from 'features/TransactionCategory/Update';
 import ParentList from 'features/TransactionCategory/ParentList';
 import IconSelect from 'features/TransactionCategory/IconSelect';
+import { useAppSelector } from 'store/index';
+import { selectTabActive } from 'store/transactionCategory/transactionCategory.selector';
+import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 
 //set up routes
 const TransactionCategoryStack = createNativeStackNavigator<TransactionCategoryParams>();
 
 function TransactionCategoryNavigation() {
+  const isTabActive = useAppSelector((state) => selectTabActive(state));
+  const UpdateButton = useMemo(
+    () =>
+      isTabActive !== TRANSACTION_CATEGORY_TYPE.LEND_BORROW ? (
+        <UpdateTransactionCategoryHeader />
+      ) : (
+        <></>
+      ),
+    [isTabActive],
+  );
+
   return (
     <TransactionCategoryStack.Navigator initialRouteName={TRANSACTION_CATEGORY_LIST}>
       <TransactionCategoryStack.Screen
@@ -24,10 +39,10 @@ function TransactionCategoryNavigation() {
         component={TransactionCategoryTapBar}
         options={{
           headerTitleStyle: {
-            fontSize: HEADER_TITLE,
+            fontSize: HEADER_TITLE_FONT_SIZE,
           },
           headerBackTitleVisible: false,
-          headerRight: () => <UpdateTransactionCategoryHeader />,
+          headerRight: () => UpdateButton,
         }}
       />
       <TransactionCategoryStack.Screen

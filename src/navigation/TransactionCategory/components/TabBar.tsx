@@ -76,6 +76,7 @@ function TransactionCategoryTapBar({ navigation }) {
         useDispatch(updateTabView(TRANSACTION_CATEGORY_TYPE.EXPENSE));
         break;
       default:
+        useDispatch(updateTabView(TRANSACTION_CATEGORY_TYPE.LEND_BORROW));
         navigation.setOptions({ headerTitle: 'Danh Mục Vay Mượn' });
         break;
     }
