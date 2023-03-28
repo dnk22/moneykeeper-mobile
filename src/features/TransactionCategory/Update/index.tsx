@@ -38,6 +38,7 @@ function UpdateTransactionCategory() {
       defaultValues: {
         isSystem: false,
         useCount: 0,
+        parentId: null,
       },
     });
 
@@ -48,6 +49,20 @@ function UpdateTransactionCategory() {
   useEffect(() => {
     fetchDataInEditMode(params?.transactionCategoryId);
   }, [params?.transactionCategoryId]);
+
+  useEffect(() => {
+    setValue('categoryType', isTabActive);
+  }, [isTabActive]);
+
+  useEffect(() => {
+    if (params?.parentId) {
+      setValue('parentId', params.parentId);
+    }
+  }, [params?.parentId]);
+
+  useEffect(() => {
+    setParentState(getValues('parentId'));
+  }, [watch('parentId')]);
 
   const fetchDataInEditMode = async (id?: string) => {
     if (!id) return;
@@ -65,19 +80,7 @@ function UpdateTransactionCategory() {
     }
   };
 
-  useEffect(() => {
-    setValue('categoryType', isTabActive);
-  }, [isTabActive]);
-
-  useEffect(() => {
-    setParentState(params?.parentId);
-  }, [params?.parentId]);
-
-  useEffect(() => {
-    setParentState(getValues('parentId'));
-  }, [watch('parentId')]);
-
-  const setParentState = async (id?: string) => {
+  const setParentState = async (id: any) => {
     if (!id) return;
     setValue('parentId', id);
     const res = await getTransactionCategoryById(id);
@@ -94,8 +97,12 @@ function UpdateTransactionCategory() {
     deleteTransactionCategoryById(params?.transactionCategoryId);
   };
   const handleOnDeleteParent = () => {
-    setValue('parentId', undefined);
+    setValue('parentId', null);
     setParentGroup(undefined);
+  };
+
+  const handleOnDeleteIcon = () => {
+    setValue('icon', undefined);
   };
 
   const navigateToSelectIcon = () => {
@@ -114,8 +121,19 @@ function UpdateTransactionCategory() {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.form}>
-        <PressableHaptic style={styles.selectIcon} onPress={navigateToSelectIcon}>
-          <SvgIcon size={40} name={watch('icon')} />
+        <PressableHaptic
+          style={[
+            styles.selectIcon,
+            { backgroundColor: colors.surface, borderColor: colors.primary },
+          ]}
+          onPress={navigateToSelectIcon}
+        >
+          <SvgIcon size={30} name={watch('icon')} />
+          {watch('icon') && (
+            <PressableHaptic onPress={handleOnDeleteIcon} style={styles.clearIcon}>
+              <SvgIcon size={18} name="closeCircle" color="red" />
+            </PressableHaptic>
+          )}
         </PressableHaptic>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={styles.itemGroup}>

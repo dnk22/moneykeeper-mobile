@@ -16,11 +16,7 @@ type CategoryGroupItemProps = {
   expenseCategoryChildObserve?: any;
   item: TTransactionsCategory;
   id: string;
-};
-
-const styleIfHaveChild = {
-  marginBottom: 5,
-  borderBottomWidth: 1,
+  type: TRANSACTION_CATEGORY_TYPE;
 };
 
 const CategoryChildItemObserve = withObservables(['item'], ({ item }) => ({
@@ -44,14 +40,18 @@ function CategoryGroupItem({ expenseCategoryChildObserve, item }: CategoryGroupI
     return <CategoryChildItemObserve item={item} onPress={() => onItemCategoryPress(item)} />;
   };
 
+  const isHaveChild = Boolean(expenseCategoryChildObserve.length);
+
   return (
     <View style={[styles.group, { backgroundColor: colors.surface }]}>
       <TouchableHighlightComponent onPress={() => onItemCategoryPress(item)}>
         <View
           style={[
             styles.itemHeader,
-            { borderColor: colors.background },
-            expenseCategoryChildObserve.length ? styleIfHaveChild : null,
+            {
+              borderColor: colors.background,
+              marginBottom: isHaveChild ? 5 : 0,
+            },
           ]}
         >
           <SvgIcon name={item.icon} size={28} />
@@ -60,6 +60,7 @@ function CategoryGroupItem({ expenseCategoryChildObserve, item }: CategoryGroupI
           </RNText>
         </View>
       </TouchableHighlightComponent>
+      {isHaveChild && <View style={styles.divider} />}
       <FlatListComponent
         style={styles.childView}
         data={expenseCategoryChildObserve}
@@ -71,10 +72,7 @@ function CategoryGroupItem({ expenseCategoryChildObserve, item }: CategoryGroupI
 
 export default withObservables(
   ['expenseCategoryChildObserve'],
-  ({ id }: CategoryGroupItemProps) => ({
-    expenseCategoryChildObserve: getTransactionCategoryChildrenObserve(
-      TRANSACTION_CATEGORY_TYPE.EXPENSE,
-      id,
-    ),
+  ({ id, type }: CategoryGroupItemProps) => ({
+    expenseCategoryChildObserve: getTransactionCategoryChildrenObserve(type, id),
   }),
 )<any>(CategoryGroupItem);

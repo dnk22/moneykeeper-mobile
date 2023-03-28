@@ -7,10 +7,11 @@ export default class TransactionCategoryModel extends Model {
 
   @text('category_name') categoryName!: string;
   @field('category_type') categoryType!: number;
-  @field('parent_id') parentId!: string | undefined;
+  @field('parent_id') parentId!: string;
   @text('description') description!: string;
-  @field('use_count') useCount!: number;
   @field('icon') icon!: string;
   @field('is_system') isSystem!: boolean;
+  @field('use_count') useCount!: number;
+  @field('last_use_at') lastUseAt!: Date;
   @readonly @date('create_at') createAt!: Date;
 }

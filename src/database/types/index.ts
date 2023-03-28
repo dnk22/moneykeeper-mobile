@@ -38,7 +38,7 @@ export type TTransactionsCategory = {
   id: string;
   categoryName: string;
   categoryType: TRANSACTION_CATEGORY_TYPE;
-  parentId?: string;
+  parentId: string | null;
   description?: string;
   isSystem: boolean;
   icon?: string;

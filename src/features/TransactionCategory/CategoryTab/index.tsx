@@ -4,9 +4,13 @@ import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 import { getTransactionCategoryParentObserve } from 'database/querying';
-import CategoryGroupItem from '../CategoryGroupItem';
 import withObservables from '@nozbe/with-observables';
 import { TTransactionsCategory } from 'database/types';
+import { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { toggleUpdateMode } from 'store/transactionCategory/transactionCategory.slice';
+import { useAppDispatch } from 'store/index';
+import CategoryGroupItem from '../CategoryGroupItem';
 import Recent from './Recent';
 
 const CategoryGroupItemObserve = withObservables(['item'], ({ item }) => ({
@@ -19,13 +23,21 @@ type CategoryTabProps = {
 };
 function CategoryTab({ expenseCategoryObserve, type }: CategoryTabProps) {
   const { colors } = useCustomTheme();
+  const useDispatch = useAppDispatch();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', () => {
+      useDispatch(toggleUpdateMode(false));
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   const renderItem = ({ item }: { item: TTransactionsCategory }) => {
-    return <CategoryGroupItemObserve item={item} id={item?.id} />;
+    return <CategoryGroupItemObserve item={item} id={item?.id} type={type} />;
   };
 
   const handleOnSearch = () => {};
-
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
@@ -45,6 +57,6 @@ function CategoryTab({ expenseCategoryObserve, type }: CategoryTabProps) {
   );
 }
 
-export default withObservables([], ({ type }: ExpenseCategoryProps) => ({
+export default withObservables([], ({ type }: CategoryTabProps) => ({
   expenseCategoryObserve: getTransactionCategoryParentObserve(type),
 }))<any>(CategoryTab);

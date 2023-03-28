@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: 10,
-    paddingVertical: 5,
+    padding: 5,
   },
   headerTitle: {
     flex: 1,
@@ -24,6 +24,10 @@ const styles = StyleSheet.create({
     height: 60,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  divider: {
+    borderTopWidth: 0.2,
+    borderColor: 'lightgray',
   },
 });
 

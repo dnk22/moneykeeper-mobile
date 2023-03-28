@@ -31,6 +31,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 30,
     alignSelf: 'center',
+    borderWidth: 0.2,
+  },
+  clearIcon: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
   },
   formInput: {
     height: 50,

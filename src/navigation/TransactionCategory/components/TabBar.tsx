@@ -12,11 +12,11 @@ import styles from '../styles';
 import { useCustomTheme } from 'resources/theme';
 import { getFocusedRouteNameFromRoute, useRoute } from '@react-navigation/native';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
-import { useAppDispatch } from 'store/index';
+import { useAppDispatch, useAppSelector } from 'store/index';
 import { updateTabView } from 'store/transactionCategory/transactionCategory.slice';
 import { TransactionCategoryListParams, TransactionCategoryListProp } from 'navigation/types';
 import HOCTransactionCategory from './HOC';
-import LendBorrowCategory from 'features/TransactionCategory/LendBorrow';
+import { selectUpdateModeStatus } from 'store/transactionCategory/transactionCategory.selector';
 
 const TabBar = createMaterialTopTabNavigator<TransactionCategoryListParams>();
 
@@ -24,6 +24,8 @@ function TransactionCategoryTapBar({ navigation }) {
   const route = useRoute<TransactionCategoryListProp>();
   const useDispatch = useAppDispatch();
   const { colors } = useCustomTheme();
+  const isUpdateMode = useAppSelector((state) => selectUpdateModeStatus(state));
+
 
   const tabBarOptions = {
     tabBarAllowFontScaling: false,
@@ -81,7 +83,7 @@ function TransactionCategoryTapBar({ navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface }}>
-      {focusedRoute(route) !== LEND_BORROW && (
+      {focusedRoute(route) !== LEND_BORROW && isUpdateMode && (
         <PressableHaptic
           style={[styles.addIcon, { backgroundColor: colors.primary }]}
           onPress={handleOnNavigateToScreenAdd}

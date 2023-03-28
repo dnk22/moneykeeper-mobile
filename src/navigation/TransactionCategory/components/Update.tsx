@@ -1,3 +1,5 @@
+import SvgIcon from 'components/SvgIcon';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
 import { Button } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectUpdateModeStatus } from 'store/transactionCategory/transactionCategory.selector';
@@ -10,6 +12,16 @@ function UpdateTransactionCategoryHeader() {
   const handleOnIconPress = () => {
     useDispatch(toggleUpdateMode(!isUpdateMode));
   };
-  return <Button title={isUpdateMode ? 'Hủy' : 'Sửa'} onPress={handleOnIconPress} />;
+  return (
+    <>
+      {isUpdateMode ? (
+        <Button title="Hủy" onPress={handleOnIconPress} />
+      ) : (
+        <TouchableHighlightComponent onPress={handleOnIconPress}>
+          <SvgIcon name="pen" />
+        </TouchableHighlightComponent>
+      )}
+    </>
+  );
 }
 export default UpdateTransactionCategoryHeader;
