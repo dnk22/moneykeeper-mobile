@@ -7,8 +7,9 @@ import {
   SvgIcon,
   TouchableHighlightComponent,
   RNText,
+  PressableHaptic,
 } from 'components/index';
-import { UpdateTransactionCategoryRouteProps } from 'navigation/types';
+import { ParentListProps, UpdateTransactionCategoryRouteProps } from 'navigation/types';
 import { useForm } from 'react-hook-form';
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
@@ -20,14 +21,14 @@ import {
   updateTransactionCategory,
 } from 'database/querying/transactionsCategory.query';
 import styles from './styles';
-import { PARENT_LIST } from 'navigation/constants';
+import { ICON_SELECT, PARENT_LIST } from 'navigation/constants';
 import { selectTabActive } from 'store/transactionCategory/transactionCategory.selector';
 import { useAppSelector } from 'store/index';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
 
 function UpdateTransactionCategory() {
   const { colors } = useCustomTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<ParentListProps>();
   const { params } = useRoute<UpdateTransactionCategoryRouteProps>();
   const isTabActive = useAppSelector((state) => selectTabActive(state));
   const [parentGroup, setParentGroup] = useState<TransactionCategoryModel | undefined>(undefined);
@@ -36,17 +37,20 @@ function UpdateTransactionCategory() {
     useForm<TTransactionsCategory>({
       defaultValues: {
         isSystem: false,
-        description: '',
+        useCount: 0,
       },
     });
 
   useEffect(() => {
-    if (params?.transactionCategoryId) {
-      fetchDataInEditMode(params?.transactionCategoryId);
-    }
+    setValue('icon', params?.icon);
+  }, [params?.icon]);
+
+  useEffect(() => {
+    fetchDataInEditMode(params?.transactionCategoryId);
   }, [params?.transactionCategoryId]);
 
-  const fetchDataInEditMode = async (id: string) => {
+  const fetchDataInEditMode = async (id?: string) => {
+    if (!id) return;
     const res = await getTransactionCategoryById(id);
     if (res?.id) {
       let result = {
@@ -66,28 +70,36 @@ function UpdateTransactionCategory() {
   }, [isTabActive]);
 
   useEffect(() => {
-    const parentId = params?.parentId || watch('parentId');
-    if (parentId) {
-      setParentState(parentId);
-    }
-  }, [params?.parentId, watch('parentId')]);
+    setParentState(params?.parentId);
+  }, [params?.parentId]);
 
-  const setParentState = async (id: string) => {
+  useEffect(() => {
+    setParentState(getValues('parentId'));
+  }, [watch('parentId')]);
+
+  const setParentState = async (id?: string) => {
+    if (!id) return;
     setValue('parentId', id);
     const res = await getTransactionCategoryById(id);
     setParentGroup(res);
   };
 
   const handleOnSelectParent = () => {
-    navigation.navigate(PARENT_LIST);
+    navigation.navigate(PARENT_LIST, {
+      type: isTabActive,
+    });
   };
 
   const handleOnDelete = async () => {
     deleteTransactionCategoryById(params?.transactionCategoryId);
   };
   const handleOnDeleteParent = () => {
-    setValue('parentId', null);
+    setValue('parentId', undefined);
     setParentGroup(undefined);
+  };
+
+  const navigateToSelectIcon = () => {
+    navigation.navigate(ICON_SELECT);
   };
 
   const onHandleSubmit = (data: TTransactionsCategory) => {
@@ -102,7 +114,9 @@ function UpdateTransactionCategory() {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.form}>
-        <View style={styles.selectIcon}></View>
+        <PressableHaptic style={styles.selectIcon} onPress={navigateToSelectIcon}>
+          <SvgIcon size={40} name={watch('icon')} />
+        </PressableHaptic>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={styles.itemGroup}>
             <SvgIcon name="clipboard" opacity={0.7} />

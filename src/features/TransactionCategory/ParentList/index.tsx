@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { FlatListComponent, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { fetchGroupTransactionCategory } from 'database/querying';
 import { TTransactionsCategory } from 'database/types';
 import { useCustomTheme } from 'resources/theme';
-import { UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
+import { PARENT_LIST, UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
 import styles from './styles';
+import { TransactionCategoryParamProps, TransactionGroupRouteProp } from 'navigation/types';
 
 function ParentList() {
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<TransactionCategoryParamProps<typeof PARENT_LIST>['navigation']>();
   const { colors } = useCustomTheme();
+  const { params } = useRoute<TransactionGroupRouteProp>();
   const [data, setData] = useState<any>([]);
 
   useEffect(() => {
@@ -18,7 +21,7 @@ function ParentList() {
   }, []);
 
   async function fetchGroup() {
-    const res = await fetchGroupTransactionCategory();
+    const res = await fetchGroupTransactionCategory(params.type);
     setData(res);
   }
   const onPress = (item: TTransactionsCategory) => {

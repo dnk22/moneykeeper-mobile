@@ -29,8 +29,8 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    prepareBankData();
-    prepareTransactionCategoryData();
+    // prepareBankData();
+    // prepareTransactionCategoryData();
   }, []);
 
   async function prepareBankData() {

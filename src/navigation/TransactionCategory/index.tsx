@@ -1,18 +1,20 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
+  ICON_SELECT,
   PARENT_LIST,
   TRANSACTION_CATEGORY_LIST,
   UPDATE_TRANSACTION_CATEGORY,
 } from 'navigation/constants';
 import { HEADER_TITLE } from 'resources/theme/constants';
-import { TransactionCategoryParamList } from 'navigation/types';
+import { TransactionCategoryParams } from 'navigation/types';
 import TransactionCategoryTapBar from './components/TabBar';
 import UpdateTransactionCategoryHeader from './components/Update';
 import UpdateTransactionCategory from 'features/TransactionCategory/Update';
 import ParentList from 'features/TransactionCategory/ParentList';
+import IconSelect from 'features/IconSelect';
 
 //set up routes
-const TransactionCategoryStack = createNativeStackNavigator<TransactionCategoryParamList>();
+const TransactionCategoryStack = createNativeStackNavigator<TransactionCategoryParams>();
 
 function TransactionCategoryNavigation() {
   return (
@@ -41,6 +43,13 @@ function TransactionCategoryNavigation() {
           title: 'Chọn nhóm',
         }}
         component={ParentList}
+      />
+      <TransactionCategoryStack.Screen
+        name={ICON_SELECT}
+        options={{
+          title: 'Chọn icon',
+        }}
+        component={IconSelect}
       />
     </TransactionCategoryStack.Navigator>
   );

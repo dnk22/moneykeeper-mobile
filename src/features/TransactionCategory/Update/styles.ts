@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
   form: {
     flex: 1,
     padding: 10,
+    paddingTop: 15,
   },
   group: {
     borderRadius: 10,
@@ -25,7 +26,8 @@ const styles = StyleSheet.create({
   selectIcon: {
     width: 60,
     height: 60,
-    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 20,
     borderRadius: 30,
     alignSelf: 'center',

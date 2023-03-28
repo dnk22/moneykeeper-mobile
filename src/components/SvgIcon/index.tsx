@@ -8,8 +8,9 @@ import { normalize } from 'share/dimensions';
 import icon, { IconProps } from './const';
 import { IconSize } from './preset';
 import { imagesPath } from 'assets/images';
+import { transactionCategoryIcon } from 'assets/images/transactionCategory';
 
-const imgSrc = imagesPath;
+const imgSrc = { ...imagesPath, ...transactionCategoryIcon };
 
 interface SvgIconProps extends SvgProps {
   name?: IconProps;

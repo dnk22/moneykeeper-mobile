@@ -47,12 +47,12 @@ export const getTransactionCategoryById = async (id: string) => {
   }
 };
 
-export const fetchGroupTransactionCategory = async () => {
+export const fetchGroupTransactionCategory = async (type: TRANSACTION_CATEGORY_TYPE) => {
   try {
     return await database.read(async () => {
       const res = database
         .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-        .query(Q.where('parent_id', Q.eq(null)))
+        .query(Q.where('category_type', type), Q.where('parent_id', Q.eq(null)))
         .fetch();
       return res;
     });

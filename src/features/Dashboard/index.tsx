@@ -15,6 +15,8 @@ function Dashboard() {
           <RecentTransactions />
         </ScrollView>
       </View>
+      {/* <View style={styles.oval1} />
+      <View style={styles.oval2} /> */}
     </SafeAreaView>
   );
 }
