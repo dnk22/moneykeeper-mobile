@@ -11,7 +11,7 @@
     "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
     "list-devices": "xcrun xctrace list devices",
     "npm-check": "npx npm-check -u",
-    "gen-images" : "node updateImagesPath.js"
+    "gen-images": "node updateImagesPath.js"
   },
   "dependencies": {
     "@notifee/react-native": "^7.4.0",

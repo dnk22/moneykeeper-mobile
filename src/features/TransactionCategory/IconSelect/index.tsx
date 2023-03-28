@@ -7,6 +7,7 @@ import { TransactionCategoryParamProps } from 'navigation/types';
 import styles from './styles';
 
 const images = Object.entries(transactionCategoryIcon);
+
 function IconSelect() {
   const navigation = useNavigation<TransactionCategoryParamProps<'icon_select'>['navigation']>();
   const onIconPress = (iconName: string) => {
@@ -23,7 +24,7 @@ function IconSelect() {
         {images.map(([key, value]) => {
           const DEFAULT_IMAGE = Image.resolveAssetSource(value).uri;
           return (
-            <View style={styles.icon}>
+            <View style={styles.icon} key={key}>
               <TouchableHighlightComponent onPress={() => onIconPress(key)}>
                 <Image style={{ width: 50, height: 50 }} source={{ uri: DEFAULT_IMAGE }} />
               </TouchableHighlightComponent>
