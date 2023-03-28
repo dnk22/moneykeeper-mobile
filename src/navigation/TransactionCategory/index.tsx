@@ -11,7 +11,7 @@ import TransactionCategoryTapBar from './components/TabBar';
 import UpdateTransactionCategoryHeader from './components/Update';
 import UpdateTransactionCategory from 'features/TransactionCategory/Update';
 import ParentList from 'features/TransactionCategory/ParentList';
-import IconSelect from 'features/IconSelect';
+import IconSelect from 'features/TransactionCategory/IconSelect';
 
 //set up routes
 const TransactionCategoryStack = createNativeStackNavigator<TransactionCategoryParams>();
