@@ -127,13 +127,15 @@ export const updateTransactionCategory = async ({
   }
 };
 /** delete */
-export const deleteTransactionCategoryById = async (id?: string) => {
-  if (!id) return;
+export const deleteTransactionCategoryById = async (id: string) => {
   try {
     return await database.write(async () => {
       const res = await database.get<TransactionCategoryModel>(TRANSACTION_CATEGORY).find(id);
       await res.markAsDeleted();
-      return 'delete success';
+      return {
+        success: true,
+        message : 'Deleted Success'
+      };
     });
   } catch (error) {
     console.log(error, 'delete transaction category err');

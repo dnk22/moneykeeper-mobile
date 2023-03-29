@@ -62,6 +62,7 @@ import list from 'assets/svg/icon-list.svg';
 import grid from 'assets/svg/icon-grid.svg';
 import pen from 'assets/svg/icon-pen.svg';
 import group from 'assets/svg/icon-group.svg';
+import pencilCircle from 'assets/svg/icon-pencilCircle.svg';
 
 const icon = {
   add,
@@ -128,6 +129,7 @@ const icon = {
   grid,
   pen,
   group,
+  pencilCircle,
 };
 
 export type IconProps = keyof typeof icon;

@@ -1,16 +1,17 @@
 import { View } from 'react-native';
-import { FlatListComponent, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
+import { FlatListComponent, RNText, TouchableHighlightComponent } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { useNavigation } from '@react-navigation/native';
 import withObservables from '@nozbe/with-observables';
 import { TTransactionsCategory } from 'database/types';
 import { getTransactionCategoryChildrenObserve } from 'database/querying';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
-import styles from './styles';
-import Child from './Child';
 import { ADD_TRANSACTION, UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
 import { useAppSelector } from 'store/index';
 import { selectUpdateModeStatus } from 'store/transactionCategory/transactionCategory.selector';
+import styles from './styles';
+import Child from './Child';
+import Icon from './Icon';
 
 type CategoryGroupItemProps = {
   expenseCategoryChildObserve?: any;
@@ -45,16 +46,8 @@ function CategoryGroupItem({ expenseCategoryChildObserve, item }: CategoryGroupI
   return (
     <View style={[styles.group, { backgroundColor: colors.surface }]}>
       <TouchableHighlightComponent onPress={() => onItemCategoryPress(item)}>
-        <View
-          style={[
-            styles.itemHeader,
-            {
-              borderColor: colors.background,
-              marginBottom: isHaveChild ? 5 : 0,
-            },
-          ]}
-        >
-          <SvgIcon name={item.icon} size={28} />
+        <View style={styles.itemHeader}>
+          <Icon icon={item.icon} />
           <RNText numberOfLines={1} style={styles.headerTitle}>
             {item.categoryName}
           </RNText>

@@ -5,7 +5,7 @@ import { RectButton, Swipeable } from 'react-native-gesture-handler';
 import TrashIcon from 'assets/svg/icon-trash.svg';
 import styles from './styles';
 import { SwipeableProps } from 'react-native-gesture-handler/lib/typescript/components/Swipeable';
-import { useCustomTheme } from '/resources/theme';
+import { useCustomTheme } from 'resources/theme';
 
 interface ISwipeableComponentProps extends SwipeableProps {
   children: React.ReactNode;

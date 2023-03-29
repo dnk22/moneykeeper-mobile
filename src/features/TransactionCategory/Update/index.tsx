@@ -93,8 +93,14 @@ function UpdateTransactionCategory() {
     });
   };
 
-  const handleOnDelete = async () => {
-    deleteTransactionCategoryById(params?.transactionCategoryId);
+  const handleOnDeleteRecord = async () => {
+    if (params?.transactionCategoryId) {
+      deleteTransactionCategoryById(params.transactionCategoryId).then(({ success }) => {
+        if (success) {
+          navigation.goBack();
+        }
+      });
+    }
   };
   const handleOnDeleteParent = () => {
     setValue('parentId', null);
@@ -176,7 +182,7 @@ function UpdateTransactionCategory() {
           {params?.transactionCategoryId && (
             <TouchableHighlightComponent
               style={[styles.buttonDel, { backgroundColor: colors.surface }]}
-              onPress={handleOnDelete}
+              onPress={handleOnDeleteRecord}
             >
               <RNText>Xóa</RNText>
             </TouchableHighlightComponent>

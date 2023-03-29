@@ -1,5 +1,5 @@
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
-import { FlatListComponent, InputSearch } from 'components/index';
+import { InputSearch, VirtualizedListComponent } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
@@ -12,13 +12,15 @@ import { toggleUpdateMode } from 'store/transactionCategory/transactionCategory.
 import { useAppDispatch } from 'store/index';
 import CategoryGroupItem from '../CategoryGroupItem';
 import Recent from './Recent';
+import { Observable } from '@nozbe/watermelondb/utils/rx';
+import TransactionCategoryModel from 'database/models/transactionCategory.model';
 
 const CategoryGroupItemObserve = withObservables(['item'], ({ item }) => ({
   item: item.observe(),
 }))(CategoryGroupItem);
 
 type CategoryTabProps = {
-  expenseCategoryObserve?: any;
+  expenseCategoryObserve?: Observable<TransactionCategoryModel[]>;
   type: TRANSACTION_CATEGORY_TYPE;
 };
 function CategoryTab({ expenseCategoryObserve, type }: CategoryTabProps) {
@@ -51,7 +53,7 @@ function CategoryTab({ expenseCategoryObserve, type }: CategoryTabProps) {
             <Recent />
           </>
         )}
-        <FlatListComponent data={expenseCategoryObserve} renderItem={renderItem} />
+        <VirtualizedListComponent data={expenseCategoryObserve} renderItem={renderItem} />
       </View>
     </TouchableWithoutFeedback>
   );

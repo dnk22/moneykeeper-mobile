@@ -1,6 +1,4 @@
-import { memo } from 'react';
 import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
-import isEqual from 'react-fast-compare';
 import RNText from 'components/Text';
 import SvgIcon from 'components/SvgIcon';
 import styles from './styles';
@@ -21,4 +19,4 @@ function Submit({ onPress }: TouchableOpacityProps) {
     </TouchableOpacity>
   );
 }
-export default memo(Submit, isEqual);
+export default Submit;
