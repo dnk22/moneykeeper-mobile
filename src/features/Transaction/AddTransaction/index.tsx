@@ -1,5 +1,5 @@
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import styles from './styles';
 import { useForm } from 'react-hook-form';
 import { useCustomTheme } from 'resources/theme';
@@ -19,7 +19,7 @@ import {
 } from 'components/index';
 import { formatDateLocal } from 'utils/date';
 import Animated, { StretchInY } from 'react-native-reanimated';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import {
   ACCOUNT_PICKER,
   TRANSACTION_CATEGORY,
@@ -31,22 +31,27 @@ import { AddTransactionRouteProp } from 'navigation/types';
 import {
   addNewTransaction,
   getAccountById,
+  getAccountCountObserve,
   getFirstAccount,
   getTransactionCategoryById,
 } from 'database/querying';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
 import { AccountModel } from 'database/models';
+import withObservables from '@nozbe/with-observables';
+import { Observable } from 'redux';
 
-const initialAddFormValues: TTransactions = {
+const defaultValues = {
   amount: 0,
   transactionsTypeId: '1',
   dateTimeAt: new Date(),
   transactionsCategoryId: '',
   accountId: '',
 };
-
-function AddTransactions() {
+type AddTransactionsProps = {
+  accountCount: Observable<number>;
+};
+function AddTransactions({ accountCount }: AddTransactionsProps) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
   const { params } = useRoute<AddTransactionRouteProp>();
@@ -67,12 +72,9 @@ function AddTransactions() {
 
   /** setup form */
   const { control, handleSubmit, getValues, setValue, watch } = useForm<TTransactions>({
-    defaultValues: {
-      ...initialAddFormValues,
-    },
+    defaultValues,
   });
 
-  /** watch transactionsTypeId from redux store and setValue to form */
   useLayoutEffect(() => {
     if (params?.hideHeader) {
       navigation.setOptions({
@@ -81,7 +83,7 @@ function AddTransactions() {
     }
   }, [params?.hideHeader]);
 
-  /** set transactionsTypeId form value */
+  /** watch transactionsTypeId from redux store and setValue to form */
   useEffect(() => {
     setValue('transactionsTypeId', transactionTypeSelected);
   }, [transactionTypeSelected]);
@@ -89,18 +91,53 @@ function AddTransactions() {
   /** get transaction category selected data */
   useEffect(() => {
     if (params?.categoryId) {
-      setCategorySelected(params.categoryId);
+      setValue('transactionsCategoryId', params.categoryId);
     }
   }, [params?.categoryId]);
 
-  /** set accountId */
+  useEffect(() => {
+    if (getValues('transactionsCategoryId')) {
+      setCategorySelected(getValues('transactionsCategoryId'));
+    }
+  }, [watch('transactionsCategoryId')]);
+
+  /** watch accountId */
   useEffect(() => {
     if (params?.accountId) {
-      setAccountSelected(params?.accountId);
-    } else {
-      setDefaultAccountInModeAdd();
+      setValue('accountId', params.accountId);
     }
   }, [params?.accountId]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setAccountSelected(getValues('accountId')).then((res) => {
+        if (!res) {
+          setValue('accountId', '');
+          setTransactionAccountSelected(undefined);
+        }
+      });
+    }, []),
+  );
+
+  // set default account when mode = add & accountId = null
+  useFocusEffect(
+    useCallback(() => {
+      if (!params?.transactionId && !getValues('accountId')) {
+        setDefaultAccountInModeAdd();
+      }
+    }, [params?.transactionId, getValues('accountId')]),
+  );
+
+  useEffect(() => {
+    setAccountSelected(getValues('accountId'));
+  }, [watch('accountId')]);
+
+  useEffect(() => {
+    if (!accountCount) {
+      setValue('accountId', '');
+      setTransactionAccountSelected(undefined);
+    }
+  }, [accountCount]);
 
   /** memoized function */
   const onToggleDateTimeModal = useCallback(
@@ -133,24 +170,33 @@ function AddTransactions() {
 
   /** pure function */
   const setCategorySelected = async (id: string) => {
-    setValue('transactionsCategoryId', id);
     const res = await getTransactionCategoryById(id);
     setTransactionCategorySelected(res);
   };
 
   const setAccountSelected = async (id: string) => {
-    const account = await getAccountById(id);
-    if (account?.id) {
-      setValue('accountId', account.id);
+    if (!id) return false;
+    try {
+      const account = await getAccountById(id);
+      if (!account) {
+        return false;
+      }
       setTransactionAccountSelected(account);
+      return true;
+    } catch (error) {
+      console.log(error, 'setAccountSelected error');
+      return false;
     }
   };
 
   const setDefaultAccountInModeAdd = async () => {
-    const firstAccount = await getFirstAccount();
-    if (firstAccount && firstAccount.length) {
-      setValue('accountId', firstAccount[0].id);
-      setTransactionAccountSelected(firstAccount[0]);
+    try {
+      const firstAccount = await getFirstAccount();
+      if (firstAccount && firstAccount.length) {
+        setValue('accountId', firstAccount[0].id);
+      }
+    } catch (error) {
+      console.log(error, 'setDefaultAccountInModeAdd error');
     }
   };
 
@@ -186,7 +232,7 @@ function AddTransactions() {
 
   const onSubmit = (data: TTransactions) => {
     console.log(data);
-    addNewTransaction(data);
+    // addNewTransaction(data);
   };
 
   return (
@@ -326,4 +372,6 @@ function AddTransactions() {
   );
 }
 
-export default AddTransactions;
+export default withObservables(['accountsObservables'], () => ({
+  accountCount: getAccountCountObserve(true),
+}))<any>(AddTransactions);
