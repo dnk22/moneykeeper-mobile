@@ -12,6 +12,7 @@ type AccountCardProps = {
 };
 function AccountCard({ accountCount, children, title }: AccountCardProps) {
   const titleWithCount = `${title} (${accountCount})`;
+
   return (
     <Card title={titleWithCount} collapse={!Boolean(accountCount)}>
       {children}
@@ -19,9 +20,6 @@ function AccountCard({ accountCount, children, title }: AccountCardProps) {
   );
 }
 
-export default withObservables(
-  ['accountCount'],
-  ({ isDeactivate = false }: AccountCardProps) => ({
-    accountCount: getAccountCountObserve(!isDeactivate),
-  }),
-)<any>(AccountCard);
+export default withObservables(['accountCount'], ({ isDeactivate = false }: AccountCardProps) => ({
+  accountCount: getAccountCountObserve(!isDeactivate),
+}))<any>(AccountCard);

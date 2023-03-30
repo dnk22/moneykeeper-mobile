@@ -25,9 +25,9 @@ function Accounts() {
     onToggleModal();
   }, []);
 
-  const onToggleModal = useCallback(() => {
+  const onToggleModal = () => {
     setIsShowItemSettingsModal(!isShowItemSettingsModal);
-  }, [isShowItemSettingsModal]);
+  };
 
   const handleOnCreateAccount = () => {
     navigation.navigate(ADD_ACCOUNT);

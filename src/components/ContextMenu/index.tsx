@@ -1,4 +1,3 @@
-import React, { memo } from 'react';
 import {
   ContextMenuView,
   ContextMenuViewProps,
@@ -6,7 +5,6 @@ import {
   MenuElementConfig,
 } from 'react-native-ios-context-menu';
 import styles from './styles';
-import isEqual from 'react-fast-compare';
 
 type ContextTypes = ContextMenuViewProps & ContextMenuViewState;
 export type IMenuItemsProps = MenuElementConfig[] | undefined;
@@ -17,12 +15,7 @@ interface IContextMenuProps extends ContextTypes {
   menuItems?: IMenuItemsProps;
 }
 
-function ContextMenu({
-  children,
-  menuTitle = '',
-  menuItems,
-  ...rest
-}: IContextMenuProps) {
+function ContextMenu({ children, menuTitle = '', menuItems, ...rest }: IContextMenuProps) {
   return (
     <ContextMenuView
       style={styles.container}
@@ -37,4 +30,4 @@ function ContextMenu({
   );
 }
 
-export default memo(ContextMenu, isEqual);
+export default ContextMenu;

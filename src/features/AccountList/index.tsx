@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { SectionListData, View } from 'react-native';
 import { InputSearch, RNText, SectionListComponent } from 'components/index';
 import { TAccount } from 'database/types/index';
@@ -9,6 +9,8 @@ import { getAccounts, getActiveAccountObserve } from 'database/querying';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
 import { AccountModel } from 'database/models';
 import { groupDataByValue } from 'utils/algorithm';
+import { SCREEN_HEIGHT } from 'share/dimensions';
+import isEqual from 'react-fast-compare';
 
 type AccountListProps = {
   isDeactivate?: boolean;
@@ -19,6 +21,8 @@ type AccountListProps = {
   onItemPress?: (account: TAccount) => void;
   accountsObservables?: Observable<AccountModel[]>;
 };
+
+const maxHeight = SCREEN_HEIGHT * 0.5;
 
 const AccountItemObserve = withObservables(['account'], ({ account }) => ({
   account: account.observe(),
@@ -68,7 +72,7 @@ function AccountList({
     [isGroup],
   );
 
-  const renderItem = ({ item }: { item: TAccount }) => {
+  const renderItem = useCallback(({ item }: { item: TAccount }) => {
     return (
       <AccountItemObserve
         account={item}
@@ -77,7 +81,7 @@ function AccountList({
         isItemSelected={isItemSelected}
       />
     );
-  };
+  }, []);
 
   const onInputChange = async (text: string) => {
     const res = await getAccounts({ text });
@@ -88,7 +92,8 @@ function AccountList({
     <>
       {isShowSearch && <InputSearch onChangeText={onInputChange} />}
       <SectionListComponent
-        style={{ maxHeight: 350 }}
+        style={{ maxHeight }}
+        initialNumToRender={8}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
         sections={accounts}
@@ -111,4 +116,4 @@ export default withObservables(
   ({ isDeactivate = false }: AccountListProps) => ({
     accountsObservables: getActiveAccountObserve(!isDeactivate),
   }),
-)<any>(AccountList);
+)<any>(memo(AccountList, isEqual));

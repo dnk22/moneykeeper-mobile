@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { ModalComponent, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
 import { IModalComponentProps } from 'components/Modal';
 import isEqual from 'react-fast-compare';
@@ -18,7 +17,7 @@ const DELETE = 'delete';
 const INACTIVE = 'inactive';
 
 function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsModalProps) {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const isAccountDisable = !account?.isActive;
 
   const onItemPress = (type: string) => {
@@ -107,4 +106,4 @@ function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsMo
   );
 }
 
-export default memo(ItemSettingsModal, isEqual);
+export default ItemSettingsModal;

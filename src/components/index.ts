@@ -6,7 +6,6 @@ import Switch from 'components/Switch';
 import SwitchField from 'components/Switch/SwitchField';
 import RNSegmentedControl from 'components/SegmentedControl';
 import SegmentedControlField from 'components/SegmentedControl/SegmentedControlField';
-import ModalNavigationHeaderBar from 'components/ModalNavigationHeaderBar';
 import FlatListComponent from './FlatList';
 import SectionListComponent from './SectionList';
 import ModalComponent from 'components/Modal';
@@ -33,7 +32,6 @@ export {
   SwitchField,
   RNSegmentedControl,
   SegmentedControlField,
-  ModalNavigationHeaderBar,
   FlatListComponent,
   SectionListComponent,
   ModalComponent,
