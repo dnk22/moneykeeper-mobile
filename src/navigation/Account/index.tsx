@@ -14,10 +14,10 @@ import AccountDetails from 'features/AccountDetails';
 import TransactionNavigation from 'navigation/Transaction';
 
 // header custom icon
-import Done from 'navigation/common/Done';
-import SelectTransactionType from 'navigation/common/SelectTransactionType';
-import Submit from 'navigation/common/Submit';
-import Search from 'navigation/common/Search';
+import Done from 'navigation/elements/Done';
+import SelectTransactionType from 'navigation/elements/SelectTransactionType';
+import Submit from 'navigation/elements/Submit';
+import Search from 'navigation/elements/Search';
 import Toolbar from './component/Toolbar';
 
 // lazy import

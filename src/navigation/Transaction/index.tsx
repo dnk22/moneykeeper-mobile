@@ -4,7 +4,7 @@ import { TransactionParamList } from 'navigation/types';
 import { useCustomTheme } from 'resources/theme';
 
 // import route component
-import { Done, SelectTransactionType } from 'navigation/common';
+import { Done, SelectTransactionType } from 'navigation/elements';
 import AddTransactions from 'features/Transaction/AddTransaction';
 
 //set up routes

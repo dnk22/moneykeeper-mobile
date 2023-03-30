@@ -6,7 +6,7 @@ import HomeNavigation from './Home';
 import BankNavigation from './Bank';
 import AccountPicker from 'features/Transaction/AccountPicker';
 import TransactionCategoryNavigation from './TransactionCategory';
-import { Cancel } from './common';
+import { Cancel } from './elements';
 import { HEADER_TITLE } from 'resources/theme/constants';
 
 //set up routes

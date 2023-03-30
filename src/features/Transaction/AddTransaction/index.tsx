@@ -36,6 +36,7 @@ import {
 } from 'database/querying';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 import Collapsible from 'react-native-collapsible';
+import { Done } from 'navigation/elements';
 
 const defaultValues = {
   amount: 0,
@@ -70,6 +71,13 @@ function AddTransactions() {
   const { control, handleSubmit, getValues, setValue, watch } = useForm<TTransactions>({
     defaultValues,
   });
+
+  useEffect(() => {
+    // Use `setOptions` to update the button that submit form
+    navigation.setOptions({
+      headerRight: () => <Done title="Xong" onPress={handleSubmit(onSubmit)}></Done>,
+    });
+  }, [navigation]);
 
   useLayoutEffect(() => {
     if (params?.hideHeader) {
@@ -114,7 +122,7 @@ function AddTransactions() {
     }, [accountSelected]),
   );
 
-  // // // set default account when mode = add & accountId = null
+  // set default account when mode = add & accountId = null
   useFocusEffect(
     useCallback(() => {
       if (!params?.transactionId && !getValues('accountId')) {
@@ -158,13 +166,13 @@ function AddTransactions() {
 
   /** pure function */
   const setCategorySelected = async () => {
-    if (!watch('transactionsCategoryId')) return;
+    if (!watch('transactionsCategoryId')) return false;
     try {
       const res = await getTransactionCategoryById(watch('transactionsCategoryId'));
       if (!res) {
         setValue('transactionsCategoryId', '');
         setTransactionCategorySelected(undefined);
-        return;
+        return false;
       }
       if (
         transactionCategorySelected?.icon !== res.icon ||
