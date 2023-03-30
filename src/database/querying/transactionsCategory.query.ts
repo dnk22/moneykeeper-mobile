@@ -107,7 +107,6 @@ export const importDefaultTransactionCategory = async () => {
   }
 };
 /** update */
-
 export const updateTransactionCategory = async ({
   id,
   data,
@@ -126,18 +125,63 @@ export const updateTransactionCategory = async ({
     console.log(error, 'update err');
   }
 };
+
 /** delete */
+// export const deleteTransactionCategoryById = async (id: string) => {
+//   try {
+//     return await database.write(async () => {
+//       const res = await database.get<TransactionCategoryModel>(TRANSACTION_CATEGORY).find(id);
+//       const childRecords = await database
+//         .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
+//         .query(Q.where('parent_id', id))
+//         .fetch();
+//       await res.mask();
+//       await childRecords.
+
+//       return {
+//         success: true,
+//         message: 'Deleted Success',
+//       };
+//     });
+//   } catch (error) {
+//     console.log(error, 'delete transaction category err');
+//   }
+// };
+
 export const deleteTransactionCategoryById = async (id: string) => {
   try {
     return await database.write(async () => {
-      const res = await database.get<TransactionCategoryModel>(TRANSACTION_CATEGORY).find(id);
-      await res.markAsDeleted();
+      const transactionCategoryCollection =
+        database.get<TransactionCategoryModel>(TRANSACTION_CATEGORY);
+
+      // Find the parent record by id
+      const parentRecord = await transactionCategoryCollection.find(id);
+
+      // Find all child records by parent_id
+      const childRecords = await transactionCategoryCollection
+        .query(Q.where('parent_id', id))
+        .fetch();
+
+      // Delete all child records recursively
+      async function deleteChildRecords(records: TransactionCategoryModel[]) {
+        for (const record of records) {
+          await record.markAsDeleted();
+        }
+      }
+      await deleteChildRecords(childRecords);
+
+      // Delete the parent record
+      await parentRecord.markAsDeleted();
+
       return {
-        success: true,
-        message : 'Deleted Success'
+        status: true,
+        message: 'Deleted Success',
       };
     });
   } catch (error) {
-    console.log(error, 'delete transaction category err');
+    return {
+      status: false,
+      message: error,
+    };
   }
 };

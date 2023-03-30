@@ -95,13 +95,14 @@ function UpdateTransactionCategory() {
 
   const handleOnDeleteRecord = async () => {
     if (params?.transactionCategoryId) {
-      deleteTransactionCategoryById(params.transactionCategoryId).then(({ success }) => {
-        if (success) {
+      deleteTransactionCategoryById(params.transactionCategoryId).then(({ status }) => {
+        if (status) {
           navigation.goBack();
         }
       });
     }
   };
+
   const handleOnDeleteParent = () => {
     setValue('parentId', null);
     setParentGroup(undefined);
@@ -184,7 +185,7 @@ function UpdateTransactionCategory() {
               style={[styles.buttonDel, { backgroundColor: colors.surface }]}
               onPress={handleOnDeleteRecord}
             >
-              <RNText>Xóa</RNText>
+              <RNText color="red">Xóa</RNText>
             </TouchableHighlightComponent>
           )}
           <Submit onPress={handleSubmit(onHandleSubmit)} />

@@ -31,15 +31,11 @@ import { AddTransactionRouteProp } from 'navigation/types';
 import {
   addNewTransaction,
   getAccountById,
-  getAccountCountObserve,
   getFirstAccount,
   getTransactionCategoryById,
 } from 'database/querying';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
-import TransactionCategoryModel from 'database/models/transactionCategory.model';
-import { AccountModel } from 'database/models';
-import withObservables from '@nozbe/with-observables';
-import { Observable } from 'redux';
+import Collapsible from 'react-native-collapsible';
 
 const defaultValues = {
   amount: 0,
@@ -48,10 +44,8 @@ const defaultValues = {
   transactionsCategoryId: '',
   accountId: '',
 };
-type AddTransactionsProps = {
-  accountCount: Observable<number>;
-};
-function AddTransactions({ accountCount }: AddTransactionsProps) {
+
+function AddTransactions() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
   const { params } = useRoute<AddTransactionRouteProp>();
@@ -61,9 +55,11 @@ function AddTransactions({ accountCount }: AddTransactionsProps) {
 
   /** local state */
   const [transactionCategorySelected, setTransactionCategorySelected] = useState<
-    TransactionCategoryModel | undefined
-  >();
-  const [accountSelected, setTransactionAccountSelected] = useState<AccountModel | undefined>();
+    { icon: string; categoryName: string } | undefined
+  >(undefined);
+  const [accountSelected, setTransactionAccountSelected] = useState<
+    { accountLogo: string; accountName: string } | undefined
+  >(undefined);
   const [isShowFee, setIsShowFee] = useState<boolean>(false);
   const [isShowDetails, setIsShowDetails] = useState<boolean>(false);
   const [isDateTimeModalType, setIsDateTimeModalType] = useState<'date' | 'time' | undefined>(
@@ -95,10 +91,14 @@ function AddTransactions({ accountCount }: AddTransactionsProps) {
     }
   }, [params?.categoryId]);
 
+  useFocusEffect(
+    useCallback(() => {
+      setCategorySelected();
+    }, [transactionCategorySelected]),
+  );
+
   useEffect(() => {
-    if (getValues('transactionsCategoryId')) {
-      setCategorySelected(getValues('transactionsCategoryId'));
-    }
+    setCategorySelected();
   }, [watch('transactionsCategoryId')]);
 
   /** watch accountId */
@@ -110,16 +110,11 @@ function AddTransactions({ accountCount }: AddTransactionsProps) {
 
   useFocusEffect(
     useCallback(() => {
-      setAccountSelected(getValues('accountId')).then((res) => {
-        if (!res) {
-          setValue('accountId', '');
-          setTransactionAccountSelected(undefined);
-        }
-      });
-    }, []),
+      setAccountSelected();
+    }, [accountSelected]),
   );
 
-  // set default account when mode = add & accountId = null
+  // // // set default account when mode = add & accountId = null
   useFocusEffect(
     useCallback(() => {
       if (!params?.transactionId && !getValues('accountId')) {
@@ -129,15 +124,8 @@ function AddTransactions({ accountCount }: AddTransactionsProps) {
   );
 
   useEffect(() => {
-    setAccountSelected(getValues('accountId'));
+    setAccountSelected();
   }, [watch('accountId')]);
-
-  useEffect(() => {
-    if (!accountCount) {
-      setValue('accountId', '');
-      setTransactionAccountSelected(undefined);
-    }
-  }, [accountCount]);
 
   /** memoized function */
   const onToggleDateTimeModal = useCallback(
@@ -169,20 +157,48 @@ function AddTransactions({ accountCount }: AddTransactionsProps) {
   }, [watch('transactionsTypeId')]);
 
   /** pure function */
-  const setCategorySelected = async (id: string) => {
-    const res = await getTransactionCategoryById(id);
-    setTransactionCategorySelected(res);
+  const setCategorySelected = async () => {
+    if (!watch('transactionsCategoryId')) return;
+    try {
+      const res = await getTransactionCategoryById(watch('transactionsCategoryId'));
+      if (!res) {
+        setValue('transactionsCategoryId', '');
+        setTransactionCategorySelected(undefined);
+        return;
+      }
+      if (
+        transactionCategorySelected?.icon !== res.icon ||
+        transactionCategorySelected?.categoryName !== res.categoryName
+      ) {
+        setTransactionCategorySelected({
+          icon: res.icon,
+          categoryName: res.categoryName,
+        });
+      }
+    } catch (error) {
+      console.log(error, 'setCategorySelected error');
+      return false;
+    }
   };
 
-  const setAccountSelected = async (id: string) => {
-    if (!id) return false;
+  const setAccountSelected = async () => {
+    if (!watch('accountId')) return false;
     try {
-      const account = await getAccountById(id);
+      const account = await getAccountById(watch('accountId'));
       if (!account) {
+        setValue('accountId', '');
+        setTransactionAccountSelected(undefined);
         return false;
       }
-      setTransactionAccountSelected(account);
-      return true;
+      if (
+        accountSelected?.accountLogo !== account.accountLogo ||
+        accountSelected?.accountName !== account.accountName
+      ) {
+        setTransactionAccountSelected({
+          accountLogo: account.accountLogo,
+          accountName: account.accountName,
+        });
+      }
     } catch (error) {
       console.log(error, 'setAccountSelected error');
       return false;
@@ -228,6 +244,10 @@ function AddTransactions({ accountCount }: AddTransactionsProps) {
       screen: TRANSACTION_CATEGORY_LIST,
       params: { tabActive: categoryType },
     });
+  };
+
+  const handleOnShowDetail = () => {
+    setIsShowDetails(!isShowDetails);
   };
 
   const onSubmit = (data: TTransactions) => {
@@ -296,72 +316,68 @@ function AddTransactions({ accountCount }: AddTransactionsProps) {
             onSelect={handleOnSelectAccount}
           />
         </View>
-        {isShowDetails && (
-          <Animated.View entering={StretchInY}>
-            <View style={[styles.group, { backgroundColor: colors.surface }]}>
-              <View style={styles.itemGroup}>
-                <SvgIcon name="people" style={styles.icon} />
-                <View style={styles.groupContent}>
-                  <InputField
-                    name="pay_for"
-                    control={control}
-                    placeholder="Chi cho ai"
-                    style={styles.formInput}
-                    maxLength={50}
-                  />
-                </View>
-              </View>
-              <View style={styles.itemGroup}>
-                <SvgIcon name="map" style={styles.icon} />
-                <View style={styles.groupContent}>
-                  <InputField
-                    name="location"
-                    control={control}
-                    placeholder="Địa điểm"
-                    style={[styles.formInput, { width: '90%' }]}
-                    maxLength={50}
-                  />
-                  <SvgIcon name="location" size={18} style={styles.iconForward} />
-                </View>
-              </View>
-              <View style={styles.itemGroup}>
-                <SvgIcon name="camp" style={styles.icon} />
-                <View style={styles.groupContent}>
-                  <InputField
-                    name="event"
-                    control={control}
-                    placeholder="Chuyến đi / Sự kiện"
-                    style={styles.formInput}
-                    maxLength={50}
-                  />
-                </View>
+        <Collapsible collapsed={!isShowDetails}>
+          <View style={[styles.group, { backgroundColor: colors.surface }]}>
+            <View style={styles.itemGroup}>
+              <SvgIcon name="people" style={styles.icon} />
+              <View style={styles.groupContent}>
+                <InputField
+                  name="pay_for"
+                  control={control}
+                  placeholder="Chi cho ai"
+                  style={styles.formInput}
+                  maxLength={50}
+                />
               </View>
             </View>
-            <View style={[styles.group, { backgroundColor: colors.surface }]}>
-              <View style={[styles.itemGroup, styles.itemGroupBetween]}>
-                <RNText>Phí</RNText>
-                <Switch value={isShowFee} onValueChange={handleOnFeeChange} />
+            <View style={styles.itemGroup}>
+              <SvgIcon name="map" style={styles.icon} />
+              <View style={styles.groupContent}>
+                <InputField
+                  name="location"
+                  control={control}
+                  placeholder="Địa điểm"
+                  style={[styles.formInput, { width: '90%' }]}
+                  maxLength={50}
+                />
+                <SvgIcon name="location" size={18} style={styles.iconForward} />
               </View>
-              {isShowFee && (
-                <Animated.View entering={StretchInY}>
-                  <InputCalculator name="fee" control={control} />
-                </Animated.View>
-              )}
             </View>
-            <View style={[styles.group, { backgroundColor: colors.surface }]}>
-              <View style={[styles.itemGroup, styles.itemGroupBetween]}>
-                <RNText>Không tính vào báo cáo</RNText>
-                <SwitchField name="is_not_add_report" control={control} />
+            <View style={styles.itemGroup}>
+              <SvgIcon name="camp" style={styles.icon} />
+              <View style={styles.groupContent}>
+                <InputField
+                  name="event"
+                  control={control}
+                  placeholder="Chuyến đi / Sự kiện"
+                  style={styles.formInput}
+                  maxLength={50}
+                />
               </View>
-              <RNText style={styles.subText}>
-                Ghi chép này sẽ không thống kê vào các báo cáo.
-              </RNText>
             </View>
-          </Animated.View>
-        )}
+          </View>
+          <View style={[styles.group, { backgroundColor: colors.surface }]}>
+            <View style={[styles.itemGroup, styles.itemGroupBetween]}>
+              <RNText>Phí</RNText>
+              <Switch value={isShowFee} onValueChange={handleOnFeeChange} />
+            </View>
+            {isShowFee && (
+              <Animated.View entering={StretchInY}>
+                <InputCalculator name="fee" control={control} />
+              </Animated.View>
+            )}
+          </View>
+          <View style={[styles.group, { backgroundColor: colors.surface }]}>
+            <View style={[styles.itemGroup, styles.itemGroupBetween]}>
+              <RNText>Không tính vào báo cáo</RNText>
+              <SwitchField name="is_not_add_report" control={control} />
+            </View>
+            <RNText style={styles.subText}>Ghi chép này sẽ không thống kê vào các báo cáo.</RNText>
+          </View>
+        </Collapsible>
         <PressableHaptic
           style={[styles.group, styles.expandGroup, { backgroundColor: colors.surface }]}
-          onPress={() => setIsShowDetails(!isShowDetails)}
+          onPress={handleOnShowDetail}
         >
           <RNText>{isShowDetails ? 'Ẩn chi tiết' : 'Hiển thị chi tiết'}</RNText>
           <SvgIcon name={isShowDetails ? 'arrowUp' : 'arrowDown'} size={16} />
@@ -372,6 +388,4 @@ function AddTransactions({ accountCount }: AddTransactionsProps) {
   );
 }
 
-export default withObservables(['accountsObservables'], () => ({
-  accountCount: getAccountCountObserve(true),
-}))<any>(AddTransactions);
+export default AddTransactions;

@@ -22,6 +22,7 @@ function ShakeAnimation({ isActiveAnim = false, children }: ShakeAnimationProps)
       Animated.sequence([
         Animated.timing(shakeAnim.current, { toValue: 0.9, duration: 300, useNativeDriver: true }),
         Animated.timing(shakeAnim.current, { toValue: 1.1, duration: 300, useNativeDriver: true }),
+        Animated.timing(shakeAnim.current, { toValue: 1, duration: 300, useNativeDriver: true }),
       ]),
     );
 
