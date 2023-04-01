@@ -7,6 +7,7 @@ export default class TransactionCategoryModel extends Model {
 
   @text('category_name') categoryName!: string;
   @field('category_type') categoryType!: number;
+  @field('value') value!: string;
   @field('parent_id') parentId!: string;
   @text('description') description!: string;
   @field('icon') icon!: string;

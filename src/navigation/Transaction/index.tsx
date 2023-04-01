@@ -4,7 +4,7 @@ import { TransactionParamList } from 'navigation/types';
 import { useCustomTheme } from 'resources/theme';
 
 // import route component
-import { Done, SelectTransactionType } from 'navigation/elements';
+import { SelectTransactionType } from 'navigation/elements';
 import AddTransactions from 'features/Transaction/AddTransaction';
 
 //set up routes
@@ -23,7 +23,6 @@ function TransactionNavigation() {
             backgroundColor: colors.primary,
           },
           headerTitle: () => <SelectTransactionType />,
-          headerRight: () => <Done />,
         }}
       />
     </TransactionStack.Navigator>

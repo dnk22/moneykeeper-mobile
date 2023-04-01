@@ -26,7 +26,6 @@ function TransactionCategoryTapBar({ navigation }) {
   const { colors } = useCustomTheme();
   const isUpdateMode = useAppSelector((state) => selectUpdateModeStatus(state));
 
-
   const tabBarOptions = {
     tabBarAllowFontScaling: false,
     tabBarPressOpacity: 0.7,
@@ -36,33 +35,8 @@ function TransactionCategoryTapBar({ navigation }) {
   };
 
   useEffect(() => {
-    switch (route.params.tabActive) {
-      case TRANSACTION_CATEGORY_TYPE.EXPENSE:
-        navigation.navigate(EXPENSE_CATEGORY);
-        break;
-      case TRANSACTION_CATEGORY_TYPE.INCOME:
-        navigation.navigate(INCOME_CATEGORY);
-        break;
-      case TRANSACTION_CATEGORY_TYPE.LEND_BORROW:
-        navigation.navigate(LEND_BORROW);
-        break;
-      default:
-        break;
-    }
-  }, []);
-
-  useEffect(() => {
     updateTabActive(route);
   }, [navigation, route]);
-
-  const focusedRoute = useCallback(
-    (route: any) => getFocusedRouteNameFromRoute(route) ?? EXPENSE_CATEGORY,
-    [route],
-  );
-
-  const handleOnNavigateToScreenAdd = () => {
-    navigation.navigate(UPDATE_TRANSACTION_CATEGORY);
-  };
 
   function updateTabActive(route: any) {
     const routeName = focusedRoute(route);
@@ -81,6 +55,15 @@ function TransactionCategoryTapBar({ navigation }) {
         break;
     }
   }
+
+  const focusedRoute = useCallback(
+    (route: any) => getFocusedRouteNameFromRoute(route) ?? EXPENSE_CATEGORY,
+    [route],
+  );
+
+  const handleOnNavigateToScreenAdd = () => {
+    navigation.navigate(UPDATE_TRANSACTION_CATEGORY);
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface }}>

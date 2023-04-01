@@ -15,7 +15,7 @@ export const transactionsSlice = createSlice({
   name: 'transactions',
   initialState,
   reducers: {
-    setTransactionTypeSelected(state, { payload }: PayloadAction<string>) {
+    setTransactionTypeIdSelected(state, { payload }: PayloadAction<string>) {
       state.transactionTypeIdSelected = payload;
     },
     setTransactionCategorySelected(state, { payload }: PayloadAction<TTransactionsCategory>) {
@@ -32,7 +32,7 @@ export const transactionsSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
-  setTransactionTypeSelected,
+  setTransactionTypeIdSelected,
   setTransactionAccountSelected,
   setTransactionCategorySelected,
 } = transactionsSlice.actions;

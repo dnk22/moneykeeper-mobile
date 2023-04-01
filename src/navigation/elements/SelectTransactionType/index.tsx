@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { RNText, PressableHaptic } from 'components/index';
 import { TTransactionType } from 'database/types';
 import { useAppDispatch, useAppSelector } from 'store/index';
-import TransactionTypePicker from 'features/Transaction/TransactionTypePicker';
+import TransactionTypePicker from './TransactionTypePicker';
 import {
   selectTransactionType,
   selectTransactionTypeSelected,
 } from 'store/transactions/transactions.selector';
-import { setTransactionTypeSelected } from 'store/transactions/transactions.slice';
+import { setTransactionTypeIdSelected } from 'store/transactions/transactions.slice';
 import styles from './styles';
 
 function SelectTransactionType() {
@@ -21,7 +21,7 @@ function SelectTransactionType() {
   };
 
   const onHandleTransactionTypeItemPress = (item: TTransactionType) => {
-    dispatch(setTransactionTypeSelected(item?.id));
+    dispatch(setTransactionTypeIdSelected(item?.id));
     setIsShowTransactionTypeModal(false);
   };
 

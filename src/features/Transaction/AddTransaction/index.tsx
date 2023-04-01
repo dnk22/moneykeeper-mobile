@@ -25,7 +25,7 @@ import {
   TRANSACTION_CATEGORY,
   TRANSACTION_CATEGORY_LIST,
 } from 'navigation/constants';
-import { useAppSelector } from 'store/index';
+import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectTransactionTypeSelected } from 'store/transactions/transactions.selector';
 import { AddTransactionRouteProp } from 'navigation/types';
 import {
@@ -37,6 +37,12 @@ import {
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 import Collapsible from 'react-native-collapsible';
 import { Done } from 'navigation/elements';
+import { setTransactionTypeIdSelected } from 'store/transactions/transactions.slice';
+import { isEqual } from 'lodash';
+import { LEND } from 'utils/constant';
+import { EXPENSE_CATEGORY } from 'navigation/constants';
+import { LEND_BORROW } from 'navigation/constants';
+import { INCOME_CATEGORY } from 'navigation/constants';
 
 const defaultValues = {
   amount: 0,
@@ -50,13 +56,14 @@ function AddTransactions() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
   const { params } = useRoute<AddTransactionRouteProp>();
-
+  const dispatch = useAppDispatch();
   /** get redux state */
   const transactionTypeSelected = useAppSelector((state) => selectTransactionTypeSelected(state));
 
   /** local state */
   const [transactionCategorySelected, setTransactionCategorySelected] = useState<
-    { icon: string; categoryName: string } | undefined
+    | { icon: string; categoryName: string; categoryType: TRANSACTION_CATEGORY_TYPE; value: string }
+    | undefined
   >(undefined);
   const [accountSelected, setTransactionAccountSelected] = useState<
     { accountLogo: string; accountName: string } | undefined
@@ -78,6 +85,12 @@ function AddTransactions() {
       headerRight: () => <Done title="Xong" onPress={handleSubmit(onSubmit)}></Done>,
     });
   }, [navigation]);
+
+  useEffect(() => {
+    if (transactionCategorySelected?.categoryType) {
+      // setTransactionTypeByCategory(transactionCategorySelected.categoryType);
+    }
+  }, [transactionCategorySelected?.categoryType]);
 
   useLayoutEffect(() => {
     if (params?.hideHeader) {
@@ -174,14 +187,14 @@ function AddTransactions() {
         setTransactionCategorySelected(undefined);
         return false;
       }
-      if (
-        transactionCategorySelected?.icon !== res.icon ||
-        transactionCategorySelected?.categoryName !== res.categoryName
-      ) {
-        setTransactionCategorySelected({
-          icon: res.icon,
-          categoryName: res.categoryName,
-        });
+      const transactionCategory = {
+        icon: res.icon,
+        categoryType: res.categoryType,
+        categoryName: res.categoryName,
+        value: res.value,
+      };
+      if (!isEqual(transactionCategory, transactionCategorySelected)) {
+        setTransactionCategorySelected(transactionCategory);
       }
     } catch (error) {
       console.log(error, 'setCategorySelected error');
@@ -198,14 +211,12 @@ function AddTransactions() {
         setTransactionAccountSelected(undefined);
         return false;
       }
-      if (
-        accountSelected?.accountLogo !== account.accountLogo ||
-        accountSelected?.accountName !== account.accountName
-      ) {
-        setTransactionAccountSelected({
-          accountLogo: account.accountLogo,
-          accountName: account.accountName,
-        });
+      const newAccountState = {
+        accountLogo: account.accountLogo,
+        accountName: account.accountName,
+      };
+      if (!isEqual(newAccountState, accountSelected)) {
+        setTransactionAccountSelected(newAccountState);
       }
     } catch (error) {
       console.log(error, 'setAccountSelected error');
@@ -224,6 +235,24 @@ function AddTransactions() {
     }
   };
 
+  const setTransactionTypeByCategory = (category: TRANSACTION_CATEGORY_TYPE) => {
+    let transactionTypeId = getValues('transactionsTypeId');
+    switch (category) {
+      // case TRANSACTION_CATEGORY_TYPE.EXPENSE:
+      //   break;
+      // case TRANSACTION_CATEGORY_TYPE.INCOME:
+      //   transactionTypeId = category.toString();
+      //   break;
+      case TRANSACTION_CATEGORY_TYPE.LEND_BORROW:
+        transactionTypeId = getValues('transactionsCategoryId');
+        break;
+      default:
+        transactionTypeId = category.toString();
+        break;
+    }
+    dispatch(setTransactionTypeIdSelected(transactionTypeId));
+  };
+
   const handleOnSelectAccount = () => {
     navigation.navigate(ACCOUNT_PICKER, { accountSelectedId: getValues('accountId') });
   };
@@ -236,21 +265,23 @@ function AddTransactions() {
   };
 
   const handleOnSelectTransactionCategory = () => {
-    let categoryType = TRANSACTION_CATEGORY_TYPE.EXPENSE;
+    let categoryType: any = EXPENSE_CATEGORY;
     switch (getValues('transactionsTypeId')) {
       case '1':
-        categoryType = TRANSACTION_CATEGORY_TYPE.INCOME;
+        categoryType = INCOME_CATEGORY;
         break;
       case '2':
       case '3':
-        categoryType = TRANSACTION_CATEGORY_TYPE.LEND_BORROW;
+        categoryType = LEND_BORROW;
         break;
       default:
         break;
     }
     navigation.navigate(TRANSACTION_CATEGORY, {
       screen: TRANSACTION_CATEGORY_LIST,
-      params: { tabActive: categoryType },
+      params: {
+        screen: categoryType,
+      },
     });
   };
 

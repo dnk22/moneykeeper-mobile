@@ -1,11 +1,6 @@
 // model/schema.js
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
-import {
-  ACCOUNTS,
-  BANKS,
-  TRANSACTIONS,
-  TRANSACTION_CATEGORY,
-} from 'database/constants';
+import { ACCOUNTS, BANKS, TRANSACTIONS, TRANSACTION_CATEGORY } from 'database/constants';
 
 export default appSchema({
   version: 1,
@@ -79,6 +74,7 @@ export default appSchema({
       columns: [
         { name: 'category_name', type: 'string' },
         { name: 'category_type', type: 'number' },
+        { name: 'value', type: 'string', isOptional: true },
         { name: 'parent_id', type: 'string', isOptional: true },
         { name: 'description', type: 'string', isOptional: true },
         { name: 'icon', type: 'string', isOptional: true },

@@ -30,7 +30,7 @@ const App = () => {
 
   useEffect(() => {
     // prepareBankData();
-    // prepareTransactionCategoryData();
+    prepareTransactionCategoryData();
   }, []);
 
   async function prepareBankData() {

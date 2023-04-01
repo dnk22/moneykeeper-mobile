@@ -26,6 +26,7 @@ import {
   INCOME_CATEGORY,
   LEND_BORROW,
 } from './constants';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 /** root stack navigation */
 export type RootStackParamList = {
@@ -47,7 +48,7 @@ export type HomeStackParamList = {
   [REPORT]: undefined;
   [SETTINGS]: undefined;
 };
-export type HomeStackParamListProps<T extends keyof HomeStackParamList> = NativeStackScreenProps<
+export type HomeStackParamListProps<T extends keyof HomeStackParamList> = BottomTabScreenProps<
   HomeStackParamList,
   T
 >;
@@ -78,9 +79,7 @@ export type TransactionParamListProps<T extends keyof TransactionParamList> =
 
 /** transaction category stack navigation */
 export type TransactionCategoryParams = {
-  [TRANSACTION_CATEGORY_LIST]: {
-    tabActive: TRANSACTION_CATEGORY_TYPE;
-  };
+  [TRANSACTION_CATEGORY_LIST]: NavigatorScreenParams<TransactionCategoryListParams>;
   [UPDATE_TRANSACTION_CATEGORY]: {
     icon?: string;
     transactionCategoryId?: string;

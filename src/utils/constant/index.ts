@@ -5,3 +5,8 @@ export const logBoxIgnore = [
 ];
 
 export const CREATE_MODE = 'create';
+
+export const LEND = 'lend';
+export const COLLECT_DEBTS = 'collectDebts';
+export const BORROW = 'borrow';
+export const REPAYMENT = 'repayment';

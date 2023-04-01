@@ -1,5 +1,6 @@
 import { TTransactionsCategory } from 'database/types/index';
 import { TAccountType } from 'database/types';
+import { BORROW, COLLECT_DEBTS, LEND, REPAYMENT } from 'utils/constant';
 
 export enum TRANSACTION_CATEGORY_TYPE {
   EXPENSE,
@@ -50,31 +51,37 @@ export const TransactionTypeData = [
   {
     id: '0',
     name: 'Chi Tiền',
+    value: 'expense',
     icon: 'expense',
   },
   {
     id: '1',
     name: 'Thu tiền',
+    value: 'income',
     icon: 'income',
   },
   {
     id: '2',
     name: 'Cho vay',
+    value: 'lend',
     icon: 'lend',
   },
   {
     id: '3',
     name: 'Đi vay',
+    value: 'borrowed',
     icon: 'borrowed',
   },
   {
     id: '4',
     name: 'Chuyển khoản',
+    value: 'transfer',
     icon: 'transfer',
   },
   {
     id: '5',
     name: 'Cân bằng số dư',
+    value: 'adjustment',
     icon: 'adjustment',
   },
 ];
@@ -82,19 +89,21 @@ export const TransactionTypeData = [
 export const TransactionCategoryData: TTransactionsCategory[] = [
   {
     id: '1',
-    categoryName: 'Cho vay',
+    categoryName: 'Trả nợ',
     categoryType: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
-    parentId: undefined,
+    value: REPAYMENT,
+    parentId: null,
     description: '',
     isSystem: true,
-    icon: 'lend',
+    icon: 'repayment',
     useCount: 0,
   },
   {
     id: '2',
     categoryName: 'Thu nợ',
     categoryType: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
-    parentId: undefined,
+    value: COLLECT_DEBTS,
+    parentId: null,
     description: '',
     isSystem: true,
     icon: 'collectDebts',
@@ -104,7 +113,8 @@ export const TransactionCategoryData: TTransactionsCategory[] = [
     id: '3',
     categoryName: 'Đi vay',
     categoryType: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
-    parentId: undefined,
+    value: BORROW,
+    parentId: null,
     description: '',
     isSystem: true,
     icon: 'borrow',
@@ -112,12 +122,13 @@ export const TransactionCategoryData: TTransactionsCategory[] = [
   },
   {
     id: '4',
-    categoryName: 'Trả nợ',
+    categoryName: 'Cho vay',
     categoryType: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
-    parentId: undefined,
+    value: LEND,
+    parentId: null,
     description: '',
     isSystem: true,
-    icon: 'repayment',
+    icon: 'lend',
     useCount: 0,
   },
 ];
