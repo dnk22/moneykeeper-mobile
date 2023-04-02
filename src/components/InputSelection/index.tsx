@@ -6,6 +6,8 @@ import SvgIcon from 'components/SvgIcon';
 import styles from './styles';
 import { IconProps } from 'components/SvgIcon/const';
 import PressableHaptic from 'components/PressableHaptic';
+import { Control, RegisterOptions } from 'react-hook-form';
+import Form from './FORM';
 
 type SelectedProps = {
   title?: string;
@@ -14,6 +16,9 @@ type SelectedProps = {
   value?: string;
   onDelete?: () => void;
   required?: boolean;
+  name?: string;
+  control?: Control<any, any>;
+  error?: any;
 };
 
 function Selected({
@@ -23,28 +28,41 @@ function Selected({
   value,
   onDelete,
   required = false,
+  name,
+  control,
+  error,
 }: SelectedProps) {
+  const errorStyle = error ? 'red' : '';
   return (
-    <PressableHaptic style={styles.itemGroup} onPress={onSelect}>
-      <SvgIcon name={icon} style={{ transform: [{ scale: 1.1 }] }} />
-      <View style={styles.groupContent}>
-        {value && !required ? (
-          <View style={styles.value}>
-            <RNText fontSize={16} numberOfLines={1} style={{ maxWidth: '90%' }}>
-              {value}
+    <>
+      {name && <Form name={name} control={control} rules={{ required: true }} />}
+      <PressableHaptic style={[styles.itemGroup]} onPress={onSelect}>
+        <SvgIcon name={icon} style={{ transform: [{ scale: 1.1 }] }} />
+        <View style={styles.groupContent}>
+          {value && !required ? (
+            <View style={styles.value}>
+              <RNText fontSize={16} numberOfLines={1} style={{ maxWidth: '90%' }}>
+                {value}
+              </RNText>
+              <Pressable onPress={onDelete}>
+                <SvgIcon name="closeCircle" size={20} color="gray" />
+              </Pressable>
+            </View>
+          ) : (
+            <RNText
+              fontSize={16}
+              style={{ maxWidth: '90%', fontWeight: error ? 'bold' : 'normal' }}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              color={errorStyle}
+            >
+              {value || title}
             </RNText>
-            <Pressable onPress={onDelete}>
-              <SvgIcon name="closeCircle" size={20} color="gray" />
-            </Pressable>
-          </View>
-        ) : (
-          <RNText fontSize={16} style={{ maxWidth: '90%' }} ellipsizeMode="tail" numberOfLines={1}>
-            {value || title}
-          </RNText>
-        )}
-        <SvgIcon name="forward" preset="forwardLink" style={styles.iconForward} />
-      </View>
-    </PressableHaptic>
+          )}
+          <SvgIcon name="forward" preset="forwardLink" style={styles.iconForward} />
+        </View>
+      </PressableHaptic>
+    </>
   );
 }
 

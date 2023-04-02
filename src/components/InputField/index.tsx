@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import { StyleProp, TextInput, TextInputProps, TextStyle } from 'react-native';
 import { Control, RegisterOptions, useController } from 'react-hook-form';
 import stylesInline from './styles';
@@ -30,8 +30,6 @@ const InputField = React.forwardRef<any, any>(function InputField(
     control,
     rules,
   });
-
-  useEffect(() => {}, [error?.type]);
 
   return (
     <TextInput
