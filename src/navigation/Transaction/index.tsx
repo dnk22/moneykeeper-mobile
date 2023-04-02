@@ -12,6 +12,9 @@ const TransactionStack = createNativeStackNavigator<TransactionParamList>();
 
 function TransactionNavigation() {
   const { colors } = useCustomTheme();
+  console.log(
+    'run'
+  );
 
   return (
     <TransactionStack.Navigator initialRouteName={ADD_TRANSACTION}>

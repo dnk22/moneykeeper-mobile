@@ -1,5 +1,5 @@
-import React, { memo, useState } from 'react';
-import { Image, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import {
   CheckboxComponent,
   FlatListComponent,
@@ -9,33 +9,35 @@ import {
   TouchableHighlightComponent,
 } from 'components/index';
 import { IModalComponentProps } from 'components/Modal';
-import isEqual from 'react-fast-compare';
 import styles from './style';
 import { TTransactionType } from 'database/types/index';
+import { TRANSACTION_TYPE } from 'utils/constant';
 
 interface TransactionTypePickerProps extends IModalComponentProps {
   data: TTransactionType[];
-  onPressItem?: (item: TTransactionType) => void;
-  isTypeSelected?: string;
+  onPressItem: (item: TTransactionType) => void;
+  isTypeSelected?: TRANSACTION_TYPE;
 }
 
 function TransactionTypePicker({
   data,
-  isTypeSelected = '',
+  isTypeSelected = TRANSACTION_TYPE.EXPENSE,
   onPressItem,
   isVisible,
   onToggleModal,
 }: TransactionTypePickerProps) {
-  const [isSelected, setIsSelected] = useState(isTypeSelected);
+  const [isSelected, setIsSelected] = useState<TRANSACTION_TYPE>(isTypeSelected);
 
-  const currentSelected = (itemId: string) => isSelected === itemId;
+  useEffect(() => {
+    setIsSelected(isTypeSelected);
+  }, [isTypeSelected]);
+
+  const currentSelected = (itemId: TRANSACTION_TYPE) => isSelected === itemId;
 
   function renderItem({ item }: { item: TTransactionType }) {
     const onPress = () => {
       setIsSelected(item.id);
-      if (onPressItem) {
-        onPressItem(item);
-      }
+      onPressItem(item);
     };
 
     return (
@@ -69,4 +71,4 @@ function TransactionTypePicker({
   );
 }
 
-export default memo(TransactionTypePicker, isEqual);
+export default TransactionTypePicker;

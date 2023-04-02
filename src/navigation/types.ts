@@ -1,6 +1,5 @@
 import { NavigatorScreenParams, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 import {
   HOME,
   ADD_ACCOUNT,
@@ -27,6 +26,7 @@ import {
   LEND_BORROW,
 } from './constants';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 
 /** root stack navigation */
 export type RootStackParamList = {

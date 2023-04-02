@@ -2,7 +2,6 @@ import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { InputSearch, VirtualizedListComponent } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 import { getTransactionCategoryParentObserve } from 'database/querying';
 import withObservables from '@nozbe/with-observables';
 import { TTransactionsCategory } from 'database/types';
@@ -14,6 +13,7 @@ import CategoryGroupItem from '../CategoryGroupItem';
 import Recent from './Recent';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
+import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 
 const CategoryGroupItemObserve = withObservables(['item'], ({ item }) => ({
   item: item.observe(),

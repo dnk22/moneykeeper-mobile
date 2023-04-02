@@ -1,7 +1,7 @@
 import { TTransactionsCategory } from 'database/types';
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
+import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 
 type transactionCategoryProps = {
   isTabSelected: TRANSACTION_CATEGORY_TYPE;

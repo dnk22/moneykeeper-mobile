@@ -2,7 +2,8 @@ import { database } from 'database/index';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
 import { TRANSACTION_CATEGORY } from 'database/constants';
 import { TTransactionsCategory } from 'database/types';
-import { TransactionCategoryData, TRANSACTION_CATEGORY_TYPE } from 'utils/data';
+import { TransactionCategoryData } from 'utils/data';
+import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 import { Q } from '@nozbe/watermelondb';
 
 /** observe */
@@ -94,6 +95,7 @@ export const importDefaultTransactionCategory = async () => {
         await database.get<TransactionCategoryModel>(TRANSACTION_CATEGORY).create((tCategory) => {
           tCategory.categoryName = record.categoryName;
           tCategory.categoryType = record.categoryType;
+          tCategory.value = record.value;
           tCategory.parentId = record.parentId;
           tCategory.description = record.description;
           tCategory.isSystem = record.isSystem;

@@ -11,12 +11,12 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import styles from '../styles';
 import { useCustomTheme } from 'resources/theme';
 import { getFocusedRouteNameFromRoute, useRoute } from '@react-navigation/native';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { updateTabView } from 'store/transactionCategory/transactionCategory.slice';
 import { TransactionCategoryListParams, TransactionCategoryListProp } from 'navigation/types';
 import HOCTransactionCategory from './HOC';
 import { selectUpdateModeStatus } from 'store/transactionCategory/transactionCategory.selector';
+import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 
 const TabBar = createMaterialTopTabNavigator<TransactionCategoryListParams>();
 

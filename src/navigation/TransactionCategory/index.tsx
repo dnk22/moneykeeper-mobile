@@ -15,7 +15,7 @@ import ParentList from 'features/TransactionCategory/ParentList';
 import IconSelect from 'features/TransactionCategory/IconSelect';
 import { useAppSelector } from 'store/index';
 import { selectTabActive } from 'store/transactionCategory/transactionCategory.selector';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
+import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 
 //set up routes
 const TransactionCategoryStack = createNativeStackNavigator<TransactionCategoryParams>();

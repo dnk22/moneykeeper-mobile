@@ -34,19 +34,23 @@ import {
   getFirstAccount,
   getTransactionCategoryById,
 } from 'database/querying';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
 import Collapsible from 'react-native-collapsible';
 import { Done } from 'navigation/elements';
 import { setTransactionTypeIdSelected } from 'store/transactions/transactions.slice';
 import { isEqual } from 'lodash';
-import { LEND } from 'utils/constant';
+import {
+  BORROW,
+  LEND,
+  MAP_LEND_BORROW,
+  TRANSACTION_CATEGORY_TYPE,
+  TRANSACTION_TYPE,
+} from 'utils/constant';
 import { EXPENSE_CATEGORY } from 'navigation/constants';
 import { LEND_BORROW } from 'navigation/constants';
 import { INCOME_CATEGORY } from 'navigation/constants';
 
 const defaultValues = {
   amount: 0,
-  transactionsTypeId: '1',
   dateTimeAt: new Date(),
   transactionsCategoryId: '',
   accountId: '',
@@ -58,7 +62,7 @@ function AddTransactions() {
   const { params } = useRoute<AddTransactionRouteProp>();
   const dispatch = useAppDispatch();
   /** get redux state */
-  const transactionTypeSelected = useAppSelector((state) => selectTransactionTypeSelected(state));
+  const transactionTypeIdSelected = useAppSelector((state) => selectTransactionTypeSelected(state));
 
   /** local state */
   const [transactionCategorySelected, setTransactionCategorySelected] = useState<
@@ -75,22 +79,16 @@ function AddTransactions() {
   );
 
   /** setup form */
-  const { control, handleSubmit, getValues, setValue, watch } = useForm<TTransactions>({
+  const {
+    control,
+    handleSubmit,
+    getValues,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<TTransactions>({
     defaultValues,
   });
-
-  useEffect(() => {
-    // Use `setOptions` to update the button that submit form
-    navigation.setOptions({
-      headerRight: () => <Done title="Xong" onPress={handleSubmit(onSubmit)}></Done>,
-    });
-  }, [navigation]);
-
-  useEffect(() => {
-    if (transactionCategorySelected?.categoryType) {
-      // setTransactionTypeByCategory(transactionCategorySelected.categoryType);
-    }
-  }, [transactionCategorySelected?.categoryType]);
 
   useLayoutEffect(() => {
     if (params?.hideHeader) {
@@ -100,10 +98,17 @@ function AddTransactions() {
     }
   }, [params?.hideHeader]);
 
+  useEffect(() => {
+    // Use `setOptions` to update the button that submit form
+    navigation.setOptions({
+      headerRight: () => <Done title="Xong" onPress={handleSubmit(onSubmit)}></Done>,
+    });
+  }, []);
+
   /** watch transactionsTypeId from redux store and setValue to form */
   useEffect(() => {
-    setValue('transactionsTypeId', transactionTypeSelected);
-  }, [transactionTypeSelected]);
+    setTransactionCategory();
+  }, [transactionTypeIdSelected]);
 
   /** get transaction category selected data */
   useEffect(() => {
@@ -111,6 +116,11 @@ function AddTransactions() {
       setValue('transactionsCategoryId', params.categoryId);
     }
   }, [params?.categoryId]);
+
+  /** reset transaction type by transaction category  */
+  useEffect(() => {
+    resetTransactionTypeByCategory();
+  }, [transactionCategorySelected]);
 
   useFocusEffect(
     useCallback(() => {
@@ -179,12 +189,11 @@ function AddTransactions() {
 
   /** pure function */
   const setCategorySelected = async () => {
-    if (!watch('transactionsCategoryId')) return false;
+    if (!getValues('transactionsCategoryId')) return false;
     try {
-      const res = await getTransactionCategoryById(watch('transactionsCategoryId'));
+      const res = await getTransactionCategoryById(getValues('transactionsCategoryId'));
       if (!res) {
-        setValue('transactionsCategoryId', '');
-        setTransactionCategorySelected(undefined);
+        resetTransactionCategory();
         return false;
       }
       const transactionCategory = {
@@ -235,19 +244,21 @@ function AddTransactions() {
     }
   };
 
-  const setTransactionTypeByCategory = (category: TRANSACTION_CATEGORY_TYPE) => {
+  const resetTransactionTypeByCategory = () => {
+    if (!transactionCategorySelected) return;
     let transactionTypeId = getValues('transactionsTypeId');
-    switch (category) {
-      // case TRANSACTION_CATEGORY_TYPE.EXPENSE:
-      //   break;
-      // case TRANSACTION_CATEGORY_TYPE.INCOME:
-      //   transactionTypeId = category.toString();
-      //   break;
+    const categoryType: any = transactionCategorySelected?.categoryType;
+    switch (categoryType) {
+      case TRANSACTION_CATEGORY_TYPE.EXPENSE:
+        transactionTypeId = TRANSACTION_TYPE.EXPENSE;
+        break;
+      case TRANSACTION_CATEGORY_TYPE.INCOME:
+        transactionTypeId = TRANSACTION_TYPE.INCOME;
+        break;
       case TRANSACTION_CATEGORY_TYPE.LEND_BORROW:
-        transactionTypeId = getValues('transactionsCategoryId');
+        transactionTypeId = MAP_LEND_BORROW[transactionCategorySelected.value];
         break;
       default:
-        transactionTypeId = category.toString();
         break;
     }
     dispatch(setTransactionTypeIdSelected(transactionTypeId));
@@ -267,15 +278,18 @@ function AddTransactions() {
   const handleOnSelectTransactionCategory = () => {
     let categoryType: any = EXPENSE_CATEGORY;
     switch (getValues('transactionsTypeId')) {
-      case '1':
+      case TRANSACTION_TYPE.INCOME:
         categoryType = INCOME_CATEGORY;
         break;
-      case '2':
-      case '3':
+      case TRANSACTION_TYPE.LEND:
+      case TRANSACTION_TYPE.BORROW:
         categoryType = LEND_BORROW;
         break;
       default:
         break;
+    }
+    if (transactionCategorySelected?.value) {
+      categoryType = LEND_BORROW;
     }
     navigation.navigate(TRANSACTION_CATEGORY, {
       screen: TRANSACTION_CATEGORY_LIST,
@@ -287,6 +301,18 @@ function AddTransactions() {
 
   const handleOnShowDetail = () => {
     setIsShowDetails(!isShowDetails);
+  };
+
+  const setTransactionCategory = () => {
+    if (transactionTypeIdSelected !== getValues('transactionsTypeId')) {
+      resetTransactionCategory();
+    }
+    setValue('transactionsTypeId', transactionTypeIdSelected);
+  };
+
+  const resetTransactionCategory = () => {
+    setValue('transactionsCategoryId', '');
+    setTransactionCategorySelected(undefined);
   };
 
   const onSubmit = (data: TTransactions) => {
@@ -316,6 +342,9 @@ function AddTransactions() {
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <InputSelection
             required
+            name="transactionsCategoryId"
+            control={control}
+            error={errors.transactionsCategoryId}
             icon={transactionCategorySelected?.icon}
             title="Chọn danh mục"
             value={transactionCategorySelected?.categoryName}
@@ -352,6 +381,9 @@ function AddTransactions() {
             icon={accountSelected?.accountLogo}
             value={accountSelected?.accountName}
             title="Chọn tài khoản"
+            name="accountId"
+            control={control}
+            error={errors.accountId}
             onSelect={handleOnSelectAccount}
           />
         </View>

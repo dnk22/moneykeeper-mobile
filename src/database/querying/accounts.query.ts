@@ -41,7 +41,6 @@ export const getAccountById = async (id: string) => {
     });
   } catch (error) {
     console.log(error, 'read by id err');
-    return false;
   }
 };
 

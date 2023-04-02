@@ -1,12 +1,46 @@
 import { TTransactionsCategory } from 'database/types/index';
 import { TAccountType } from 'database/types';
-import { BORROW, COLLECT_DEBTS, LEND, REPAYMENT } from 'utils/constant';
+import {
+  BORROW,
+  COLLECT_DEBTS,
+  LEND,
+  REPAYMENT,
+  TRANSACTION_CATEGORY_TYPE,
+  TRANSACTION_TYPE,
+} from 'utils/constant';
 
-export enum TRANSACTION_CATEGORY_TYPE {
-  EXPENSE,
-  INCOME,
-  LEND_BORROW,
-}
+export const TransactionTypeData = [
+  {
+    id: TRANSACTION_TYPE.EXPENSE,
+    name: 'Chi Tiền',
+    icon: 'expense',
+  },
+  {
+    id: TRANSACTION_TYPE.INCOME,
+    name: 'Thu tiền',
+    icon: 'income',
+  },
+  {
+    id: TRANSACTION_TYPE.LEND,
+    name: 'Cho vay',
+    icon: 'lend',
+  },
+  {
+    id: TRANSACTION_TYPE.BORROW,
+    name: 'Đi vay',
+    icon: 'borrowed',
+  },
+  {
+    id: TRANSACTION_TYPE.TRANSFER,
+    name: 'Chuyển khoản',
+    icon: 'transfer',
+  },
+  {
+    id: TRANSACTION_TYPE.ADJUSTMENT,
+    name: 'Cân bằng số dư',
+    icon: 'adjustment',
+  },
+];
 
 export const Account_Type: TAccountType[] = [
   {
@@ -47,70 +81,9 @@ export const Account_Type: TAccountType[] = [
   },
 ];
 
-export const TransactionTypeData = [
-  {
-    id: '0',
-    name: 'Chi Tiền',
-    value: 'expense',
-    icon: 'expense',
-  },
-  {
-    id: '1',
-    name: 'Thu tiền',
-    value: 'income',
-    icon: 'income',
-  },
-  {
-    id: '2',
-    name: 'Cho vay',
-    value: 'lend',
-    icon: 'lend',
-  },
-  {
-    id: '3',
-    name: 'Đi vay',
-    value: 'borrowed',
-    icon: 'borrowed',
-  },
-  {
-    id: '4',
-    name: 'Chuyển khoản',
-    value: 'transfer',
-    icon: 'transfer',
-  },
-  {
-    id: '5',
-    name: 'Cân bằng số dư',
-    value: 'adjustment',
-    icon: 'adjustment',
-  },
-];
-
 export const TransactionCategoryData: TTransactionsCategory[] = [
   {
     id: '1',
-    categoryName: 'Trả nợ',
-    categoryType: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
-    value: REPAYMENT,
-    parentId: null,
-    description: '',
-    isSystem: true,
-    icon: 'repayment',
-    useCount: 0,
-  },
-  {
-    id: '2',
-    categoryName: 'Thu nợ',
-    categoryType: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
-    value: COLLECT_DEBTS,
-    parentId: null,
-    description: '',
-    isSystem: true,
-    icon: 'collectDebts',
-    useCount: 0,
-  },
-  {
-    id: '3',
     categoryName: 'Đi vay',
     categoryType: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
     value: BORROW,
@@ -121,7 +94,18 @@ export const TransactionCategoryData: TTransactionsCategory[] = [
     useCount: 0,
   },
   {
-    id: '4',
+    id: '2',
+    categoryName: 'Trả nợ',
+    categoryType: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
+    value: REPAYMENT,
+    parentId: null,
+    description: '',
+    isSystem: true,
+    icon: 'repayment',
+    useCount: 0,
+  },
+  {
+    id: '3',
     categoryName: 'Cho vay',
     categoryType: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
     value: LEND,
@@ -129,6 +113,17 @@ export const TransactionCategoryData: TTransactionsCategory[] = [
     description: '',
     isSystem: true,
     icon: 'lend',
+    useCount: 0,
+  },
+  {
+    id: '4',
+    categoryName: 'Thu nợ',
+    categoryType: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
+    value: COLLECT_DEBTS,
+    parentId: null,
+    description: '',
+    isSystem: true,
+    icon: 'collectDebts',
     useCount: 0,
   },
 ];

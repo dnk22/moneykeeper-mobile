@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { RNText, PressableHaptic } from 'components/index';
 import { TTransactionType } from 'database/types';
 import { useAppDispatch, useAppSelector } from 'store/index';
@@ -9,6 +9,7 @@ import {
 } from 'store/transactions/transactions.selector';
 import { setTransactionTypeIdSelected } from 'store/transactions/transactions.slice';
 import styles from './styles';
+import isEqual from 'react-fast-compare';
 
 function SelectTransactionType() {
   const dispatch = useAppDispatch();
@@ -20,9 +21,9 @@ function SelectTransactionType() {
     setIsShowTransactionTypeModal(!isShowTransactionTypeModal);
   };
 
-  const onHandleTransactionTypeItemPress = (item: TTransactionType) => {
-    dispatch(setTransactionTypeIdSelected(item?.id));
-    setIsShowTransactionTypeModal(false);
+  const onHandleTransactionTypeItemPress = ({ id }: TTransactionType) => {
+    dispatch(setTransactionTypeIdSelected(id));
+    onToggleTransactionTypeModal();
   };
 
   return (
@@ -41,4 +42,4 @@ function SelectTransactionType() {
   );
 }
 
-export default SelectTransactionType;
+export default memo(SelectTransactionType, isEqual);

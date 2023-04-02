@@ -1,6 +1,6 @@
 import CategoryTab from 'features/TransactionCategory/CategoryTab';
 import { EXPENSE_CATEGORY, INCOME_CATEGORY } from 'navigation/constants';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
+import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 
 function HOCTransactionCategory({ route }) {
   const type =

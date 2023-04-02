@@ -1,5 +1,5 @@
 import { IconProps } from 'components/SvgIcon/const';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/data';
+import { TRANSACTION_TYPE, TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 
 // user
 export type TUsers = {
@@ -16,7 +16,7 @@ export type TUsers = {
 export type TTransactions = {
   id: string;
   amount: number;
-  transactionsTypeId: string;
+  transactionsTypeId: TRANSACTION_TYPE;
   transactionsCategoryId: string;
   descriptions?: string;
   dateTimeAt: Date;
@@ -47,10 +47,9 @@ export type TTransactionsCategory = {
 };
 
 export type TTransactionType = {
-  id: string;
+  id: TRANSACTION_TYPE;
   name: string;
-  value: string;
-  icon: IconProps;
+  icon: string;
 };
 
 // account

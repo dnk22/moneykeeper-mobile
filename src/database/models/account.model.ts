@@ -36,5 +36,5 @@ export default class AccountModel extends Model {
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;
 
-  @children('transactions') transactions!: object;
+  @children('transactions') transactions!: any;
 }

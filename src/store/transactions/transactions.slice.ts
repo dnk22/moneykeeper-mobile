@@ -1,9 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TTransactionsCategory } from 'database/types/index';
+import { TTransactionsCategory, TTransactionType } from 'database/types/index';
+import { TRANSACTION_TYPE } from 'utils/constant';
 import { TransactionTypeData } from 'utils/data';
-import { TTransactionsState } from 'utils/types/store.type';
 
 //set default data
+
+export type TTransactionsState = {
+  transactionType: TTransactionType[];
+  transactionTypeIdSelected: TRANSACTION_TYPE;
+  transactionCategorySelected?: TTransactionsCategory | null;
+  transactionAccountSelected: { id: string; accountName: string; accountLogo: string } | null;
+};
+
 const initialState: TTransactionsState = {
   transactionType: TransactionTypeData,
   transactionTypeIdSelected: TransactionTypeData[0].id,
@@ -15,7 +23,7 @@ export const transactionsSlice = createSlice({
   name: 'transactions',
   initialState,
   reducers: {
-    setTransactionTypeIdSelected(state, { payload }: PayloadAction<string>) {
+    setTransactionTypeIdSelected(state, { payload }: PayloadAction<TRANSACTION_TYPE>) {
       state.transactionTypeIdSelected = payload;
     },
     setTransactionCategorySelected(state, { payload }: PayloadAction<TTransactionsCategory>) {
