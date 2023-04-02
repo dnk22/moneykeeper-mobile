@@ -32,7 +32,7 @@ function Selected({
   control,
   error,
 }: SelectedProps) {
-  const errorStyle = error ? 'red' : '';
+  const isError = error && !Boolean(value);
   return (
     <>
       {name && <Form name={name} control={control} rules={{ required: true }} />}
@@ -51,10 +51,10 @@ function Selected({
           ) : (
             <RNText
               fontSize={16}
-              style={{ maxWidth: '90%', fontWeight: error ? 'bold' : 'normal' }}
+              style={{ maxWidth: '90%', fontWeight: isError ? 'bold' : 'normal' }}
               ellipsizeMode="tail"
               numberOfLines={1}
-              color={errorStyle}
+              color={isError ? 'red' : ''}
             >
               {value || title}
             </RNText>

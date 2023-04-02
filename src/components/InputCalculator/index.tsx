@@ -1,4 +1,4 @@
-import { ElementRef, memo, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import isEqual from 'react-fast-compare';
 import {
   NativeSyntheticEvent,
