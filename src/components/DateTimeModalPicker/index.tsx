@@ -1,14 +1,15 @@
-import React, { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import isEqual from 'react-fast-compare';
-import { TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 import ModalComponent from 'components/Modal';
 import DateTimePicker from 'components/DateTimePicker';
 import PressableHaptic from 'components/PressableHaptic';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import RNText from 'components/Text';
 import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
 import { formatDateLocal } from 'utils/date';
 import { getHours, getMinutes, set } from 'date-fns';
-import RNText from 'components/Text';
 
 interface DateTimeModalPickerProps {
   isVisible: boolean;
@@ -89,17 +90,17 @@ function DateTimeModalPicker({
         </PressableHaptic>
       </View>
       <View style={[styles.pickerContent, { backgroundColor: colors.surface }]}>
-        <DateTimePicker
-          value={datePicker}
-          onDateChange={onDateChange}
-          mode={isMode}
-          display={isMode === 'date' ? 'inline' : 'spinner'}
-        />
-        <TouchableOpacity activeOpacity={0.6}>
-          <PressableHaptic style={styles.bottomBar} onPress={getCurrentDateTime}>
-            <RNText>{actionName}</RNText>
-          </PressableHaptic>
-        </TouchableOpacity>
+        <View style={styles.dateTimePicker}>
+          <DateTimePicker
+            value={datePicker}
+            onDateChange={onDateChange}
+            mode={isMode}
+            display={isMode === 'date' ? 'inline' : 'spinner'}
+          />
+        </View>
+        <TouchableHighlightComponent style={styles.bottomBar} onPress={getCurrentDateTime}>
+          <RNText>{actionName}</RNText>
+        </TouchableHighlightComponent>
       </View>
       <View style={[styles.bright, styles.brightLeft, { backgroundColor: colors.primary }]} />
       <View style={[styles.bright, styles.brightRight, { backgroundColor: colors.primary }]} />

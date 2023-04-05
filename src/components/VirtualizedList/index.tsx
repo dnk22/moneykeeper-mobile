@@ -13,7 +13,7 @@ function VirtualizedListComponent({
   maxToRenderPerBatch = 10,
   ...rest
 }: VirtualizedListComponentProps) {
-  const keyExtractor = (item: any) => item['id'];
+  const keyExtractor = (item: any) => item[id];
   const getItemData = (_data: unknown[], index: number): any => {
     return _data[index];
   };

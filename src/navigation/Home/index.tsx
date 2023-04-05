@@ -10,11 +10,15 @@ import Dashboard from 'features/Dashboard';
 import TransactionNavigation from 'navigation/Transaction';
 import ReportNavigation from 'navigation/Report';
 import { HomeStackParamList } from 'navigation/types';
+import { SelectTransactionType } from 'navigation/elements';
+import { useCustomTheme } from 'resources/theme';
 
 // set up routes
 const BottomTab = createBottomTabNavigator<HomeStackParamList>();
 
 function HomeNavigation() {
+  const { colors } = useCustomTheme();
+
   return (
     <BottomTab.Navigator
       screenOptions={{ headerShown: false }}
@@ -43,7 +47,12 @@ function HomeNavigation() {
         name={TRANSACTIONS}
         options={{
           // @ts-ignore
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: colors.primary,
+          },
           tabBarIcon: () => <SvgIcon name="add" color="white" />,
+          headerTitle: () => <SelectTransactionType />,
         }}
         component={TransactionNavigation}
       />

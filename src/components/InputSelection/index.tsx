@@ -52,7 +52,6 @@ function Selected({
             <RNText
               fontSize={16}
               style={{ maxWidth: '90%', fontWeight: isError ? 'bold' : 'normal' }}
-              ellipsizeMode="tail"
               numberOfLines={1}
               color={isError ? 'red' : ''}
             >

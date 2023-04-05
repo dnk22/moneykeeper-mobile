@@ -1,4 +1,4 @@
-import { format, formatDistanceToNow, differenceInMilliseconds } from 'date-fns';
+import { format, formatDistanceToNow, differenceInMilliseconds, isDate, parseISO } from 'date-fns';
 import { vi } from 'date-fns/locale';
 
 // define variable
@@ -16,7 +16,16 @@ export const formatDateLocal = (
   formatType: string = 'dd/MM/yyyy',
   local: any = vi,
 ) => {
+  if (!isDate(new Date(date))) return '';
   return format(new Date(date), formatType, { locale: local });
+};
+
+export const formatDateStringLocal = (
+  date: string,
+  formatType: string = 'dd/MM/yyyy',
+  local: any = vi,
+) => {
+  return format(parseISO(date), formatType, local);
 };
 
 /**

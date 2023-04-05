@@ -63,6 +63,8 @@ import grid from 'assets/svg/icon-grid.svg';
 import pen from 'assets/svg/icon-pen.svg';
 import group from 'assets/svg/icon-group.svg';
 import pencilCircle from 'assets/svg/icon-pencilCircle.svg';
+import arrowCircleDown from 'assets/svg/arrowCircleDown.svg';
+import arrowCircleUp from 'assets/svg/arrowCircleUp.svg';
 
 const icon = {
   add,
@@ -130,6 +132,8 @@ const icon = {
   pen,
   group,
   pencilCircle,
+  arrowCircleDown,
+  arrowCircleUp,
 };
 
 export type IconProps = keyof typeof icon;

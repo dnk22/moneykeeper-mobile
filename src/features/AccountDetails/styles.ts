@@ -1,8 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, padding: 5 },
   createButton: {
+    zIndex: 5,
     position: 'absolute',
     bottom: 40,
     right: 30,

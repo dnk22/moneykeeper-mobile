@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import styles from './styles';
 import { useForm } from 'react-hook-form';
@@ -32,19 +32,15 @@ import {
   addNewTransaction,
   getAccountById,
   getFirstAccount,
+  getTransactionById,
   getTransactionCategoryById,
+  updateTransactionById,
 } from 'database/querying';
 import Collapsible from 'react-native-collapsible';
 import { Done } from 'navigation/elements';
 import { setTransactionTypeIdSelected } from 'store/transactions/transactions.slice';
 import { isEqual } from 'lodash';
-import {
-  BORROW,
-  LEND,
-  MAP_LEND_BORROW,
-  TRANSACTION_CATEGORY_TYPE,
-  TRANSACTION_TYPE,
-} from 'utils/constant';
+import { MAP_LEND_BORROW, TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
 import { EXPENSE_CATEGORY } from 'navigation/constants';
 import { LEND_BORROW } from 'navigation/constants';
 import { INCOME_CATEGORY } from 'navigation/constants';
@@ -59,7 +55,7 @@ const defaultValues = {
 function AddTransactions() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
-  const { params } = useRoute<AddTransactionRouteProp>();
+  const { params, name } = useRoute<AddTransactionRouteProp>();
   const dispatch = useAppDispatch();
   /** get redux state */
   const transactionTypeIdSelected = useAppSelector((state) => selectTransactionTypeSelected(state));
@@ -85,18 +81,11 @@ function AddTransactions() {
     getValues,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm<TTransactions>({
     defaultValues,
   });
-
-  useLayoutEffect(() => {
-    if (params?.hideHeader) {
-      navigation.setOptions({
-        headerShown: !params?.hideHeader,
-      });
-    }
-  }, [params?.hideHeader]);
 
   useEffect(() => {
     // Use `setOptions` to update the button that submit form
@@ -104,6 +93,12 @@ function AddTransactions() {
       headerRight: () => <Done title="Xong" onPress={handleSubmit(onSubmit)}></Done>,
     });
   }, []);
+
+  useEffect(() => {
+    if (params?.transactionId) {
+      fetchDataInEditMode(params.transactionId);
+    }
+  }, [params?.transactionId]);
 
   /** watch transactionsTypeId from redux store and setValue to form */
   useEffect(() => {
@@ -188,6 +183,32 @@ function AddTransactions() {
   }, [watch('transactionsTypeId')]);
 
   /** pure function */
+  const fetchDataInEditMode = async (id: string) => {
+    const res = await getTransactionById(id);
+    if (res?.id) {
+      let result = {
+        amount: res.amount,
+        transactionsTypeId: res.transactionsTypeId,
+        transactionsCategoryId: res.transactionsCategoryId,
+        descriptions: res.descriptions,
+        dateTimeAt: res.dateTimeAt,
+        accountId: res.accountId,
+        location: res.location,
+        eventName: res.eventName,
+        payFor: res.payFor,
+        relatedPerson: res.relatedPerson,
+        fee: res.fee,
+        feeType: res.feeType,
+        isNotAddReport: res.isNotAddReport,
+        attachment: res.attachment,
+        userId: res.userId,
+        createdAt: res.createdAt,
+        updatedAt: res.updatedAt,
+      };
+      reset(result);
+    }
+  };
+
   const setCategorySelected = async () => {
     if (!getValues('transactionsCategoryId')) return false;
     try {
@@ -316,8 +337,16 @@ function AddTransactions() {
   };
 
   const onSubmit = (data: TTransactions) => {
-    console.log(data);
-    // addNewTransaction(data);
+    const requestData = {
+      ...data,
+      amount: parseFloat(data?.amount),
+      icon: transactionCategorySelected?.icon,
+    };
+    if (params?.transactionId) {
+      updateTransactionById({ id: params.transactionId, data: requestData });
+      return;
+    }
+    addNewTransaction(requestData);
   };
 
   return (
@@ -393,7 +422,7 @@ function AddTransactions() {
               <SvgIcon name="people" style={styles.icon} />
               <View style={styles.groupContent}>
                 <InputField
-                  name="pay_for"
+                  name="payFor"
                   control={control}
                   placeholder="Chi cho ai"
                   style={styles.formInput}
@@ -441,7 +470,7 @@ function AddTransactions() {
           <View style={[styles.group, { backgroundColor: colors.surface }]}>
             <View style={[styles.itemGroup, styles.itemGroupBetween]}>
               <RNText>Không tính vào báo cáo</RNText>
-              <SwitchField name="is_not_add_report" control={control} />
+              <SwitchField name="isNotAddReport" control={control} />
             </View>
             <RNText style={styles.subText}>Ghi chép này sẽ không thống kê vào các báo cáo.</RNText>
           </View>

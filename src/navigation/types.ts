@@ -70,7 +70,6 @@ export type TransactionParamList = {
         transactionId?: string;
         categoryId?: string;
         accountId?: string;
-        hideHeader?: boolean;
       }
     | undefined;
 };

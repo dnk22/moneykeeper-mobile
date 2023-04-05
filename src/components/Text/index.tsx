@@ -8,7 +8,7 @@ import { textPresets } from './preset';
 
 export interface TTextProps extends TextProps {
   text?: 'string';
-  children?: string;
+  children?: string | number;
   t18n?: any;
   t18nOptions?: any;
   color?: string;
@@ -41,6 +41,7 @@ function RNText({
     <Text
       allowFontScaling={false}
       style={[style, { color: textColor, fontSize: textSize }, textPreset]}
+      ellipsizeMode="tail"
       {...props}
     >
       {content}

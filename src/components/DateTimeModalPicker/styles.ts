@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     width: '90%',
     borderRadius: 0,
     padding: 0,
-    backgroundColor : 'transparent'
+    backgroundColor: 'transparent',
   },
   pickerHeader: {
     width: '100%',
@@ -32,9 +32,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   pickerContent: {
-    padding: 10,
     paddingBottom: 0,
     borderRadius: 10,
+  },
+  dateTimePicker: {
+    padding: 10,
   },
   bottomBar: {
     height: 50,
@@ -42,6 +44,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderTopWidth: 0.2,
     borderTopColor: '#eee',
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
   },
   bright: {
     height: 30,

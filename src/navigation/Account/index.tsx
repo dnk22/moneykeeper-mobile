@@ -62,7 +62,8 @@ function AccountNavigation() {
       />
       <AccountStack.Screen
         name={ACCOUNT_DETAIL}
-        options={() => ({
+        options={({ route }) => ({
+          title: route.params?.accountName,
           headerBackTitleVisible: false,
           headerRight: (props) => <Submit {...props} />,
         })}

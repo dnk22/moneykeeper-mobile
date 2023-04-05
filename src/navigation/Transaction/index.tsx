@@ -1,31 +1,21 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ADD_TRANSACTION } from 'navigation/constants';
 import { TransactionParamList } from 'navigation/types';
-import { useCustomTheme } from 'resources/theme';
 
 // import route component
-import { SelectTransactionType } from 'navigation/elements';
 import AddTransactions from 'features/Transaction/AddTransaction';
 
 //set up routes
 const TransactionStack = createNativeStackNavigator<TransactionParamList>();
 
 function TransactionNavigation() {
-  const { colors } = useCustomTheme();
-  console.log(
-    'run'
-  );
-
   return (
     <TransactionStack.Navigator initialRouteName={ADD_TRANSACTION}>
       <TransactionStack.Screen
         name={ADD_TRANSACTION}
         component={AddTransactions}
         options={{
-          headerStyle: {
-            backgroundColor: colors.primary,
-          },
-          headerTitle: () => <SelectTransactionType />,
+          headerShown: false,
         }}
       />
     </TransactionStack.Navigator>

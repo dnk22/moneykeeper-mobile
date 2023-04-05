@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { BOX_SHADOW } from 'resources/theme/constants';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -6,14 +7,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 10,
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 5,
+    ...BOX_SHADOW,
   },
   header: {
     height: 50,

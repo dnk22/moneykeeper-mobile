@@ -5,10 +5,15 @@ import { useNavigation } from '@react-navigation/native';
 import withObservables from '@nozbe/with-observables';
 import { TTransactionsCategory } from 'database/types';
 import { getTransactionCategoryChildrenObserve } from 'database/querying';
-import { ADD_TRANSACTION, UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
+import {
+  ADD_TRANSACTION,
+  TRANSACTION_CATEGORY_LIST,
+  UPDATE_TRANSACTION_CATEGORY,
+} from 'navigation/constants';
 import { useAppSelector } from 'store/index';
 import { selectUpdateModeStatus } from 'store/transactionCategory/transactionCategory.selector';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
+import { TransactionCategoryParamProps } from 'navigation/types';
 import styles from './styles';
 import Child from './Child';
 import Icon from './Icon';
@@ -26,7 +31,8 @@ const CategoryChildItemObserve = withObservables(['item'], ({ item }) => ({
 
 function CategoryGroupItem({ expenseCategoryChildObserve, item }: CategoryGroupItemProps) {
   const { colors } = useCustomTheme();
-  const navigation = useNavigation<any>();
+  const navigation =
+    useNavigation<TransactionCategoryParamProps<typeof TRANSACTION_CATEGORY_LIST>['navigation']>();
   const isUpdateMode = useAppSelector((state) => selectUpdateModeStatus(state));
 
   const onItemCategoryPress = (category: TTransactionsCategory) => {

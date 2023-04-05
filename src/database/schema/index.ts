@@ -54,7 +54,7 @@ export default appSchema({
         { name: 'transactions_typeid', type: 'string' },
         { name: 'transactions_category_id', type: 'string' },
         { name: 'descriptions', type: 'string', isOptional: true },
-        { name: 'date_time_at', type: 'number', isIndexed: true },
+        { name: 'date_time_at', type: 'number' },
         { name: 'account_id', type: 'string', isIndexed: true },
         { name: 'location', type: 'string', isOptional: true },
         { name: 'event_name', type: 'string', isOptional: true },
