@@ -25,8 +25,6 @@ import {
   TRANSACTION_CATEGORY,
   TRANSACTION_CATEGORY_LIST,
 } from 'navigation/constants';
-import { useAppDispatch, useAppSelector } from 'store/index';
-import { selectTransactionTypeSelected } from 'store/transactions/transactions.selector';
 import { AddTransactionRouteProp } from 'navigation/types';
 import {
   addNewTransaction,
@@ -37,8 +35,7 @@ import {
   updateTransactionById,
 } from 'database/querying';
 import Collapsible from 'react-native-collapsible';
-import { Done } from 'navigation/elements';
-import { setTransactionTypeIdSelected } from 'store/transactions/transactions.slice';
+import { Done, SelectTransactionType } from 'navigation/elements';
 import { isEqual } from 'lodash';
 import { MAP_LEND_BORROW, TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
 import { EXPENSE_CATEGORY } from 'navigation/constants';
@@ -49,6 +46,7 @@ const defaultValues = {
   amount: 0,
   dateTimeAt: new Date(),
   transactionsCategoryId: '',
+  transactionsTypeId: TRANSACTION_TYPE.EXPENSE,
   accountId: '',
 };
 
@@ -56,9 +54,7 @@ function AddTransactions() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
   const { params, name } = useRoute<AddTransactionRouteProp>();
-  const dispatch = useAppDispatch();
   /** get redux state */
-  const transactionTypeIdSelected = useAppSelector((state) => selectTransactionTypeSelected(state));
 
   /** local state */
   const [transactionCategorySelected, setTransactionCategorySelected] = useState<
@@ -87,23 +83,36 @@ function AddTransactions() {
     defaultValues,
   });
 
+  // Use `setOptions` to update the button that submit form
   useEffect(() => {
-    // Use `setOptions` to update the button that submit form
     navigation.setOptions({
       headerRight: () => <Done title="Xong" onPress={handleSubmit(onSubmit)}></Done>,
     });
   }, []);
+
+  // Use `setOptions` to update the transaction type select
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => (
+        <SelectTransactionType
+          isSelected={getValues('transactionsTypeId')}
+          onItemPress={onItemTransactionTypePress}
+        />
+      ),
+    });
+  }, [watch('transactionsTypeId')]);
+
+  useFocusEffect(
+    useCallback(() => {
+      updateFormDataWhenFocus();
+    }, []),
+  );
 
   useEffect(() => {
     if (params?.transactionId) {
       fetchDataInEditMode(params.transactionId);
     }
   }, [params?.transactionId]);
-
-  /** watch transactionsTypeId from redux store and setValue to form */
-  useEffect(() => {
-    setTransactionCategory();
-  }, [transactionTypeIdSelected]);
 
   /** get transaction category selected data */
   useEffect(() => {
@@ -117,12 +126,6 @@ function AddTransactions() {
     resetTransactionTypeByCategory();
   }, [transactionCategorySelected]);
 
-  useFocusEffect(
-    useCallback(() => {
-      setCategorySelected();
-    }, [transactionCategorySelected]),
-  );
-
   useEffect(() => {
     setCategorySelected();
   }, [watch('transactionsCategoryId')]);
@@ -133,12 +136,6 @@ function AddTransactions() {
       setValue('accountId', params.accountId);
     }
   }, [params?.accountId]);
-
-  useFocusEffect(
-    useCallback(() => {
-      setAccountSelected();
-    }, [accountSelected]),
-  );
 
   // set default account when mode = add & accountId = null
   useFocusEffect(
@@ -202,11 +199,21 @@ function AddTransactions() {
         isNotAddReport: res.isNotAddReport,
         attachment: res.attachment,
         userId: res.userId,
-        createdAt: res.createdAt,
-        updatedAt: res.updatedAt,
       };
       reset(result);
     }
+  };
+
+  const updateFormDataWhenFocus = async () => {
+    await setCategorySelected();
+    await setAccountSelected();
+  };
+
+  const onItemTransactionTypePress = (id: TRANSACTION_TYPE) => {
+    if (id !== getValues('transactionsTypeId')) {
+      resetTransactionCategory();
+    }
+    setValue('transactionsTypeId', id);
   };
 
   const setCategorySelected = async () => {
@@ -226,6 +233,7 @@ function AddTransactions() {
       if (!isEqual(transactionCategory, transactionCategorySelected)) {
         setTransactionCategorySelected(transactionCategory);
       }
+      return true;
     } catch (error) {
       console.log(error, 'setCategorySelected error');
       return false;
@@ -248,6 +256,7 @@ function AddTransactions() {
       if (!isEqual(newAccountState, accountSelected)) {
         setTransactionAccountSelected(newAccountState);
       }
+      return true;
     } catch (error) {
       console.log(error, 'setAccountSelected error');
       return false;
@@ -282,7 +291,7 @@ function AddTransactions() {
       default:
         break;
     }
-    dispatch(setTransactionTypeIdSelected(transactionTypeId));
+    setValue('transactionsTypeId', transactionTypeId);
   };
 
   const handleOnSelectAccount = () => {
@@ -316,19 +325,13 @@ function AddTransactions() {
       screen: TRANSACTION_CATEGORY_LIST,
       params: {
         screen: categoryType,
+        returnScreen: name,
       },
     });
   };
 
   const handleOnShowDetail = () => {
     setIsShowDetails(!isShowDetails);
-  };
-
-  const setTransactionCategory = () => {
-    if (transactionTypeIdSelected !== getValues('transactionsTypeId')) {
-      resetTransactionCategory();
-    }
-    setValue('transactionsTypeId', transactionTypeIdSelected);
   };
 
   const resetTransactionCategory = () => {
@@ -343,6 +346,7 @@ function AddTransactions() {
       icon: transactionCategorySelected?.icon,
     };
     if (params?.transactionId) {
+      console.log(data);
       updateTransactionById({ id: params.transactionId, data: requestData });
       return;
     }
@@ -461,11 +465,11 @@ function AddTransactions() {
               <RNText>Phí</RNText>
               <Switch value={isShowFee} onValueChange={handleOnFeeChange} />
             </View>
-            {isShowFee && (
+            <Collapsible collapsed={!isShowFee}>
               <Animated.View entering={StretchInY}>
                 <InputCalculator name="fee" control={control} />
               </Animated.View>
-            )}
+            </Collapsible>
           </View>
           <View style={[styles.group, { backgroundColor: colors.surface }]}>
             <View style={[styles.itemGroup, styles.itemGroupBetween]}>

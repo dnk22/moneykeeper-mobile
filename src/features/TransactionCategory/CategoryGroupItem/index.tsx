@@ -5,11 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import withObservables from '@nozbe/with-observables';
 import { TTransactionsCategory } from 'database/types';
 import { getTransactionCategoryChildrenObserve } from 'database/querying';
-import {
-  ADD_TRANSACTION,
-  TRANSACTION_CATEGORY_LIST,
-  UPDATE_TRANSACTION_CATEGORY,
-} from 'navigation/constants';
+import { TRANSACTION_CATEGORY_LIST, UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
 import { useAppSelector } from 'store/index';
 import { selectUpdateModeStatus } from 'store/transactionCategory/transactionCategory.selector';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
@@ -33,6 +29,7 @@ function CategoryGroupItem({ expenseCategoryChildObserve, item }: CategoryGroupI
   const { colors } = useCustomTheme();
   const navigation =
     useNavigation<TransactionCategoryParamProps<typeof TRANSACTION_CATEGORY_LIST>['navigation']>();
+
   const isUpdateMode = useAppSelector((state) => selectUpdateModeStatus(state));
 
   const onItemCategoryPress = (category: TTransactionsCategory) => {
@@ -40,7 +37,11 @@ function CategoryGroupItem({ expenseCategoryChildObserve, item }: CategoryGroupI
       navigation.navigate(UPDATE_TRANSACTION_CATEGORY, { transactionCategoryId: category.id });
       return;
     }
-    navigation.navigate(ADD_TRANSACTION, { categoryId: category.id });
+    navigation.navigate({
+      name: navigation.getParent()?.getState().routes[0].params?.returnScreen,
+      params: { categoryId: category.id },
+      merge: true,
+    });
   };
 
   const renderItem = ({ item }: { item: TTransactionsCategory }) => {

@@ -11,14 +11,12 @@ import { useCustomTheme } from 'resources/theme';
 import AccountTab from './tab';
 import AddAccount from 'features/AddAccount';
 import AccountDetails from 'features/AccountDetails';
-import TransactionNavigation from 'navigation/Transaction';
 
 // header custom icon
-import Done from 'navigation/elements/Done';
-import SelectTransactionType from 'navigation/elements/SelectTransactionType';
 import Submit from 'navigation/elements/Submit';
 import Search from 'navigation/elements/Search';
 import Toolbar from './component/Toolbar';
+import AddTransactions from 'features/Transaction/AddTransaction';
 
 // lazy import
 // const AccountTab = React.lazy(() => import('./tab'));
@@ -69,14 +67,7 @@ function AccountNavigation() {
         })}
         component={AccountDetails}
       />
-      <AccountStack.Screen
-        name={CREATE_TRANSACTION_FROM_ACCOUNT}
-        options={{
-          headerTitle: () => <SelectTransactionType />,
-          headerRight: () => <Done />,
-        }}
-        component={TransactionNavigation}
-      />
+      <AccountStack.Screen name={CREATE_TRANSACTION_FROM_ACCOUNT} component={AddTransactions} />
     </AccountStack.Navigator>
   );
 }

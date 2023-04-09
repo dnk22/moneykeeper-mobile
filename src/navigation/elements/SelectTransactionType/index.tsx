@@ -1,20 +1,21 @@
-import { memo, useState } from 'react';
+import { useState } from 'react';
 import { RNText, PressableHaptic } from 'components/index';
 import { TTransactionType } from 'database/types';
-import { useAppDispatch, useAppSelector } from 'store/index';
+import { useAppSelector } from 'store/index';
 import TransactionTypePicker from './TransactionTypePicker';
-import {
-  selectTransactionType,
-  selectTransactionTypeSelected,
-} from 'store/transactions/transactions.selector';
-import { setTransactionTypeIdSelected } from 'store/transactions/transactions.slice';
+import { selectTransactionType } from 'store/transactions/transactions.selector';
 import styles from './styles';
-import isEqual from 'react-fast-compare';
+import { TRANSACTION_TYPE } from 'utils/constant';
 
-function SelectTransactionType() {
-  const dispatch = useAppDispatch();
+type SelectTransactionTypeProps = {
+  isSelected: TRANSACTION_TYPE;
+  onItemPress: (item: TRANSACTION_TYPE) => void;
+};
+function SelectTransactionType({
+  isSelected = TRANSACTION_TYPE.EXPENSE,
+  onItemPress,
+}: SelectTransactionTypeProps) {
   const transactionType = useAppSelector((state) => selectTransactionType(state));
-  const transactionTypeSelected = useAppSelector((state) => selectTransactionTypeSelected(state));
   const [isShowTransactionTypeModal, setIsShowTransactionTypeModal] = useState(false);
 
   const onToggleTransactionTypeModal = () => {
@@ -22,7 +23,7 @@ function SelectTransactionType() {
   };
 
   const onHandleTransactionTypeItemPress = ({ id }: TTransactionType) => {
-    dispatch(setTransactionTypeIdSelected(id));
+    onItemPress(id);
     onToggleTransactionTypeModal();
   };
 
@@ -31,15 +32,15 @@ function SelectTransactionType() {
       <TransactionTypePicker
         data={transactionType}
         isVisible={isShowTransactionTypeModal}
-        isTypeSelected={transactionTypeSelected}
+        isTypeSelected={isSelected}
         onToggleModal={onToggleTransactionTypeModal}
         onPressItem={onHandleTransactionTypeItemPress}
       />
       <PressableHaptic style={styles.transactionTypePicker} onPress={onToggleTransactionTypeModal}>
-        <RNText color="white">{transactionType[+transactionTypeSelected]?.name}</RNText>
+        <RNText color="white">{transactionType[+isSelected]?.name}</RNText>
       </PressableHaptic>
     </>
   );
 }
 
-export default memo(SelectTransactionType, isEqual);
+export default SelectTransactionType;
