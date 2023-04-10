@@ -37,7 +37,7 @@ function InputCalculator({
 }: TInputCalculator) {
   const { colors } = useCustomTheme();
   const {
-    field: { value = 0, onChange },
+    field: { value, onChange },
   } = useController({
     name,
     control,
@@ -45,19 +45,21 @@ function InputCalculator({
   });
 
   const cursorPosition = useRef<number>(0);
-  const [inputValue, setInputValue] = useState<string>(value.toString());
+  const [inputValue, setInputValue] = useState<string>(value);
   const inputHasOperators = useMemo(() => {
-    return (
-      inputValue.includes('+') ||
-      inputValue.includes('-') ||
-      inputValue.includes('×') ||
-      inputValue.includes('÷')
-    );
+    if (inputValue) {
+      return (
+        inputValue.includes('+') ||
+        inputValue.includes('-') ||
+        inputValue.includes('×') ||
+        inputValue.includes('÷')
+      );
+    }
   }, [inputValue]);
 
   // set form value to input value
   useEffect(() => {
-    setInputValue(value.toString());
+    setInputValue(value);
   }, [value]);
 
   // listen for clear event

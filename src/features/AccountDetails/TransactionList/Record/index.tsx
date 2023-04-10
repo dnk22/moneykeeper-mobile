@@ -33,10 +33,7 @@ function Record({ item, colors }: RecordProps) {
   };
 
   const onRecordPress = () => {
-    navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, {
-      screen: ADD_TRANSACTION,
-      params: { transactionId: item.id },
-    });
+    navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, { transactionId: item.id });
   };
 
   return (

@@ -58,7 +58,13 @@ export type AccountStackParamList = {
   [ACCOUNTTAB]: undefined;
   [ADD_ACCOUNT]: { accountId: string } | undefined;
   [ACCOUNT_DETAIL]: { accountId: string; accountName: string };
-  [CREATE_TRANSACTION_FROM_ACCOUNT]: NavigatorScreenParams<TransactionParamList>;
+  [CREATE_TRANSACTION_FROM_ACCOUNT]:
+    | {
+        transactionId?: string;
+        categoryId?: string;
+        accountId?: string;
+      }
+    | undefined;
 };
 export type AccountStackParamListProps<T extends keyof AccountStackParamList> =
   NativeStackScreenProps<AccountStackParamList, T>;

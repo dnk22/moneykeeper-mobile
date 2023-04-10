@@ -43,7 +43,7 @@ import { LEND_BORROW } from 'navigation/constants';
 import { INCOME_CATEGORY } from 'navigation/constants';
 
 const defaultValues = {
-  amount: 0,
+  amount: '0',
   dateTimeAt: new Date(),
   transactionsCategoryId: '',
   transactionsTypeId: TRANSACTION_TYPE.EXPENSE,
@@ -167,11 +167,11 @@ function AddTransactions() {
     const { transactionsTypeId } = getValues();
     if (transactionsTypeId) {
       switch (transactionsTypeId) {
-        case '1':
-        case '3':
+        case TRANSACTION_TYPE.EXPENSE:
+        case TRANSACTION_TYPE.LEND:
           return 'red';
-        case '2':
-        case '4':
+        case TRANSACTION_TYPE.INCOME:
+        case TRANSACTION_TYPE.BORROW:
           return '#1fc600';
         default:
           return colors.primary;
@@ -184,7 +184,7 @@ function AddTransactions() {
     const res = await getTransactionById(id);
     if (res?.id) {
       let result = {
-        amount: res.amount,
+        amount: res.amount.toString(),
         transactionsTypeId: res.transactionsTypeId,
         transactionsCategoryId: res.transactionsCategoryId,
         descriptions: res.descriptions,
@@ -342,7 +342,7 @@ function AddTransactions() {
   const onSubmit = (data: TTransactions) => {
     const requestData = {
       ...data,
-      amount: parseFloat(data?.amount),
+      amount: +data?.amount,
       icon: transactionCategorySelected?.icon,
     };
     if (params?.transactionId) {
@@ -453,7 +453,7 @@ function AddTransactions() {
                 <InputField
                   name="event"
                   control={control}
-                  placeholder="Chuyến đi / Sự kiện"
+                  placeholder="Sự kiện"
                   style={styles.formInput}
                   maxLength={50}
                 />
@@ -467,7 +467,7 @@ function AddTransactions() {
             </View>
             <Collapsible collapsed={!isShowFee}>
               <Animated.View entering={StretchInY}>
-                <InputCalculator name="fee" control={control} />
+                {/* <InputCalculator name="fee" control={control} /> */}
               </Animated.View>
             </Collapsible>
           </View>
