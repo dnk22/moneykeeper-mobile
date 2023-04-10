@@ -23,9 +23,14 @@ const styles = StyleSheet.create({
     borderColor: '#d3d3d3',
   },
   transactionCategoryInfo: {
+    flex: 4,
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: 5,
+  },
+  amountInfo: {
+    flex: 1,
+    alignItems: 'flex-end',
   },
 });
 

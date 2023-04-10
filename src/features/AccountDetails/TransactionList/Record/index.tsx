@@ -13,6 +13,7 @@ import {
   ADD_TRANSACTION,
   CREATE_TRANSACTION_FROM_ACCOUNT,
 } from 'navigation/constants';
+import { formatDateLocal } from 'utils/date';
 
 type RecordProps = {
   item: TransactionModel;
@@ -42,9 +43,16 @@ function Record({ item, colors }: RecordProps) {
         <View style={styles.childLine} />
         <View style={styles.transactionCategoryInfo}>
           <SvgIcon name={transactionCategory?.icon} />
-          <RNText>{transactionCategory?.categoryName}</RNText>
+          <View>
+            <RNText>{transactionCategory?.categoryName}</RNText>
+            {item?.descriptions && (
+              <RNText color="gray" fontSize={11}>
+                {item.descriptions}
+              </RNText>
+            )}
+          </View>
         </View>
-        <View>
+        <View style={styles.amountInfo}>
           <RNText>{item.amount}</RNText>
           <RNText>{item.amount}</RNText>
         </View>

@@ -15,7 +15,7 @@ export type TUsers = {
 // transactions
 export type TTransactions = {
   id: string;
-  amount: number;
+  amount: string;
   transactionsTypeId: TRANSACTION_TYPE;
   transactionsCategoryId: string;
   descriptions?: string;
@@ -25,7 +25,7 @@ export type TTransactions = {
   eventName?: string;
   payFor?: string;
   relatedPerson?: string;
-  fee?: number;
+  fee?: string;
   feeType?: string;
   isNotAddReport?: boolean;
   attachment?: any;

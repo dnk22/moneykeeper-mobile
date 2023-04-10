@@ -45,7 +45,7 @@ function InputCalculator({
   });
 
   const cursorPosition = useRef<number>(0);
-  const [inputValue, setInputValue] = useState<string>(value);
+  const [inputValue, setInputValue] = useState<string>(value.toString());
   const inputHasOperators = useMemo(() => {
     if (inputValue) {
       return (
@@ -59,7 +59,7 @@ function InputCalculator({
 
   // set form value to input value
   useEffect(() => {
-    setInputValue(value);
+    setInputValue(value.toString());
   }, [value]);
 
   // listen for clear event

@@ -41,12 +41,13 @@ export const getTransactionByDate = async ({ accountId, date }: GetTransactionBy
         .query(
           Q.where('account_id', accountId),
           Q.and(Q.where('date_time_at', Q.between(startOfDay, endOfDay))),
+          Q.sortBy('date_time_at', Q.desc),
         )
         .fetch();
       return res;
     });
   } catch (error) {
-    console.log(error, 'read getTransactionByCondition err');
+    console.log(error, 'read getTransactionByDate err');
   }
 };
 

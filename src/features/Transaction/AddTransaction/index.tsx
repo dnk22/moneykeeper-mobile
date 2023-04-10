@@ -48,6 +48,16 @@ const defaultValues = {
   transactionsCategoryId: '',
   transactionsTypeId: TRANSACTION_TYPE.EXPENSE,
   accountId: '',
+  descriptions: '',
+  location: '',
+  eventName: '',
+  payFor: '',
+  relatedPerson: '',
+  fee: '',
+  feeType: '',
+  isNotAddReport: false,
+  attachment: '',
+  userId: '',
 };
 
 function AddTransactions() {
@@ -183,23 +193,10 @@ function AddTransactions() {
   const fetchDataInEditMode = async (id: string) => {
     const res = await getTransactionById(id);
     if (res?.id) {
-      let result = {
-        amount: res.amount.toString(),
-        transactionsTypeId: res.transactionsTypeId,
-        transactionsCategoryId: res.transactionsCategoryId,
-        descriptions: res.descriptions,
-        dateTimeAt: res.dateTimeAt,
-        accountId: res.accountId,
-        location: res.location,
-        eventName: res.eventName,
-        payFor: res.payFor,
-        relatedPerson: res.relatedPerson,
-        fee: res.fee,
-        feeType: res.feeType,
-        isNotAddReport: res.isNotAddReport,
-        attachment: res.attachment,
-        userId: res.userId,
-      };
+      const result: any = {};
+      Object.keys(defaultValues).forEach(
+        (item) => (result[item] = res[item] || defaultValues[item]),
+      );
       reset(result);
     }
   };
@@ -346,11 +343,13 @@ function AddTransactions() {
       icon: transactionCategorySelected?.icon,
     };
     if (params?.transactionId) {
-      console.log(data);
       updateTransactionById({ id: params.transactionId, data: requestData });
+      navigation.goBack();
       return;
     }
     addNewTransaction(requestData);
+    reset(defaultValues);
+    setTransactionCategorySelected(undefined);
   };
 
   return (
