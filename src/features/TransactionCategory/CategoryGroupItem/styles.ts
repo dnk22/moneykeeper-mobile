@@ -16,27 +16,6 @@ const styles = StyleSheet.create({
   headerTitle: {
     flex: 1,
   },
-  iconView: {
-    padding: 8,
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F6F7F8',
-  },
-  iconViewEdit: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-  },
-  childView: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  itemChild: {
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   divider: {
     borderTopWidth: 0.2,
     borderColor: 'lightgray',

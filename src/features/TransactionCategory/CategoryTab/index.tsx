@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { toggleUpdateMode } from 'store/transactionCategory/transactionCategory.slice';
 import { useAppDispatch } from 'store/index';
 import CategoryGroupItem from '../CategoryGroupItem';
-import Recent from './Recent';
+import MostAndRecent from './MostAndRecent';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
@@ -50,7 +50,7 @@ function CategoryTab({ expenseCategoryObserve, type }: CategoryTabProps) {
               onChangeText={handleOnSearch}
               backgroundColor={colors.surface}
             />
-            <Recent />
+            <MostAndRecent type={type}/>
           </>
         )}
         <VirtualizedListComponent data={expenseCategoryObserve} renderItem={renderItem} />

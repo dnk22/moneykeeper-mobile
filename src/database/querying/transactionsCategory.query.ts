@@ -74,6 +74,25 @@ export const getIsTransactionCategoryDataExist = async () => {
     console.log(error, 'get transaction category exist err');
   }
 };
+
+export const getRecentTransactionCategoryUsed = async ({
+  categoryType,
+}: {
+  categoryType: TRANSACTION_CATEGORY_TYPE;
+}) => {
+  return await database.read(async () => {
+    return await database
+      .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
+      .query(
+        Q.where('category_type', categoryType),
+        Q.where('last_use_at', Q.notEq(null)),
+        Q.sortBy('last_use_at', Q.desc),
+        Q.take(4),
+      )
+      .fetch();
+  });
+};
+
 /** create */
 export const addTransactionCategory = async (tCategory: TTransactionsCategory) => {
   try {
@@ -128,27 +147,23 @@ export const updateTransactionCategory = async ({
   }
 };
 
-/** delete */
-// export const deleteTransactionCategoryById = async (id: string) => {
-//   try {
-//     return await database.write(async () => {
-//       const res = await database.get<TransactionCategoryModel>(TRANSACTION_CATEGORY).find(id);
-//       const childRecords = await database
-//         .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-//         .query(Q.where('parent_id', id))
-//         .fetch();
-//       await res.mask();
-//       await childRecords.
+export const updateUseCountTransactionCategory = async (id: string) => {
+  try {
+    const now = new Date();
+    const transactionCategory = await database
+      .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
+      .find(id);
+    await transactionCategory.update((item) => {
+      item.useCount = item.useCount + 1;
+      item.lastUseAt = now.getTime();
+    });
+    return true;
+  } catch (error) {
+    console.log(error, 'updateUseCountTransactionCategory err');
+  }
+};
 
-//       return {
-//         success: true,
-//         message: 'Deleted Success',
-//       };
-//     });
-//   } catch (error) {
-//     console.log(error, 'delete transaction category err');
-//   }
-// };
+/** delete */
 
 export const deleteTransactionCategoryById = async (id: string) => {
   try {

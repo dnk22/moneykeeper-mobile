@@ -8,13 +8,8 @@ const styles = StyleSheet.create({
   group: {
     borderRadius: 10,
     padding: 10,
-    marginBottom: 15,
-  },
-  mostRecent: {
-    height: 100,
-  },
-  itemCategory: {
-    maxHeight: 200,
+    marginBottom: 10,
+    maxHeight: 300,
   },
   menu: {
     paddingBottom: 5,

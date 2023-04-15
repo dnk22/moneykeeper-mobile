@@ -18,6 +18,7 @@ const FlatListComponent: PropsFlatList = (props) => {
     hasPull = false,
     ...rest
   } = props;
+
   const key = (item: any) => item.id;
 
   const renderRefreshControl = useMemo(

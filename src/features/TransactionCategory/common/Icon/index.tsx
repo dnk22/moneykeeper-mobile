@@ -3,15 +3,17 @@ import { View } from 'react-native';
 import SvgIcon from 'components/SvgIcon';
 import isEqual from 'react-fast-compare';
 import ShakeAnimation from 'resources/animations/Shake';
-import styles from './styles';
 import { useAppSelector } from 'store/index';
 import { selectUpdateModeStatus } from 'store/transactionCategory/transactionCategory.selector';
+import styles from './styles';
 
 type IconProps = {
   icon: any;
+  isDisabled?: boolean;
 };
-function Icon({ icon }: IconProps) {
-  const isUpdateMode = useAppSelector((state) => selectUpdateModeStatus(state));
+
+function Icon({ icon, isDisabled = false }: IconProps) {
+  const isUpdateMode = useAppSelector((state) => selectUpdateModeStatus(state)) && !isDisabled;
   return (
     <ShakeAnimation isActiveAnim={isUpdateMode}>
       <View style={styles.iconView}>

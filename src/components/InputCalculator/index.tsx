@@ -1,7 +1,8 @@
-import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import isEqual from 'react-fast-compare';
 import {
   NativeSyntheticEvent,
+  TextInput,
   TextInputProps,
   TextInputSelectionChangeEventData,
   View,
@@ -12,7 +13,7 @@ import styles from './styles';
 import { Control, RegisterOptions, useController } from 'react-hook-form';
 import RnKeyboard from 'rn-keyboard';
 import { CALCULATE, ISINCLUDEOPEARATORS, CLEAR, OPERATOR, NUMBER } from './type';
-import { calculateValue } from 'utils/math';
+import { calculateValue, formatNumber } from 'utils/math';
 
 type TInputCalculator = TextInputProps & {
   name: string;
@@ -158,19 +159,30 @@ function InputCalculator({
     onChange(inputValue);
   };
 
+  const formatText = useMemo(() => formatNumber(inputValue.replace(/,/g, '')), [inputValue]);
+
   return (
     <View style={[styles.group, { backgroundColor: colors.surface }]}>
       <RNText style={styles.amountLabel}>Số tiền</RNText>
       <View style={styles.inputGroup}>
-        <RnKeyboard.Input
+        {/* <RnKeyboard.Input
           selectTextOnFocus
           allowFontScaling={false}
           rnKeyboardType={'KeyboardCalculator'}
-          defaultValue={inputValue}
+          defaultValue={formatText}
           onChangeText={onHandleInputChange}
           onSelectionChange={handleOnSelectionChange}
           onBlur={handleOnBlurInput}
           style={[styles.amountInput, { color: inputTextColor }]}
+        /> */}
+        <TextInput
+          selectTextOnFocus
+          allowFontScaling={false}
+          keyboardType="decimal-pad"
+          value={inputValue}
+          style={[styles.amountInput, { color: inputTextColor }]}
+          onChangeText={onHandleInputChange}
+          onBlur={handleOnBlurInput}
         />
         {isShowPrefix && <RNText style={styles.currency}>₫</RNText>}
       </View>

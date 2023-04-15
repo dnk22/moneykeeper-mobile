@@ -27,6 +27,7 @@ import {
 } from 'navigation/constants';
 import { AddTransactionRouteProp } from 'navigation/types';
 import {
+  useDatabase,
   addNewTransaction,
   getAccountById,
   getFirstAccount,
@@ -347,9 +348,12 @@ function AddTransactions() {
       navigation.goBack();
       return;
     }
-    addNewTransaction(requestData);
-    reset(defaultValues);
-    setTransactionCategorySelected(undefined);
+    addNewTransaction(requestData).then((res) => {
+      if (res) {
+        reset(defaultValues);
+        setTransactionCategorySelected(undefined);
+      }
+    });
   };
 
   return (

@@ -3,6 +3,7 @@ import { TRANSACTIONS } from 'database/constants';
 import { TransactionModel } from 'database/models';
 import { TTransactions } from 'database/types';
 import { Q } from '@nozbe/watermelondb';
+import { updateUseCountTransactionCategory } from './transactionsCategory.query';
 /** observe */
 
 /** read */
@@ -63,29 +64,44 @@ export const getTransactionById = async (id: string) => {
 };
 
 /** create */
+/**
+ *
+ * @param transaction : TTransactions
+ * add new transaction , if success then update useCount in transaction category
+ */
 export const addNewTransaction = async (transaction: TTransactions) => {
   try {
     await database.write(async () => {
       const res = database.get<TransactionModel>(TRANSACTIONS).create((item) => {
         Object.assign(item, transaction);
       });
+      await updateUseCountTransactionCategory(transaction.transactionsCategoryId);
       return res;
     });
   } catch (error) {
-    console.log(error, 'add transaction err');
+    console.log(error);
   }
 };
 /** update */
+/**
+ *
+ * @param id
+ * @param data
+ * @returns void
+ *
+ * update transaction by id , if update successfully then update useCount in transaction category
+ *
+ */
 export const updateTransactionById = async ({ id, data }: { id: string; data: TTransactions }) => {
-  try {
-    await database.write(async () => {
-      const res = await database.get<TransactionModel>(TRANSACTIONS).find(id);
-      await res.update((item) => {
-        Object.assign(item, data);
-      });
+  let useDiffCategory = false;
+  await database.write(async () => {
+    const res = await database.get<TransactionModel>(TRANSACTIONS).find(id);
+    useDiffCategory = res.transactionsCategoryId !== data.transactionsCategoryId;
+    await res.update((item) => {
+      Object.assign(item, data);
     });
-  } catch (error) {
-    console.log(error, 'add transaction err');
-  }
+    if (!useDiffCategory) return;
+    await updateUseCountTransactionCategory(data.transactionsCategoryId);
+  });
 };
 /** delete */

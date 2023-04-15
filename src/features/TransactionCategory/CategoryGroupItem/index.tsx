@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { FlatListComponent, RNText, TouchableHighlightComponent } from 'components/index';
+import { RNText, TouchableHighlightComponent } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { useNavigation } from '@react-navigation/native';
 import withObservables from '@nozbe/with-observables';
@@ -11,8 +11,8 @@ import { selectUpdateModeStatus } from 'store/transactionCategory/transactionCat
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 import { TransactionCategoryParamProps } from 'navigation/types';
 import styles from './styles';
-import Child from './Child';
-import Icon from './Icon';
+import Icon from '../common/Icon';
+import GroupChild from '../common/GroupChild';
 
 type CategoryGroupItemProps = {
   expenseCategoryChildObserve?: any;
@@ -21,16 +21,13 @@ type CategoryGroupItemProps = {
   type: TRANSACTION_CATEGORY_TYPE;
 };
 
-const CategoryChildItemObserve = withObservables(['item'], ({ item }) => ({
-  item: item.observe(),
-}))(Child);
-
 function CategoryGroupItem({ expenseCategoryChildObserve, item }: CategoryGroupItemProps) {
   const { colors } = useCustomTheme();
   const navigation =
     useNavigation<TransactionCategoryParamProps<typeof TRANSACTION_CATEGORY_LIST>['navigation']>();
 
   const isUpdateMode = useAppSelector((state) => selectUpdateModeStatus(state));
+  const isHaveChild = Boolean(expenseCategoryChildObserve.length);
 
   const onItemCategoryPress = (category: TTransactionsCategory) => {
     if (isUpdateMode) {
@@ -44,12 +41,6 @@ function CategoryGroupItem({ expenseCategoryChildObserve, item }: CategoryGroupI
     });
   };
 
-  const renderItem = ({ item }: { item: TTransactionsCategory }) => {
-    return <CategoryChildItemObserve item={item} onPress={() => onItemCategoryPress(item)} />;
-  };
-
-  const isHaveChild = Boolean(expenseCategoryChildObserve.length);
-
   return (
     <View style={[styles.group, { backgroundColor: colors.surface }]}>
       <TouchableHighlightComponent onPress={() => onItemCategoryPress(item)}>
@@ -61,11 +52,7 @@ function CategoryGroupItem({ expenseCategoryChildObserve, item }: CategoryGroupI
         </View>
       </TouchableHighlightComponent>
       {isHaveChild && <View style={styles.divider} />}
-      <FlatListComponent
-        style={styles.childView}
-        data={expenseCategoryChildObserve}
-        renderItem={renderItem}
-      />
+      <GroupChild data={expenseCategoryChildObserve} onItemCategoryPress={onItemCategoryPress} />
     </View>
   );
 }
