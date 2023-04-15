@@ -78,7 +78,7 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
           <SvgIcon name="forward" size={14} opacity={0.7} color="#1BA7EF" />
         </View>
       </MenuView>
-      <GroupChild data={data} onItemCategoryPress={onItemCategoryPress} isDisabled />
+      <GroupChild data={data} onItemCategoryPress={onItemCategoryPress} isDisabled horizontal />
     </View>
   );
 }

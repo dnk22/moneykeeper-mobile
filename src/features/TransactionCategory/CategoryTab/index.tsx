@@ -50,7 +50,7 @@ function CategoryTab({ expenseCategoryObserve, type }: CategoryTabProps) {
               onChangeText={handleOnSearch}
               backgroundColor={colors.surface}
             />
-            <MostAndRecent type={type}/>
+            <MostAndRecent type={type} />
           </>
         )}
         <VirtualizedListComponent data={expenseCategoryObserve} renderItem={renderItem} />

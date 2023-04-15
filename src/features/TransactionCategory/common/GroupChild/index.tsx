@@ -11,10 +11,11 @@ const width = (SCREEN_WIDTH - 40) / 4;
 type ChildProps = {
   data: any;
   isDisabled?: boolean;
+  horizontal?: boolean;
   onItemCategoryPress: (item: TTransactionsCategory) => void;
 };
 
-function GroupChild({ data, isDisabled, onItemCategoryPress }: ChildProps) {
+function GroupChild({ data, isDisabled, horizontal, onItemCategoryPress }: ChildProps) {
   const renderItem = ({ item }: { item: TTransactionsCategory }) => {
     return (
       <TouchableHighlightComponent onPress={() => onItemCategoryPress(item)}>
@@ -23,7 +24,14 @@ function GroupChild({ data, isDisabled, onItemCategoryPress }: ChildProps) {
     );
   };
 
-  return <FlatListComponent style={styles.childView} data={data} renderItem={renderItem} />;
+  return (
+    <FlatListComponent
+      horizontal={horizontal}
+      style={styles.childView}
+      data={data}
+      renderItem={renderItem}
+    />
+  );
 }
 
 const CategoryChildItemObserve = withObservables(['item'], ({ item }) => ({
