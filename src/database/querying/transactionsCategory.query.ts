@@ -75,18 +75,20 @@ export const getIsTransactionCategoryDataExist = async () => {
   }
 };
 
-export const getRecentTransactionCategoryUsed = async ({
+export const getMostUsedOrRecentTransactionCategoryUsed = async ({
   categoryType,
+  column,
 }: {
   categoryType: TRANSACTION_CATEGORY_TYPE;
+  column: 'last_use_at' | 'use_count';
 }) => {
   return await database.read(async () => {
     return await database
       .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
       .query(
         Q.where('category_type', categoryType),
-        Q.where('last_use_at', Q.notEq(null)),
-        Q.sortBy('last_use_at', Q.desc),
+        Q.where(column, Q.notEq(null)),
+        Q.sortBy(column, Q.desc),
         Q.take(4),
       )
       .fetch();

@@ -5,14 +5,14 @@ import isEqual from 'react-fast-compare';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
-import { getRecentTransactionCategoryUsed } from 'database/querying';
+import { getMostUsedOrRecentTransactionCategoryUsed } from 'database/querying';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 import { TTransactionsCategory } from 'database/types';
 import GroupChild from '../common/GroupChild';
 import { useNavigation } from '@react-navigation/native';
 
-const RECENT = 'recent';
-const MOST = 'most';
+const RECENT = 'last_use_at';
+const MOST = 'use_count';
 const ON = 'on';
 const OFF = 'off';
 
@@ -39,13 +39,14 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
   const [viewType, setViewType] = useState<typeof RECENT | typeof MOST>(RECENT);
 
   useEffect(() => {
-    if (viewType === RECENT) {
-      getRecentTransactionCategory();
-    }
+    getRecentTransactionCategory();
   }, [viewType]);
 
   const getRecentTransactionCategory = async () => {
-    const res = await getRecentTransactionCategoryUsed({ categoryType: type });
+    const res = await getMostUsedOrRecentTransactionCategoryUsed({
+      categoryType: type,
+      column: viewType,
+    });
     setData(res);
   };
 
@@ -73,7 +74,7 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
       <MenuView title="Xem nhanh" onPressAction={onHandlePressAction} actions={renderActions}>
         <View style={styles.menu}>
           <RNText color="#1BA7EF" style={{ opacity: 0.7 }}>
-            Sử dụng gần đây
+            {mapTitle[viewType]}
           </RNText>
           <SvgIcon name="forward" size={14} opacity={0.7} color="#1BA7EF" />
         </View>
