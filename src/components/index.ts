@@ -23,6 +23,7 @@ import TouchableHighlightComponent from 'components/TouchableHighlight';
 import InputSearch from 'components/InputSearch';
 import Submit from 'components/Submit';
 import VirtualizedListComponent from 'components/VirtualizedList';
+import Empty from 'components/Empty';
 
 export {
   DateTimePicker,
@@ -50,4 +51,5 @@ export {
   InputSearch,
   Submit,
   VirtualizedListComponent,
+  Empty,
 };

@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useState } from 'react';
 import { SectionListData, View } from 'react-native';
-import { InputSearch, RNText, SectionListComponent } from 'components/index';
+import { Empty, InputSearch, RNText, SectionListComponent } from 'components/index';
 import { TAccount } from 'database/types/index';
 import Item from './Item';
 import withObservables from '@nozbe/with-observables';
@@ -97,17 +97,9 @@ function AccountList({
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
         sections={accounts}
-        ListEmptyComponent={<Empty />}
+        ListEmptyComponent={<Empty text="Không có tài khoản nào!" />}
       />
     </>
-  );
-}
-
-function Empty() {
-  return (
-    <View style={{ alignItems: 'center' }}>
-      <RNText color="red">Không có tài khoản nào!</RNText>
-    </View>
   );
 }
 

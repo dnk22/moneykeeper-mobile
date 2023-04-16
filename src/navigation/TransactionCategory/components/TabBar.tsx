@@ -20,14 +20,17 @@ import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 
 const TabBar = createMaterialTopTabNavigator<TransactionCategoryListParams>();
 
-function TransactionCategoryTapBar({ navigation }) {
-  const route = useRoute<TransactionCategoryListProp>();
+type TransactionCategoryTapBarProps = {
+  route: TransactionCategoryListProp;
+  navigation: any;
+};
+
+function TransactionCategoryTapBar({ route, navigation }: TransactionCategoryTapBarProps) {
   const useDispatch = useAppDispatch();
   const { colors } = useCustomTheme();
   const isUpdateMode = useAppSelector((state) => selectUpdateModeStatus(state));
 
   const tabBarOptions = {
-    tabBarAllowFontScaling: false,
     tabBarPressOpacity: 0.7,
     lazy: true,
     lazyPlaceholder: () => <Loading />,

@@ -1,6 +1,6 @@
 import { memo, useEffect, useMemo, useState } from 'react';
 import { MenuAction, MenuView, NativeActionEvent } from '@react-native-menu/menu';
-import { RNText, SvgIcon } from 'components/index';
+import { Empty, RNText, SvgIcon } from 'components/index';
 import isEqual from 'react-fast-compare';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
@@ -79,7 +79,11 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
           <SvgIcon name="forward" size={14} opacity={0.7} color="#1BA7EF" />
         </View>
       </MenuView>
-      <GroupChild data={data} onItemCategoryPress={onItemCategoryPress} isDisabled horizontal />
+      {data.length ? (
+        <GroupChild data={data} onItemCategoryPress={onItemCategoryPress} isDisabled horizontal />
+      ) : (
+        <Empty />
+      )}
     </View>
   );
 }
