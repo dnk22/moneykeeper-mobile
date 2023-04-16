@@ -10,6 +10,8 @@ export const LEND = 'lend';
 export const BORROW = 'borrow';
 export const COLLECT_DEBTS = 'collectDebts';
 export const REPAYMENT = 'repayment';
+export const RECENT = 'last_use_at';
+export const MOST = 'use_count';
 
 export enum TRANSACTION_CATEGORY_TYPE {
   EXPENSE,

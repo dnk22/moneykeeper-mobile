@@ -13,7 +13,12 @@ const appPersistConfig = {
   key: 'root',
   version: 1,
   storage: reduxPersistStorage,
-  blacklist: [transactionsSlice.name, accountSlice.name, transactionCategorySlice.name],
+  blacklist: [
+    transactionsSlice.name,
+    accountSlice.name,
+    transactionCategorySlice.name,
+    appSlice.name,
+  ],
 };
 
 const transactionsConfig = {

@@ -1,14 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { MOST, RECENT } from 'utils/constant/index';
 
 type AccountViewSettingsProps = {
   sort: 'name' | 'custom';
   group: boolean;
 };
 
+type MostOrRecentModeProps = {
+  expense: typeof RECENT | typeof MOST;
+  income: typeof RECENT | typeof MOST;
+};
+
 type AppState = {
   account_view_settings: AccountViewSettingsProps;
   is_report_view: 'grid' | 'list';
+  isMostOrRecentMode: MostOrRecentModeProps;
 };
 
 const initialState = {
@@ -17,6 +24,10 @@ const initialState = {
     group: true,
   },
   is_report_view: 'grid',
+  isMostOrRecentMode: {
+    expense: RECENT,
+    income: RECENT,
+  },
 } as AppState;
 
 export const appSlice = createSlice({
@@ -32,11 +43,18 @@ export const appSlice = createSlice({
     updateReportViewSettings(state) {
       state.is_report_view = state.is_report_view === 'grid' ? 'list' : 'grid';
     },
+    updateMostOrRecentMode(state, { payload }: PayloadAction<MostOrRecentModeProps>) {
+      state.isMostOrRecentMode = {
+        ...state.isMostOrRecentMode,
+        ...payload,
+      };
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { updateAccountViewSettings, updateReportViewSettings } = appSlice.actions;
+export const { updateAccountViewSettings, updateReportViewSettings, updateMostOrRecentMode } =
+  appSlice.actions;
 
 export type TAppSlice = {
   [appSlice.name]: ReturnType<(typeof appSlice)['reducer']>;

@@ -6,13 +6,14 @@ import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import { getMostUsedOrRecentTransactionCategoryUsed } from 'database/querying';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
+import { MOST, RECENT, TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 import { TTransactionsCategory } from 'database/types';
 import GroupChild from '../common/GroupChild';
 import { useNavigation } from '@react-navigation/native';
+import { useAppDispatch, useAppSelector } from 'store/index';
+import { selectMostOrRecentMode } from 'store/app/app.selector';
+import { updateMostOrRecentMode } from 'store/app/app.slice';
 
-const RECENT = 'last_use_at';
-const MOST = 'use_count';
 const ON = 'on';
 const OFF = 'off';
 
@@ -35,30 +36,34 @@ const dropDownDefault: MenuAction[] = [
 function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
+  const dispatch = useAppDispatch();
+  const { expense, income } = useAppSelector((state) => selectMostOrRecentMode(state));
+  const fastSelectType = type === TRANSACTION_CATEGORY_TYPE.EXPENSE ? expense : income;
   const [data, setData] = useState<TTransactionsCategory[]>([]);
-  const [viewType, setViewType] = useState<typeof RECENT | typeof MOST>(RECENT);
 
   useEffect(() => {
     getRecentTransactionCategory();
-  }, [viewType]);
+  }, [fastSelectType]);
 
   const getRecentTransactionCategory = async () => {
     const res = await getMostUsedOrRecentTransactionCategoryUsed({
       categoryType: type,
-      column: viewType,
+      column: fastSelectType,
     });
     setData(res);
   };
 
   const renderActions = useMemo(() => {
     return dropDownDefault.map((x) => {
-      x.state = x.id === viewType ? ON : OFF;
+      x.state = x.id === fastSelectType ? ON : OFF;
       return x;
     });
-  }, [viewType]);
+  }, [fastSelectType]);
 
   const onHandlePressAction = ({ nativeEvent: { event } }: NativeActionEvent) => {
-    setViewType(event);
+    const typeAs =
+      type === TRANSACTION_CATEGORY_TYPE.EXPENSE ? { expense: event } : { income: event };
+    dispatch(updateMostOrRecentMode(typeAs));
   };
 
   const onItemCategoryPress = (category: TTransactionsCategory) => {
@@ -71,10 +76,15 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
 
   return (
     <View style={[styles.group, { backgroundColor: colors.surface }]}>
-      <MenuView title="Xem nhanh" onPressAction={onHandlePressAction} actions={renderActions}>
+      <MenuView
+        style={styles.selectAs}
+        title="Chọn nhanh theo"
+        onPressAction={onHandlePressAction}
+        actions={renderActions}
+      >
         <View style={styles.menu}>
           <RNText color="#1BA7EF" style={{ opacity: 0.7 }}>
-            {mapTitle[viewType]}
+            {mapTitle[fastSelectType]}
           </RNText>
           <SvgIcon name="forward" size={14} opacity={0.7} color="#1BA7EF" />
         </View>
