@@ -97,7 +97,7 @@ function AddTransactions() {
   // Use `setOptions` to update the button that submit form
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <Done title="Xong" onPress={handleSubmit(onSubmit)}></Done>,
+      headerRight: () => <Done title="Xong" onPress={handleSubmit(onSubmit)} />,
     });
   }, []);
 

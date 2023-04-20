@@ -17,7 +17,7 @@ const appPersistConfig = {
     transactionsSlice.name,
     accountSlice.name,
     transactionCategorySlice.name,
-    appSlice.name,
+    // appSlice.name,
   ],
 };
 

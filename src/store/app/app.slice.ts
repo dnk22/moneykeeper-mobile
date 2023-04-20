@@ -2,50 +2,78 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { MOST, RECENT } from 'utils/constant/index';
 
-type AccountViewSettingsProps = {
-  sort: 'name' | 'custom';
-  group: boolean;
-};
-
 type MostOrRecentModeProps = {
   expense: typeof RECENT | typeof MOST;
   income: typeof RECENT | typeof MOST;
 };
 
+type AccountViewSettingsProps = {
+  sort: 'name' | 'custom';
+  group: boolean;
+};
+
+type TransactionListConfig = {
+  isLimitDisplayTransaction: boolean;
+  isShowDescription: boolean;
+  isShowAmountAfterTransaction: boolean;
+  isShowExpense: boolean;
+  isShowIncome: boolean;
+};
+
 type AppState = {
-  account_view_settings: AccountViewSettingsProps;
-  is_report_view: 'grid' | 'list';
-  isMostOrRecentMode: MostOrRecentModeProps;
+  accountViewSettings: AccountViewSettingsProps;
+  isReportViewByGrid: boolean;
+  isMostRecentMode: MostOrRecentModeProps;
+  transactionListConfig: TransactionListConfig;
 };
 
 const initialState = {
-  account_view_settings: {
+  accountViewSettings: {
     sort: 'name',
     group: true,
   },
-  is_report_view: 'grid',
-  isMostOrRecentMode: {
+  isReportViewByGrid: false,
+  isMostRecentMode: {
     expense: RECENT,
     income: RECENT,
+  },
+  transactionListConfig: {
+    isLimitDisplayTransaction: false,
+    isShowDescription: true,
+    isShowAmountAfterTransaction: true,
+    isShowExpense: true,
+    isShowIncome: true,
   },
 } as AppState;
 
 export const appSlice = createSlice({
-  name: 'app',
+  name: 'appConfig',
   initialState: initialState,
   reducers: {
+    updateAppConfig(state, { payload }: PayloadAction<AppState>) {
+      state = {
+        ...state,
+        ...payload,
+      };
+    },
     updateAccountViewSettings(
       state,
       { payload }: PayloadAction<Partial<AccountViewSettingsProps>>,
     ) {
-      state.account_view_settings = { ...state.account_view_settings, ...payload };
+      state.accountViewSettings = { ...state.accountViewSettings, ...payload };
     },
     updateReportViewSettings(state) {
-      state.is_report_view = state.is_report_view === 'grid' ? 'list' : 'grid';
+      state.isReportViewByGrid = !state.isReportViewByGrid;
     },
     updateMostOrRecentMode(state, { payload }: PayloadAction<MostOrRecentModeProps>) {
-      state.isMostOrRecentMode = {
-        ...state.isMostOrRecentMode,
+      state.isMostRecentMode = {
+        ...state.isMostRecentMode,
+        ...payload,
+      };
+    },
+    updateTransactionListConfig(state, { payload }: PayloadAction<TransactionListConfig>) {
+      state.transactionListConfig = {
+        ...state.transactionListConfig,
         ...payload,
       };
     },
@@ -53,8 +81,13 @@ export const appSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { updateAccountViewSettings, updateReportViewSettings, updateMostOrRecentMode } =
-  appSlice.actions;
+export const {
+  updateAppConfig,
+  updateAccountViewSettings,
+  updateReportViewSettings,
+  updateMostOrRecentMode,
+  updateTransactionListConfig,
+} = appSlice.actions;
 
 export type TAppSlice = {
   [appSlice.name]: ReturnType<(typeof appSlice)['reducer']>;

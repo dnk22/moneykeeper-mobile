@@ -65,6 +65,8 @@ import group from 'assets/svg/icon-group.svg';
 import pencilCircle from 'assets/svg/icon-pencilCircle.svg';
 import arrowCircleDown from 'assets/svg/arrowCircleDown.svg';
 import arrowCircleUp from 'assets/svg/arrowCircleUp.svg';
+import checkMark from 'assets/svg/checkMark.svg';
+import exclamationMark from 'assets/svg/exclamationMark.svg';
 
 const icon = {
   add,
@@ -134,6 +136,8 @@ const icon = {
   pencilCircle,
   arrowCircleDown,
   arrowCircleUp,
+  checkMark,
+  exclamationMark,
 };
 
 export type IconProps = keyof typeof icon;

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { PressableHaptic, RNText, SvgIcon } from 'components/index';
 import { View } from 'react-native';
 import AccountList from 'features/AccountList';

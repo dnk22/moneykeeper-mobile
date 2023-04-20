@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { View } from 'react-native';
 import {
   SvgIcon,
   PressableHaptic,
@@ -7,8 +9,6 @@ import {
   CheckboxComponent,
   TouchableHighlightComponent,
 } from 'components/index';
-import { useState } from 'react';
-import { View } from 'react-native';
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import { updateAccountViewSettings } from 'store/app/app.slice';
 import { useAppDispatch, useAppSelector } from 'store/index';

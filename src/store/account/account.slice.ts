@@ -5,6 +5,7 @@ import { Account_Type } from 'utils/data';
 type AccountProps = {
   accountType: EntityState<TAccountType>;
   bankIdSelected: string;
+  isSelectMode: boolean;
 };
 
 export const accountTypeAdapter = createEntityAdapter<TAccountType>({});
@@ -18,6 +19,7 @@ const setInitAccountType = accountTypeAdapter.upsertMany(
 const initialState: AccountProps = {
   accountType: setInitAccountType,
   bankIdSelected: '',
+  isSelectMode: false,
 };
 
 export const accountSlice = createSlice({
@@ -27,11 +29,14 @@ export const accountSlice = createSlice({
     setBankSelected(state, { payload }: PayloadAction<string>) {
       state.bankIdSelected = payload;
     },
+    setModeSelectTransaction(state, { payload }: { payload?: boolean }) {
+      state.isSelectMode = payload || !state.isSelectMode;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setBankSelected } = accountSlice.actions;
+export const { setBankSelected, setModeSelectTransaction } = accountSlice.actions;
 
 export type TAccountSlice = {
   [accountSlice.name]: ReturnType<(typeof accountSlice)['reducer']>;
