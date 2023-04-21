@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { VirtualizedListComponent } from 'components/index';
 import { getGroupDateTransaction } from 'database/querying';
-import Item from './Item';
+import HeaderItem from './HeaderItem';
 import { AccountStackParamListProps } from 'navigation/types';
 import { useRoute } from '@react-navigation/native';
 
@@ -25,7 +25,7 @@ function TransactionList() {
   };
 
   const renderItem = useCallback(({ item }: { item: DataType }) => {
-    return <Item item={item} />;
+    return <HeaderItem item={item} />;
   }, []);
 
   return <VirtualizedListComponent data={data} renderItem={renderItem} id="dateTimeAt" />;

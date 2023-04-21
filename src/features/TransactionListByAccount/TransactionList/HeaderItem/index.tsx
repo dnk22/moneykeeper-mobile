@@ -17,7 +17,7 @@ type ItemProps = {
   item: { dateTimeAt: string };
 };
 
-function Item({ item }: ItemProps) {
+function HeaderItem({ item }: ItemProps) {
   const { colors } = useCustomTheme();
   const { params } = useRoute<AccountStackParamListProps<'accountDetail'>['route']>();
   const [data, setData] = useState<TransactionModel[]>([]);
@@ -89,4 +89,4 @@ function Item({ item }: ItemProps) {
     </View>
   );
 }
-export default memo(Item, isEqual);
+export default memo(HeaderItem, isEqual);
