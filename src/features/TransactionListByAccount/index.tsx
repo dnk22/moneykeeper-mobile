@@ -8,14 +8,34 @@ import { ADD_TRANSACTION, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/con
 import { AccountDetailProp, AccountStackParamListProps } from 'navigation/types';
 import Summary from './Summary';
 import TransactionList from './TransactionList';
+import { useEffect, useState } from 'react';
+import { ButtonText, TransactionListByAccountConfig } from 'navigation/elements';
 
-function AccountDetails() {
+function TransactionListByAccount() {
   const { colors } = useCustomTheme();
   const navigation =
     useNavigation<
       AccountStackParamListProps<typeof CREATE_TRANSACTION_FROM_ACCOUNT>['navigation']
     >();
   const { params } = useRoute<AccountDetailProp>();
+  const [isSelectMode, setIsSelectMode] = useState(false);
+
+  // Use `setOptions` to update the button that submit form
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () =>
+        isSelectMode ? (
+          <ButtonText title="Xóa" onPress={onHandleDeleteMultiTransaction} />
+        ) : (
+          <TransactionListByAccountConfig onPressSelectMode={onHandleSelectMode} />
+        ),
+    });
+  }, [isSelectMode]);
+
+  const onHandleDeleteMultiTransaction = () => {};
+  const onHandleSelectMode = () => {
+    setIsSelectMode(!isSelectMode);
+  };
 
   const handleOnCreateTransaction = () => {
     navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, {
@@ -37,4 +57,4 @@ function AccountDetails() {
     </View>
   );
 }
-export default AccountDetails;
+export default TransactionListByAccount;

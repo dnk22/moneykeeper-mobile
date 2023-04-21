@@ -12,14 +12,12 @@ import { useCustomTheme } from 'resources/theme';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectTransactionListConfig } from 'store/app/app.selector';
 import { updateTransactionListConfig } from 'store/app/app.slice';
-import { setModeSelectTransaction } from 'store/account/account.slice';
 
-function AccountDetailSettings() {
+function TransactionListByAccountConfig({ onPressSelectMode }: { onPressSelectMode: () => void }) {
   const { colors } = useCustomTheme();
   const [isShowModal, setIsShowModal] = useState(false);
   const dispatch = useAppDispatch();
   const {
-    isLimitDisplayTransaction,
     isShowAmountAfterTransaction,
     isShowDescription,
     isShowExpense,
@@ -35,7 +33,7 @@ function AccountDetailSettings() {
   };
 
   const setSelectMode = () => {
-    dispatch(setModeSelectTransaction());
+    onPressSelectMode();
     onToggleModal();
   };
 
@@ -49,16 +47,6 @@ function AccountDetailSettings() {
           <View style={styles.item}>
             <SvgIcon name="check" size={20} style={{ marginHorizontal: 5 }} />
             <RNText fontSize={16}>Chọn bản ghi</RNText>
-          </View>
-        </TouchableHighlightComponent>
-        <TouchableHighlightComponent
-          onPress={() =>
-            updateTransactionViewConfig({ isLimitDisplayTransaction: !isLimitDisplayTransaction })
-          }
-        >
-          <View style={styles.item}>
-            <CheckboxComponent type="checkbox" disabled check={isLimitDisplayTransaction} />
-            <RNText fontSize={16}>Giới hạn hiển thị bản ghi</RNText>
           </View>
         </TouchableHighlightComponent>
         <View style={styles.divider} />
@@ -112,4 +100,4 @@ function AccountDetailSettings() {
   );
 }
 
-export default AccountDetailSettings;
+export default TransactionListByAccountConfig;

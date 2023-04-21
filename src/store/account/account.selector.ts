@@ -4,7 +4,6 @@ import { accountSlice, accountTypeAdapter } from './account.slice';
 
 const accountTypeState = (state: RootState) => state[accountSlice.name].accountType;
 const bankIdSelectedState = (state: RootState) => state[accountSlice.name].bankIdSelected;
-const selectModeState = (state: RootState) => state[accountSlice.name].isSelectMode;
 
 // export selectors
 export const accountTypeSelectors = accountTypeAdapter.getSelectors(accountTypeState);
@@ -21,5 +20,3 @@ export const selectAllAccountType = createSelector(
   [accountTypeSelectors.selectAll],
   (accountType) => accountType,
 );
-
-export const selectIsSelectMode = createSelector(selectModeState, (isSelect) => isSelect);

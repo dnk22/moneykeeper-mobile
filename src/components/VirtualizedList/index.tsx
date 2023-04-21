@@ -11,6 +11,7 @@ function VirtualizedListComponent({
   renderItem,
   windowSize = 17,
   maxToRenderPerBatch = 10,
+  initialNumToRender = 6,
   ...rest
 }: VirtualizedListComponentProps) {
   const keyExtractor = (item: any) => item[id];
@@ -22,7 +23,7 @@ function VirtualizedListComponent({
   return (
     <VirtualizedList
       data={data}
-      initialNumToRender={6}
+      initialNumToRender={initialNumToRender}
       windowSize={windowSize}
       maxToRenderPerBatch={maxToRenderPerBatch}
       renderItem={renderItem}

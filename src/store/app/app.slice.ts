@@ -13,7 +13,6 @@ type AccountViewSettingsProps = {
 };
 
 type TransactionListConfig = {
-  isLimitDisplayTransaction: boolean;
   isShowDescription: boolean;
   isShowAmountAfterTransaction: boolean;
   isShowExpense: boolean;
@@ -38,7 +37,6 @@ const initialState = {
     income: RECENT,
   },
   transactionListConfig: {
-    isLimitDisplayTransaction: false,
     isShowDescription: true,
     isShowAmountAfterTransaction: true,
     isShowExpense: true,

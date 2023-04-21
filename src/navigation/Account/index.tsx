@@ -10,7 +10,7 @@ import { useCustomTheme } from 'resources/theme';
 
 import AccountTab from './tab';
 import AddAccount from 'features/AddAccount';
-import AccountDetails from 'features/AccountDetails';
+import TransactionListByAccount from 'features/TransactionListByAccount';
 
 // header custom icon
 import Submit from 'navigation/elements/Submit';
@@ -65,7 +65,7 @@ function AccountNavigation() {
           headerBackTitleVisible: false,
           headerRight: (props) => <Submit {...props} />,
         })}
-        component={AccountDetails}
+        component={TransactionListByAccount}
       />
       <AccountStack.Screen name={CREATE_TRANSACTION_FROM_ACCOUNT} component={AddTransactions} />
     </AccountStack.Navigator>

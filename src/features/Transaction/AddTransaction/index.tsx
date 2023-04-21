@@ -27,7 +27,6 @@ import {
 } from 'navigation/constants';
 import { AddTransactionRouteProp } from 'navigation/types';
 import {
-  useDatabase,
   addNewTransaction,
   getAccountById,
   getFirstAccount,
@@ -36,7 +35,7 @@ import {
   updateTransactionById,
 } from 'database/querying';
 import Collapsible from 'react-native-collapsible';
-import { Done, SelectTransactionType } from 'navigation/elements';
+import { ButtonText, SelectTransactionType } from 'navigation/elements';
 import { isEqual } from 'lodash';
 import { MAP_LEND_BORROW, TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
 import { EXPENSE_CATEGORY } from 'navigation/constants';
@@ -97,7 +96,7 @@ function AddTransactions() {
   // Use `setOptions` to update the button that submit form
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <Done title="Xong" onPress={handleSubmit(onSubmit)} />,
+      headerRight: () => <ButtonText title="Xong" onPress={handleSubmit(onSubmit)} />,
     });
   }, []);
 
