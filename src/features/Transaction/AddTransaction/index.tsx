@@ -493,7 +493,6 @@ function AddTransactions() {
           isShowDelete={Boolean(params?.transactionId)}
           onSubmit={handleSubmit(onSubmit)}
         />
-        <Submit onPress={handleSubmit(onSubmit)} />
       </KeyboardAwareScrollView>
     </View>
   );
