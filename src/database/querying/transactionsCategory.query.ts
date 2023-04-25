@@ -33,7 +33,7 @@ export const getAllTransactionGroupIds = async (type: TRANSACTION_CATEGORY_TYPE)
       return res;
     });
   } catch (error) {
-    console.log(error, 'fetch group transaction category err');
+    console.log(error, 'fetch getAllTransactionGroupIds err');
   }
 };
 
@@ -44,7 +44,7 @@ export const getTransactionCategoryById = async (id: string) => {
       return res;
     });
   } catch (error) {
-    console.log(error, 'fetch group transaction category err');
+    console.log(error, 'fetch getTransactionCategoryById err');
   }
 };
 
@@ -58,7 +58,7 @@ export const fetchGroupTransactionCategory = async (type: TRANSACTION_CATEGORY_T
       return res;
     });
   } catch (error) {
-    console.log(error, 'fetch group transaction category err');
+    console.log(error, 'fetch fetchGroupTransactionCategory err');
   }
 };
 

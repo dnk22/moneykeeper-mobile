@@ -1,33 +1,83 @@
-import { useCallback, useEffect, useState } from 'react';
-import { VirtualizedListComponent } from 'components/index';
-import { getGroupDateTransaction } from 'database/querying';
+import { memo, useEffect, useState } from 'react';
+import { SectionListComponent } from 'components/index';
+import { SectionListData } from 'react-native';
+import {
+  getTransactionByAccountCountObserve,
+  getTransactionLisGroupByDate,
+} from 'database/querying';
 import HeaderItem from './HeaderItem';
-import { AccountStackParamListProps } from 'navigation/types';
-import { useRoute } from '@react-navigation/native';
+import Record from './Record';
+import withObservables from '@nozbe/with-observables';
+import isEqual from 'react-fast-compare';
 
-type DataType = {
-  dateTimeAt: string;
+type TransactionListProps = {
+  accountId: string;
+  transactionCount?: number;
 };
 
-function TransactionList() {
-  const { params } = useRoute<AccountStackParamListProps<'accountDetail'>['route']>();
-  const [data, setData] = useState<DataType[]>([]);
+type Data = {
+  title: string;
+  data: string[];
+};
+function TransactionList({ accountId, transactionCount }: TransactionListProps) {
+  const [currentPage, setCurrentPage] = useState(0);
+  const [data, setData] = useState<Data[]>([]);
 
   useEffect(() => {
     fetchTransactionByGroupDate();
-  }, []);
+  }, [currentPage, transactionCount]);
 
   const fetchTransactionByGroupDate = async () => {
-    const res = await getGroupDateTransaction({ accountId: params.accountId });
+    const res = await getTransactionLisGroupByDate({
+      accountId,
+      page: currentPage,
+      limit: 10,
+    });
     if (res) {
-      setData(res);
+      setSections(res);
+    } else {
+      setData([]);
     }
   };
 
-  const renderItem = useCallback(({ item }: { item: DataType }) => {
-    return <HeaderItem item={item} />;
-  }, []);
+  const setSections = (newData: Data[]) => {
+    const existingSectionTitles = data.map(({ title }) => title);
+    const filteredNewSections = newData.filter(
+      (newSection) => !existingSectionTitles.includes(newSection.title),
+    );
+    const mergedSections = data.map((section) => {
+      const duplicateSection = newData.find((newSection) => newSection.title === section.title);
+      if (duplicateSection) {
+        return {
+          ...section,
+          data: [...new Set([...section.data, ...duplicateSection.data])],
+        };
+      }
+      return section;
+    });
+    const updatedSections = [...mergedSections, ...filteredNewSections];
+    setData(updatedSections);
+  };
 
-  return <VirtualizedListComponent data={data} renderItem={renderItem} id="dateTimeAt" />;
+  const renderItem = ({ item }: { item: string }) => {
+    return <Record id={item} />;
+  };
+
+  const renderSectionHeader = ({ section }: { section: SectionListData<string> }) => {
+    const { title, data } = section;
+    return <HeaderItem item={title} itemLength={data.length} />;
+  };
+
+  return (
+    <SectionListComponent
+      id=""
+      sections={data}
+      renderItem={renderItem}
+      renderSectionHeader={renderSectionHeader}
+    />
+  );
 }
-export default TransactionList;
+
+export default withObservables(['transactionCount'], ({ accountId }: TransactionListProps) => ({
+  transactionCount: getTransactionByAccountCountObserve(accountId),
+}))<any>(memo(TransactionList, isEqual));

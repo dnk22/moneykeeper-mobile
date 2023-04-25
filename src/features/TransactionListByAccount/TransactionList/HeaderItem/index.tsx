@@ -1,64 +1,39 @@
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
-import { RNText, VirtualizedListComponent } from 'components/index';
+import { RNText } from 'components/index';
 import isEqual from 'react-fast-compare';
 import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
 import { formatDateStringLocal } from 'utils/date';
 import { isToday, isYesterday, parseISO } from 'date-fns';
-import { AccountStackParamListProps } from 'navigation/types';
-import { useRoute } from '@react-navigation/native';
-import { getTransactionByDate } from 'database/querying';
-import { TransactionModel } from 'database/models';
-import Record from '../Record';
 import { ITEM_HEIGHT, MARGIN_TOP } from '../const';
 
 type ItemProps = {
-  item: { dateTimeAt: string };
+  item: string;
+  itemLength: number;
 };
 
-function HeaderItem({ item }: ItemProps) {
+function HeaderItem({ item, itemLength }: ItemProps) {
   const { colors } = useCustomTheme();
-  const { params } = useRoute<AccountStackParamListProps<'accountDetail'>['route']>();
-  const [data, setData] = useState<TransactionModel[]>([]);
 
-  useEffect(() => {
-    fetchTransactionByDate();
-  }, []);
-
-  const fetchTransactionByDate = async () => {
-    const res = await getTransactionByDate({
-      accountId: params.accountId,
-      date: item.dateTimeAt,
-    });
-    setData(res);
-  };
-
-  const formatDate = useCallback(
-    (format: string) => formatDateStringLocal(item.dateTimeAt, format),
-    [item.dateTimeAt],
-  );
+  const formatDate = useCallback((format: string) => formatDateStringLocal(item, format), [item]);
 
   const formatDayOfTheWeek = () => {
-    if (isToday(parseISO(item.dateTimeAt))) {
+    if (isToday(parseISO(item))) {
       return 'Hôm nay';
-    } else if (isYesterday(parseISO(item.dateTimeAt))) {
+    } else if (isYesterday(parseISO(item))) {
       return 'Hôm qua';
     }
     return formatDate('EEEE');
   };
 
-  const renderItem = useCallback(({ item }: { item: TransactionModel }) => {
-    return <Record item={item} colors={colors} />;
-  }, []);
-
   const parentLineHeight = useMemo(() => {
-    return ITEM_HEIGHT * (data.length - 1) + MARGIN_TOP * data.length + ITEM_HEIGHT / 2;
-  }, [data]);
+    return ITEM_HEIGHT * (itemLength - 1) + MARGIN_TOP * itemLength + ITEM_HEIGHT / 2;
+  }, [itemLength]);
 
   return (
     <View style={styles.item}>
-      {Boolean(data.length) && (
+      {Boolean(itemLength) && (
         <View
           style={[
             styles.parentLine,
@@ -82,9 +57,6 @@ function HeaderItem({ item }: ItemProps) {
           <RNText>Hôm nay</RNText>
           <RNText>Hôm nay</RNText>
         </View>
-      </View>
-      <View style={styles.recordView}>
-        <VirtualizedListComponent data={data} renderItem={renderItem} />
       </View>
     </View>
   );

@@ -3,15 +3,16 @@ import { ITEM_HEIGHT, MARGIN_TOP } from '../const';
 
 const styles = StyleSheet.create({
   record: {
-    flexDirection: 'row',
-    width: '100%',
+    width: '90%',
     height: ITEM_HEIGHT,
     position: 'relative',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
     marginTop: MARGIN_TOP,
     borderRadius: 10,
     paddingHorizontal: '5%',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    alignSelf: 'flex-end',
   },
   childLine: {
     width: '5%',

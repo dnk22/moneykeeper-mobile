@@ -16,6 +16,7 @@ import {
   InputCalculator,
   InputSelection,
   Submit,
+  FormAction,
 } from 'components/index';
 import { formatDateLocal } from 'utils/date';
 import Animated, { StretchInY } from 'react-native-reanimated';
@@ -488,6 +489,10 @@ function AddTransactions() {
           <RNText>{isShowDetails ? 'Ẩn chi tiết' : 'Hiển thị chi tiết'}</RNText>
           <SvgIcon name={isShowDetails ? 'arrowUp' : 'arrowDown'} size={16} />
         </PressableHaptic>
+        <FormAction
+          isShowDelete={Boolean(params?.transactionId)}
+          onSubmit={handleSubmit(onSubmit)}
+        />
         <Submit onPress={handleSubmit(onSubmit)} />
       </KeyboardAwareScrollView>
     </View>

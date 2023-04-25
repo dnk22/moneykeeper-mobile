@@ -23,10 +23,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     paddingRight: 10,
   },
-  recordView: {
-    width: '90%',
-    alignSelf: 'flex-end',
-  },
   parentLine: {
     zIndex: 2,
     position: 'absolute',

@@ -7,8 +7,9 @@ import {
   SvgIcon,
   SwitchField,
   Submit,
+  FormAction,
 } from 'components/index';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -19,7 +20,13 @@ import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectBankIdSelected, selectAllAccountType } from 'store/account/account.selector';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AddAccountRouteProp } from 'navigation/types';
-import { addAccount, getAccountById, updateAccount, getBankById } from 'database/querying';
+import {
+  addAccount,
+  getAccountById,
+  updateAccount,
+  getBankById,
+  deleteAccountById,
+} from 'database/querying';
 import { BANK_HOME_LIST, BANK_NAVIGATION } from 'navigation/constants';
 import { setBankSelected } from 'store/account/account.slice';
 import { BankModel } from 'database/models';
@@ -207,6 +214,24 @@ const AddAccount = () => {
     navigation.goBack();
   };
 
+  const onOk = () => {
+    params?.accountId && deleteAccountById({ id: params.accountId });
+    navigation.goBack();
+  };
+
+  const onConfirmDelete = () =>
+    Alert.alert(
+      `Xóa ${getValues('accountName')}`,
+      'Xóa tài khoản đồng này nghĩa với việc tất cả các ghi chép của tài khoản này sẽ bị xóa theo, HÃY CẨN THẬN!',
+      [
+        {
+          text: 'Hủy bỏ',
+          style: 'cancel',
+        },
+        { text: 'Đồng ý', style: 'destructive', onPress: () => onOk() },
+      ],
+    );
+
   return (
     <View style={styles.container}>
       <AccountTypeModalPicker
@@ -273,7 +298,11 @@ const AddAccount = () => {
           </View>
           <RNText style={styles.subText}>Ghi chép này sẽ không thống kê vào các báo cáo.</RNText>
         </View>
-        <Submit onPress={handleSubmit(onHandleSubmit)} />
+        <FormAction
+          isShowDelete={Boolean(params?.accountId)}
+          onSubmit={handleSubmit(onHandleSubmit)}
+          onDelete={onConfirmDelete}
+        />
       </KeyboardAwareScrollView>
     </View>
   );

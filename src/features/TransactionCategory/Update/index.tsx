@@ -8,6 +8,7 @@ import {
   TouchableHighlightComponent,
   RNText,
   PressableHaptic,
+  FormAction,
 } from 'components/index';
 import { ParentListProps, UpdateTransactionCategoryRouteProps } from 'navigation/types';
 import { useForm } from 'react-hook-form';
@@ -179,17 +180,11 @@ function UpdateTransactionCategory() {
             onDelete={handleOnDeleteParent}
           />
         </View>
-        <View style={styles.action}>
-          {params?.transactionCategoryId && (
-            <TouchableHighlightComponent
-              style={[styles.buttonDel, { backgroundColor: colors.surface }]}
-              onPress={handleOnDeleteRecord}
-            >
-              <RNText color="red">Xóa</RNText>
-            </TouchableHighlightComponent>
-          )}
-          <Submit onPress={handleSubmit(onHandleSubmit)} />
-        </View>
+        <FormAction
+          isShowDelete={Boolean(params?.transactionCategoryId)}
+          onSubmit={handleSubmit(onHandleSubmit)}
+          onDelete={handleOnDeleteRecord}
+        />
       </View>
     </TouchableWithoutFeedback>
   );

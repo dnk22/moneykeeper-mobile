@@ -3,22 +3,20 @@ import { FlatList, RefreshControl } from 'react-native';
 import { PropsFlatList } from './model';
 import isEqual from 'react-fast-compare';
 
-const FlatListComponent: PropsFlatList = (props) => {
-  const {
-    data,
-    renderItem,
-    onRefresh,
-    onLoadMore,
-    keyExtractor,
-    maxToRenderPerBatch = 10,
-    initialNumToRender = 10,
-    showsVerticalScrollIndicator = false,
-    showsHorizontalScrollIndicator = false,
-    refreshing,
-    hasPull = false,
-    ...rest
-  } = props;
-
+const FlatListComponent: PropsFlatList = ({
+  data,
+  renderItem,
+  onRefresh,
+  onLoadMore,
+  keyExtractor,
+  maxToRenderPerBatch = 10,
+  initialNumToRender = 10,
+  showsVerticalScrollIndicator = false,
+  showsHorizontalScrollIndicator = false,
+  refreshing,
+  hasPull = false,
+  ...rest
+}) => {
   const key = (item: any) => item.id;
 
   const renderRefreshControl = useMemo(

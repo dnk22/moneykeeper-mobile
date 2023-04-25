@@ -1,4 +1,4 @@
-import React, { useCallback, memo, useMemo } from 'react';
+import { useCallback, memo, useMemo } from 'react';
 import { RefreshControl, SectionList, SectionListProps } from 'react-native';
 import isEqual from 'react-fast-compare';
 
@@ -6,26 +6,26 @@ export type TSectionListProps = SectionListProps<any> & {
   onRefresh?: () => void;
   onLoadMore?: () => void;
   hasPull?: boolean;
+  id?: string;
 };
 
-function FlatListComponent(props: TSectionListProps) {
-  const {
-    sections,
-    renderItem,
-    renderSectionHeader,
-    stickySectionHeadersEnabled = false,
-    onRefresh,
-    onLoadMore,
-    maxToRenderPerBatch = 10,
-    initialNumToRender = 10,
-    showsVerticalScrollIndicator = false,
-    showsHorizontalScrollIndicator = false,
-    refreshing,
-    hasPull = false,
-    ...rest
-  } = props;
-
-  const keyExtractor = useCallback((item: any) => item.id, []);
+function SectionListComponent({
+  sections,
+  renderItem,
+  renderSectionHeader,
+  stickySectionHeadersEnabled = false,
+  onRefresh,
+  onLoadMore,
+  maxToRenderPerBatch = 10,
+  initialNumToRender = 10,
+  showsVerticalScrollIndicator = false,
+  showsHorizontalScrollIndicator = false,
+  refreshing,
+  hasPull = false,
+  id = 'id',
+  ...rest
+}: TSectionListProps) {
+  const keyExtractor = useCallback((item: any) => (id === '' ? item : item[id]), []);
 
   const renderRefreshControl = useMemo(
     () => (
@@ -59,4 +59,4 @@ function FlatListComponent(props: TSectionListProps) {
   );
 }
 
-export default memo(FlatListComponent, isEqual);
+export default memo(SectionListComponent, isEqual);

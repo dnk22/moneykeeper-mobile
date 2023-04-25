@@ -1,40 +1,41 @@
 import { memo, useEffect, useState } from 'react';
-import isEqual from 'react-fast-compare';
 import { View } from 'react-native';
-import styles from './styles';
+import isEqual from 'react-fast-compare';
 import { RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
-import { TransactionModel } from 'database/models';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
-import { getTransactionCategoryById } from 'database/querying';
+import { getTransactionByIdObserve, getTransactionCategoryById } from 'database/querying';
 import { useNavigation } from '@react-navigation/native';
 import { AccountStackParamListProps } from 'navigation/types';
-import {
-  ACCOUNT_DETAIL,
-  ADD_TRANSACTION,
-  CREATE_TRANSACTION_FROM_ACCOUNT,
-} from 'navigation/constants';
-import { formatDateLocal } from 'utils/date';
+import { ACCOUNT_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
+import { useCustomTheme } from 'resources/theme';
+import withObservables from '@nozbe/with-observables';
+import styles from './styles';
+import { TTransactions } from 'database/types';
 
 type RecordProps = {
-  item: TransactionModel;
-  colors: any;
+  id: string;
+  transaction?: TTransactions;
 };
-function Record({ item, colors }: RecordProps) {
+
+function Record({ transaction }: RecordProps) {
+  const { colors } = useCustomTheme();
   const navigation =
     useNavigation<AccountStackParamListProps<typeof ACCOUNT_DETAIL>['navigation']>();
   const [transactionCategory, setTransactionCategory] = useState<TransactionCategoryModel>();
 
   useEffect(() => {
-    getTransactionCategory();
-  }, []);
+    if (transaction?.transactionsCategoryId) {
+      getTransactionCategory(transaction?.transactionsCategoryId);
+    }
+  }, [transaction?.transactionsCategoryId]);
 
-  const getTransactionCategory = async () => {
-    const res = await getTransactionCategoryById(item.transactionsCategoryId);
+  const getTransactionCategory = async (id: string) => {
+    const res = await getTransactionCategoryById(id);
     setTransactionCategory(res);
   };
 
   const onRecordPress = () => {
-    navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, { transactionId: item.id });
+    navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, { transactionId: transaction?.id });
   };
 
   return (
@@ -45,19 +46,22 @@ function Record({ item, colors }: RecordProps) {
           <SvgIcon name={transactionCategory?.icon} />
           <View>
             <RNText>{transactionCategory?.categoryName}</RNText>
-            {item?.descriptions && (
+            {transaction?.descriptions && (
               <RNText color="gray" fontSize={11}>
-                {item.descriptions}
+                {transaction.descriptions}
               </RNText>
             )}
           </View>
         </View>
         <View style={styles.amountInfo}>
-          <RNText>{item.amount}</RNText>
-          <RNText>{item.amount}</RNText>
+          <RNText>{transaction?.amount}</RNText>
+          <RNText>{transaction?.amount}</RNText>
         </View>
       </View>
     </TouchableHighlightComponent>
   );
 }
-export default memo(Record, isEqual);
+
+export default withObservables(['transaction'], ({ id }: RecordProps) => ({
+  transaction: getTransactionByIdObserve(id),
+}))<any>(memo(Record, isEqual));

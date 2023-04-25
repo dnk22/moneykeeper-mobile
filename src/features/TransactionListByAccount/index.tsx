@@ -53,7 +53,7 @@ function TransactionListByAccount() {
         <SvgIcon name="add" size={30} color="white" />
       </PressableHaptic>
       <Summary />
-      <TransactionList />
+      <TransactionList accountId={params.accountId} />
     </View>
   );
 }
