@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { PropsFlatList } from './model';
 import isEqual from 'react-fast-compare';
@@ -8,17 +8,15 @@ const FlatListComponent: PropsFlatList = ({
   renderItem,
   onRefresh,
   onLoadMore,
-  keyExtractor,
   maxToRenderPerBatch = 10,
   initialNumToRender = 10,
   showsVerticalScrollIndicator = false,
   showsHorizontalScrollIndicator = false,
   refreshing,
   hasPull = false,
+  id = 'id',
   ...rest
 }) => {
-  const key = (item: any) => item.id;
-
   const renderRefreshControl = useMemo(
     () => (
       <RefreshControl
@@ -31,10 +29,12 @@ const FlatListComponent: PropsFlatList = ({
     [onRefresh],
   );
 
+  const keyExtractor = useCallback((item: any) => (id === '' ? item : item[id]), []);
+
   return (
     <FlatList
       data={data}
-      keyExtractor={keyExtractor || key}
+      keyExtractor={keyExtractor}
       extraData={data}
       keyboardShouldPersistTaps="handled"
       renderItem={renderItem}

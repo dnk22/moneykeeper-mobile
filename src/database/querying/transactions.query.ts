@@ -47,10 +47,7 @@ export const getTransactionLisGroupByDate = async ({
         .query(Q.unsafeSqlQuery(query))
         .unsafeFetchRaw();
       for (const item of dateList) {
-        const ids = await reader.callReader(() =>
-          getTransactionIdsByDate({ accountId, date: item.title }),
-        );
-        item.data = ids;
+        item.data = [item.title];
       }
       return dateList;
     });

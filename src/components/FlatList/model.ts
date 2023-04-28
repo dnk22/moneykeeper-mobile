@@ -5,6 +5,7 @@ interface Props extends FlatListProps<any> {
   onRefresh?: () => void;
   onLoadMore?: () => void;
   hasPull?: boolean;
+  id?: string;
 }
 
 export type PropsFlatList = React.FC<Props>;

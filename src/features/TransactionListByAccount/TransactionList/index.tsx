@@ -9,6 +9,7 @@ import HeaderItem from './HeaderItem';
 import Record from './Record';
 import withObservables from '@nozbe/with-observables';
 import isEqual from 'react-fast-compare';
+import ItemChild from './ItemChild';
 
 type TransactionListProps = {
   accountId: string;
@@ -25,7 +26,6 @@ function TransactionList({ accountId, transactionCount }: TransactionListProps) 
 
   useEffect(() => {
     if (currentPage) {
-      console.log('hihi');
       fetchTransactionByGroupDate(true);
     }
   }, [currentPage]);
@@ -41,11 +41,12 @@ function TransactionList({ accountId, transactionCount }: TransactionListProps) 
       limit: 3,
     });
     if (res) {
-      if (isLoadMore) {
-        setData([...data, ...res]);
-      } else {
-        setSections(res);
-      }
+      setData([...data, ...res]);
+      //   if (isLoadMore) {
+      //     setData([...data, ...res]);
+      //   } else {
+      //     setSections(res);
+      //   }
     }
   };
 
@@ -69,7 +70,7 @@ function TransactionList({ accountId, transactionCount }: TransactionListProps) 
   };
 
   const renderItem = ({ item }: { item: string }) => {
-    return <Record id={item} />;
+    return <ItemChild date={item} accountId={accountId} />;
   };
 
   const renderSectionHeader = ({ section }: { section: SectionListData<string> }) => {

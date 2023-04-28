@@ -26,9 +26,9 @@ function GroupChild({ data, isDisabled, horizontal, onItemCategoryPress }: Child
 
   return (
     <FlatListComponent
+      data={data}
       horizontal={horizontal}
       style={styles.childView}
-      data={data}
       renderItem={renderItem}
     />
   );
