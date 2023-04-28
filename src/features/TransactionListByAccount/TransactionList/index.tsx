@@ -24,19 +24,28 @@ function TransactionList({ accountId, transactionCount }: TransactionListProps) 
   const [data, setData] = useState<Data[]>([]);
 
   useEffect(() => {
-    fetchTransactionByGroupDate();
-  }, [currentPage, transactionCount]);
+    if (currentPage) {
+      console.log('hihi');
+      fetchTransactionByGroupDate(true);
+    }
+  }, [currentPage]);
 
-  const fetchTransactionByGroupDate = async () => {
+  useEffect(() => {
+    fetchTransactionByGroupDate(false);
+  }, [transactionCount]);
+
+  const fetchTransactionByGroupDate = async (isLoadMore: boolean) => {
     const res = await getTransactionLisGroupByDate({
       accountId,
       page: currentPage,
-      limit: 10,
+      limit: 3,
     });
     if (res) {
-      setSections(res);
-    } else {
-      setData([]);
+      if (isLoadMore) {
+        setData([...data, ...res]);
+      } else {
+        setSections(res);
+      }
     }
   };
 

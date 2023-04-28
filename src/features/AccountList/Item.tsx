@@ -11,6 +11,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { ACCOUNT_DETAIL } from 'navigation/constants';
 import { useCustomTheme } from 'resources/theme';
+import { AccountDetailProp } from 'navigation/types';
 
 type ItemProps = {
   account: TAccount;
@@ -21,7 +22,7 @@ type ItemProps = {
 
 function Item({ account, isItemSelected, onActionPress, onItemPress }: ItemProps) {
   const { colors } = useCustomTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<AccountDetailProp>();
 
   const handleOnItemPress = () => {
     if (onItemPress) {

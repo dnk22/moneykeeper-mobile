@@ -345,15 +345,17 @@ function AddTransactions() {
     };
     if (params?.transactionId) {
       updateTransactionById({ id: params.transactionId, data: requestData });
+      // navigate to prev screen
       navigation.goBack();
-      return;
+    } else {
+      addNewTransaction(requestData).then((res) => {
+        if (res) {
+          setTransactionCategorySelected(undefined);
+          // reset form state
+          reset(defaultValues);
+        }
+      });
     }
-    addNewTransaction(requestData).then((res) => {
-      if (res) {
-        reset(defaultValues);
-        setTransactionCategorySelected(undefined);
-      }
-    });
   };
 
   return (

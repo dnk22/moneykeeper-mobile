@@ -93,10 +93,10 @@ function AccountList({
       {isShowSearch && <InputSearch onChangeText={onInputChange} />}
       <SectionListComponent
         style={{ maxHeight }}
+        sections={accounts}
         initialNumToRender={8}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
-        sections={accounts}
         ListEmptyComponent={<Empty text="Không có tài khoản nào!" />}
       />
     </>

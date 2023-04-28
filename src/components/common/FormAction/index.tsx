@@ -1,8 +1,8 @@
-import TouchableHighlightComponent from 'components/TouchableHighlight';
 import { View } from 'react-native';
-import styles from './styles';
-import { RNText } from 'components/index';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import RNText from 'components/Text';
 import Submit from '../Submit';
+import styles from './styles';
 
 type FormActionProps = {
   isShowDelete?: boolean;

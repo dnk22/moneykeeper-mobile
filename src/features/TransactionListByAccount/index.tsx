@@ -38,10 +38,7 @@ function TransactionListByAccount() {
   };
 
   const handleOnCreateTransaction = () => {
-    navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, {
-      screen: ADD_TRANSACTION,
-      params: { accountId: params?.accountId },
-    });
+    navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, { accountId: params?.accountId });
   };
 
   return (
