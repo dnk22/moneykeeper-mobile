@@ -1,28 +1,23 @@
 import { memo, useEffect, useState } from 'react';
-import { SectionListComponent } from 'components/index';
-import { SectionListData } from 'react-native';
+import { VirtualizedListComponent } from 'components/index';
 import {
   getTransactionByAccountCountObserve,
   getTransactionLisGroupByDate,
 } from 'database/querying';
 import HeaderItem from './HeaderItem';
-import Record from './Record';
 import withObservables from '@nozbe/with-observables';
 import isEqual from 'react-fast-compare';
-import ItemChild from './ItemChild';
 
 type TransactionListProps = {
   accountId: string;
   transactionCount?: number;
 };
-
-type Data = {
-  title: string;
-  data: string[];
+type DataProps = {
+  date: string;
 };
 function TransactionList({ accountId, transactionCount }: TransactionListProps) {
   const [currentPage, setCurrentPage] = useState(0);
-  const [data, setData] = useState<Data[]>([]);
+  const [data, setData] = useState<DataProps[]>([]);
 
   useEffect(() => {
     if (currentPage) {
@@ -41,26 +36,24 @@ function TransactionList({ accountId, transactionCount }: TransactionListProps) 
       limit: 3,
     });
     if (res) {
-      setData([...data, ...res]);
-      //   if (isLoadMore) {
-      //     setData([...data, ...res]);
-      //   } else {
-      //     setSections(res);
-      //   }
+      if (isLoadMore) {
+        setData([...data, ...res]);
+      } else {
+        setSections(res);
+      }
     }
   };
 
-  const setSections = (newData: Data[]) => {
-    const existingSectionTitles = data.map(({ title }) => title);
+  const setSections = (newData: DataProps[]) => {
+    const existingSectionTitles = data.map(({ date }) => date);
     const filteredNewSections = newData.filter(
-      (newSection) => !existingSectionTitles.includes(newSection.title),
+      (newSection) => !existingSectionTitles.includes(newSection.date),
     );
     const mergedSections = data.map((section) => {
-      const duplicateSection = newData.find((newSection) => newSection.title === section.title);
+      const duplicateSection = newData.find((newSection) => newSection.date === section.date);
       if (duplicateSection) {
         return {
           ...section,
-          data: [...new Set([...section.data, ...duplicateSection.data])],
         };
       }
       return section;
@@ -69,23 +62,12 @@ function TransactionList({ accountId, transactionCount }: TransactionListProps) 
     setData(updatedSections);
   };
 
-  const renderItem = ({ item }: { item: string }) => {
-    return <ItemChild date={item} accountId={accountId} />;
+  const renderItem = ({ item }: { item: DataProps }) => {
+    const { date } = item;
+    return <HeaderItem item={date} accountId={accountId} />;
   };
 
-  const renderSectionHeader = ({ section }: { section: SectionListData<string> }) => {
-    const { title, data } = section;
-    return <HeaderItem item={title} itemLength={data.length} />;
-  };
-
-  return (
-    <SectionListComponent
-      id=""
-      sections={data}
-      renderItem={renderItem}
-      renderSectionHeader={renderSectionHeader}
-    />
-  );
+  return <VirtualizedListComponent data={data} renderItem={renderItem} id="date" />;
 }
 
 export default withObservables(['transactionCount'], ({ accountId }: TransactionListProps) => ({

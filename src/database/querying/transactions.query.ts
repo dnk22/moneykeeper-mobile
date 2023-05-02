@@ -4,6 +4,17 @@ import { TransactionModel } from 'database/models';
 import { TTransactions } from 'database/types';
 import { Q } from '@nozbe/watermelondb';
 import { updateUseCountTransactionCategory } from './transactionsCategory.query';
+
+export type GetTransactionProps = {
+  accountId: string;
+  page?: number;
+  limit?: number;
+};
+
+export type GetTransactionByDate = GetTransactionProps & {
+  date: string;
+};
+
 /** observe */
 
 export const getTransactionByIdObserve = (id: string) =>
@@ -15,18 +26,21 @@ export const getTransactionByAccountCountObserve = (accountId: string) =>
     .query(Q.where('account_id', accountId))
     .observeCount();
 
+export const getTransactionsByDateCountObserve = ({ date, accountId }: GetTransactionByDate) => {
+  const startOfDay = new Date(new Date(date).setUTCHours(0, 0, 0, 0)).getTime();
+  const endOfDay = new Date(new Date(date).setUTCHours(23, 59, 59, 999)).getTime();
+  return database
+    .get<TransactionModel>(TRANSACTIONS)
+    .query(
+      Q.where('account_id', accountId),
+      Q.and(Q.where('date_time_at', Q.between(startOfDay, endOfDay))),
+      Q.sortBy('date_time_at', Q.desc),
+    )
+    .observe();
+};
+
 /** read */
 /** querying Transaction by multi condition  */
-export type GetTransactionProps = {
-  accountId: string;
-  page?: number;
-  limit?: number;
-};
-
-export type GetTransactionByDate = GetTransactionProps & {
-  date: string;
-};
-
 export const getTransactionLisGroupByDate = async ({
   accountId,
   page = 0,
@@ -34,21 +48,18 @@ export const getTransactionLisGroupByDate = async ({
 }: GetTransactionProps) => {
   try {
     const query = `SELECT distinct 
-      strftime('%Y-%m-%d', datetime(date_time_at/1000, 'unixepoch')) AS title 
+      strftime('%Y-%m-%d', datetime(date_time_at/1000, 'unixepoch')) AS date 
       FROM ${TRANSACTIONS} 
       WHERE account_id='${accountId}' 
       ORDER BY date_time_at DESC 
       LIMIT ${limit}
       OFFSET ${page * limit - 1}
     `;
-    return await database.read(async (reader) => {
+    return await database.read(async () => {
       const dateList = await database
         .get<TransactionModel>(TRANSACTIONS)
         .query(Q.unsafeSqlQuery(query))
         .unsafeFetchRaw();
-      for (const item of dateList) {
-        item.data = [item.title];
-      }
       return dateList;
     });
   } catch (error) {
@@ -56,7 +67,7 @@ export const getTransactionLisGroupByDate = async ({
   }
 };
 
-export const getTransactionIdsByDate = async ({ accountId, date }: GetTransactionByDate) => {
+export const getTransactionsByDate = async ({ accountId, date }: GetTransactionByDate) => {
   try {
     const startOfDay = new Date(new Date(date).setUTCHours(0, 0, 0, 0)).getTime();
     const endOfDay = new Date(new Date(date).setUTCHours(23, 59, 59, 999)).getTime();
@@ -69,7 +80,7 @@ export const getTransactionIdsByDate = async ({ accountId, date }: GetTransactio
           Q.and(Q.where('date_time_at', Q.between(startOfDay, endOfDay))),
           Q.sortBy('date_time_at', Q.desc),
         )
-        .fetchIds();
+        .fetch();
       return res;
     });
   } catch (error) {

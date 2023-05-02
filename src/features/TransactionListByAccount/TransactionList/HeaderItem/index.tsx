@@ -1,23 +1,31 @@
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo } from 'react';
 import { View } from 'react-native';
-import { RNText } from 'components/index';
+import { FlatListComponent, RNText } from 'components/index';
 import isEqual from 'react-fast-compare';
 import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
 import { formatDateStringLocal } from 'utils/date';
 import { isToday, isYesterday, parseISO } from 'date-fns';
 import { ITEM_HEIGHT, MARGIN_TOP } from '../const';
+import withObservables from '@nozbe/with-observables';
+import { getTransactionsByDateCountObserve } from 'database/querying';
+import { TransactionModel } from 'database/models';
+import TransactionItem from '../TransactionItem';
 
-type ItemProps = {
+type HeaderItemProps = {
   item: string;
-  itemLength: number;
+  accountId: string;
+  accountObserve?: any;
 };
 
-function HeaderItem({ item, itemLength }: ItemProps) {
+const TransactionObserve = withObservables(['data'], ({ data }) => ({
+  data: data.observe(),
+}))(TransactionItem);
+
+function HeaderItem({ item, accountId, accountObserve }: HeaderItemProps) {
   const { colors } = useCustomTheme();
-
   const formatDate = useCallback((format: string) => formatDateStringLocal(item, format), [item]);
-
+  const itemLength = accountObserve.length;
   const formatDayOfTheWeek = () => {
     if (isToday(parseISO(item))) {
       return 'Hôm nay';
@@ -27,38 +35,48 @@ function HeaderItem({ item, itemLength }: ItemProps) {
     return formatDate('EEEE');
   };
 
+  function renderItem({ item }: { item: TransactionModel }) {
+    return <TransactionObserve data={item} />;
+  }
+
   const parentLineHeight = useMemo(() => {
     return ITEM_HEIGHT * (itemLength - 1) + MARGIN_TOP * itemLength + ITEM_HEIGHT / 2;
   }, [itemLength]);
 
   return (
-    <View style={styles.item}>
-      {Boolean(itemLength) && (
-        <View
-          style={[
-            styles.parentLine,
-            {
-              height: parentLineHeight,
-            },
-          ]}
-        />
-      )}
-      <View style={[styles.header, { backgroundColor: colors.surface, height: ITEM_HEIGHT }]}>
-        <View>
-          <RNText fontSize={30} style={styles.day}>
-            {formatDate('dd')}
-          </RNText>
-        </View>
-        <View>
-          <RNText>{formatDayOfTheWeek()}</RNText>
-          <RNText>{formatDate('MM/yyyy')}</RNText>
-        </View>
-        <View style={styles.dayExpense}>
-          <RNText>Hôm nay</RNText>
-          <RNText>Hôm nay</RNText>
+    <>
+      <View style={styles.item}>
+        {Boolean(itemLength) && (
+          <View
+            style={[
+              styles.parentLine,
+              {
+                height: parentLineHeight,
+              },
+            ]}
+          />
+        )}
+        <View style={[styles.header, { backgroundColor: colors.surface, height: ITEM_HEIGHT }]}>
+          <View>
+            <RNText fontSize={30} style={styles.day}>
+              {formatDate('dd')}
+            </RNText>
+          </View>
+          <View>
+            <RNText>{formatDayOfTheWeek()}</RNText>
+            <RNText>{formatDate('MM/yyyy')}</RNText>
+          </View>
+          <View style={styles.dayExpense}>
+            <RNText>Hôm nay</RNText>
+            <RNText>Hôm nay</RNText>
+          </View>
         </View>
       </View>
-    </View>
+      <FlatListComponent data={accountObserve} renderItem={renderItem} />
+    </>
   );
 }
-export default memo(HeaderItem, isEqual);
+
+export default withObservables(['accountObserve'], ({ item, accountId }: HeaderItemProps) => ({
+  accountObserve: getTransactionsByDateCountObserve({ date: item, accountId }),
+}))<any>(memo(HeaderItem, isEqual));
