@@ -58,14 +58,15 @@ target 'moneykeeper' do
   pod 'Permission-AppTrackingTransparency', :path => "#{permissions_path}/AppTrackingTransparency"
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
 
-  # If you're using autolinking, this line might not be needed
-  pod 'WatermelonDB', :path => '../node_modules/@nozbe/watermelondb'
+  # Uncomment this line if you're not using auto-linking
+  # pod 'WatermelonDB', path: '../node_modules/@nozbe/watermelondb'
 
-  # NOTE: Do not remove, needed to keep WatermelonDB compiling:
-  pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
+  # WatermelonDB dependency, should not be needed on modern React Native
+  # (please file an issue if this causes issues for you)
+  # pod 'React-jsi', path: '../node_modules/react-native/ReactCommon/jsi', modular_headers: true
 
-  # NOTE: This is required as of v0.23
-  pod 'simdjson', path: '../node_modules/@nozbe/simdjson'
+  # WatermelonDB dependency
+  pod 'simdjson', path: '../node_modules/@nozbe/simdjson', modular_headers: true
 
   
   target 'moneykeeperTests' do

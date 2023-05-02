@@ -384,7 +384,7 @@ PODS:
     - RCTTypeSafety
     - React-Core
     - ReactCommon/turbomodule/core
-  - react-native-segmented-control (2.4.0):
+  - react-native-segmented-control (2.4.1):
     - React-Core
   - React-perflogger (0.71.4)
   - React-RCTActionSheet (0.71.4):
@@ -472,7 +472,7 @@ PODS:
     - React-perflogger (= 0.71.4)
   - rn-keyboard (1.0.0):
     - React-Core
-  - RNDateTimePicker (6.7.3):
+  - RNDateTimePicker (7.0.1):
     - React-Core
   - RNFastImage (8.6.3):
     - React-Core
@@ -480,16 +480,16 @@ PODS:
     - SDWebImageWebPCoder (~> 0.8.4)
   - RNGestureHandler (2.9.0):
     - React-Core
-  - RNNotifee (7.4.0):
+  - RNNotifee (7.7.1):
     - React-Core
-    - RNNotifee/NotifeeCore (= 7.4.0)
-  - RNNotifee/NotifeeCore (7.4.0):
+    - RNNotifee/NotifeeCore (= 7.7.1)
+  - RNNotifee/NotifeeCore (7.7.1):
     - React-Core
   - RNPermissions (3.6.1):
     - React-Core
   - RNReactNativeHapticFeedback (1.14.0):
     - React-Core
-  - RNReanimated (3.0.2):
+  - RNReanimated (3.1.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -527,11 +527,11 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - simdjson (1.0.0)
+  - simdjson (3.1.0-wmelon1)
   - SocketRocket (0.6.0)
-  - WatermelonDB (0.25.5):
+  - WatermelonDB (0.26.0):
     - React
-    - React-jsi
+    - simdjson
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -842,7 +842,7 @@ SPEC CHECKSUMS:
   react-native-mmkv: 28af0c2a3dc9495c2cea80f9d41444e096c2a1ef
   react-native-pager-view: b58cb9e9f42f64e50cab3040815772c1d119a2e2
   react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
-  react-native-segmented-control: 06607462630512ff8eef652ec560e6235a30cc3e
+  react-native-segmented-control: 0e4b5d93911e2234f110057df2b41738b326ab3e
   React-perflogger: 0bb0522a12e058f6eb69d888bc16f40c16c4b907
   React-RCTActionSheet: bfd675a10f06a18728ea15d82082d48f228a213a
   React-RCTAnimation: 2fa220b2052ec75b733112aca39143d34546a941
@@ -857,23 +857,23 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 8fa50b38df6b992c76537993a2b0553d3b088004
   ReactCommon: b49a4b00ca6d181ff74b17c12b2d59ac4add0bde
   rn-keyboard: 7dde83e2df5ee1451ce3e424cc9051bc4f89b706
-  RNDateTimePicker: 00247f26c34683c80be94207f488f6f13448586e
+  RNDateTimePicker: e073697ac3e8a378968d68ab0581fef542b8af8a
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
-  RNNotifee: da8dcf09f079ea22f46e239d7c406e10d4525a5f
+  RNNotifee: 05692d7bb42b6c718a3906aeb8431c48ff2e8097
   RNPermissions: dcdb7b99796bbeda6975a6e79ad519c41b251b1c
   RNReactNativeHapticFeedback: 1e3efeca9628ff9876ee7cdd9edec1b336913f8c
-  RNReanimated: f0dd6b881808e635ef0673f89642937d6c141314
+  RNReanimated: b1220a0e5168745283ff5d53bfc7d2144b2cee1b
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNSVG: d787d64ca06b9158e763ad2638a8c4edce00782a
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
-  simdjson: c96317b3a50dff3468a42f586ab7ed22c6ab2fd9
+  simdjson: e6bfae9ce4bcdc80452d388d593816f1ca2106f3
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
-  WatermelonDB: 6ae836b52d11281d87187ff2283480e44b111771
+  WatermelonDB: cd71a1085182aca9e5d2164b7af9ef2a3aaca571
   Yoga: 79dd7410de6f8ad73a77c868d3d368843f0c93e0
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: d97a28d7e7b5bcfc1841376d6f82239f165ee3c4
+PODFILE CHECKSUM: 87ebe30648b9c73c4afd8fd4d5737b3d5fe0caed
 
 COCOAPODS: 1.11.3
