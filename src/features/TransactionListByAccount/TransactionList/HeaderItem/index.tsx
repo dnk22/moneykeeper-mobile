@@ -8,7 +8,7 @@ import { formatDateStringLocal } from 'utils/date';
 import { isToday, isYesterday, parseISO } from 'date-fns';
 import { ITEM_HEIGHT, MARGIN_TOP } from '../const';
 import withObservables from '@nozbe/with-observables';
-import { getTransactionsByDateCountObserve } from 'database/querying';
+import { getTransactionsByDateObserve } from 'database/querying';
 import { TransactionModel } from 'database/models';
 import TransactionItem from '../TransactionItem';
 
@@ -18,14 +18,18 @@ type HeaderItemProps = {
   accountObserve?: any;
 };
 
-const TransactionObserve = withObservables(['data'], ({ data }) => ({
-  data: data.observe(),
-}))(TransactionItem);
+const TransactionObserve = memo(
+  withObservables(['data'], ({ data }) => ({
+    data: data.observe(),
+  }))(TransactionItem),
+  isEqual,
+);
 
 function HeaderItem({ item, accountObserve }: HeaderItemProps) {
   const { colors } = useCustomTheme();
   const formatDate = useCallback((format: string) => formatDateStringLocal(item, format), [item]);
   const itemLength = accountObserve.length;
+
   const formatDayOfTheWeek = () => {
     if (isToday(parseISO(item))) {
       return 'Hôm nay';
@@ -42,9 +46,6 @@ function HeaderItem({ item, accountObserve }: HeaderItemProps) {
   const parentLineHeight = useMemo(() => {
     return ITEM_HEIGHT * (itemLength - 1) + MARGIN_TOP * itemLength + ITEM_HEIGHT / 2;
   }, [itemLength]);
-
-  console.log(item,'item');
-  
 
   return (
     <>
@@ -81,5 +82,5 @@ function HeaderItem({ item, accountObserve }: HeaderItemProps) {
 }
 
 export default withObservables(['accountObserve'], ({ item, accountId }: HeaderItemProps) => ({
-  accountObserve: getTransactionsByDateCountObserve({ date: item, accountId }),
+  accountObserve: getTransactionsByDateObserve({ date: item, accountId }),
 }))<any>(memo(HeaderItem, isEqual));

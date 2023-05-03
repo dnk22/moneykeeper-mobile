@@ -31,6 +31,7 @@ function TransactionItem({ data }: TransactionItemProps) {
     const res = await getTransactionCategoryById(id);
     setTransactionCategory(res);
   };
+  console.log(data?.id);
 
   const onTransactionItemPress = () => {
     navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, { transactionId: data?.id });
@@ -60,4 +61,4 @@ function TransactionItem({ data }: TransactionItemProps) {
   );
 }
 
-export default memo(TransactionItem, isEqual);
+export default TransactionItem;

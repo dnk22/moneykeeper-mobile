@@ -24,7 +24,7 @@ export const getTransactionByAccountCountObserve = (accountId: string) =>
     .query(Q.where('account_id', accountId))
     .observeCount();
 
-export const getTransactionsByDateCountObserve = ({ date, accountId }: GetTransactionByDate) => {
+export const getTransactionsByDateObserve = ({ date, accountId }: GetTransactionByDate) => {
   const startOfDay = new Date(new Date(date).setUTCHours(0, 0, 0, 0)).getTime();
   const endOfDay = new Date(new Date(date).setUTCHours(23, 59, 59, 999)).getTime();
   return database

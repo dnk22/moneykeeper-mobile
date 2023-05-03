@@ -24,9 +24,12 @@ type AccountListProps = {
 
 const maxHeight = SCREEN_HEIGHT * 0.5;
 
-const AccountItemObserve = withObservables(['account'], ({ account }) => ({
-  account: account.observe(),
-}))(Item);
+const AccountItemObserve = memo(
+  withObservables(['account'], ({ account }) => ({
+    account: account.observe(),
+  }))(Item),
+  isEqual,
+);
 
 function AccountList({
   isDeactivate,
