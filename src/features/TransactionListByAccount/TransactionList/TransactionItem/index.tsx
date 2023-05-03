@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
@@ -7,11 +7,12 @@ import { useNavigation } from '@react-navigation/native';
 import { AccountStackParamListProps } from 'navigation/types';
 import { ACCOUNT_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
 import { useCustomTheme } from 'resources/theme';
-import { TTransactions } from 'database/types';
+import { TransactionModel } from 'database/models';
 import styles from './styles';
+import isEqual from 'react-fast-compare';
 
 type TransactionItemProps = {
-  data: TTransactions;
+  data: TransactionModel;
 };
 
 function TransactionItem({ data }: TransactionItemProps) {
@@ -25,8 +26,6 @@ function TransactionItem({ data }: TransactionItemProps) {
       getTransactionCategory(data?.transactionsCategoryId);
     }
   }, [data?.transactionsCategoryId]);
-
-  console.log(data?.id);
 
   const getTransactionCategory = async (id: string) => {
     const res = await getTransactionCategoryById(id);
@@ -61,4 +60,4 @@ function TransactionItem({ data }: TransactionItemProps) {
   );
 }
 
-export default TransactionItem;
+export default memo(TransactionItem, isEqual);

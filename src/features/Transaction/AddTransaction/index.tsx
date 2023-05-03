@@ -29,6 +29,7 @@ import {
 import { AddTransactionRouteProp } from 'navigation/types';
 import {
   addNewTransaction,
+  deleteTransactionById,
   getAccountById,
   getFirstAccount,
   getTransactionById,
@@ -337,6 +338,12 @@ function AddTransactions() {
     setTransactionCategorySelected(undefined);
   };
 
+  const onDeleteTransaction = () => {
+    if (params?.transactionId) {
+      deleteTransactionById(params.transactionId).then(() => navigation.goBack());
+    }
+  };
+
   const onSubmit = (data: TTransactions) => {
     const requestData = {
       ...data,
@@ -345,8 +352,6 @@ function AddTransactions() {
     };
     if (params?.transactionId) {
       updateTransactionById({ id: params.transactionId, data: requestData });
-      // navigate to prev screen
-      navigation.goBack();
     } else {
       addNewTransaction(requestData).then((res) => {
         if (res) {
@@ -355,6 +360,10 @@ function AddTransactions() {
           reset(defaultValues);
         }
       });
+    }
+    if (navigation.canGoBack()) {
+      // navigate to prev screen
+      navigation.goBack();
     }
   };
 
@@ -493,6 +502,7 @@ function AddTransactions() {
         </PressableHaptic>
         <FormAction
           isShowDelete={Boolean(params?.transactionId)}
+          onDelete={onDeleteTransaction}
           onSubmit={handleSubmit(onSubmit)}
         />
       </KeyboardAwareScrollView>

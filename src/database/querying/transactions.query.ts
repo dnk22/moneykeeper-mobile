@@ -7,8 +7,6 @@ import { updateUseCountTransactionCategory } from './transactionsCategory.query'
 
 export type GetTransactionProps = {
   accountId: string;
-  page?: number;
-  limit?: number;
 };
 
 export type GetTransactionByDate = GetTransactionProps & {
@@ -41,19 +39,13 @@ export const getTransactionsByDateCountObserve = ({ date, accountId }: GetTransa
 
 /** read */
 /** querying Transaction by multi condition  */
-export const getTransactionLisGroupByDate = async ({
-  accountId,
-  page = 0,
-  limit = 20,
-}: GetTransactionProps) => {
+export const getTransactionLisGroupByDate = async ({ accountId }: GetTransactionProps) => {
   try {
     const query = `SELECT distinct 
       strftime('%Y-%m-%d', datetime(date_time_at/1000, 'unixepoch')) AS date 
       FROM ${TRANSACTIONS} 
-      WHERE account_id='${accountId}' 
+      WHERE account_id='${accountId}' AND _status is not 'deleted' 
       ORDER BY date_time_at DESC 
-      LIMIT ${limit}
-      OFFSET ${page * limit - 1}
     `;
     return await database.read(async () => {
       const dateList = await database
@@ -64,27 +56,6 @@ export const getTransactionLisGroupByDate = async ({
     });
   } catch (error) {
     console.log(error, 'read getTransactionByCondition err');
-  }
-};
-
-export const getTransactionsByDate = async ({ accountId, date }: GetTransactionByDate) => {
-  try {
-    const startOfDay = new Date(new Date(date).setUTCHours(0, 0, 0, 0)).getTime();
-    const endOfDay = new Date(new Date(date).setUTCHours(23, 59, 59, 999)).getTime();
-
-    return await database.read(async () => {
-      const res = database
-        .get<TransactionModel>(TRANSACTIONS)
-        .query(
-          Q.where('account_id', accountId),
-          Q.and(Q.where('date_time_at', Q.between(startOfDay, endOfDay))),
-          Q.sortBy('date_time_at', Q.desc),
-        )
-        .fetch();
-      return res;
-    });
-  } catch (error) {
-    console.log(error, 'read getTransactionByDate err');
   }
 };
 
@@ -141,3 +112,18 @@ export const updateTransactionById = async ({ id, data }: { id: string; data: TT
   });
 };
 /** delete */
+
+export const deleteTransactionById = async (id: string) => {
+  try {
+    return await database.write(async () => {
+      const res = await database.get<TransactionModel>(TRANSACTIONS).find(id);
+      await res.markAsDeleted();
+      return true;
+    });
+  } catch (error) {
+    return {
+      status: false,
+      message: error,
+    };
+  }
+};

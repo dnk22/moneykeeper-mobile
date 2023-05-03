@@ -22,7 +22,7 @@ const TransactionObserve = withObservables(['data'], ({ data }) => ({
   data: data.observe(),
 }))(TransactionItem);
 
-function HeaderItem({ item, accountId, accountObserve }: HeaderItemProps) {
+function HeaderItem({ item, accountObserve }: HeaderItemProps) {
   const { colors } = useCustomTheme();
   const formatDate = useCallback((format: string) => formatDateStringLocal(item, format), [item]);
   const itemLength = accountObserve.length;
@@ -42,6 +42,9 @@ function HeaderItem({ item, accountId, accountObserve }: HeaderItemProps) {
   const parentLineHeight = useMemo(() => {
     return ITEM_HEIGHT * (itemLength - 1) + MARGIN_TOP * itemLength + ITEM_HEIGHT / 2;
   }, [itemLength]);
+
+  console.log(item,'item');
+  
 
   return (
     <>
