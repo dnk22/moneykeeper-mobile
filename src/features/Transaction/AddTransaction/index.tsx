@@ -23,6 +23,7 @@ import Animated, { StretchInY } from 'react-native-reanimated';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import {
   ACCOUNT_PICKER,
+  CREATE_TRANSACTION_FROM_ACCOUNT,
   TRANSACTION_CATEGORY,
   TRANSACTION_CATEGORY_LIST,
 } from 'navigation/constants';
@@ -44,7 +45,7 @@ import { EXPENSE_CATEGORY } from 'navigation/constants';
 import { LEND_BORROW } from 'navigation/constants';
 import { INCOME_CATEGORY } from 'navigation/constants';
 
-const defaultValues = {
+let defaultValues = {
   amount: '0',
   dateTimeAt: new Date(),
   transactionsCategoryId: '',
@@ -357,15 +358,21 @@ function AddTransactions() {
         if (res) {
           setTransactionCategorySelected(undefined);
           // reset form state
-          reset(defaultValues);
+          reset({
+            ...defaultValues,
+            accountId : data?.accountId,
+            transactionsTypeId : data?.transactionsTypeId,
+          });
+          resetTransactionCategory();
         }
       });
     }
-    if (navigation.canGoBack()) {
+    if (navigation.canGoBack() && name === CREATE_TRANSACTION_FROM_ACCOUNT) {
       // navigate to prev screen
       navigation.goBack();
     }
   };
+  // console.log(getValues());
 
   return (
     <View style={styles.container}>

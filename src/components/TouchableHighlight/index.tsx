@@ -11,6 +11,7 @@ function TouchableHighlightComponent({
   activeOpacity = 0.7,
   onPress,
   underlayColor,
+  ...rest
 }: TouchableHighlightComponent) {
   const { colors } = useCustomTheme();
   return (
@@ -19,6 +20,7 @@ function TouchableHighlightComponent({
       onPress={!isDisable ? onPress : undefined}
       underlayColor={underlayColor || colors.background}
       activeOpacity={activeOpacity}
+      {...rest}
     >
       {children}
     </TouchableHighlight>

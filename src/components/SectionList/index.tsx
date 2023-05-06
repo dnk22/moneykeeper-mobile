@@ -13,7 +13,7 @@ function SectionListComponent({
   sections,
   renderItem,
   renderSectionHeader,
-  stickySectionHeadersEnabled,
+  stickySectionHeadersEnabled = false,
   onRefresh,
   onLoadMore,
   maxToRenderPerBatch = 10,

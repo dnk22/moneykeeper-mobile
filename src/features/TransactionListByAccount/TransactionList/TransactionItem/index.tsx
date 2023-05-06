@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Alert, View } from 'react-native';
 import { RNText, SvgIcon, SwipeableComponent, TouchableHighlightComponent } from 'components/index';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
@@ -16,6 +16,7 @@ type TransactionItemProps = {
 
 function TransactionItem({ data }: TransactionItemProps) {
   const { colors } = useCustomTheme();
+  const tapPosition = useRef<number>(0);
   const navigation =
     useNavigation<AccountStackParamListProps<typeof ACCOUNT_DETAIL>['navigation']>();
   const [transactionCategory, setTransactionCategory] = useState<TransactionCategoryModel>();
@@ -31,8 +32,10 @@ function TransactionItem({ data }: TransactionItemProps) {
     setTransactionCategory(res);
   };
 
-  const onTransactionItemPress = () => {
-    navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, { transactionId: data?.id });
+  const onTransactionItemPress = (e: any) => {
+    if (e.nativeEvent.locationX === tapPosition.current) {
+      navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, { transactionId: data?.id });
+    }
   };
 
   const onOk = () => {
@@ -51,10 +54,22 @@ function TransactionItem({ data }: TransactionItemProps) {
     ]);
   };
 
+  const onPressIn = ({ nativeEvent }: { nativeEvent: any }) => {
+    tapPosition.current = nativeEvent.locationX;
+  };
+
   return (
     <View style={styles.container}>
       <SwipeableComponent containerStyle={styles.swipe} onDelete={onConfirmDelete}>
-        <TouchableHighlightComponent onPress={onTransactionItemPress}>
+        <TouchableHighlightComponent
+          delayLongPress={100} // Leave room for a user to be able to click
+          onLongPress={() => {
+            tapPosition.current = 0;
+          }} // A callback that does nothing
+          onPressIn={onPressIn}
+          onPressOut={onTransactionItemPress}
+          style={{ borderRadius: 0 }}
+        >
           <View style={[styles.record, { backgroundColor: colors.surface }]}>
             <View style={styles.transactionCategoryInfo}>
               <SvgIcon name={transactionCategory?.icon} />

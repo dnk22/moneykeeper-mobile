@@ -213,8 +213,12 @@ const AddAccount = () => {
   };
 
   const onHandleSubmit = (data: TAccount) => {
+    const requestData = {
+      ...data,
+      initialAmount: +data?.initialAmount,
+    };
     if (params?.accountId) {
-      updateAccount({ id: params.accountId, account: data });
+      updateAccount({ id: params.accountId, account: requestData });
     } else {
       addAccount(data);
     }
@@ -238,6 +242,7 @@ const AddAccount = () => {
         { text: 'Đồng ý', style: 'destructive', onPress: () => onOk() },
       ],
     );
+  console.log(watch('initialAmount'));
 
   return (
     <View style={styles.container}>

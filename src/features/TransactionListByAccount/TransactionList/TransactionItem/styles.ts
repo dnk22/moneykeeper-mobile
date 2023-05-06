@@ -13,10 +13,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   swipe: {
-    marginTop: MARGIN_TOP,
     width: '90%',
+    marginTop: MARGIN_TOP,
     borderRadius: 10,
     alignSelf: 'flex-end',
+    backgroundColor: 'red',
   },
   childLine: {
     position: 'absolute',
@@ -25,7 +26,6 @@ const styles = StyleSheet.create({
     left: '5%',
     borderStyle: 'dashed',
     borderWidth: 0.5,
-    borderRadius: 1,
     borderColor: '#d3d3d3',
   },
   transactionCategoryInfo: {

@@ -78,12 +78,12 @@ export const getTransactionById = async (id: string) => {
  */
 export const addNewTransaction = async (transaction: TTransactions) => {
   try {
-    await database.write(async () => {
-      const res = database.get<TransactionModel>(TRANSACTIONS).create((item) => {
+    return await database.write(async () => {
+      database.get<TransactionModel>(TRANSACTIONS).create((item) => {
         Object.assign(item, transaction);
       });
       await updateUseCountTransactionCategory(transaction.transactionsCategoryId);
-      return res;
+      return true;
     });
   } catch (error) {
     console.log(error);

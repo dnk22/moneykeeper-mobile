@@ -140,7 +140,8 @@ function InputCalculator({
 
   const onHandleInputChange = (text?: any) => {
     setInputValue(text);
-    onChangeText && onChangeText(inputValue);
+    onChangeText && onChangeText(text);
+    onChange(text);
   };
 
   const handleOnSelectionChange = ({
@@ -179,7 +180,7 @@ function InputCalculator({
           selectTextOnFocus
           allowFontScaling={false}
           keyboardType="decimal-pad"
-          value={inputValue}
+          value={value.toString()}
           style={[styles.amountInput, { color: inputTextColor }]}
           onChangeText={onHandleInputChange}
           onBlur={handleOnBlurInput}
