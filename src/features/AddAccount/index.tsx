@@ -6,7 +6,6 @@ import {
   InputSelection,
   SvgIcon,
   SwitchField,
-  Submit,
   FormAction,
 } from 'components/index';
 import { Alert, View } from 'react-native';
@@ -30,6 +29,7 @@ import {
 import { BANK_HOME_LIST, BANK_NAVIGATION } from 'navigation/constants';
 import { setBankSelected } from 'store/account/account.slice';
 import { BankModel } from 'database/models';
+import Submit from 'navigation/elements/Submit';
 
 const DEFAULT_ACCOUNT_TYPE_ID = '0';
 const BANK_ID = '1';
@@ -77,6 +77,13 @@ const AddAccount = () => {
       accountTypeName: accountTypeSelected?.name,
     },
   });
+
+  // // Use `setOptions` to update account
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <Submit onPress={handleSubmit(onHandleSubmit)} />,
+    });
+  }, [watch('id')]);
 
   useEffect(() => {
     if (params?.accountId) {

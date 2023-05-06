@@ -54,7 +54,6 @@ function AccountNavigation() {
         name={ADD_ACCOUNT}
         options={({ route }) => ({
           title: route.params?.accountId ? 'Sửa tài khoản' : 'Thêm tài khoản',
-          headerRight: (props) => <Submit {...props} />,
         })}
         component={AddAccount}
       />

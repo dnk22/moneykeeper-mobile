@@ -1,9 +1,8 @@
-import { HeaderButtonProps } from '@react-navigation/native-stack/lib/typescript/src/types';
 import { SvgIcon, PressableHaptic } from 'components/index';
 
-function Submit({}: HeaderButtonProps) {
+function Submit({ onPress }: { onPress: () => void }) {
   return (
-    <PressableHaptic>
+    <PressableHaptic onPress={onPress}>
       <SvgIcon name="check" color="white" />
     </PressableHaptic>
   );
