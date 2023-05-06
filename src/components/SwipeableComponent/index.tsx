@@ -1,28 +1,27 @@
-import React, { memo, useRef } from 'react';
-import isEqual from 'react-fast-compare';
+import { useRef } from 'react';
 import { Animated, View } from 'react-native';
 import { RectButton, Swipeable } from 'react-native-gesture-handler';
 import TrashIcon from 'assets/svg/icon-trash.svg';
 import styles from './styles';
 import { SwipeableProps } from 'react-native-gesture-handler/lib/typescript/components/Swipeable';
-import { useCustomTheme } from 'resources/theme';
 
 interface ISwipeableComponentProps extends SwipeableProps {
   children: React.ReactNode;
+  onDelete?: () => void;
 }
 const AnimatedView = Animated.createAnimatedComponent(View);
 
 function SwipeableComponent({
   children,
   onSwipeableClose,
+  onDelete,
   ...rest
 }: ISwipeableComponentProps) {
-  const { colors } = useCustomTheme();
   const swipeableRef = useRef(null);
 
   const renderRightActions = (
     _progress: Animated.AnimatedInterpolation<any>,
-    dragX: Animated.AnimatedInterpolation<any>
+    dragX: Animated.AnimatedInterpolation<any>,
   ) => {
     const scale = dragX.interpolate({
       inputRange: [-80, 0],
@@ -30,23 +29,28 @@ function SwipeableComponent({
       extrapolate: 'clamp',
     });
     return (
-      <RectButton
-        style={[styles.rightAction, { backgroundColor: colors.error }]}
-      >
-        <AnimatedView style={[styles.actionIcon, { transform: [{ scale }] }]}>
-          <TrashIcon color={'white'} />
-        </AnimatedView>
-      </RectButton>
+      <View style={{ width: 80 }}>
+        <RectButton style={styles.rightAction} onPress={close}>
+          <AnimatedView style={{ transform: [{ scale }] }}>
+            <TrashIcon color={'white'} />
+          </AnimatedView>
+        </RectButton>
+      </View>
     );
+  };
+
+  const close = () => {
+    swipeableRef.current?.close();
+    onDelete && onDelete();
   };
 
   return (
     <Swipeable
       ref={swipeableRef}
       friction={2}
-      overshootFriction={8}
-      enableTrackpadTwoFingerGesture
+      leftThreshold={30}
       rightThreshold={40}
+      // enableTrackpadTwoFingerGesture
       renderRightActions={renderRightActions}
       onSwipeableClose={onSwipeableClose}
       {...rest}
@@ -56,4 +60,4 @@ function SwipeableComponent({
   );
 }
 
-export default memo(SwipeableComponent, isEqual);
+export default SwipeableComponent;

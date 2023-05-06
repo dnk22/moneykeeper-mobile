@@ -8,7 +8,7 @@ function TouchableHighlightComponent({
   style,
   isDisable = false,
   children,
-  activeOpacity = 0.8,
+  activeOpacity = 0.7,
   onPress,
   underlayColor,
 }: TouchableHighlightComponent) {

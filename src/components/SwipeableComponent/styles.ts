@@ -1,15 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { normalize } from 'share/dimensions';
 
 const styles = StyleSheet.create({
   rightAction: {
     flex: 1,
-    paddingHorizontal: normalize(30),
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: normalize(10),
+    backgroundColor: 'red',
   },
-  actionIcon: {},
 });
 
 export default styles;

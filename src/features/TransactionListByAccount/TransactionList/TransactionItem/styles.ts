@@ -2,22 +2,27 @@ import { StyleSheet } from 'react-native';
 import { ITEM_HEIGHT, MARGIN_TOP } from '../const';
 
 const styles = StyleSheet.create({
-  record: {
-    width: '90%',
-    height: ITEM_HEIGHT,
+  container: {
     position: 'relative',
+  },
+  record: {
+    height: ITEM_HEIGHT,
     justifyContent: 'space-between',
-    flexDirection: 'row',
-    marginTop: MARGIN_TOP,
-    borderRadius: 10,
-    paddingHorizontal: '5%',
     alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+  },
+  swipe: {
+    marginTop: MARGIN_TOP,
+    width: '90%',
+    borderRadius: 10,
     alignSelf: 'flex-end',
   },
   childLine: {
-    width: '5%',
     position: 'absolute',
-    left: '-5%',
+    top: (ITEM_HEIGHT + MARGIN_TOP) / 2,
+    width: '5%',
+    left: '5%',
     borderStyle: 'dashed',
     borderWidth: 0.5,
     borderRadius: 1,
