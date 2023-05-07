@@ -242,7 +242,6 @@ const AddAccount = () => {
         { text: 'Đồng ý', style: 'destructive', onPress: () => onOk() },
       ],
     );
-  console.log(watch('initialAmount'));
 
   return (
     <View style={styles.container}>
