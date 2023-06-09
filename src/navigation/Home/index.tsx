@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeBottomBar from './HomeBottomBar';
+import HomeBottomBar from '../elements/HomeBottomBar';
 import { SvgIcon } from 'components/index';
 import { ACCOUNT, DASHBOARD, SETTINGS, TRANSACTIONS, REPORT } from '../constants';
 
@@ -10,22 +10,24 @@ import Dashboard from 'features/Dashboard';
 import TransactionNavigation from 'navigation/Transaction';
 import ReportNavigation from 'navigation/Report';
 import { HomeStackParamList } from 'navigation/types';
+import { useCustomTheme } from 'resources/theme';
 
 // set up routes
 const BottomTab = createBottomTabNavigator<HomeStackParamList>();
 
 function HomeNavigation() {
+  const { colors } = useCustomTheme();
   return (
     <BottomTab.Navigator
       screenOptions={{ headerShown: false }}
       initialRouteName={DASHBOARD}
-      tabBar={(props) => <HomeBottomBar {...props} circle={TRANSACTIONS} />}
+      tabBar={(props) => <HomeBottomBar {...props} />}
     >
       <BottomTab.Screen
         name={DASHBOARD}
         options={{
           // @ts-ignore
-          tabBarIcon: () => <SvgIcon name="house" />,
+          tabBarIcon: ({ color = colors.text }) => <SvgIcon name="house" color={color} />,
           tabBarLabel: 'Tổng quan',
         }}
         component={Dashboard}
@@ -34,7 +36,7 @@ function HomeNavigation() {
         name={ACCOUNT}
         options={{
           // @ts-ignore
-          tabBarIcon: () => <SvgIcon name="card" />,
+          tabBarIcon: ({ color = colors.text }) => <SvgIcon name="card" color={color} />,
           tabBarLabel: 'Tài khoản',
         }}
         component={AccountNavigation}
@@ -43,7 +45,7 @@ function HomeNavigation() {
         name={TRANSACTIONS}
         options={{
           // @ts-ignore
-          tabBarIcon: () => <SvgIcon name="add" color="white" />,
+          tabBarIcon: ({ color = colors.text }) => <SvgIcon name="add" color={color} />,
         }}
         component={TransactionNavigation}
       />
@@ -51,7 +53,9 @@ function HomeNavigation() {
         name={REPORT}
         options={{
           // @ts-ignore
-          tabBarIcon: () => <SvgIcon name="report" size={26} />,
+          tabBarIcon: ({ color = colors.text }) => (
+            <SvgIcon name="report" size={26} color={color} />
+          ),
           tabBarLabel: 'Báo cáo',
         }}
         component={ReportNavigation}
@@ -60,7 +64,7 @@ function HomeNavigation() {
         name={SETTINGS}
         options={{
           // @ts-ignore
-          tabBarIcon: () => <SvgIcon name="settings" />,
+          tabBarIcon: ({ color = colors.text }) => <SvgIcon name="settings" color={color} />,
           tabBarLabel: 'Cài đặt',
         }}
         component={Settings}

@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { bottomBarHeight } from 'share/dimensions';
+import { bottomBarStickyHeight } from 'share/dimensions';
 
 const styles = StyleSheet.create({
   bottomBarContainer: {
-    height: bottomBarHeight,
+    height: bottomBarStickyHeight,
     borderRadius: 10,
     paddingHorizontal: 10,
   },

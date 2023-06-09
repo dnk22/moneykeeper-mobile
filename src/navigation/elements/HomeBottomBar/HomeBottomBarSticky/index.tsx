@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { View } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,7 +8,7 @@ import styles from './styles';
 import isEqual from 'react-fast-compare';
 
 type BottomBarProps = BottomTabBarProps & { circle: string };
-const BottomBar = ({
+const HomeBottomBarSticky = ({
   state: { index: activeIndex, routes },
   navigation,
   descriptors,
@@ -56,6 +56,7 @@ const BottomBar = ({
               options={options}
               onPress={navigate}
               style={isTransactions}
+              colors={colors}
             />
           );
         })}
@@ -64,4 +65,4 @@ const BottomBar = ({
   );
 };
 
-export default memo(BottomBar, isEqual);
+export default memo(HomeBottomBarSticky, isEqual);

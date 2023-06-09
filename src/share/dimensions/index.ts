@@ -40,4 +40,5 @@ export const ModalNavigationHeaderBarDimensions = {
 };
 
 // system dimensions define
-export const bottomBarHeight = 100;
+export const bottomBarStickyHeight = 100;
+export const bottomBarFlatHeight = 80;
