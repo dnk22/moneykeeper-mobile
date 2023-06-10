@@ -33,6 +33,13 @@ const styles = StyleSheet.create({
   icon: {
     marginBottom: 5,
   },
+  circle: {
+    width: 40,
+    height: 40,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default styles;

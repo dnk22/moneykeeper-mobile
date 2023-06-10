@@ -34,3 +34,5 @@ export const MAP_LEND_BORROW = {
   [COLLECT_DEBTS]: TRANSACTION_TYPE.INCOME,
   [REPAYMENT]: TRANSACTION_TYPE.EXPENSE,
 };
+export const FLAT = 'flat';
+export const STICKY = 'sticky';

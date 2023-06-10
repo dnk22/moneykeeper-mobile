@@ -15,6 +15,13 @@ const HomeBottomBarFlat = ({
   const { colors } = useCustomTheme();
   const { bottom: bottomSafeAreaHeight } = useSafeAreaInsets();
   const marginBottom = Platform.OS === 'ios' ? bottomSafeAreaHeight : 0;
+
+  const circleStyle = [
+    styles.circle,
+    {
+      backgroundColor: colors.primary,
+    },
+  ];
   return (
     <View
       style={[
@@ -29,13 +36,25 @@ const HomeBottomBarFlat = ({
         {routes.map((route, index) => {
           const active = index === activeIndex;
           const { options } = descriptors[route.key];
+          const isTransactions = index === 2 ? circleStyle : '';
+          const navigate = () => {
+            const event = navigation.emit({
+              type: 'tabPress',
+              target: route.key,
+              canPreventDefault: true,
+            });
+            if (!active && !event.defaultPrevented) {
+              navigation.navigate(route.name);
+            }
+          };
           return (
             <TabBar
               key={route.key}
               active={active}
               options={options}
               colors={colors}
-              onPress={() => navigation.navigate(route.name)}
+              style={isTransactions}
+              onPress={navigate}
             />
           );
         })}

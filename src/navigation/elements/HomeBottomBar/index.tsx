@@ -1,11 +1,16 @@
 import { TRANSACTIONS } from 'navigation/constants';
 import HomeBottomBarFlat from './HomeBottomBarFlat';
 import HomeBottomBarSticky from './HomeBottomBarSticky';
+import { useAppSelector } from 'store/index';
+import { selectHomeBottomBarType } from 'store/app/app.selector';
+import { useMemo } from 'react';
+import { FLAT } from 'utils/constant';
 
-const bottomBarType = 'flat';
+function HomeBottomBar({ ...props }: any) {
+  const homeBottomBar = useAppSelector((state) => selectHomeBottomBarType(state));
+  const isFlatType = useMemo(() => homeBottomBar === FLAT, [homeBottomBar]);
 
-function HomeBottomBar({ ...props }) {
-  return bottomBarType === 'flat' ? (
+  return isFlatType ? (
     <HomeBottomBarFlat {...props} />
   ) : (
     <HomeBottomBarSticky {...props} circle={TRANSACTIONS} />

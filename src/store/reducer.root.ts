@@ -21,7 +21,7 @@ const appPersistConfig = {
   ],
 };
 
-const transactionsConfig = {
+const transactionPersistConfig = {
   key: transactionsSlice.name,
   storage: reduxPersistStorage,
   blacklist: [
@@ -31,7 +31,7 @@ const transactionsConfig = {
   ],
 };
 
-const accountConfig = {
+const accountPersistConfig = {
   key: accountSlice.name,
   storage: reduxPersistStorage,
   blacklist: ['bankIdSelected'],
@@ -39,8 +39,8 @@ const accountConfig = {
 
 const allReducer = combineReducers({
   [appSlice.name]: appReducer,
-  [accountSlice.name]: persistReducer(accountConfig, accountReducer),
-  [transactionsSlice.name]: persistReducer(transactionsConfig, transactionsReducer),
+  [accountSlice.name]: persistReducer(accountPersistConfig, accountReducer),
+  [transactionsSlice.name]: persistReducer(transactionPersistConfig, transactionsReducer),
   [transactionCategorySlice.name]: transactionCategoryReducer,
 });
 

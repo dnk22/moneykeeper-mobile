@@ -6,6 +6,7 @@ const accountViewSettingsState = (state: RootState) => state[appSlice.name].acco
 const reportViewSettingsState = (state: RootState) => state[appSlice.name].isReportViewByGrid;
 const mostOrRecentModeState = (state: RootState) => state[appSlice.name].isMostRecentMode;
 const transactionListConfigState = (state: RootState) => state[appSlice.name].transactionListConfig;
+const homeBottomBarTypeState = (state: RootState) => state[appSlice.name].homeBottomBarType;
 
 // export selectors
 export const selectAccountViewSettings = createSelector(
@@ -18,3 +19,4 @@ export const selectTransactionListConfig = createSelector(
   transactionListConfigState,
   (config) => config,
 );
+export const selectHomeBottomBarType = createSelector(homeBottomBarTypeState, (state) => state);

@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-evenly',
+    paddingHorizontal: 5,
   },
   component: {
     flex: 1,

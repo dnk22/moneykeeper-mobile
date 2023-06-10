@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { MOST, RECENT } from 'utils/constant/index';
+import { MOST, RECENT, FLAT, STICKY } from 'utils/constant/index';
 
 type MostOrRecentModeProps = {
   expense: typeof RECENT | typeof MOST;
@@ -24,6 +24,7 @@ type AppState = {
   isReportViewByGrid: boolean;
   isMostRecentMode: MostOrRecentModeProps;
   transactionListConfig: TransactionListConfig;
+  homeBottomBarType: typeof FLAT | typeof STICKY;
 };
 
 const initialState = {
@@ -42,6 +43,7 @@ const initialState = {
     isShowExpense: true,
     isShowIncome: true,
   },
+  homeBottomBarType: FLAT,
 } as AppState;
 
 export const appSlice = createSlice({
@@ -75,6 +77,9 @@ export const appSlice = createSlice({
         ...payload,
       };
     },
+    updateHomeBottomBarType(state, { payload }: PayloadAction<AppState['homeBottomBarType']>) {
+      state.homeBottomBarType = payload;
+    },
   },
 });
 
@@ -85,6 +90,7 @@ export const {
   updateReportViewSettings,
   updateMostOrRecentMode,
   updateTransactionListConfig,
+  updateHomeBottomBarType,
 } = appSlice.actions;
 
 export type TAppSlice = {

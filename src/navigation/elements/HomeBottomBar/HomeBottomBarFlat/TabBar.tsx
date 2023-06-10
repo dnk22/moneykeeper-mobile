@@ -9,14 +9,15 @@ type ITabBarProps = {
   options: BottomTabNavigationOptions;
   onPress: () => void;
   colors: any;
+  style: any;
 };
 
-const TabBar = ({ active, options, onPress, colors }: ITabBarProps) => {
+const TabBar = ({ active, options, onPress, colors, style }: ITabBarProps) => {
   const animatedComponentCircleStyles = useAnimatedStyle(() => {
     return {
       transform: [
         {
-          scale: withTiming(active ? 1 : 0, { duration: 400 }),
+          scale: withTiming(active ? 1 : 0, { duration: 500 }),
         },
       ],
     };
@@ -43,9 +44,9 @@ const TabBar = ({ active, options, onPress, colors }: ITabBarProps) => {
             { backgroundColor: colors.primary },
           ]}
         />
-        <Animated.View style={[styles.icon, animatedIconContainerStyles]}>
+        <Animated.View style={[styles.icon, animatedIconContainerStyles, style]}>
           {/* @ts-ignore */}
-          {options.tabBarIcon({ color: colors.primary })}
+          {options.tabBarIcon({ color: !style ? colors.primary : 'white' })}
         </Animated.View>
         <Text fontSize={10}>{options?.tabBarLabel}</Text>
       </View>
