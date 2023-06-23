@@ -24,13 +24,12 @@ function AppNavigators() {
   return (
     <RootStack.Navigator
       initialRouteName={HOME}
-      screenOptions={{ headerShown: false, autoHideHomeIndicator: true }}
+      screenOptions={{
+        headerShown: false,
+        autoHideHomeIndicator: true,
+      }}
     >
-      <RootStack.Screen
-        name={HOME}
-        component={HomeNavigation}
-        options={{ headerBackTitleVisible: false }}
-      />
+      <RootStack.Screen name={HOME} component={HomeNavigation} />
       <RootStack.Group screenOptions={{ presentation: 'modal' }}>
         <RootStack.Screen name={BANK_NAVIGATION} component={BankNavigation} />
         <RootStack.Screen

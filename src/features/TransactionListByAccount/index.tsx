@@ -4,11 +4,11 @@ import PressableHaptic from 'components/PressableHaptic';
 import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
 import SvgIcon from 'components/SvgIcon';
-import { ADD_TRANSACTION, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
+import { CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
 import { AccountDetailProp, AccountStackParamListProps } from 'navigation/types';
 import Summary from './Summary';
 import TransactionList from './TransactionList';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { ButtonText, TransactionListByAccountConfig } from 'navigation/elements';
 
 function TransactionListByAccount() {
@@ -21,7 +21,7 @@ function TransactionListByAccount() {
   const [isSelectMode, setIsSelectMode] = useState(false);
 
   // Use `setOptions` to update the button that submit form
-  useEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () =>
         isSelectMode ? (

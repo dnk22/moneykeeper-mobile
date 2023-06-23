@@ -13,7 +13,6 @@ import AddAccount from 'features/AddAccount';
 import TransactionListByAccount from 'features/TransactionListByAccount';
 
 // header custom icon
-import Submit from 'navigation/elements/Submit';
 import Search from 'navigation/elements/Search';
 import Toolbar from './component/Toolbar';
 import AddTransactions from 'features/Transaction/AddTransaction';
@@ -38,15 +37,17 @@ function AccountNavigation() {
           backgroundColor: colors.primary,
         },
         headerTintColor: 'white',
+        title: '',
+        headerBackTitleVisible: false,
       }}
     >
       <AccountStack.Screen
         name={ACCOUNTTAB}
         options={{
           title: 'Tài khoản',
-          headerBackTitleVisible: false,
           headerLeft: () => <Toolbar />,
           headerRight: (props) => <Search {...props} />,
+          headerBackTitleVisible: false,
         }}
         component={AccountTab}
       />
@@ -54,6 +55,7 @@ function AccountNavigation() {
         name={ADD_ACCOUNT}
         options={({ route }) => ({
           title: route.params?.accountId ? 'Sửa tài khoản' : 'Thêm tài khoản',
+          headerBackTitleVisible: false,
         })}
         component={AddAccount}
       />
@@ -62,7 +64,6 @@ function AccountNavigation() {
         options={({ route }) => ({
           title: route.params?.accountName,
           headerBackTitleVisible: false,
-          headerRight: (props) => <Submit {...props} />,
         })}
         component={TransactionListByAccount}
       />

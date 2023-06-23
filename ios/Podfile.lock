@@ -87,31 +87,31 @@ PODS:
     - MMKVCore (~> 1.2.15)
   - MMKVCore (1.2.15)
   - OpenSSL-Universal (1.1.1100)
-  - Permission-AppTrackingTransparency (3.6.1):
+  - Permission-AppTrackingTransparency (3.8.0):
     - RNPermissions
-  - Permission-Calendars (3.6.1):
+  - Permission-Calendars (3.8.0):
     - RNPermissions
-  - Permission-Camera (3.6.1):
+  - Permission-Camera (3.8.0):
     - RNPermissions
-  - Permission-FaceID (3.6.1):
+  - Permission-FaceID (3.8.0):
     - RNPermissions
-  - Permission-LocationAccuracy (3.6.1):
+  - Permission-LocationAccuracy (3.8.0):
     - RNPermissions
-  - Permission-LocationAlways (3.6.1):
+  - Permission-LocationAlways (3.8.0):
     - RNPermissions
-  - Permission-LocationWhenInUse (3.6.1):
+  - Permission-LocationWhenInUse (3.8.0):
     - RNPermissions
-  - Permission-Microphone (3.6.1):
+  - Permission-Microphone (3.8.0):
     - RNPermissions
-  - Permission-Notifications (3.6.1):
+  - Permission-Notifications (3.8.0):
     - RNPermissions
-  - Permission-PhotoLibrary (3.6.1):
+  - Permission-PhotoLibrary (3.8.0):
     - RNPermissions
-  - Permission-PhotoLibraryAddOnly (3.6.1):
+  - Permission-PhotoLibraryAddOnly (3.8.0):
     - RNPermissions
-  - Permission-Reminders (3.6.1):
+  - Permission-Reminders (3.8.0):
     - RNPermissions
-  - Permission-StoreKit (3.6.1):
+  - Permission-StoreKit (3.8.0):
     - RNPermissions
   - RCT-Folly (2021.07.22.00):
     - boost
@@ -416,14 +416,14 @@ PODS:
     - React
   - react-native-ios-context-menu (1.15.3):
     - React-Core
-  - react-native-menu (0.7.3):
+  - react-native-menu (0.8.0):
     - React
-  - react-native-mmkv (2.6.1):
+  - react-native-mmkv (2.10.0):
     - MMKV (>= 1.2.13)
     - React-Core
-  - react-native-pager-view (6.1.4):
+  - react-native-pager-view (6.2.0):
     - React-Core
-  - react-native-safe-area-context (4.5.0):
+  - react-native-safe-area-context (4.6.3):
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
@@ -543,22 +543,22 @@ PODS:
     - React-perflogger (= 0.72.0)
   - rn-keyboard (1.0.0):
     - React-Core
-  - RNDateTimePicker (7.0.1):
+  - RNDateTimePicker (7.2.0):
     - React-Core
   - RNFastImage (8.6.3):
     - React-Core
     - SDWebImage (~> 5.11.1)
     - SDWebImageWebPCoder (~> 0.8.4)
-  - RNGestureHandler (2.9.0):
+  - RNGestureHandler (2.12.0):
     - React-Core
-  - RNNotifee (7.7.1):
+  - RNNotifee (7.8.0):
     - React-Core
-    - RNNotifee/NotifeeCore (= 7.7.1)
-  - RNNotifee/NotifeeCore (7.7.1):
+    - RNNotifee/NotifeeCore (= 7.8.0)
+  - RNNotifee/NotifeeCore (7.8.0):
     - React-Core
-  - RNPermissions (3.6.1):
+  - RNPermissions (3.8.0):
     - React-Core
-  - RNReactNativeHapticFeedback (1.14.0):
+  - RNReactNativeHapticFeedback (2.0.3):
     - React-Core
   - RNReanimated (3.3.0):
     - DoubleConversion
@@ -592,7 +592,7 @@ PODS:
   - RNScreens (3.22.0):
     - React-Core
     - React-RCTImage
-  - RNSVG (13.7.0):
+  - RNSVG (13.9.0):
     - React-Core
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
@@ -895,19 +895,19 @@ SPEC CHECKSUMS:
   MMKV: 7f34558bbb5a33b0eaefae2de4b6a20a2ffdad6f
   MMKVCore: ddf41b9d9262f058419f9ba7598719af56c02cd3
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
-  Permission-AppTrackingTransparency: 9eedbc3b5a2907b8cb2c971461754616eac1661d
-  Permission-Calendars: dd55f36958c398a487f141d4c89119907e34dca8
-  Permission-Camera: bf6791b17c7f614b6826019fcfdcc286d3a107f6
-  Permission-FaceID: e70223280292a1a5e4b8ad943b70cd9229a7d2c3
-  Permission-LocationAccuracy: 76df17de5c6b8bc2eee34e61ee92cdd7a864c73d
-  Permission-LocationAlways: 8d99b025c9f73c696e0cdb367e42525f2e9a26f2
-  Permission-LocationWhenInUse: 3ba99e45c852763f730eabecec2870c2382b7bd4
-  Permission-Microphone: 48212dd4d28025d9930d583e3c7a56da7268665c
-  Permission-Notifications: 150484ae586eb9be4e32217582a78350a9bb31c3
-  Permission-PhotoLibrary: 5b34ca67279f7201ae109cef36f9806a6596002d
-  Permission-PhotoLibraryAddOnly: 6dba8924024e239af2e282daa8a88967679b4983
-  Permission-Reminders: dd6692dab69ae8a4e2473860e25b6304f9bcd326
-  Permission-StoreKit: 7dcf43ad1b8cdc7ae21e547d49df9ac9b6ea7270
+  Permission-AppTrackingTransparency: 7a48e816f801d10f2402c5b4edbe620ad8a412d9
+  Permission-Calendars: cd50284b7a311813fb893a488bad61771e6cb494
+  Permission-Camera: e6d142d7d8b714afe0a83e5e6ae17eb949f1e3e9
+  Permission-FaceID: 257965cb6ba2dc098cd485642df13e8ee6e281ef
+  Permission-LocationAccuracy: d6aa5146c084e7077e7efc4cbb543c7f6c72c51a
+  Permission-LocationAlways: e7ce67f3091ec096b6ac274bc30a18830a66b33c
+  Permission-LocationWhenInUse: 1c80e4797ae587642a83125e80b86686cefeba53
+  Permission-Microphone: 644b1de8bcc2afcaf934e09a22bee507a95796a7
+  Permission-Notifications: aa91ec29236626ff59cb60e08389c0a59a9d32c5
+  Permission-PhotoLibrary: 31787bbe77d0d3ae6a5267b8435e4a2e9ef78f1d
+  Permission-PhotoLibraryAddOnly: 16c92ad62b802514f3f788e00b298080be996337
+  Permission-Reminders: be7699ff02c2ef670647204c0f759258cdfad07c
+  Permission-StoreKit: df32d0883219ddb237d673eed9165734203bfecc
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: 656ef0536dd60a9740961ade6a64ba0cb0572d2b
   RCTTypeSafety: 82bd23b63f043d1a6b8e80e72fd15c08e04528a4
@@ -925,10 +925,10 @@ SPEC CHECKSUMS:
   React-logger: 454ffb01980778a43b0153ee98721d0275b56616
   react-native-color-picker-ios: 2e23dbcbfd3506c7560632c58b7e130b6015fbeb
   react-native-ios-context-menu: e529171ba760a1af7f2ef0729f5a7f4d226171c5
-  react-native-menu: 9d7d6f819cc7fa14a15cf86888c53f3240d86f1b
-  react-native-mmkv: 28af0c2a3dc9495c2cea80f9d41444e096c2a1ef
-  react-native-pager-view: b58cb9e9f42f64e50cab3040815772c1d119a2e2
-  react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
+  react-native-menu: 5b9b82dabcc779cebde15d292ccbcba4469ff311
+  react-native-mmkv: 725623a679fec884bf18a37400e753afb8a1b924
+  react-native-pager-view: 0ccb8bf60e2ebd38b1f3669fa3650ecce81db2df
+  react-native-safe-area-context: 36cc67648134e89465663b8172336a19eeda493d
   react-native-segmented-control: 0e4b5d93911e2234f110057df2b41738b326ab3e
   React-NativeModulesApple: 038cd625999ff352fc13d11fd335ea7509794599
   React-perflogger: 684a11499a0589cc42135d6d5cc04d0e4e0e261a
@@ -948,15 +948,15 @@ SPEC CHECKSUMS:
   React-utils: c12d2e75c8bbc727939ddc4319ed95493395ed5a
   ReactCommon: 517b45ed311ba9146aa8b55a8ef6617425f7448e
   rn-keyboard: 7dde83e2df5ee1451ce3e424cc9051bc4f89b706
-  RNDateTimePicker: e073697ac3e8a378968d68ab0581fef542b8af8a
+  RNDateTimePicker: 3942382593f104af226ad9c56e16166960c7ae30
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
-  RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
-  RNNotifee: 05692d7bb42b6c718a3906aeb8431c48ff2e8097
-  RNPermissions: dcdb7b99796bbeda6975a6e79ad519c41b251b1c
-  RNReactNativeHapticFeedback: 1e3efeca9628ff9876ee7cdd9edec1b336913f8c
+  RNGestureHandler: dec4645026e7401a0899f2846d864403478ff6a5
+  RNNotifee: f3c01b391dd8e98e67f539f9a35a9cbcd3bae744
+  RNPermissions: 215c54462104b3925b412b0fb3c9c497b21c358b
+  RNReactNativeHapticFeedback: afa5bf2794aecbb2dba2525329253da0d66656df
   RNReanimated: 9f7068e43b9358a46a688d94a5a3adb258139457
   RNScreens: 68fd1060f57dd1023880bf4c05d74784b5392789
-  RNSVG: d787d64ca06b9158e763ad2638a8c4edce00782a
+  RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   simdjson: e6bfae9ce4bcdc80452d388d593816f1ca2106f3

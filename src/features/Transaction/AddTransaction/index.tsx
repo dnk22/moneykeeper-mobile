@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
-import styles from './styles';
 import { useForm } from 'react-hook-form';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
@@ -15,7 +14,6 @@ import {
   PressableHaptic,
   InputCalculator,
   InputSelection,
-  Submit,
   FormAction,
 } from 'components/index';
 import { formatDateLocal } from 'utils/date';
@@ -26,6 +24,9 @@ import {
   CREATE_TRANSACTION_FROM_ACCOUNT,
   TRANSACTION_CATEGORY,
   TRANSACTION_CATEGORY_LIST,
+  EXPENSE_CATEGORY,
+  LEND_BORROW,
+  INCOME_CATEGORY,
 } from 'navigation/constants';
 import { AddTransactionRouteProp } from 'navigation/types';
 import {
@@ -41,27 +42,8 @@ import Collapsible from 'react-native-collapsible';
 import { ButtonText, SelectTransactionType } from 'navigation/elements';
 import { isEqual } from 'lodash';
 import { MAP_LEND_BORROW, TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
-import { EXPENSE_CATEGORY } from 'navigation/constants';
-import { LEND_BORROW } from 'navigation/constants';
-import { INCOME_CATEGORY } from 'navigation/constants';
-
-let defaultValues = {
-  amount: '0',
-  dateTimeAt: new Date(),
-  transactionsCategoryId: '',
-  transactionsTypeId: TRANSACTION_TYPE.EXPENSE,
-  accountId: '',
-  descriptions: '',
-  location: '',
-  eventName: '',
-  payFor: '',
-  relatedPerson: '',
-  fee: '',
-  feeType: '',
-  isNotAddReport: false,
-  attachment: '',
-  userId: '',
-};
+import { defaultValues } from './initData';
+import styles from './styles';
 
 function AddTransactions() {
   const { colors } = useCustomTheme();
@@ -171,7 +153,7 @@ function AddTransactions() {
     [isDateTimeModalType],
   );
 
-  const handleOnDateTimePicker = useCallback((date: Date) => {
+  const onHandleDateTimePicker = useCallback((date: Date) => {
     setValue('dateTimeAt', date);
   }, []);
 
@@ -180,8 +162,8 @@ function AddTransactions() {
     const { transactionsTypeId } = getValues();
     if (transactionsTypeId) {
       switch (transactionsTypeId) {
-        case TRANSACTION_TYPE.EXPENSE:
         case TRANSACTION_TYPE.LEND:
+        case TRANSACTION_TYPE.EXPENSE:
           return 'red';
         case TRANSACTION_TYPE.INCOME:
         case TRANSACTION_TYPE.BORROW:
@@ -294,18 +276,18 @@ function AddTransactions() {
     setValue('transactionsTypeId', transactionTypeId);
   };
 
-  const handleOnSelectAccount = () => {
+  const onHandleSelectAccount = () => {
     navigation.navigate(ACCOUNT_PICKER, { accountSelectedId: getValues('accountId') });
   };
 
-  const handleOnFeeChange = () => {
+  const onHandleFeeChange = () => {
     setIsShowFee(!isShowFee);
     if (!isShowFee) {
-      setValue('fee', 0);
+      setValue('fee', '0');
     }
   };
 
-  const handleOnSelectTransactionCategory = () => {
+  const onHandleSelectTransactionCategory = () => {
     let categoryType: any = EXPENSE_CATEGORY;
     switch (getValues('transactionsTypeId')) {
       case TRANSACTION_TYPE.INCOME:
@@ -330,7 +312,7 @@ function AddTransactions() {
     });
   };
 
-  const handleOnShowDetail = () => {
+  const onHandleShowDetail = () => {
     setIsShowDetails(!isShowDetails);
   };
 
@@ -360,19 +342,18 @@ function AddTransactions() {
           // reset form state
           reset({
             ...defaultValues,
-            accountId : data?.accountId,
-            transactionsTypeId : data?.transactionsTypeId,
+            accountId: data?.accountId,
+            transactionsTypeId: data?.transactionsTypeId,
           });
           resetTransactionCategory();
         }
       });
     }
-    if (navigation.canGoBack() && name === CREATE_TRANSACTION_FROM_ACCOUNT) {
+    if (navigation.canGoBack() && isEqual(name, CREATE_TRANSACTION_FROM_ACCOUNT)) {
       // navigate to prev screen
       navigation.goBack();
     }
   };
-  // console.log(getValues());
 
   return (
     <View style={styles.container}>
@@ -381,12 +362,12 @@ function AddTransactions() {
         isVisible={isDateTimeModalType === 'date' || isDateTimeModalType === 'time'}
         mode={isDateTimeModalType}
         onToggleModal={onToggleDateTimeModal}
-        onDateTimePicker={handleOnDateTimePicker}
+        onDateTimePicker={onHandleDateTimePicker}
       />
       <KeyboardAwareScrollView
         style={[styles.form, { backgroundColor: colors.background }]}
         showsVerticalScrollIndicator={false}
-        extraScrollHeight={60}
+        extraScrollHeight={40}
       >
         <InputCalculator
           name="amount"
@@ -402,7 +383,7 @@ function AddTransactions() {
             icon={transactionCategorySelected?.icon}
             title="Chọn danh mục"
             value={transactionCategorySelected?.categoryName}
-            onSelect={handleOnSelectTransactionCategory}
+            onSelect={onHandleSelectTransactionCategory}
           />
           <View style={styles.itemGroup}>
             <SvgIcon name="textWord" style={styles.icon} />
@@ -438,7 +419,7 @@ function AddTransactions() {
             name="accountId"
             control={control}
             error={errors.accountId}
-            onSelect={handleOnSelectAccount}
+            onSelect={onHandleSelectAccount}
           />
         </View>
         <Collapsible collapsed={!isShowDetails}>
@@ -484,7 +465,7 @@ function AddTransactions() {
           <View style={[styles.group, { backgroundColor: colors.surface }]}>
             <View style={[styles.itemGroup, styles.itemGroupBetween]}>
               <RNText>Phí</RNText>
-              <Switch value={isShowFee} onValueChange={handleOnFeeChange} />
+              <Switch value={isShowFee} onValueChange={onHandleFeeChange} />
             </View>
             <Collapsible collapsed={!isShowFee}>
               <Animated.View entering={StretchInY}>
@@ -497,12 +478,12 @@ function AddTransactions() {
               <RNText>Không tính vào báo cáo</RNText>
               <SwitchField name="isNotAddReport" control={control} />
             </View>
-            <RNText style={styles.subText}>Ghi chép này sẽ không thống kê vào các báo cáo.</RNText>
+            <RNText preset="subTitle">Ghi chép này sẽ không thống kê vào các báo cáo.</RNText>
           </View>
         </Collapsible>
         <PressableHaptic
           style={[styles.group, styles.expandGroup, { backgroundColor: colors.surface }]}
-          onPress={handleOnShowDetail}
+          onPress={onHandleShowDetail}
         >
           <RNText>{isShowDetails ? 'Ẩn chi tiết' : 'Hiển thị chi tiết'}</RNText>
           <SvgIcon name={isShowDetails ? 'arrowUp' : 'arrowDown'} size={16} />
@@ -512,6 +493,7 @@ function AddTransactions() {
           onDelete={onDeleteTransaction}
           onSubmit={handleSubmit(onSubmit)}
         />
+        <View style={{ height: 150 }} />
       </KeyboardAwareScrollView>
     </View>
   );
