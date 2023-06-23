@@ -1,11 +1,12 @@
 import { IconProps } from 'components/SvgIcon/const';
+import { APPEARANCE } from 'navigation/constants';
 
 interface ISettingsRouteItem {
   link: string;
   name: string;
   icon: IconProps;
 }
-interface ISettingRoutes {
+export interface ISettingRoutes {
   [key: string]: { key: string; child: ISettingsRouteItem[] };
 }
 export const settingRoutes: ISettingRoutes = {
@@ -18,7 +19,7 @@ export const settingRoutes: ISettingRoutes = {
         icon: 'settings',
       },
       {
-        link: 'appearance',
+        link: APPEARANCE,
         name: 'Giao diện',
         icon: 'text',
       },

@@ -24,6 +24,7 @@ import {
   EXPENSE_CATEGORY,
   INCOME_CATEGORY,
   LEND_BORROW,
+  APPEARANCE,
 } from './constants';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
@@ -34,6 +35,7 @@ export type RootStackParamList = {
   [BANK_NAVIGATION]: NavigatorScreenParams<BankParams>;
   [ACCOUNT_PICKER]: { accountSelectedId?: string } | undefined;
   [TRANSACTION_CATEGORY]: NavigatorScreenParams<TransactionCategoryParams>;
+  [APPEARANCE]: undefined;
 };
 export type RootStackScreenProps<T extends keyof RootStackParamList> = NativeStackScreenProps<
   RootStackParamList,

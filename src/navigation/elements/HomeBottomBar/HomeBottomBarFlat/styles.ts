@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   component: {
     height: 80,
     position: 'relative',
-    width: (SCREEN_WIDTH - 60) / 4,
+    width: (SCREEN_WIDTH - 100) / 4,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     borderBottomEndRadius: 10,
   },
   icon: {
-    marginBottom: 5,
+    marginBottom: 4,
   },
   circle: {
     width: 40,
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 10,
   },
 });
 

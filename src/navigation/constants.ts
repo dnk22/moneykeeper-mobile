@@ -5,6 +5,7 @@ export const DASHBOARD = 'dashboard';
 
 // settings screen constants
 export const SETTINGS = 'settings';
+export const APPEARANCE = 'appearance';
 
 // account screen constants
 export const ACCOUNT = 'account';
@@ -34,6 +35,5 @@ export const REPORT = 'report';
 export const HOME_REPORT = 'homeReport';
 
 // bank screen constants
-
 export const BANK_NAVIGATION = 'bank';
 export const BANK_HOME_LIST = 'bankHomeList';

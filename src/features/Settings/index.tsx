@@ -1,42 +1,36 @@
-import React, { memo } from 'react';
-import {
-  Text,
-  View,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
-import isEqual from 'react-fast-compare';
-import styles from './styles';
-import SvgIcon from 'components/SvgIcon';
+import React from 'react';
+import { Text, View, SafeAreaView, ScrollView } from 'react-native';
+import { SvgIcon, TouchableHighlightComponent } from 'components/index';
 import { settingRoutes } from './constants';
+import { useNavigation } from '@react-navigation/native';
+import styles from './styles';
 
 function Settings() {
+  const navigation = useNavigation();
+
+  function onNavigateToScreen(link: any) {
+    navigation.navigate(link);
+  }
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView style={styles.container}>
         <Text style={styles.title}>Cài đặt</Text>
-        <TouchableOpacity activeOpacity={0.5}>
+        <TouchableHighlightComponent activeOpacity={0.5}>
           <View style={[styles.group, styles.premium]}>
             <Text style={styles.premiumSubTitle}>Mở khóa tất cả tính năng</Text>
             <Text style={styles.premiumTitle}>Your Time Pro</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableHighlightComponent>
         {Object.values(settingRoutes).map(({ key, child }) => (
           <View style={styles.group} key={key}>
             {child.map(({ link, name, icon }, index) => (
-              <TouchableOpacity activeOpacity={0.5} key={link}>
-                <View
-                  style={[
-                    styles.item,
-                    index !== child.length - 1 && styles.itemBorderBottom,
-                  ]}
-                >
-                  <SvgIcon
-                    name={icon}
-                    preset="settingsIcon"
-                    style={styles.itemIcon}
-                  />
+              <TouchableHighlightComponent
+                activeOpacity={0.5}
+                key={link}
+                onPress={() => onNavigateToScreen(link)}
+              >
+                <View style={[styles.item, index !== child.length - 1 && styles.itemBorderBottom]}>
+                  <SvgIcon name={icon} preset="settingsIcon" style={styles.itemIcon} />
                   <Text style={styles.itemText}>{name}</Text>
                   <SvgIcon
                     name="forward"
@@ -45,7 +39,7 @@ function Settings() {
                     style={styles.itemNavigation}
                   />
                 </View>
-              </TouchableOpacity>
+              </TouchableHighlightComponent>
             ))}
           </View>
         ))}
@@ -55,4 +49,4 @@ function Settings() {
   );
 }
 
-export default memo(Settings, isEqual);
+export default Settings;
