@@ -17,6 +17,7 @@ import {
   importDefaultBanksData,
   importDefaultTransactionCategory,
 } from 'database/querying';
+import BlurScreen from 'features/BlurScreen';
 
 LogBox.ignoreLogs(logBoxIgnore);
 
@@ -49,6 +50,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <StatusBar />
+      <BlurScreen />
       <PersistGate loading={<Loading />} persistor={persistor}>
         <NavigationContainer theme={theme}>
           <AppNavigators />
