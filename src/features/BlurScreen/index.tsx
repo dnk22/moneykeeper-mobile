@@ -31,7 +31,7 @@ function BlurScreen() {
         width: '100%',
         height: '100%',
       }}
-      blurType={colorScheme === 'dark' ? 'light' : 'dark'}
+      blurType={colorScheme}
     />
   );
 }
