@@ -5,7 +5,8 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "pod": "cd ios && pod install --repo-update --verbose",
+    "pod": "cd ios && pod install --repo-update",
+    "pod -v": "cd ios && pod install --repo-update --verbose",
     "start": "react-native start --reset-cache",
     "test": "jest",
     "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
@@ -33,7 +34,7 @@
     "react-fast-compare": "^3.2.2",
     "react-hook-form": "^7.45.0",
     "react-i18next": "^13.0.1",
-    "react-native": "0.72.0",
+    "react-native": "0.72.1",
     "react-native-collapsible": "^1.6.1",
     "react-native-color-picker-ios": "^0.1.2",
     "react-native-fast-image": "^8.6.3",
