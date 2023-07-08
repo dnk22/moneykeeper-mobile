@@ -82,7 +82,7 @@ export const addNewTransaction = async (transaction: TTransactions) => {
       database.get<TransactionModel>(TRANSACTIONS).create((item) => {
         Object.assign(item, transaction);
       });
-      await updateUseCountTransactionCategory(transaction.transactionsCategoryId);
+      await updateUseCountTransactionCategory(transaction.categoryId);
       return true;
     });
   } catch (error) {
@@ -103,12 +103,12 @@ export const updateTransactionById = async ({ id, data }: { id: string; data: TT
   let useDiffCategory = false;
   await database.write(async () => {
     const res = await database.get<TransactionModel>(TRANSACTIONS).find(id);
-    useDiffCategory = res.transactionsCategoryId !== data.transactionsCategoryId;
+    useDiffCategory = res.categoryId !== data.categoryId;
     await res.update((item) => {
       Object.assign(item, data);
     });
     if (!useDiffCategory) return;
-    await updateUseCountTransactionCategory(data.transactionsCategoryId);
+    await updateUseCountTransactionCategory(data.categoryId);
   });
 };
 /** delete */

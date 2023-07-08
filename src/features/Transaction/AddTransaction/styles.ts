@@ -8,42 +8,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
   },
-  group: {
-    borderRadius: 10,
-    padding: 5,
-    paddingHorizontal: 10,
-    marginBottom: 10,
-  },
-  expandGroup: {
-    alignItems: 'center',
-    paddingVertical: 10,
-  },
-  itemGroup: {
-    height: 50,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  itemGroupBetween: {
-    justifyContent: 'space-between',
-  },
-  groupContent: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 10,
-  },
-  icon: {
-    opacity: 0.6,
-  },
-  iconForward: {
-    position: 'absolute',
-    right: 6,
-  },
-  formInput: {
-    height: 50,
-    fontSize: 20,
-    width: '100%',
-  },
 });
 
 export default styles;

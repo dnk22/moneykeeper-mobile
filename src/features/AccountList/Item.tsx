@@ -34,7 +34,7 @@ function Item({ account, isItemSelected, onActionPress, onItemPress }: ItemProps
   };
 
   return (
-    <View style={styles.itemContainer}>
+    <View style={[styles.itemContainer, { borderBottomColor: colors.divider }]}>
       <TouchableHighlightComponent
         style={{ backgroundColor: colors.surface }}
         onPress={handleOnItemPress}
@@ -57,7 +57,7 @@ function Item({ account, isItemSelected, onActionPress, onItemPress }: ItemProps
               style={styles.itemAction}
               onPress={() => onActionPress && onActionPress(account)}
             >
-              <SvgIcon name="settingDot" size={20} />
+              <SvgIcon name="settingDot" size={18} />
             </PressableHaptic>
           )}
         </View>

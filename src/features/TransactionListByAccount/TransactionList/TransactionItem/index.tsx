@@ -22,10 +22,10 @@ function TransactionItem({ data }: TransactionItemProps) {
   const [transactionCategory, setTransactionCategory] = useState<TransactionCategoryModel>();
 
   useEffect(() => {
-    if (data?.transactionsCategoryId) {
-      getTransactionCategory(data?.transactionsCategoryId);
+    if (data?.categoryId) {
+      getTransactionCategory(data?.categoryId);
     }
-  }, [data?.transactionsCategoryId]);
+  }, [data?.categoryId]);
 
   const getTransactionCategory = async (id: string) => {
     const res = await getTransactionCategoryById(id);

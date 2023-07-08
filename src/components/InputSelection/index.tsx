@@ -6,12 +6,12 @@ import SvgIcon from 'components/SvgIcon';
 import styles from './styles';
 import { IconProps } from 'components/SvgIcon/const';
 import PressableHaptic from 'components/PressableHaptic';
-import { Control, RegisterOptions } from 'react-hook-form';
+import { Control } from 'react-hook-form';
 import Form from './FORM';
 
 type SelectedProps = {
   title?: string;
-  icon?: IconProps;
+  icon?: any;
   onSelect?: () => void;
   value?: string;
   onDelete?: () => void;
@@ -35,7 +35,7 @@ function Selected({
   const isError = error && !Boolean(value);
   return (
     <>
-      {name && <Form name={name} control={control} rules={{ required: true }} />}
+      {name && <Form name={name} control={control} rules={{ required: required }} />}
       <PressableHaptic style={[styles.itemGroup]} onPress={onSelect}>
         <SvgIcon name={icon} style={{ transform: [{ scale: 1.1 }] }} />
         <View style={styles.groupContent}>

@@ -6,7 +6,6 @@ import { persistor, store } from './store';
 import AppNavigators from 'navigation/index';
 import { MyAppTheme } from 'resources/theme';
 import { PersistGate } from 'redux-persist/integration/react';
-import { logBoxIgnore } from 'utils/constant';
 import { Loading, StatusBar } from 'components/index';
 
 import RnKeyboard from 'rn-keyboard'; // <-- Import here
@@ -18,8 +17,9 @@ import {
   importDefaultTransactionCategory,
 } from 'database/querying';
 import BlurScreen from 'features/BlurScreen';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-LogBox.ignoreLogs(logBoxIgnore);
+LogBox.ignoreAllLogs();
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -53,7 +53,9 @@ const App = () => {
       <BlurScreen />
       <PersistGate loading={<Loading />} persistor={persistor}>
         <NavigationContainer theme={theme}>
-          <AppNavigators />
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <AppNavigators />
+          </GestureHandlerRootView>
         </NavigationContainer>
       </PersistGate>
     </Provider>

@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     paddingVertical: 5,
+    borderBottomWidth: 0.2,
   },
   itemContent: {
     height: 60,

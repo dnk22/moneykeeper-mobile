@@ -11,11 +11,11 @@ export default class TransactionModel extends Model {
   };
 
   @field('amount') amount!: number;
-  @field('transactions_typeid') transactionsTypeId!: string;
-  @field('transactions_category_id') transactionsCategoryId!: string;
+  @field('transaction_type') transactionsType!: string;
+  @field('category_id') categoryId!: string;
   @text('descriptions') descriptions!: string;
-  @date('date_time_at') dateTimeAt!: Date;
   @field('account_id') accountId!: string;
+  @date('date_time_at') dateTimeAt!: Date;
   @field('location') location!: string;
   @text('event_name') eventName!: string;
   @field('pay_for') payFor!: string;

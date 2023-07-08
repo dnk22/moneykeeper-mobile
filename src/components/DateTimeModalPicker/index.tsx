@@ -75,6 +75,8 @@ function DateTimeModalPicker({
       onModalHide={onModalHide}
       style={styles.container}
       styleDefaultContent={styles.contentView}
+      animationIn="zoomIn"
+      animationOut="zoomOut"
     >
       <View style={[styles.pickerHeader, { backgroundColor: colors.surface }]}>
         <PressableHaptic style={styles.itemHeader} onPress={() => setIsMode('date')}>

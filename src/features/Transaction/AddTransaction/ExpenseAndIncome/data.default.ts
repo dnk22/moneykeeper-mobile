@@ -1,17 +1,14 @@
-import { TRANSACTION_TYPE } from 'utils/constant';
-
 export let defaultValues = {
-  amount: '0',
+  amount: 0,
   dateTimeAt: new Date(),
-  transactionsCategoryId: '',
-  transactionsTypeId: TRANSACTION_TYPE.EXPENSE,
+  categoryId: '',
   accountId: '',
   descriptions: '',
   location: '',
   eventName: '',
   payFor: '',
   relatedPerson: '',
-  fee: '',
+  fee: 0,
   feeType: '',
   isNotAddReport: false,
   attachment: '',

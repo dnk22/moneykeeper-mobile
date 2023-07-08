@@ -86,7 +86,7 @@ export type TransactionParamListProps<T extends keyof TransactionParamList> =
 
 /** transaction category stack navigation */
 export type TransactionCategoryParams = {
-  [TRANSACTION_CATEGORY_LIST]: { returnScreen: any };
+  [TRANSACTION_CATEGORY_LIST]: { screen: any; returnScreen: any };
   [UPDATE_TRANSACTION_CATEGORY]: {
     icon?: string;
     transactionCategoryId?: string;
