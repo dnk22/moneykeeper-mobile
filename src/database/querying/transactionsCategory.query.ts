@@ -3,7 +3,7 @@ import TransactionCategoryModel from 'database/models/transactionCategory.model'
 import { TRANSACTION_CATEGORY } from 'database/constants';
 import { TTransactionsCategory } from 'database/types';
 import { TransactionCategoryData } from 'utils/data';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
+import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
 import { Q } from '@nozbe/watermelondb';
 
 /** observe */
@@ -45,6 +45,7 @@ export const getTransactionCategoryById = async (id: string) => {
     });
   } catch (error) {
     console.log(error, 'fetch getTransactionCategoryById err');
+    return null;
   }
 };
 

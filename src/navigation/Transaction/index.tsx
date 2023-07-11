@@ -5,6 +5,7 @@ import { TransactionParamList } from 'navigation/types';
 // import route component
 import AddTransactions from 'features/Transaction/AddTransaction';
 import { useCustomTheme } from 'resources/theme';
+import { TRANSACTION_TYPE } from 'utils/constant';
 
 //set up routes
 const TransactionStack = createNativeStackNavigator<TransactionParamList>();
@@ -21,6 +22,9 @@ function TransactionNavigation() {
           headerStyle: {
             backgroundColor: colors.primary,
           },
+        }}
+        initialParams={{
+          transactionType: TRANSACTION_TYPE.EXPENSE,
         }}
       />
     </TransactionStack.Navigator>

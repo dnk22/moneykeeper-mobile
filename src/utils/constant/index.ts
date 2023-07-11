@@ -21,7 +21,7 @@ export enum TRANSACTION_TYPE {
   ADJUSTMENT,
 }
 
-export const MAP_LEND_BORROW = {
+export const MAP_LEND_BORROW: any = {
   [LEND]: TRANSACTION_TYPE.LEND,
   [BORROW]: TRANSACTION_TYPE.BORROW,
   [COLLECT_DEBTS]: TRANSACTION_TYPE.INCOME,
@@ -30,4 +30,4 @@ export const MAP_LEND_BORROW = {
 
 export const FLAT = 'flat';
 export const STICKY = 'sticky';
-export const BASE_URL = ''
+export const BASE_URL = '';

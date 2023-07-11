@@ -10,9 +10,10 @@ import { useAppSelector } from 'store/index';
 import { selectUpdateModeStatus } from 'store/transactionCategory/transactionCategory.selector';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 import { TransactionCategoryParamProps } from 'navigation/types';
-import styles from './styles';
+import { mapCategoryTypeToTransactionType } from 'utils/helper';
 import Icon from '../common/Icon';
 import GroupChild from '../common/GroupChild';
+import styles from './styles';
 
 type CategoryGroupItemProps = {
   expenseCategoryChildObserve?: any;
@@ -34,9 +35,13 @@ function CategoryGroupItem({ expenseCategoryChildObserve, item }: CategoryGroupI
       navigation.navigate(UPDATE_TRANSACTION_CATEGORY, { transactionCategoryId: category.id });
       return;
     }
+    const transactionTypeTarget = mapCategoryTypeToTransactionType({
+      type: category.categoryType,
+      value: category.value,
+    });
     navigation.navigate({
       name: navigation.getParent()?.getState().routes[0].params?.returnScreen,
-      params: { categoryId: category.id },
+      params: { categoryId: category.id, transactionType: transactionTypeTarget },
       merge: true,
     });
   };

@@ -1,51 +1,56 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SelectTransactionType } from 'navigation/elements';
 import { TRANSACTION_TYPE } from 'utils/constant';
-import styles from './styles';
 import ExpenseAndIncome from './ExpenseAndIncome';
+import LendAndBorrow from './LendAndBorrow';
+import { AddTransactionRouteProp } from 'navigation/types';
+import { isEqual } from 'lodash';
+import styles from './styles';
 
 function AddTransactions() {
   const { colors } = useCustomTheme();
-  const navigation = useNavigation();
-  const [transactionType, setTransactionType] = useState<TRANSACTION_TYPE>(
-    TRANSACTION_TYPE.EXPENSE,
-  );
+  const navigation = useNavigation<any>();
+  const { params } = useRoute<AddTransactionRouteProp>();
+  const currentTransactionType = useRef<any>(params?.transactionType);
 
   // Use `setOptions` to update the transaction type select in header
   useEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
         <SelectTransactionType
-          isSelected={transactionType}
+          isSelected={params?.transactionType}
           onItemPress={handleOnChangeTransactionType}
         />
       ),
     });
-  }, [transactionType]);
+  }, [params?.transactionType]);
+
+  useEffect(() => {
+    currentTransactionType.current = params?.transactionType;
+  }, [params?.transactionType]);
 
   const handleOnChangeTransactionType = (item: TRANSACTION_TYPE) => {
-    setTransactionType(item);
+    if (!isEqual(item, currentTransactionType.current)) {
+      navigation.setParams({ transactionType: item, categoryId: undefined });
+      currentTransactionType.current = item;
+    }
   };
 
-  const RenderBody = useMemo(() => {
-    switch (transactionType) {
+  const renderForm = () => {
+    switch (params?.transactionType) {
       case TRANSACTION_TYPE.EXPENSE:
       case TRANSACTION_TYPE.INCOME:
-        return (
-          <ExpenseAndIncome
-            transactionType={transactionType}
-            onChangeTransactionType={handleOnChangeTransactionType}
-          />
-        );
-
+      case TRANSACTION_TYPE.LEND:
+      case TRANSACTION_TYPE.BORROW:
+        return <ExpenseAndIncome params={params} />;
       default:
         break;
     }
-  }, [transactionType]);
+  };
 
   return (
     <View style={styles.container}>
@@ -54,7 +59,7 @@ function AddTransactions() {
         showsVerticalScrollIndicator={false}
         extraScrollHeight={40}
       >
-        {RenderBody}
+        {renderForm()}
       </KeyboardAwareScrollView>
     </View>
   );

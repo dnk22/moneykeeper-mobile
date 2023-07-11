@@ -14,7 +14,7 @@ import TransactionCategoryNavigation from './TransactionCategory';
 
 import HomeNavigation from './Home';
 import BankNavigation from './Bank';
-import AccountPicker from 'features/Transaction/common/AccountPicker';
+import AccountPicker from 'features/Transaction/AccountPicker';
 import Appearance from 'features/Settings/Appearance';
 
 //set up routes

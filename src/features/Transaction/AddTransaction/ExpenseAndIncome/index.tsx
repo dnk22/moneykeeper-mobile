@@ -10,60 +10,32 @@ import {
   Switch,
   SwitchField,
   InputCalculator,
-  InputSelection,
   FormAction,
 } from 'components/index';
 import Animated, { StretchInY } from 'react-native-reanimated';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
-import {
-  ACCOUNT_PICKER,
-  TRANSACTION_CATEGORY,
-  TRANSACTION_CATEGORY_LIST,
-  EXPENSE_CATEGORY,
-  INCOME_CATEGORY,
-  CREATE_TRANSACTION_FROM_ACCOUNT,
-} from 'navigation/constants';
+import { CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
 import { AddTransactionRouteProp } from 'navigation/types';
-import {
-  deleteTransactionById,
-  getAccountById,
-  getFirstAccount,
-  getTransactionById,
-  getTransactionCategoryById,
-} from 'database/querying';
+import { deleteTransactionById, getFirstAccount, getTransactionById } from 'database/querying';
 import Collapsible from 'react-native-collapsible';
 import { ButtonText } from 'navigation/elements';
 import { isEqual } from 'lodash';
 import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
-import { defaultValues } from './data.default';
-import DateTimeSelect from '../../common/DateTimeSelect';
-import MoreDetail from '../../common/MoreDetail';
+import { defaultValues } from './constant';
+import DateTimeSelect from '../common/DateTimeSelect';
+import MoreDetail from '../common/MoreDetail';
 import styles from '../styles.common';
 import { updateTransaction } from 'services/api/transactions';
+import { TransactionTypeProps } from '../type';
+import CategorySelect from '../common/CategorySelect';
+import AccountSelect from '../common/AccountSelect';
 
-type ExpenseAndIncome = {
-  transactionType: TRANSACTION_TYPE;
-  onChangeTransactionType: (value: TRANSACTION_TYPE) => void;
-};
-
-const mapTransactionType: any = {
-  [TRANSACTION_TYPE.INCOME]: INCOME_CATEGORY,
-  [TRANSACTION_TYPE.EXPENSE]: EXPENSE_CATEGORY,
-};
-
-function ExpenseAndIncome({ transactionType, onChangeTransactionType }: ExpenseAndIncome) {
+function ExpenseAndIncome({ params }: TransactionTypeProps) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
-  const { params, name } = useRoute<AddTransactionRouteProp>();
+  const { name } = useRoute<AddTransactionRouteProp>();
 
   /** local state */
-  const [categorySelected, setCategorySelected] = useState<
-    | { icon: string; categoryName: string; categoryType: TRANSACTION_CATEGORY_TYPE; value: string }
-    | undefined
-  >(undefined);
-  const [accountSelected, setAccountSelected] = useState<
-    { accountLogo: string; accountName: string } | undefined
-  >(undefined);
   const [isShowFee, setIsShowFee] = useState<boolean>(false);
 
   /** setup form */
@@ -78,7 +50,7 @@ function ExpenseAndIncome({ transactionType, onChangeTransactionType }: ExpenseA
   } = useForm<TTransactions>({
     defaultValues: {
       ...defaultValues,
-      transactionType,
+      transactionType: params.transactionType,
     },
   });
 
@@ -89,24 +61,18 @@ function ExpenseAndIncome({ transactionType, onChangeTransactionType }: ExpenseA
     });
   }, []);
 
-  useEffect(() => {
-    onTransactionTypeChange();
-  }, [transactionType]);
-
   // set default account when mode = add & accountId = null
   useFocusEffect(
     useCallback(() => {
       if (!params?.transactionId && !getValues('accountId')) {
         setDefaultAccountInModeAdd();
       }
-    }, [params?.transactionId, watch('accountId')]),
+    }, [!params?.transactionId, watch('accountId')]),
   );
 
-  useFocusEffect(
-    useCallback(() => {
-      updateFormDataWhenFocus();
-    }, []),
-  );
+  useEffect(() => {
+    setValue('transactionType', params?.transactionType);
+  }, [params?.transactionType]);
 
   useEffect(() => {
     if (params?.transactionId) {
@@ -114,9 +80,13 @@ function ExpenseAndIncome({ transactionType, onChangeTransactionType }: ExpenseA
     }
   }, [params?.transactionId]);
 
+  /** get transaction category selected data */
   useEffect(() => {
-    fetchAccountData();
-  }, [watch('accountId')]);
+    setValue('categoryId', params?.categoryId);
+    return () => {
+      setValue('categoryId', '');
+    };
+  }, [params?.categoryId]);
 
   /** watch accountId */
   useEffect(() => {
@@ -124,23 +94,6 @@ function ExpenseAndIncome({ transactionType, onChangeTransactionType }: ExpenseA
       setValue('accountId', params.accountId);
     }
   }, [params?.accountId]);
-
-  /** get transaction category selected data */
-  useEffect(() => {
-    if (params?.categoryId) {
-      setValue('categoryId', params.categoryId);
-    }
-  }, [params?.categoryId]);
-
-  /** watch categoryId and set category data*/
-  useEffect(() => {
-    fetchCategoryData();
-  }, [watch('categoryId')]);
-
-  const updateFormDataWhenFocus = async () => {
-    await fetchCategoryData();
-    await fetchAccountData();
-  };
 
   const fetchDataInEditMode = async (id: string) => {
     const res = await getTransactionById(id);
@@ -152,64 +105,6 @@ function ExpenseAndIncome({ transactionType, onChangeTransactionType }: ExpenseA
       reset(result);
     }
   };
-
-  /** watch transactionType, set to new state in form  */
-  const onTransactionTypeChange = () => {
-    if (transactionType !== getValues('transactionType')) {
-      resetTransactionCategory();
-    }
-    setValue('transactionType', transactionType);
-  };
-
-  /** start category function */
-  const handleOnSelectTransactionCategory = () => {
-    navigation.navigate(TRANSACTION_CATEGORY, {
-      screen: TRANSACTION_CATEGORY_LIST,
-      params: {
-        screen: mapTransactionType[transactionType],
-        returnScreen: name,
-      },
-    });
-  };
-
-  const fetchCategoryData = async () => {
-    if (!getValues('categoryId')) return false;
-    try {
-      const res = await getTransactionCategoryById(getValues('categoryId'));
-      if (!res) {
-        resetTransactionCategory();
-        return false;
-      }
-      const newCategorySelected = {
-        icon: res.icon,
-        categoryType: res.categoryType,
-        categoryName: res.categoryName,
-        value: res.value,
-      };
-      // if data no change , don't setState
-      if (!isEqual(newCategorySelected, categorySelected)) {
-        setCategorySelected(newCategorySelected);
-      }
-      // if new categoryType !=  current transactionType, change this
-      if (!isEqual(res.categoryType, transactionType)) {
-        resetTransactionTypeByCategory(res.categoryType);
-      }
-      return true;
-    } catch (error) {
-      console.log(error, 'setCategorySelected error');
-      return false;
-    }
-  };
-
-  const resetTransactionTypeByCategory = (newValue: TRANSACTION_TYPE) => {
-    onChangeTransactionType(newValue);
-  };
-
-  const resetTransactionCategory = () => {
-    setValue('categoryId', '');
-    setCategorySelected(undefined);
-  };
-  /** end category function */
 
   /** start account function */
   const setDefaultAccountInModeAdd = async () => {
@@ -223,37 +118,17 @@ function ExpenseAndIncome({ transactionType, onChangeTransactionType }: ExpenseA
     }
   };
 
-  const fetchAccountData = async () => {
-    if (!watch('accountId')) return false;
-    try {
-      const account = await getAccountById(watch('accountId'));
-      if (!account) {
-        setValue('accountId', '');
-        setAccountSelected(undefined);
-        return false;
-      }
-      const newAccountState = {
-        accountLogo: account.accountLogo,
-        accountName: account.accountName,
-      };
-      // if data no change , don't setState
-      if (!isEqual(newAccountState, accountSelected)) {
-        setAccountSelected(newAccountState);
-      }
-      return true;
-    } catch (error) {
-      Alert.alert('Oops, Lỗi rồi!', 'Có lỗi trong quá trình chọn tài khoản');
-      return false;
-    }
+  const resetAccount = () => {
+    setValue('accountId', '');
   };
-  /** end account function */
+  /** start account function */
+
+  const renderIfExpenseAndIncome = () => {
+    return [TRANSACTION_TYPE.EXPENSE, TRANSACTION_TYPE.INCOME].includes(params.transactionType);
+  };
 
   const handleOnDateTimePicker = (date: Date) => {
     setValue('dateTimeAt', date);
-  };
-
-  const handleOnSelectAccount = () => {
-    navigation.navigate(ACCOUNT_PICKER, { accountSelectedId: getValues('accountId') });
   };
 
   const handleOnShowFee = () => {
@@ -275,6 +150,8 @@ function ExpenseAndIncome({ transactionType, onChangeTransactionType }: ExpenseA
       amount: +data.amount,
       fee: +data?.fee,
     };
+    console.log(requestData);
+    return ;
     updateTransaction({
       id: params?.transactionId,
       data: requestData,
@@ -286,7 +163,6 @@ function ExpenseAndIncome({ transactionType, onChangeTransactionType }: ExpenseA
           accountId: data?.accountId,
           transactionType: data?.transactionType,
         });
-        resetTransactionCategory();
       }
       if (navigation.canGoBack() && isEqual(name, CREATE_TRANSACTION_FROM_ACCOUNT)) {
         // navigate to prev screen
@@ -294,20 +170,15 @@ function ExpenseAndIncome({ transactionType, onChangeTransactionType }: ExpenseA
       }
     });
   };
-
   return (
     <View>
       <InputCalculator name="amount" control={control} />
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
-        <InputSelection
-          required
-          name="categoryId"
+        <CategorySelect
+          value={watch('categoryId')}
           control={control}
           error={errors.categoryId}
-          icon={categorySelected?.icon}
-          title="Chọn danh mục"
-          value={categorySelected?.categoryName}
-          onSelect={handleOnSelectTransactionCategory}
+          currentScreen={name}
         />
         <View style={styles.itemGroup}>
           <SvgIcon name="textWord" style={styles.icon} />
@@ -317,36 +188,52 @@ function ExpenseAndIncome({ transactionType, onChangeTransactionType }: ExpenseA
               control={control}
               placeholder="Chi tiết"
               style={styles.formInput}
-              maxLength={50}
+              maxLength={100}
             />
           </View>
         </View>
         <DateTimeSelect values={watch('dateTimeAt')} onChangeDate={handleOnDateTimePicker} />
-        <InputSelection
-          required
-          icon={accountSelected?.accountLogo}
-          value={accountSelected?.accountName}
-          title="Chọn tài khoản"
-          name="accountId"
+        <AccountSelect
+          value={watch('accountId')}
           control={control}
           error={errors.accountId}
-          onSelect={handleOnSelectAccount}
+          onReset={resetAccount}
         />
       </View>
       <MoreDetail>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
-          <View style={styles.itemGroup}>
-            <SvgIcon name="people" style={styles.icon} />
-            <View style={styles.groupContent}>
-              <InputField
-                name="payFor"
-                control={control}
-                placeholder="Chi cho ai"
-                style={styles.formInput}
-                maxLength={50}
-              />
-            </View>
-          </View>
+          {renderIfExpenseAndIncome() && (
+            <>
+              <View style={styles.itemGroup}>
+                <SvgIcon name="people" style={styles.icon} />
+                <View style={styles.groupContent}>
+                  <InputField
+                    name={watch('transactionType') === TRANSACTION_TYPE.EXPENSE ? 'giver' : 'payee'}
+                    control={control}
+                    placeholder={
+                      watch('transactionType') === TRANSACTION_TYPE.EXPENSE
+                        ? 'Chi cho ai'
+                        : 'Nhận từ ai'
+                    }
+                    style={styles.formInput}
+                    maxLength={50}
+                  />
+                </View>
+              </View>
+              <View style={styles.itemGroup}>
+                <SvgIcon name="camp" style={styles.icon} />
+                <View style={styles.groupContent}>
+                  <InputField
+                    name="event"
+                    control={control}
+                    placeholder="Sự kiện"
+                    style={styles.formInput}
+                    maxLength={50}
+                  />
+                </View>
+              </View>
+            </>
+          )}
           <View style={styles.itemGroup}>
             <SvgIcon name="map" style={styles.icon} />
             <View style={styles.groupContent}>
@@ -358,18 +245,6 @@ function ExpenseAndIncome({ transactionType, onChangeTransactionType }: ExpenseA
                 maxLength={50}
               />
               <SvgIcon name="location" size={18} style={styles.iconForward} />
-            </View>
-          </View>
-          <View style={styles.itemGroup}>
-            <SvgIcon name="camp" style={styles.icon} />
-            <View style={styles.groupContent}>
-              <InputField
-                name="event"
-                control={control}
-                placeholder="Sự kiện"
-                style={styles.formInput}
-                maxLength={50}
-              />
             </View>
           </View>
         </View>

@@ -6,7 +6,7 @@ import { AccountPickerProp } from 'navigation/types';
 import { ADD_TRANSACTION } from 'navigation/constants';
 
 function AccountPicker() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const { params } = useRoute<AccountPickerProp>();
 
   const handleOnItemPress = (account: TAccount) => {

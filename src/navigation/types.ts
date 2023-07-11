@@ -27,7 +27,7 @@ import {
   APPEARANCE,
 } from './constants';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
+import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
 
 /** root stack navigation */
 export type RootStackParamList = {
@@ -58,28 +58,26 @@ export type HomeStackParamListProps<T extends keyof HomeStackParamList> = Bottom
 /** account stack navigation */
 export type AccountStackParamList = {
   [ACCOUNTTAB]: undefined;
-  [ADD_ACCOUNT]: { accountId: string } | undefined;
+  [ADD_ACCOUNT]: { accountId?: string } | undefined;
   [ACCOUNT_DETAIL]: { accountId: string; accountName: string };
-  [CREATE_TRANSACTION_FROM_ACCOUNT]:
-    | {
-        transactionId?: string;
-        categoryId?: string;
-        accountId?: string;
-      }
-    | undefined;
+  [CREATE_TRANSACTION_FROM_ACCOUNT]: {
+    transactionId?: string;
+    transactionType?: TRANSACTION_TYPE;
+    categoryId?: string;
+    accountId?: string;
+  };
 };
 export type AccountStackParamListProps<T extends keyof AccountStackParamList> =
   NativeStackScreenProps<AccountStackParamList, T>;
 
 /** account stack navigation */
 export type TransactionParamList = {
-  [ADD_TRANSACTION]:
-    | {
-        transactionId?: string;
-        categoryId?: string;
-        accountId?: string;
-      }
-    | undefined;
+  [ADD_TRANSACTION]: {
+    transactionId?: string;
+    transactionType: TRANSACTION_TYPE;
+    categoryId?: string;
+    accountId?: string;
+  };
 };
 export type TransactionParamListProps<T extends keyof TransactionParamList> =
   NativeStackScreenProps<TransactionParamList, T>;
