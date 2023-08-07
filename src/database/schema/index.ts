@@ -21,6 +21,8 @@ export default appSchema({
         { name: 'is_not_add_report', type: 'boolean', isOptional: true },
         { name: 'user_id', type: 'string', isOptional: true },
         { name: 'sort_order', type: 'number', isOptional: true },
+        { name: 'created_at', type: 'number' },
+        { name: 'updated_at', type: 'number' },
         // fields for savings account
         { name: 'term_type', type: 'number', isOptional: true },
         { name: 'term_month', type: 'number', isOptional: true },
@@ -32,8 +34,13 @@ export default appSchema({
         { name: 'interest_payment_to_account', type: 'string', isOptional: true },
         { name: 'saving_from_account_id', type: 'string', isOptional: true },
         { name: 'number_day_of_year', type: 'number', isOptional: true },
-        { name: 'created_at', type: 'number' },
-        { name: 'updated_at', type: 'number' },
+        // credit card
+        { name: 'credit_card_limit', type: 'number', isOptional: true },
+        { name: 'credit_card_is_reminder', type: 'boolean', isOptional: true },
+        { name: 'credit_card_reminder_list', type: 'string', isOptional: true },
+        { name: 'credit_card_payment_day', type: 'number', isOptional: true },
+        { name: 'credit_card_statement_day', type: 'number', isOptional: true },
+        { name: 'credit_card_day_after_statement', type: 'number', isOptional: true },
       ],
     }),
     tableSchema({
@@ -44,7 +51,9 @@ export default appSchema({
         { name: 'short_name', type: 'string' },
         { name: 'icon', type: 'string' },
         { name: 'is_system', type: 'boolean' },
-        { name: 'is_wallet', type: 'boolean' },
+        { name: 'type', type: 'string' },
+        { name: 'created_at', type: 'number' },
+        { name: 'updated_at', type: 'number' },
       ],
     }),
     tableSchema({

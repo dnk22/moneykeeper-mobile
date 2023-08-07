@@ -16,23 +16,23 @@ import { selectAllAccountType } from 'store/account/account.selector';
 import { TAccountType } from 'database/types';
 
 type AccountTypeModalPickerProps = IModalComponentProps & {
-  isItemSelected?: string;
+  idSelected?: string;
   onPressItem?: (item: TAccountType) => void;
 };
 
 function AccountTypeModalPicker({
   isVisible,
   onToggleModal,
-  isItemSelected,
+  idSelected,
   onPressItem,
 }: AccountTypeModalPickerProps) {
   const accountTypeState = useAppSelector((state) => selectAllAccountType(state));
 
-  const [isSelected, setIsSelected] = useState(isItemSelected);
+  const [isSelected, setIsSelected] = useState(idSelected);
 
   useEffect(() => {
-    setIsSelected(isItemSelected);
-  }, [isItemSelected]);
+    setIsSelected(idSelected);
+  }, [idSelected]);
 
   const renderItem = ({ item }: { item: TAccountType }) => {
     const currentSelected = (itemId: string) => isSelected === itemId;

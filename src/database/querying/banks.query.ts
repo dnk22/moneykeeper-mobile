@@ -2,6 +2,7 @@ import { database } from 'database/index';
 import { Q } from '@nozbe/watermelondb';
 import { BankModel } from 'database/models';
 import { BANKS } from 'database/constants';
+import { BANK_TYPE } from 'utils/constant';
 const jsonBankData = require('utils/data/banks.default.json');
 
 /** observe */
@@ -11,10 +12,10 @@ export const getBanksObserve = () => database.get<BankModel>(BANKS).query().obse
 /** read */
 
 export const getBanksDataLocal = async ({
-  isWallet,
+  type = BANK_TYPE.BANK,
   text = '',
 }: {
-  isWallet: boolean;
+  type: BANK_TYPE;
   text?: string;
 }) => {
   try {
@@ -22,7 +23,7 @@ export const getBanksDataLocal = async ({
       return await database
         .get<BankModel>(BANKS)
         .query(
-          Q.where('is_wallet', isWallet),
+          Q.where('type', type.toString()),
           Q.where('short_name', Q.like(`${Q.sanitizeLikeString(text)}%`)),
         )
         .fetch();
@@ -64,7 +65,7 @@ export const importDefaultBanksData = async () => {
           bank.shortName = record.short_name;
           bank.icon = record.icon;
           bank.isSystem = record.is_system;
-          bank.isWallet = record.is_wallet;
+          bank.type = record.type;
         });
       }
     });

@@ -6,7 +6,7 @@
     "short_name": "VietcomBank",
     "icon": "VCB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "2",
@@ -15,7 +15,7 @@
     "short_name": "VietinBank",
     "icon": "CTG",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "3",
@@ -24,7 +24,7 @@
     "short_name": "Techcombank",
     "icon": "TCB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "4",
@@ -33,7 +33,7 @@
     "short_name": "BIDV",
     "icon": "BIDV",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "5",
@@ -42,7 +42,7 @@
     "short_name": "AgriBank",
     "icon": "VARB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "6",
@@ -51,7 +51,7 @@
     "short_name": "Navibank",
     "icon": "NVB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "7",
@@ -60,7 +60,7 @@
     "short_name": "Sacombank",
     "icon": "STB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "8",
@@ -69,7 +69,7 @@
     "short_name": "ACB",
     "icon": "ACB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "9",
@@ -78,7 +78,7 @@
     "short_name": "MBBank",
     "icon": "MB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "10",
@@ -87,7 +87,7 @@
     "short_name": "TPBank",
     "icon": "TPB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "11",
@@ -96,7 +96,7 @@
     "short_name": "Shinhan Bank",
     "icon": "SVB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "12",
@@ -105,7 +105,7 @@
     "short_name": "VIB Bank",
     "icon": "VIB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "13",
@@ -114,7 +114,7 @@
     "short_name": "VPBank",
     "icon": "VPB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "14",
@@ -123,7 +123,7 @@
     "short_name": "SHB",
     "icon": "SHB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "15",
@@ -132,7 +132,7 @@
     "short_name": "Eximbank",
     "icon": "EIB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "16",
@@ -141,7 +141,7 @@
     "short_name": "BaoVietBank",
     "icon": "BVB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "17",
@@ -150,7 +150,7 @@
     "short_name": "VietcapitalBank",
     "icon": "VCCB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "18",
@@ -159,7 +159,7 @@
     "short_name": "SCB",
     "icon": "SCB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "19",
@@ -168,7 +168,7 @@
     "short_name": "VietNam - Russia Bank",
     "icon": "VRB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "20",
@@ -177,7 +177,7 @@
     "short_name": "ABBank",
     "icon": "ABB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "21",
@@ -186,7 +186,7 @@
     "short_name": "PVCombank",
     "icon": "PVCB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "22",
@@ -195,7 +195,7 @@
     "short_name": "OceanBank",
     "icon": "OJB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "23",
@@ -204,7 +204,7 @@
     "short_name": "NamA bank",
     "icon": "NAB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "24",
@@ -213,7 +213,7 @@
     "short_name": "HDBank",
     "icon": "HDB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "25",
@@ -222,7 +222,7 @@
     "short_name": "VietBank",
     "icon": "VB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "26",
@@ -231,7 +231,7 @@
     "short_name": "VietCredit",
     "icon": "CFC",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "27",
@@ -240,7 +240,7 @@
     "short_name": "Public bank",
     "icon": "PBVN",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "28",
@@ -249,7 +249,7 @@
     "short_name": "Hongleong Bank",
     "icon": "HLB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "29",
@@ -258,7 +258,7 @@
     "short_name": "PG Bank",
     "icon": "PGB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "30",
@@ -267,7 +267,7 @@
     "short_name": "Co.op Bank",
     "icon": "COB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "31",
@@ -276,7 +276,7 @@
     "short_name": "CIMB",
     "icon": "CIMB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "32",
@@ -285,7 +285,7 @@
     "short_name": "Indovina",
     "icon": "IVB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "33",
@@ -294,7 +294,7 @@
     "short_name": "DongABank",
     "icon": "DAB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "34",
@@ -303,7 +303,7 @@
     "short_name": "GPBank",
     "icon": "GPB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "35",
@@ -312,7 +312,7 @@
     "short_name": "BacABank",
     "icon": "NASB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "36",
@@ -321,7 +321,7 @@
     "short_name": "VietABank",
     "icon": "VAB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "37",
@@ -330,7 +330,7 @@
     "short_name": "SaigonBank",
     "icon": "SGB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "38",
@@ -339,7 +339,7 @@
     "short_name": "Maritime Bank",
     "icon": "MSB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "39",
@@ -348,7 +348,7 @@
     "short_name": "LienVietPostBank",
     "icon": "LPB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "40",
@@ -357,7 +357,7 @@
     "short_name": "KienLongBank",
     "icon": "KLB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "41",
@@ -366,7 +366,7 @@
     "short_name": "IBK - Ha Noi",
     "icon": "IBKHN",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "42",
@@ -375,7 +375,7 @@
     "short_name": "Woori bank",
     "icon": "WOO",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "43",
@@ -384,7 +384,7 @@
     "short_name": "SeABank",
     "icon": "SEAB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "44",
@@ -393,7 +393,7 @@
     "short_name": "UOB",
     "icon": "UOB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "45",
@@ -402,7 +402,7 @@
     "short_name": "OCB",
     "icon": "OCB",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "46",
@@ -411,7 +411,7 @@
     "short_name": "Mirae Asset",
     "icon": "MAFC",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "47",
@@ -420,7 +420,7 @@
     "short_name": "Keb Hana - Ho Chi Minh",
     "icon": "KEBHANA",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "49",
@@ -429,7 +429,7 @@
     "short_name": "Standard Chartered",
     "icon": "STANDARD",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "50",
@@ -438,7 +438,7 @@
     "short_name": "CAKE",
     "icon": "CAKE",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "51",
@@ -447,7 +447,7 @@
     "short_name": "Ubank",
     "icon": "Ubank",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "52",
@@ -456,7 +456,7 @@
     "short_name": "Nonghyup Bank - HN",
     "icon": "NonghyupBankHN",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "53",
@@ -465,7 +465,7 @@
     "short_name": "Kookmin - HN",
     "icon": "KBHN",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "54",
@@ -474,7 +474,7 @@
     "short_name": "Kookmin - HCM",
     "icon": "KBHCM",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "55",
@@ -483,7 +483,7 @@
     "short_name": "DBS - HCM",
     "icon": "DBSHCM",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "56",
@@ -492,7 +492,7 @@
     "short_name": "CBBank",
     "icon": "CBBank",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "57",
@@ -501,7 +501,7 @@
     "short_name": "KBank - HCM",
     "icon": "KBankHCM",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "58",
@@ -510,7 +510,7 @@
     "short_name": "HSBC",
     "icon": "HSBC",
     "is_system": true,
-    "is_wallet": false
+    "type": "0"
   },
   {
     "id": "59",
@@ -518,7 +518,7 @@
     "bank_code": "shopeepay",
     "icon": "shopeepay",
     "is_system": true,
-    "is_wallet": true
+    "type": "1"
   },
   {
     "id": "60",
@@ -526,7 +526,7 @@
     "bank_code": "viettelpay",
     "icon": "viettelpay",
     "is_system": true,
-    "is_wallet": true
+    "type": "1"
   },
   {
     "id": "61",
@@ -534,7 +534,7 @@
     "bank_code": "zalopay",
     "icon": "zalopay",
     "is_system": true,
-    "is_wallet": true
+    "type": "1"
   },
   {
     "id": "62",
@@ -542,7 +542,7 @@
     "bank_code": "momo",
     "icon": "momo",
     "is_system": true,
-    "is_wallet": true
+    "type": "1"
   },
   {
     "id": "63",
@@ -550,6 +550,46 @@
     "bank_code": "vnptpay",
     "icon": "vnptpay",
     "is_system": true,
-    "is_wallet": true
+    "type": "1"
+  },
+  {
+    "id": "64",
+    "bank_name": "TCBS",
+    "bank_code": "tcbs",
+    "icon": "tcbs",
+    "is_system": true,
+    "type": "2"
+  },
+  {
+    "id": "65",
+    "bank_name": "MBS",
+    "bank_code": "mbs",
+    "icon": "tcbs",
+    "is_system": true,
+    "type": "2"
+  },
+  {
+    "id": "66",
+    "bank_name": "SSI",
+    "bank_code": "ssi",
+    "icon": "ssi",
+    "is_system": true,
+    "type": "2"
+  },
+  {
+    "id": "67",
+    "bank_name": "VNDIRECT",
+    "bank_code": "vndirect",
+    "icon": "vndirect",
+    "is_system": true,
+    "type": "2"
+  },
+  {
+    "id": "68",
+    "bank_name": "VPS",
+    "bank_code": "vps",
+    "icon": "vps",
+    "is_system": true,
+    "type": "2"
   }
 ]

@@ -27,7 +27,7 @@ import {
   APPEARANCE,
 } from './constants';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
+import { BANK_TYPE, TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
 
 /** root stack navigation */
 export type RootStackParamList = {
@@ -58,7 +58,7 @@ export type HomeStackParamListProps<T extends keyof HomeStackParamList> = Bottom
 /** account stack navigation */
 export type AccountStackParamList = {
   [ACCOUNTTAB]: undefined;
-  [ADD_ACCOUNT]: { accountId?: string } | undefined;
+  [ADD_ACCOUNT]: { accountId?: string; bankId?: string };
   [ACCOUNT_DETAIL]: { accountId: string; accountName: string };
   [CREATE_TRANSACTION_FROM_ACCOUNT]: {
     transactionId?: string;
@@ -118,7 +118,7 @@ export type ReportParamListProps<T extends keyof ReportParamList> = NativeStackS
 /** bank  stack navigation */
 export type BankParams = {
   [BANK_HOME_LIST]: {
-    isWallet: boolean;
+    type: BANK_TYPE;
   };
 };
 export type BankParamsProps<T extends keyof BankParams> = NativeStackScreenProps<BankParams, T>;

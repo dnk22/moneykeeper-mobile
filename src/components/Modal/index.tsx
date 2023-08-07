@@ -23,6 +23,7 @@ export interface IModalComponentProps extends NewModalProps {
   height?: string | number;
   styleDefaultContent?: StyleProp<any>;
   title?: string;
+  isBackdropClose?: boolean;
 }
 
 const ModalComponent = ({
@@ -38,6 +39,7 @@ const ModalComponent = ({
   height,
   styleDefaultContent,
   onBackdropPress,
+  isBackdropClose = true,
   onToggleModal,
   title,
   ...rest
@@ -45,7 +47,7 @@ const ModalComponent = ({
   const { colors } = useCustomTheme();
   const onHandleBackdropPress = () => {
     onBackdropPress && onBackdropPress();
-    onToggleModal();
+    isBackdropClose && onToggleModal && onToggleModal();
   };
 
   return (

@@ -5,6 +5,10 @@ export const COLLECT_DEBTS = 'collectDebts';
 export const REPAYMENT = 'repayment';
 export const RECENT = 'last_use_at';
 export const MOST = 'use_count';
+export const FLAT = 'flat';
+export const STICKY = 'sticky';
+export const BASE_URL = '';
+export const DAY_IN_MONTH = Array.from({ length: 31 }, (v, k) => k + 1);
 
 export enum TRANSACTION_CATEGORY_TYPE {
   EXPENSE,
@@ -28,6 +32,8 @@ export const MAP_LEND_BORROW: any = {
   [REPAYMENT]: TRANSACTION_TYPE.EXPENSE,
 };
 
-export const FLAT = 'flat';
-export const STICKY = 'sticky';
-export const BASE_URL = '';
+export enum BANK_TYPE {
+  BANK,
+  WALLET,
+  INVESTMENT,
+}

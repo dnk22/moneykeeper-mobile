@@ -52,7 +52,11 @@ export const textPresets = StyleSheet.create({
   subTitle: {
     color: 'gray',
     fontSize: normalize(13),
-    opacity: 0.6,
+    opacity: 0.7,
+  },
+  title: {
+    fontSize: normalize(15),
+    fontWeight: '500',
   },
   default: {},
 });

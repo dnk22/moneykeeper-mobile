@@ -78,6 +78,15 @@ export type TAccount = {
   interestPaymentToAccount?: string;
   savingFromAccountId?: string;
   numberDayOfYear?: number;
+
+  // credit card
+  creditCardLimit?: number;
+  creditCardIsReminder?: boolean;
+  creditCardReminderList?: string;
+  creditCardPaymentDay?: number;
+  creditCardStatementDay?: number;
+  creditCardDayAfterStatement?: number;
+
   createdAt?: Date;
   updatedAt?: Date;
 };

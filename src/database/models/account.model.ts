@@ -36,5 +36,13 @@ export default class AccountModel extends Model {
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;
 
+  //credit card
+  @field('credit_card_limit') creditCardLimit!: number;
+  @field('credit_card_is_reminder') creditCardIsReminder!: boolean;
+  @field('credit_card_reminder_list') creditCardReminderList!: string;
+  @field('credit_card_payment_day') creditCardPaymentDay!: number;
+  @field('credit_card_statement_day') creditCardStatementDay!: number;
+  @field('credit_card_day_after_statement') creditCardDayAfterStatement!: number;
+
   @children('transactions') transactions!: any;
 }

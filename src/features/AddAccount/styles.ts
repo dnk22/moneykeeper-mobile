@@ -39,6 +39,21 @@ const styles = StyleSheet.create({
   subText: {
     opacity: 0.5,
   },
+  statementDay: {
+    width: 55,
+    alignItems: 'center',
+    marginRight: 10,
+    backgroundColor: '#e8e9eb',
+    padding: 10,
+    borderRadius: 10,
+  },
+  itemNotification: {
+    height: 40,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+  },
 });
 
 export default styles;

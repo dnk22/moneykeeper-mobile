@@ -4,6 +4,7 @@ import { BankParams } from 'navigation/types';
 
 // import route component
 import BankList from 'features/BankList';
+import { BANK_TYPE } from 'utils/constant';
 
 //set up routes
 const TransactionStack = createNativeStackNavigator<BankParams>();
@@ -15,7 +16,7 @@ function BankNavigation() {
         name={BANK_HOME_LIST}
         component={BankList}
         options={({ route }) => ({
-          title: route.params?.isWallet ? 'Nhà cung cấp' : 'Ngân hàng',
+          title: route.params?.type !== BANK_TYPE.BANK ? 'Nhà cung cấp' : 'Ngân hàng',
         })}
       />
     </TransactionStack.Navigator>

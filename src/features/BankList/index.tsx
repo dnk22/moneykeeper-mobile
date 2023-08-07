@@ -7,34 +7,37 @@ import {
   SvgIcon,
   RNText,
 } from 'components/index';
-import styles from './styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { BankRouteProp } from 'navigation/types';
 import { getBanksDataLocal } from 'database/querying';
-import { useAppDispatch } from 'store/index';
-import { setBankSelected } from 'store/account/account.slice';
 import { TBank } from 'database/types';
+import { BANK_TYPE } from 'utils/constant';
+import { ADD_ACCOUNT } from 'navigation/constants';
+import { BankRouteProp } from 'navigation/types';
+import styles from './styles';
 
 function BankList() {
   const { params } = useRoute<BankRouteProp>();
-  const dispatch = useAppDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   const [banks, setBanks] = useState<any>([]);
-  const inputSearchPlaceHolder = params?.isWallet ? 'Nhập tên nhà cung cấp' : 'Nhập tên ngân hàng';
+  const inputSearchPlaceHolder =
+    params?.type === BANK_TYPE.WALLET ? 'Nhập tên nhà cung cấp' : 'Nhập tên ngân hàng';
 
   useEffect(() => {
     fetchBanksData();
   }, []);
 
   const fetchBanksData = async (text?: string) => {
-    const res = await getBanksDataLocal({ isWallet: params?.isWallet || false, text });
+    const res = await getBanksDataLocal({ type: params?.type, text });
     setBanks(res);
   };
 
   const onItemPress = (item: TBank) => {
-    dispatch(setBankSelected(item.id));
-    navigation.goBack();
+    navigation.navigate({
+      name: ADD_ACCOUNT,
+      params: { bankId: item.id },
+      merge: true,
+    });
   };
 
   const renderItem = ({ item }: { item: TBank }) => {
@@ -45,7 +48,7 @@ function BankList() {
             <SvgIcon name={item.icon} size={34} preset="transactionType" />
             <View>
               <RNText fontSize={16}>{item.shortName || item.bankName}</RNText>
-              {!params?.isWallet && (
+              {params?.type !== BANK_TYPE.WALLET && (
                 <RNText fontSize={14} style={[styles.subTitle]}>
                   {item.bankName}
                 </RNText>

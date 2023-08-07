@@ -26,6 +26,7 @@ type TInputCalculator = TextInputProps & {
   control: Control<any, any>;
   isShowPrefix?: boolean;
   inputTextColor?: string;
+  text?: string;
 };
 
 function InputCalculator({
@@ -35,10 +36,11 @@ function InputCalculator({
   onChangeText,
   isShowPrefix = true,
   inputTextColor = 'red',
+  text = 'Số tiền',
 }: TInputCalculator) {
   const { colors } = useCustomTheme();
   const {
-    field: { value, onChange },
+    field: { value = 0, onChange },
   } = useController({
     name,
     control,
@@ -46,7 +48,7 @@ function InputCalculator({
   });
 
   const cursorPosition = useRef<number>(0);
-  const [inputValue, setInputValue] = useState<string>(value.toString());
+  const [inputValue, setInputValue] = useState<string>('0');
   const inputHasOperators = useMemo(() => {
     if (inputValue) {
       return (
@@ -164,7 +166,7 @@ function InputCalculator({
 
   return (
     <View style={[styles.group, { backgroundColor: colors.surface }]}>
-      <RNText style={styles.amountLabel}>Số tiền</RNText>
+      <RNText style={styles.amountLabel}>{text}</RNText>
       <View style={styles.inputGroup}>
         {/* <RnKeyboard.Input
           selectTextOnFocus
