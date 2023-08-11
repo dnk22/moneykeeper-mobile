@@ -20,7 +20,7 @@ import { deleteTransactionById, getFirstAccount, getTransactionById } from 'data
 import Collapsible from 'react-native-collapsible';
 import { ButtonText } from 'navigation/elements';
 import { isEqual } from 'lodash';
-import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
+import { TRANSACTION_TYPE } from 'utils/constant';
 import { defaultValues } from './constant';
 import DateTimeSelect from '../common/DateTimeSelect';
 import MoreDetail from '../common/MoreDetail';
@@ -64,7 +64,7 @@ function ExpenseAndIncome({ params }: TransactionTypeProps) {
   // set default account when mode = add & accountId = null
   useFocusEffect(
     useCallback(() => {
-      if (!params?.transactionId && !getValues('accountId')) {
+      if (!params?.transactionId && !watch('accountId')) {
         setDefaultAccountInModeAdd();
       }
     }, [!params?.transactionId, watch('accountId')]),
@@ -151,7 +151,7 @@ function ExpenseAndIncome({ params }: TransactionTypeProps) {
       fee: +data?.fee,
     };
     console.log(requestData);
-    return ;
+    return;
     updateTransaction({
       id: params?.transactionId,
       data: requestData,

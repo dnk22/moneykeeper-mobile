@@ -6,7 +6,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { SelectTransactionType } from 'navigation/elements';
 import { TRANSACTION_TYPE } from 'utils/constant';
 import ExpenseAndIncome from './ExpenseAndIncome';
-import LendAndBorrow from './LendAndBorrow';
 import { AddTransactionRouteProp } from 'navigation/types';
 import { isEqual } from 'lodash';
 import styles from './styles';

@@ -13,12 +13,12 @@ export const TransactionTypeData = [
   {
     id: TRANSACTION_TYPE.EXPENSE,
     name: 'Chi Tiền',
-    icon: 'expense',
+    icon: 'expenseType',
   },
   {
     id: TRANSACTION_TYPE.INCOME,
     name: 'Thu tiền',
-    icon: 'income',
+    icon: 'incomeType',
   },
   {
     id: TRANSACTION_TYPE.LEND,
