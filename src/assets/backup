@@ -15,8 +15,8 @@ for (const item of imagesPath) {
     '\n' +
     files
       .map((x, index) => {
-        const decimal = files.length - 1 === index ? '' : ';';
-        return `export const ${x.split('.png')[0]}= require("./${item}/${x}")${decimal}`;
+        const decimal = files.length - 1 === index ? '' : ',';
+        return `${x.split('.png')[0]}: require("./${item}/${x}")${decimal}`;
       })
       .join('\n');
   result.push(ex);
@@ -25,4 +25,4 @@ const formatResult = result.flat((item) => item);
 const res = `export const imagesPath = {
     ${formatResult}
 }`;
-fs.writeFileSync(`${IMAGE_PATH}/index.js`, `${formatResult}`);
+fs.writeFileSync(`${IMAGE_PATH}/index.js`, res);

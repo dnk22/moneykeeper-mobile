@@ -157,9 +157,7 @@ function AddAccount() {
   };
 
   const resetSelectedBank = () => {
-    setValuesForm({
-      bankId: '',
-    });
+    setValue('bankId', '');
     bankLogo.current = '';
   };
 

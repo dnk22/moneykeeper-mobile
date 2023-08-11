@@ -564,7 +564,7 @@
     "id": "65",
     "bank_name": "MBS",
     "bank_code": "mbs",
-    "icon": "tcbs",
+    "icon": "mbs",
     "is_system": true,
     "type": "2"
   },

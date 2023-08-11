@@ -35,8 +35,10 @@ function AccountBankSelect({
     switch (accountType) {
       case '3':
         bankType = BANK_TYPE.INVESTMENT;
+        break;
       case '4':
         bankType = BANK_TYPE.WALLET;
+        break;
       default:
         break;
     }

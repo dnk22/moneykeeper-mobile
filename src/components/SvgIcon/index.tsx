@@ -7,7 +7,7 @@ import { useCustomTheme } from 'resources/theme';
 import { normalize } from 'share/dimensions';
 import icon, { IconProps } from './const';
 import { IconSize } from './preset';
-import { imagesPath } from 'assets/images';
+import * as imagesPath from 'assets/images';
 import { transactionCategoryIcon } from 'assets/images/transactionCategory';
 
 const imgSrc = { ...imagesPath, ...transactionCategoryIcon };

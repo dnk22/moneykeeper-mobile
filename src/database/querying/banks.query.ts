@@ -24,12 +24,17 @@ export const getBanksDataLocal = async ({
         .get<BankModel>(BANKS)
         .query(
           Q.where('type', type.toString()),
-          Q.where('short_name', Q.like(`${Q.sanitizeLikeString(text)}%`)),
+          Q.or(
+            Q.where('short_name', Q.like(`${Q.sanitizeLikeString(text)}%`)),
+            Q.where('bank_code', Q.like(`${Q.sanitizeLikeString(text)}%`)),
+            Q.where('bank_name', Q.like(`${Q.sanitizeLikeString(text)}%`)),
+          ),
         )
         .fetch();
     });
   } catch (error) {
     console.log(error, 'get count err');
+    return error;
   }
 };
 

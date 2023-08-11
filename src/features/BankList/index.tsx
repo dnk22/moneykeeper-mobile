@@ -8,10 +8,10 @@ import {
   RNText,
 } from 'components/index';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { getBanksDataLocal } from 'database/querying';
 import { TBank } from 'database/types';
 import { BANK_TYPE } from 'utils/constant';
 import { ADD_ACCOUNT } from 'navigation/constants';
+import { fetchBankData } from 'services/api/banks';
 import { BankRouteProp } from 'navigation/types';
 import styles from './styles';
 
@@ -28,7 +28,7 @@ function BankList() {
   }, []);
 
   const fetchBanksData = async (text?: string) => {
-    const res = await getBanksDataLocal({ type: params?.type, text });
+    const res = await fetchBankData({ type: params?.type, text });
     setBanks(res);
   };
 
@@ -45,10 +45,15 @@ function BankList() {
       <TouchableHighlightComponent onPress={() => onItemPress(item)}>
         <View style={styles.item}>
           <View style={styles.itemContent}>
-            <SvgIcon name={item.icon} size={34} preset="transactionType" />
+            <SvgIcon
+              name={item.icon}
+              size={34}
+              preset="transactionType"
+              style={{ borderRadius: 20 }}
+            />
             <View>
               <RNText fontSize={16}>{item.shortName || item.bankName}</RNText>
-              {params?.type !== BANK_TYPE.WALLET && (
+              {params?.type === BANK_TYPE.BANK && (
                 <RNText fontSize={14} style={[styles.subTitle]}>
                   {item.bankName}
                 </RNText>
