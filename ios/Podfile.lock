@@ -547,7 +547,7 @@ PODS:
     - React-Core
   - RNCPicker (2.4.10):
     - React-Core
-  - RNDateTimePicker (7.2.0):
+  - RNDateTimePicker (7.4.1):
     - React-Core
   - RNFastImage (8.6.3):
     - React-Core
@@ -960,7 +960,7 @@ SPEC CHECKSUMS:
   ReactCommon: e593d19c9e271a6da4d0bd7f13b28cfeae5d164b
   rn-keyboard: 7dde83e2df5ee1451ce3e424cc9051bc4f89b706
   RNCPicker: 0bc2f0a29abcca7b7ed44a2d036aac9ab6d25700
-  RNDateTimePicker: 3942382593f104af226ad9c56e16166960c7ae30
+  RNDateTimePicker: 9b4091348e53f540180abdc54984d839a556f593
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNGestureHandler: dec4645026e7401a0899f2846d864403478ff6a5
   RNNotifee: f3c01b391dd8e98e67f539f9a35a9cbcd3bae744
