@@ -21,6 +21,7 @@ export type TTransactions = {
   descriptions?: string;
   dateTimeAt: Date;
   accountId: string;
+  toAccountId: string;
   location?: string;
   eventName?: string;
   payFor?: string;

@@ -11,6 +11,8 @@ import Form from './FORM';
 
 type SelectedProps = {
   title?: string;
+  subTitle?: string;
+  isShowSubTitle?: boolean;
   icon?: any;
   onSelect?: () => void;
   value?: string;
@@ -23,6 +25,8 @@ type SelectedProps = {
 
 function Selected({
   title,
+  subTitle,
+  isShowSubTitle = false,
   icon = 'questionCircle',
   onSelect,
   value,
@@ -39,25 +43,32 @@ function Selected({
       <PressableHaptic style={[styles.itemGroup]} onPress={onSelect}>
         <SvgIcon name={icon} style={{ transform: [{ scale: 1.1 }] }} />
         <View style={styles.groupContent}>
-          {value && !required ? (
-            <View style={styles.value}>
-              <RNText fontSize={16} numberOfLines={1} style={{ maxWidth: '90%' }}>
-                {value}
+          <View style={styles.title}>
+            {value && isShowSubTitle && (
+              <RNText fontSize={10} preset="subTitle">
+                {subTitle}
               </RNText>
-              <Pressable onPress={onDelete}>
-                <SvgIcon name="closeCircle" size={20} color="gray" />
-              </Pressable>
-            </View>
-          ) : (
-            <RNText
-              fontSize={16}
-              style={{ maxWidth: '90%', fontWeight: isError ? 'bold' : 'normal' }}
-              numberOfLines={1}
-              color={isError ? 'red' : ''}
-            >
-              {value || title}
-            </RNText>
-          )}
+            )}
+            {value && !required ? (
+              <View style={styles.value}>
+                <RNText fontSize={16} numberOfLines={1} style={{ maxWidth: '90%' }}>
+                  {value}
+                </RNText>
+                <Pressable onPress={onDelete}>
+                  <SvgIcon name="closeCircle" size={20} color="gray" />
+                </Pressable>
+              </View>
+            ) : (
+              <RNText
+                fontSize={16}
+                style={{ maxWidth: '90%', fontWeight: isError ? 'bold' : 'normal' }}
+                numberOfLines={1}
+                color={isError ? 'red' : ''}
+              >
+                {value || title}
+              </RNText>
+            )}
+          </View>
           <SvgIcon name="forward" preset="forwardLink" style={styles.iconForward} />
         </View>
       </PressableHaptic>

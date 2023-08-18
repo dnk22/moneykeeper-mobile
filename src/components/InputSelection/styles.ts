@@ -12,6 +12,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  title: {
+    flex: 1,
+  },
   iconForward: {
     position: 'absolute',
     right: 6,

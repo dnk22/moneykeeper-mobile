@@ -18,6 +18,7 @@ type AccountSelectProps = {
   error: any;
   onReset: any;
   title?: string;
+  isShowSubTitle?: boolean;
 };
 
 function AccountSelect({
@@ -27,6 +28,7 @@ function AccountSelect({
   error,
   onReset,
   title = 'Chọn tài khoản',
+  isShowSubTitle,
 }: AccountSelectProps) {
   const navigation = useNavigation();
   const [accountSelected, setAccountSelected] = useState<AccountProp | undefined>(undefined);
@@ -78,9 +80,11 @@ function AccountSelect({
   return (
     <InputSelection
       required
+      isShowSubTitle={isShowSubTitle}
       icon={accountSelected?.accountLogo}
       value={accountSelected?.accountName}
       title={title}
+      subTitle={title}
       name={name}
       control={control}
       error={error}

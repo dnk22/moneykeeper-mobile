@@ -64,7 +64,7 @@ export default appSchema({
         { name: 'category_id', type: 'string' },
         { name: 'descriptions', type: 'string', isOptional: true },
         { name: 'date_time_at', type: 'number' },
-        { name: 'account_id', type: 'string', isIndexed: true },
+        { name: 'account_id', type: 'string', isOptional: true },
         { name: 'location', type: 'string', isOptional: true },
         { name: 'event_name', type: 'string', isOptional: true },
         { name: 'fee', type: 'number', isOptional: true },
@@ -78,6 +78,8 @@ export default appSchema({
         { name: 'payee', type: 'string', isOptional: true },
         // lend and borrow
         { name: 'relatedPerson', type: 'string', isOptional: true },
+        // transfer
+        { name: 'to_account_id', type: 'string', isOptional: true },
       ],
     }),
     tableSchema({

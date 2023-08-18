@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Alert, View } from 'react-native';
-import { useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
 import {
@@ -13,46 +12,38 @@ import {
   FormAction,
 } from 'components/index';
 import Animated, { StretchInY } from 'react-native-reanimated';
-import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
 import { AddTransactionRouteProp } from 'navigation/types';
-import { deleteTransactionById, getFirstAccount, getTransactionById } from 'database/querying';
+import { deleteTransactionById } from 'database/querying';
 import Collapsible from 'react-native-collapsible';
 import { ButtonText } from 'navigation/elements';
 import { isEqual } from 'lodash';
 import { TRANSACTION_TYPE } from 'utils/constant';
-import { defaultValues } from './constant';
 import DateTimeSelect from '../common/DateTimeSelect';
 import MoreDetail from '../common/MoreDetail';
 import styles from '../styles.common';
 import { updateTransaction } from 'services/api/transactions';
-import { TransactionTypeProps } from '../type';
+import { AddTransactionType } from '../type';
 import CategorySelect from '../common/CategorySelect';
 import AccountSelect from '../common/AccountSelect';
+import Fee from '../common/Fee';
+import RelatedPersonSelect from '../common/RelatedPersonSelect';
 
-function ExpenseAndIncome({ params }: TransactionTypeProps) {
+function ExpenseAndIncome({
+  params,
+  control,
+  handleSubmit,
+  setValue,
+  watch,
+  reset,
+  errors,
+}: AddTransactionType) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
   const { name } = useRoute<AddTransactionRouteProp>();
 
   /** local state */
-  const [isShowFee, setIsShowFee] = useState<boolean>(false);
-
-  /** setup form */
-  const {
-    control,
-    handleSubmit,
-    getValues,
-    setValue,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm<TTransactions>({
-    defaultValues: {
-      ...defaultValues,
-      transactionType: params.transactionType,
-    },
-  });
 
   // Use `setOptions` to update the button that submit form
   useEffect(() => {
@@ -60,63 +51,6 @@ function ExpenseAndIncome({ params }: TransactionTypeProps) {
       headerRight: () => <ButtonText title="Lưu" onPress={handleSubmit(onSubmit)} />,
     });
   }, []);
-
-  // set default account when mode = add & accountId = null
-  useFocusEffect(
-    useCallback(() => {
-      if (!params?.transactionId && !watch('accountId')) {
-        setDefaultAccountInModeAdd();
-      }
-    }, [!params?.transactionId, watch('accountId')]),
-  );
-
-  useEffect(() => {
-    setValue('transactionType', params?.transactionType);
-  }, [params?.transactionType]);
-
-  useEffect(() => {
-    if (params?.transactionId) {
-      fetchDataInEditMode(params.transactionId);
-    }
-  }, [params?.transactionId]);
-
-  /** get transaction category selected data */
-  useEffect(() => {
-    setValue('categoryId', params?.categoryId);
-    return () => {
-      setValue('categoryId', '');
-    };
-  }, [params?.categoryId]);
-
-  /** watch accountId */
-  useEffect(() => {
-    if (params?.accountId) {
-      setValue('accountId', params.accountId);
-    }
-  }, [params?.accountId]);
-
-  const fetchDataInEditMode = async (id: string) => {
-    const res = await getTransactionById(id);
-    if (res?.id) {
-      const result: any = {};
-      Object.keys(defaultValues).forEach(
-        (item) => (result[item] = res[item] || defaultValues[item]),
-      );
-      reset(result);
-    }
-  };
-
-  /** start account function */
-  const setDefaultAccountInModeAdd = async () => {
-    try {
-      const firstAccount = await getFirstAccount();
-      if (firstAccount && firstAccount.length) {
-        setValue('accountId', firstAccount[0].id);
-      }
-    } catch (error) {
-      Alert.alert('Oops, Lỗi rồi!', 'Có lỗi trong quá trình lấy thông tin tài khoản');
-    }
-  };
 
   const resetAccount = () => {
     setValue('accountId', '');
@@ -131,13 +65,6 @@ function ExpenseAndIncome({ params }: TransactionTypeProps) {
     setValue('dateTimeAt', date);
   };
 
-  const handleOnShowFee = () => {
-    setIsShowFee(!isShowFee);
-    if (!isShowFee) {
-      setValue('fee', 0);
-    }
-  };
-
   const onDeleteTransaction = () => {
     if (params?.transactionId) {
       deleteTransactionById(params.transactionId).then(() => navigation.goBack());
@@ -150,7 +77,7 @@ function ExpenseAndIncome({ params }: TransactionTypeProps) {
       amount: +data.amount,
       fee: +data?.fee,
     };
-    console.log(requestData);
+    console.log(requestData, 'requestData');
     return;
     updateTransaction({
       id: params?.transactionId,
@@ -170,6 +97,11 @@ function ExpenseAndIncome({ params }: TransactionTypeProps) {
       }
     });
   };
+
+  const handleOnClearFee = () => {
+    setValue('fee', 0);
+  };
+
   return (
     <View>
       <InputCalculator name="amount" control={control} />
@@ -180,6 +112,14 @@ function ExpenseAndIncome({ params }: TransactionTypeProps) {
           error={errors.categoryId}
           currentScreen={name}
         />
+        {!renderIfExpenseAndIncome() && (
+          <RelatedPersonSelect
+            control={control}
+            title={
+              watch('transactionType') === TRANSACTION_TYPE.BORROW ? 'Người cho vay' : 'Người vay'
+            }
+          />
+        )}
         <View style={styles.itemGroup}>
           <SvgIcon name="textWord" style={styles.icon} />
           <View style={styles.groupContent}>
@@ -248,17 +188,9 @@ function ExpenseAndIncome({ params }: TransactionTypeProps) {
             </View>
           </View>
         </View>
-        <View style={[styles.group, { backgroundColor: colors.surface }]}>
-          <View style={[styles.itemGroup, styles.itemGroupBetween]}>
-            <RNText>Phí</RNText>
-            <Switch value={isShowFee} onValueChange={handleOnShowFee} />
-          </View>
-          <Collapsible collapsed={!isShowFee}>
-            <Animated.View entering={StretchInY}>
-              <InputCalculator name="fee" control={control} />
-            </Animated.View>
-          </Collapsible>
-        </View>
+        <Fee onClose={handleOnClearFee}>
+          <InputCalculator name="fee" control={control} />
+        </Fee>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={[styles.itemGroup, styles.itemGroupBetween]}>
             <RNText>Không tính vào báo cáo</RNText>

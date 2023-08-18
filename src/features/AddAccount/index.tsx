@@ -198,7 +198,7 @@ function AddAccount() {
       ...data,
       initialAmount: +data?.initialAmount,
       creditCardLimit: +data?.creditCardLimit,
-      accountLogo: bankLogo.current || accountTypeLogo.current,
+      accountLogo: bankLogo.current || accountTypeLogo.current || accountTypeState[0].icon,
     };
     if (params?.accountId) {
       updateAccount({ id: params.accountId, account: requestData });

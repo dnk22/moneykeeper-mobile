@@ -58,13 +58,13 @@ export type HomeStackParamListProps<T extends keyof HomeStackParamList> = Bottom
 /** account stack navigation */
 export type AccountStackParamList = {
   [ACCOUNTTAB]: undefined;
-  [ADD_ACCOUNT]: { accountId?: string; bankId?: string };
+  [ADD_ACCOUNT]: { accountId?: string; bankId?: string; toAccountId?: string };
   [ACCOUNT_DETAIL]: { accountId: string; accountName: string };
   [CREATE_TRANSACTION_FROM_ACCOUNT]: {
     transactionId?: string;
-    transactionType?: TRANSACTION_TYPE;
     categoryId?: string;
     accountId?: string;
+    toAccountId?: string;
   };
 };
 export type AccountStackParamListProps<T extends keyof AccountStackParamList> =

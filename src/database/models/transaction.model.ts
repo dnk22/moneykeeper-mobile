@@ -15,6 +15,7 @@ export default class TransactionModel extends Model {
   @field('category_id') categoryId!: string;
   @text('descriptions') descriptions!: string;
   @field('account_id') accountId!: string;
+  @field('to_account_id') toAccountId!: string;
   @date('date_time_at') dateTimeAt!: Date;
   @field('location') location!: string;
   @text('event_name') eventName!: string;
