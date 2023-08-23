@@ -26,8 +26,6 @@ import Collapsible from 'react-native-collapsible';
 import StatementModalPicker from './StatementModalPicker';
 import Notifications from './Notifications';
 
-const DEFAULT_ACCOUNT_TYPE_ID = '0';
-
 const defaultValues = {
   accountName: '',
   initialAmount: 0,
@@ -36,7 +34,6 @@ const defaultValues = {
   creditCardStatementDay: 5,
   creditCardDayAfterStatement: 15,
   creditCardReminderList: '',
-  accountTypeId: DEFAULT_ACCOUNT_TYPE_ID,
   isNotAddReport: false,
   isActive: true,
   currency: 'vnd',
@@ -68,17 +65,18 @@ function AddAccount() {
     reset,
     formState: { errors },
   } = useForm<TAccount>({
-    defaultValues,
+    defaultValues: {
+      ...defaultValues,
+      accountTypeId: accountTypeState[0].id,
+      accountTypeName: accountTypeState[0].name,
+    },
   });
 
   const isCreditCard = useMemo(
     () => watch('accountTypeId') === accountTypeState[2].id,
     [watch('accountTypeId')],
   );
-  const currentAccountType = useMemo(
-    () => watch('accountTypeId') || DEFAULT_ACCOUNT_TYPE_ID,
-    [watch('accountTypeId')],
-  );
+  const currentAccountType = useMemo(() => watch('accountTypeId'), [watch('accountTypeId')]);
 
   // // Use `setOptions` to update account
   useEffect(() => {

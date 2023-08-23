@@ -90,6 +90,7 @@ function AccountList({
     const res = await getAccounts({ text });
     setActiveAccounts(res);
   };
+  console.log(accounts, 'accounts');
 
   return (
     <>
