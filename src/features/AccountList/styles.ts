@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   groupTitle: {
     marginTop: 5,
-    opacity: 0.7,
   },
   itemContainer: {
     paddingVertical: 5,
@@ -14,7 +13,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: 10,
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   itemCenter: {
     flex: 1,

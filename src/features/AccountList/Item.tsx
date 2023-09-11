@@ -57,7 +57,7 @@ function Item({ account, isItemSelected, onActionPress, onItemPress }: ItemProps
               style={styles.itemAction}
               onPress={() => onActionPress && onActionPress(account)}
             >
-              <SvgIcon name="settingDot" size={18} />
+              <SvgIcon name="settingDot" />
             </PressableHaptic>
           )}
         </View>

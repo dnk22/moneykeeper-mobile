@@ -44,7 +44,7 @@ function Card({ children, title, collapse = false }: CardProps) {
       <PressableHaptic style={styles.header} onPress={onCardToggle}>
         <RNText style={styles.title}>{title}</RNText>
         <Animated.View style={[styles.iconDropdown, { transform: [{ rotate: rotate }] }]}>
-          <SvgIcon name="arrowDown" size={16} />
+          <SvgIcon name="remote" />
         </Animated.View>
       </PressableHaptic>
       <Collapsible style={styles.content} collapsed={isCollapse}>

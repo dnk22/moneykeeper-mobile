@@ -60,7 +60,7 @@ function HomeNavigation() {
         name={SETTINGS}
         options={{
           // @ts-ignore
-          tabBarIcon: ({ color }) => <SvgIcon name="settings" color={color} />,
+          tabBarIcon: ({ color }) => <SvgIcon name="more" color={color} />,
           tabBarLabel: 'Cài đặt',
         }}
         component={Settings}

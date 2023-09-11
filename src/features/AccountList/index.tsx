@@ -68,7 +68,7 @@ function AccountList({
       const { title } = section;
       return (
         <View style={styles.groupTitle}>
-          <RNText>{`${title}`}</RNText>
+          <RNText color="#747471">{`${title}`}</RNText>
         </View>
       );
     },
@@ -90,7 +90,6 @@ function AccountList({
     const res = await getAccounts({ text });
     setActiveAccounts(res);
   };
-  console.log(accounts, 'accounts');
 
   return (
     <>

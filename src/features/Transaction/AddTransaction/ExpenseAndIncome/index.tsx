@@ -43,8 +43,6 @@ function ExpenseAndIncome({
   const navigation = useNavigation();
   const { name } = useRoute<AddTransactionRouteProp>();
 
-  /** local state */
-
   // Use `setOptions` to update the button that submit form
   useEffect(() => {
     navigation.setOptions({
@@ -59,6 +57,10 @@ function ExpenseAndIncome({
 
   const renderIfExpenseAndIncome = () => {
     return [TRANSACTION_TYPE.EXPENSE, TRANSACTION_TYPE.INCOME].includes(params.transactionType);
+  };
+
+  const currentTransactionTypeIs = (types: TRANSACTION_TYPE[]) => {
+    return types.includes(params.transactionType);
   };
 
   const handleOnDateTimePicker = (date: Date) => {
@@ -142,7 +144,7 @@ function ExpenseAndIncome({
       </View>
       <MoreDetail>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
-          {renderIfExpenseAndIncome() && (
+          {currentTransactionTypeIs([TRANSACTION_TYPE.EXPENSE, TRANSACTION_TYPE.INCOME]) && (
             <>
               <View style={styles.itemGroup}>
                 <SvgIcon name="people" style={styles.icon} />
@@ -164,7 +166,7 @@ function ExpenseAndIncome({
                 <SvgIcon name="camp" style={styles.icon} />
                 <View style={styles.groupContent}>
                   <InputField
-                    name="event"
+                    name="eventName"
                     control={control}
                     placeholder="Sự kiện"
                     style={styles.formInput}

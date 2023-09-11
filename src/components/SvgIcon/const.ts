@@ -1,5 +1,4 @@
 import add from 'assets/svg/icon-add.svg';
-import bookmark from 'assets/svg/icon-bookmark.svg';
 import arrowDown from 'assets/svg/icon-down.svg';
 import arrowUp from 'assets/svg/icon-up.svg';
 import search from 'assets/svg/icon-search.svg';
@@ -11,7 +10,6 @@ import calendarHoliday from 'assets/svg/icon-calendar-holiday.svg';
 import doneCircle from 'assets/svg/icon-done-circle.svg';
 import forward from 'assets/svg/icon-forward.svg';
 import heart from 'assets/svg/icon-heart.svg';
-import important from 'assets/svg/icon-important.svg';
 import work from 'assets/svg/icon-work.svg';
 import questionCircle from 'assets/svg/icon-question-circle.svg';
 import cloudSync from 'assets/svg/icon-cloud-sync.svg';
@@ -67,10 +65,11 @@ import arrowCircleDown from 'assets/svg/arrowCircleDown.svg';
 import arrowCircleUp from 'assets/svg/arrowCircleUp.svg';
 import checkMark from 'assets/svg/checkMark.svg';
 import exclamationMark from 'assets/svg/exclamationMark.svg';
+import remote from 'assets/svg/remote.svg';
+import more from 'assets/svg/more.svg';
 
 const icon = {
   add,
-  bookmark,
   arrowDown,
   arrowUp,
   search,
@@ -82,7 +81,6 @@ const icon = {
   doneCircle,
   forward,
   heart,
-  important,
   work,
   questionCircle,
   cloudSync,
@@ -138,6 +136,8 @@ const icon = {
   arrowCircleUp,
   checkMark,
   exclamationMark,
+  remote,
+  more,
 };
 
 export type IconProps = keyof typeof icon;
