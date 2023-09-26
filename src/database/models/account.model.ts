@@ -7,42 +7,42 @@ export default class AccountModel extends Model {
   static table = ACCOUNTS;
 
   static associations: Associations = {
-    transactions: { type: 'has_many', foreignKey: 'account_id' },
+    transactions: { type: 'has_many', foreignKey: 'accountId' },
   };
 
   @text('accountName') accountName!: string;
   @text('accountLogo') accountLogo!: string;
-  @field('initial_amount') initialAmount!: number;
-  @field('current_amount') currentAmount!: number;
-  @field('account_type_id') accountTypeId!: string;
-  @field('account_type_name') accountTypeName!: string;
-  @field('bank_id') bankId!: string;
+  @field('initialAmount') initialAmount!: number;
+  @field('currentAmount') currentAmount!: number;
+  @field('accountTypeId') accountTypeId!: string;
+  @field('accountTypeName') accountTypeName!: string;
+  @field('bankId') bankId!: string;
   @field('currency') currency!: string;
   @text('descriptions') descriptions!: string;
-  @field('is_active') isActive!: boolean;
-  @field('is_not_add_report') isNotAddReport!: boolean;
-  @field('user_id') userId!: string;
-  @field('sort_order') sortOrder!: number;
-  @field('term_type') termType!: number;
-  @field('term_month') termMonth!: number;
-  @field('interest_rate') interestRate!: number;
-  @field('interest_payment_type') interestPaymentType!: number;
-  @field('due_type') dueType!: number;
-  @date('start_date') startDate!: Date;
-  @date('end_date') endDate!: Date;
-  @field('interest_payment_to_account') interestPaymentToAccount!: string;
-  @field('saving_from_account_id') savingFromAccountId!: string;
-  @field('number_day_of_year') numberDayOfYear!: number;
+  @field('isActive') isActive!: boolean;
+  @field('isNotAddReport') isNotAddReport!: boolean;
+  @field('userId') userId!: string;
+  @field('sortOrder') sortOrder!: number;
+  @field('termType') termType!: number;
+  @field('termMonth') termMonth!: number;
+  @field('interestRate') interestRate!: number;
+  @field('interestPaymentType') interestPaymentType!: number;
+  @field('dueType') dueType!: number;
+  @date('startDate') startDate!: Date;
+  @date('endDate') endDate!: Date;
+  @field('interestPaymentToAccount') interestPaymentToAccount!: string;
+  @field('savingFromAccountId') savingFromAccountId!: string;
+  @field('numberDayOfYear') numberDayOfYear!: number;
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;
 
   //credit card
-  @field('credit_card_limit') creditCardLimit!: number;
-  @field('credit_card_is_reminder') creditCardIsReminder!: boolean;
-  @field('credit_card_reminder_list') creditCardReminderList!: string;
-  @field('credit_card_payment_day') creditCardPaymentDay!: number;
-  @field('credit_card_statement_day') creditCardStatementDay!: number;
-  @field('credit_card_day_after_statement') creditCardDayAfterStatement!: number;
+  @field('numberDayOfYear') creditCardLimit!: number;
+  @field('creditCardIsReminder') creditCardIsReminder!: boolean;
+  @field('creditCardReminderList') creditCardReminderList!: string;
+  @field('creditCardPaymentDay') creditCardPaymentDay!: number;
+  @field('creditCardStatementDay') creditCardStatementDay!: number;
+  @field('creditCardDayAfterStatement') creditCardDayAfterStatement!: number;
 
-  @children('transactions') transactions!: any;
+  @children('transaction') transaction!: any;
 }

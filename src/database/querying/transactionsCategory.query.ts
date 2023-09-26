@@ -10,7 +10,7 @@ import { Q } from '@nozbe/watermelondb';
 export const getTransactionCategoryParentObserve = (type: TRANSACTION_CATEGORY_TYPE) =>
   database
     .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-    .query(Q.where('category_type', type), Q.where('parent_id', Q.eq(null)))
+    .query(Q.where('categoryType', type), Q.where('parentId', Q.eq(null)))
     .observe();
 
 export const getTransactionCategoryChildrenObserve = (
@@ -19,7 +19,7 @@ export const getTransactionCategoryChildrenObserve = (
 ) =>
   database
     .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-    .query(Q.where('category_type', type), Q.where('parent_id', id))
+    .query(Q.where('categoryType', type), Q.where('parentId', id))
     .observe();
 
 /** read */
@@ -28,7 +28,7 @@ export const getAllTransactionGroupIds = async (type: TRANSACTION_CATEGORY_TYPE)
     return await database.read(async () => {
       const res = database
         .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-        .query(Q.where('category_type', type), Q.where('parent_id', Q.eq(null)))
+        .query(Q.where('categoryType', type), Q.where('parentId', Q.eq(null)))
         .fetch();
       return res;
     });
@@ -54,7 +54,7 @@ export const fetchGroupTransactionCategory = async (type: TRANSACTION_CATEGORY_T
     return await database.read(async () => {
       const res = database
         .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-        .query(Q.where('category_type', type), Q.where('parent_id', Q.eq(null)))
+        .query(Q.where('categoryType', type), Q.where('parentId', Q.eq(null)))
         .fetch();
       return res;
     });
@@ -81,13 +81,13 @@ export const getMostUsedOrRecentTransactionCategoryUsed = async ({
   column,
 }: {
   categoryType: TRANSACTION_CATEGORY_TYPE;
-  column: 'last_use_at' | 'use_count';
+  column: 'lastUseAt' | 'useCount';
 }) => {
   return await database.read(async () => {
     return await database
       .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
       .query(
-        Q.where('category_type', categoryType),
+        Q.where('categoryType', categoryType),
         Q.where(column, Q.notEq(null)),
         Q.sortBy(column, Q.desc),
         Q.take(4),
@@ -177,9 +177,9 @@ export const deleteTransactionCategoryById = async (id: string) => {
       // Find the parent record by id
       const parentRecord = await transactionCategoryCollection.find(id);
 
-      // Find all child records by parent_id
+      // Find all child records by parentId
       const childRecords = await transactionCategoryCollection
-        .query(Q.where('parent_id', id))
+        .query(Q.where('parentId', id))
         .fetch();
 
       // Delete all child records recursively

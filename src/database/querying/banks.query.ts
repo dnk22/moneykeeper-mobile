@@ -25,9 +25,9 @@ export const getBanksDataLocal = async ({
         .query(
           Q.where('type', type.toString()),
           Q.or(
-            Q.where('short_name', Q.like(`${Q.sanitizeLikeString(text)}%`)),
-            Q.where('bank_code', Q.like(`${Q.sanitizeLikeString(text)}%`)),
-            Q.where('bank_name', Q.like(`${Q.sanitizeLikeString(text)}%`)),
+            Q.where('shortName', Q.like(`${Q.sanitizeLikeString(text)}%`)),
+            Q.where('bankCode', Q.like(`${Q.sanitizeLikeString(text)}%`)),
+            Q.where('bankName', Q.like(`${Q.sanitizeLikeString(text)}%`)),
           ),
         )
         .fetch();
@@ -65,11 +65,11 @@ export const importDefaultBanksData = async () => {
     await database.write(async () => {
       for (const record of jsonBankData) {
         await database.get<BankModel>(BANKS).create((bank) => {
-          bank.bankCode = record.bank_code;
-          bank.bankName = record.bank_name;
-          bank.shortName = record.short_name;
+          bank.bankCode = record.bankCode;
+          bank.bankName = record.bankName;
+          bank.shortName = record.shortName;
           bank.icon = record.icon;
-          bank.isSystem = record.is_system;
+          bank.isSystem = record.isSystem;
           bank.type = record.type;
         });
       }

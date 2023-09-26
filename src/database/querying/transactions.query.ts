@@ -21,7 +21,7 @@ export const getTransactionByIdObserve = (id: string) =>
 export const getTransactionByAccountCountObserve = (accountId: string) =>
   database
     .get<TransactionModel>(TRANSACTIONS)
-    .query(Q.where('account_id', accountId))
+    .query(Q.where('accountId', accountId))
     .observeCount();
 
 export const getTransactionsByDateObserve = ({ date, accountId }: GetTransactionByDate) => {
@@ -30,9 +30,9 @@ export const getTransactionsByDateObserve = ({ date, accountId }: GetTransaction
   return database
     .get<TransactionModel>(TRANSACTIONS)
     .query(
-      Q.where('account_id', accountId),
-      Q.and(Q.where('date_time_at', Q.between(startOfDay, endOfDay))),
-      Q.sortBy('date_time_at', Q.desc),
+      Q.where('accountId', accountId),
+      Q.and(Q.where('dateTimeAt', Q.between(startOfDay, endOfDay))),
+      Q.sortBy('dateTimeAt', Q.desc),
     )
     .observe();
 };
@@ -42,10 +42,10 @@ export const getTransactionsByDateObserve = ({ date, accountId }: GetTransaction
 export const getTransactionLisGroupByDate = async ({ accountId }: GetTransactionProps) => {
   try {
     const query = `SELECT distinct 
-      strftime('%Y-%m-%d', datetime(date_time_at/1000, 'unixepoch')) AS date 
+      strftime('%Y-%m-%d', datetime(dateTimeAt/1000, 'unixepoch')) AS date 
       FROM ${TRANSACTIONS} 
-      WHERE account_id='${accountId}' AND _status is not 'deleted' 
-      ORDER BY date_time_at DESC 
+      WHERE accountId='${accountId}' AND _status is not 'deleted' 
+      ORDER BY dateTimeAt DESC 
     `;
     return await database.read(async () => {
       const dateList = await database

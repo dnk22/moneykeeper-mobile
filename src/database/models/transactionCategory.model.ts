@@ -5,14 +5,14 @@ import { TRANSACTION_CATEGORY } from 'database/constants';
 export default class TransactionCategoryModel extends Model {
   static table = TRANSACTION_CATEGORY;
 
-  @text('category_name') categoryName!: string;
-  @field('category_type') categoryType!: number;
+  @text('categoryName') categoryName!: string;
+  @field('categoryType') categoryType!: number;
   @field('value') value!: string;
-  @field('parent_id') parentId!: string;
+  @field('parentId') parentId!: string;
   @text('description') description!: string;
   @field('icon') icon!: string;
-  @field('is_system') isSystem!: boolean;
-  @field('use_count') useCount!: number;
-  @field('last_use_at') lastUseAt!: Date;
+  @field('isSystem') isSystem!: boolean;
+  @field('useCount') useCount!: number;
+  @field('lastUseAt') lastUseAt!: Date;
   @readonly @date('create_at') createAt!: Date;
 }

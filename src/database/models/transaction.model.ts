@@ -7,26 +7,26 @@ export default class TransactionModel extends Model {
   static table = TRANSACTIONS;
 
   static associations: Associations = {
-    accounts: { type: 'belongs_to', key: 'account_id' },
+    accounts: { type: 'belongs_to', key: 'accountId' },
   };
 
   @field('amount') amount!: number;
-  @field('transaction_type') transactionsType!: string;
-  @field('category_id') categoryId!: string;
+  @field('transactionsType') transactionsType!: string;
+  @field('categoryId') categoryId!: string;
   @text('descriptions') descriptions!: string;
-  @field('account_id') accountId!: string;
-  @field('to_account_id') toAccountId!: string;
-  @date('date_time_at') dateTimeAt!: Date;
+  @field('accountId') accountId!: string;
+  @field('toAccountId') toAccountId!: string;
+  @date('dateTimeAt') dateTimeAt!: Date;
   @field('location') location!: string;
-  @text('event_name') eventName!: string;
+  @text('eventName') eventName!: string;
   @field('giver') giver!: string;
   @field('payee') payee!: string;
   @field('relatedPerson') relatedPerson!: string;
   @field('fee') fee!: number;
-  @field('fee_type') feeType!: string;
-  @field('is_not_add_report') isNotAddReport!: boolean;
+  @field('feeType') feeType!: string;
+  @field('isNotAddReport') isNotAddReport!: boolean;
   @field('attachment') attachment!: string;
-  @field('user_id') userId!: string;
+  @field('userId') userId!: string;
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;
 }

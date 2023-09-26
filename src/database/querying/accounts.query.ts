@@ -6,10 +6,10 @@ import { Q } from '@nozbe/watermelondb';
 
 /** OBSERVE  */
 export const getActiveAccountObserve = (isActive: boolean) =>
-  database.get<AccountModel>(ACCOUNTS).query(Q.where('is_active', isActive)).observe();
+  database.get<AccountModel>(ACCOUNTS).query(Q.where('isActive', isActive)).observe();
 
 export const getAccountCountObserve = (isActive: boolean) =>
-  database.get<AccountModel>(ACCOUNTS).query(Q.where('is_active', isActive)).observeCount();
+  database.get<AccountModel>(ACCOUNTS).query(Q.where('isActive', isActive)).observeCount();
 
 /** READ */
 export const getAccounts = async ({
@@ -24,7 +24,7 @@ export const getAccounts = async ({
       return await database
         .get<AccountModel>(ACCOUNTS)
         .query(
-          Q.where('is_active', isActive),
+          Q.where('isActive', isActive),
           Q.where('accountName', Q.like(`${Q.sanitizeLikeString(text)}%`)),
         )
         .fetch();
@@ -50,7 +50,7 @@ export const getFirstAccount = async () => {
     return await database.read(async () => {
       return await database
         .get<AccountModel>(ACCOUNTS)
-        .query(Q.where('is_active', true), Q.take(1))
+        .query(Q.where('isActive', true), Q.take(1))
         .fetch();
     });
   } catch (error) {
