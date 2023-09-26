@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import { RNText, TouchableHighlightComponent } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { useNavigation } from '@react-navigation/native';
-import withObservables from '@nozbe/with-observables';
+import { withObservables } from '@nozbe/watermelondb/react';
 import { TTransactionsCategory } from 'database/types';
 import { getTransactionCategoryChildrenObserve } from 'database/querying';
 import { TRANSACTION_CATEGORY_LIST, UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';

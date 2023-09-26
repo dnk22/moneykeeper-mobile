@@ -1,25 +1,21 @@
 import React from 'react';
 import Card from 'components/Card';
-import withObservables from '@nozbe/with-observables';
-import { Observable } from '@nozbe/watermelondb/utils/rx';
-import { getAccountCountObserve } from 'database/querying';
+import { useAppSelector } from 'store/index';
+import { selectAccountListExpandState } from 'store/app/app.selector';
 
 type AccountCardProps = {
-  accountCount?: Observable<number>;
-  isDeactivate?: boolean;
   children: React.ReactNode;
   title?: string;
+  expandKey: 'active' | 'inActive';
 };
-function AccountCard({ accountCount, children, title }: AccountCardProps) {
-  const titleWithCount = `${title} (${accountCount})`;
+function AccountCard({ expandKey, children, title }: AccountCardProps) {
+  const expand = useAppSelector((state) => selectAccountListExpandState(state));
 
   return (
-    <Card title={titleWithCount} collapse={!Boolean(accountCount)}>
+    <Card title={title} collapse={!expand[expandKey]}>
       {children}
     </Card>
   );
 }
 
-export default withObservables(['accountCount'], ({ isDeactivate = false }: AccountCardProps) => ({
-  accountCount: getAccountCountObserve(!isDeactivate),
-}))<any>(AccountCard);
+export default AccountCard;

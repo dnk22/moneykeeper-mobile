@@ -606,7 +606,7 @@ PODS:
     - SDWebImage/Core (~> 5.10)
   - simdjson (3.1.0-wmelon1)
   - SocketRocket (0.6.1)
-  - WatermelonDB (0.26.0):
+  - WatermelonDB (0.27.0):
     - React
     - simdjson
   - Yoga (1.14.0)
@@ -973,7 +973,7 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   simdjson: e6bfae9ce4bcdc80452d388d593816f1ca2106f3
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  WatermelonDB: cd71a1085182aca9e5d2164b7af9ef2a3aaca571
+  WatermelonDB: 0372787937ef6eaaa8062badda7fb013ab415334
   Yoga: 65286bb6a07edce5e4fe8c90774da977ae8fc009
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

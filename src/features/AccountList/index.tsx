@@ -3,14 +3,14 @@ import { SectionListData, View } from 'react-native';
 import { Empty, InputSearch, RNText, SectionListComponent } from 'components/index';
 import { TAccount } from 'database/types/index';
 import Item from './Item';
-import withObservables from '@nozbe/with-observables';
-import styles from './styles';
+import { withObservables } from '@nozbe/watermelondb/react';
 import { getAccounts, getActiveAccountObserve } from 'database/querying';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
 import { AccountModel } from 'database/models';
 import { groupDataByValue } from 'utils/algorithm';
 import { SCREEN_HEIGHT } from 'share/dimensions';
 import isEqual from 'react-fast-compare';
+import styles from './styles';
 
 type AccountListProps = {
   isDeactivate?: boolean;

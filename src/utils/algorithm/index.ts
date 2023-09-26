@@ -41,7 +41,6 @@ export const groupDataByValue = (data: any) => {
   if (!data.length) return [];
   const groupedData: any = {};
   data.forEach((item: TAccount) => {
-    console.log(item,'item');
     if (!groupedData[item.accountTypeId]) {
       groupedData[item.accountTypeId] = { title: '', data: [] };
     }

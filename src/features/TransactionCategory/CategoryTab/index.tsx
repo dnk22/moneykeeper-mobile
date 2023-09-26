@@ -3,7 +3,7 @@ import { InputSearch, VirtualizedListComponent } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import { getTransactionCategoryParentObserve } from 'database/querying';
-import withObservables from '@nozbe/with-observables';
+import { withObservables } from '@nozbe/watermelondb/react';
 import { TTransactionsCategory } from 'database/types';
 import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';

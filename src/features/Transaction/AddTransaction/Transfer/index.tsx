@@ -68,7 +68,6 @@ function Transfer({
   const handleOnClearFee = () => {
     setValue('fee', 0);
   };
-  console.log(watch('datetimeAt'), 'transfer');
 
   return (
     <View>

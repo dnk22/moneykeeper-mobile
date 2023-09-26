@@ -10,8 +10,8 @@ export default class AccountModel extends Model {
     transactions: { type: 'has_many', foreignKey: 'account_id' },
   };
 
-  @text('account_name') accountName!: string;
-  @text('account_logo') accountLogo!: string;
+  @text('accountName') accountName!: string;
+  @text('accountLogo') accountLogo!: string;
   @field('initial_amount') initialAmount!: number;
   @field('current_amount') currentAmount!: number;
   @field('account_type_id') accountTypeId!: string;

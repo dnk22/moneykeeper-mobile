@@ -2,7 +2,8 @@ import { View } from 'react-native';
 import { FlatListComponent, RNText, TouchableHighlightComponent } from 'components/index';
 import { TTransactionsCategory } from 'database/types';
 import { SCREEN_WIDTH } from 'share/dimensions';
-import withObservables from '@nozbe/with-observables';
+import { withObservables } from '@nozbe/watermelondb/react';
+
 import styles from './styles';
 import Icon from '../Icon';
 

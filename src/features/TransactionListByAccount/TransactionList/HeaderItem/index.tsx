@@ -7,7 +7,8 @@ import { useCustomTheme } from 'resources/theme';
 import { formatDateStringLocal } from 'utils/date';
 import { isToday, isYesterday, parseISO } from 'date-fns';
 import { ITEM_HEIGHT, MARGIN_TOP } from '../const';
-import withObservables from '@nozbe/with-observables';
+import { withObservables } from '@nozbe/watermelondb/react';
+
 import { getTransactionsByDateObserve } from 'database/querying';
 import { TransactionModel } from 'database/models';
 import TransactionItem from '../TransactionItem';

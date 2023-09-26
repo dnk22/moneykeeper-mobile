@@ -8,8 +8,8 @@ export default appSchema({
     tableSchema({
       name: ACCOUNTS,
       columns: [
-        { name: 'account_name', type: 'string' },
-        { name: 'account_logo', type: 'string' },
+        { name: 'accountName', type: 'string' },
+        { name: 'accountLogo', type: 'string' },
         { name: 'initial_amount', type: 'number' },
         { name: 'current_amount', type: 'number' },
         { name: 'account_type_id', type: 'string' },

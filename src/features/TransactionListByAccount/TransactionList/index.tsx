@@ -5,7 +5,8 @@ import {
   getTransactionLisGroupByDate,
 } from 'database/querying';
 import HeaderItem from './HeaderItem';
-import withObservables from '@nozbe/with-observables';
+import { withObservables } from '@nozbe/watermelondb/react';
+
 import isEqual from 'react-fast-compare';
 
 type TransactionListProps = {

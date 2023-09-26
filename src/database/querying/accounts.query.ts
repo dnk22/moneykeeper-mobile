@@ -25,7 +25,7 @@ export const getAccounts = async ({
         .get<AccountModel>(ACCOUNTS)
         .query(
           Q.where('is_active', isActive),
-          Q.where('account_name', Q.like(`${Q.sanitizeLikeString(text)}%`)),
+          Q.where('accountName', Q.like(`${Q.sanitizeLikeString(text)}%`)),
         )
         .fetch();
     });

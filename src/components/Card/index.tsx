@@ -28,7 +28,7 @@ function Card({ children, title, collapse = false }: CardProps) {
 
   const rotate = rotateAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '180deg'],
+    outputRange: ['0deg', '90deg'],
   });
 
   useEffect(() => {

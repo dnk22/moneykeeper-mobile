@@ -25,6 +25,10 @@ type AppState = {
   isMostRecentMode: MostOrRecentModeProps;
   transactionListConfig: TransactionListConfig;
   homeBottomBarType: typeof FLAT | typeof STICKY;
+  accountListExpand: {
+    active: boolean;
+    inActive: boolean;
+  };
 };
 
 const initialState = {
@@ -44,6 +48,10 @@ const initialState = {
     isShowIncome: true,
   },
   homeBottomBarType: FLAT,
+  accountListExpand: {
+    active: false,
+    inActive: false,
+  },
 } as AppState;
 
 export const appSlice = createSlice({
@@ -79,6 +87,9 @@ export const appSlice = createSlice({
     },
     updateHomeBottomBarType(state, { payload }: PayloadAction<AppState['homeBottomBarType']>) {
       state.homeBottomBarType = payload;
+    },
+    updateAccountListExpand(state, { payload }: PayloadAction<AppState['accountListExpand']>) {
+      state.accountListExpand = { ...state.accountListExpand, ...payload };
     },
   },
 });

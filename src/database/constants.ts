@@ -1,5 +1,5 @@
-export const ACCOUNTS = 'accounts';
-export const BANKS = 'banks';
+export const ACCOUNTS = 'account';
+export const BANKS = 'bank';
 
-export const TRANSACTIONS = 'transactions';
+export const TRANSACTIONS = 'transaction';
 export const TRANSACTION_CATEGORY = 'transaction_category';
