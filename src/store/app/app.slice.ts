@@ -26,8 +26,8 @@ type AppState = {
   transactionListConfig: TransactionListConfig;
   homeBottomBarType: typeof FLAT | typeof STICKY;
   accountListExpand: {
-    active: boolean;
-    inActive: boolean;
+    active?: boolean;
+    inActive?: boolean;
   };
 };
 
@@ -102,6 +102,7 @@ export const {
   updateMostOrRecentMode,
   updateTransactionListConfig,
   updateHomeBottomBarType,
+  updateAccountListExpand,
 } = appSlice.actions;
 
 export type TAppSlice = {

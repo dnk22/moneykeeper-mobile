@@ -2,7 +2,6 @@ import React, { useCallback, useRef, useState } from 'react';
 import { PressableHaptic, RNText, SvgIcon } from 'components/index';
 import { View } from 'react-native';
 import AccountList from 'features/AccountList';
-import AccountCard from './AccountCard';
 import { useCustomTheme } from 'resources/theme';
 import { useNavigation } from '@react-navigation/native';
 import { ADD_ACCOUNT } from 'navigation/constants';
@@ -44,12 +43,8 @@ function Accounts() {
         <View style={styles.totalBalance}>
           <RNText style={styles.totalCurrency}>{'Tổng tiền:'}</RNText>
         </View>
-        <AccountCard title={'Đang sử dụng'} expandKey="active">
-          <AccountList isGroup={group} onActionPress={onActionPress} />
-        </AccountCard>
-        <AccountCard title="Ngưng sử dụng" expandKey="active">
-          <AccountList isDeactivate onActionPress={onActionPress} />
-        </AccountCard>
+        <AccountList title="Đang sử dụng" isGroup={group} onActionPress={onActionPress} />
+        <AccountList title="Ngưng sử dụng" isDeactivate onActionPress={onActionPress} />
         <PressableHaptic
           style={[styles.createButton, { backgroundColor: colors.primary }]}
           onPress={handleOnCreateAccount}

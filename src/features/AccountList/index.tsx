@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useState } from 'react';
 import { SectionListData, View } from 'react-native';
-import { Empty, InputSearch, RNText, SectionListComponent } from 'components/index';
+import { Card, Empty, InputSearch, RNText, SectionListComponent } from 'components/index';
 import { TAccount } from 'database/types/index';
 import Item from './Item';
 import { withObservables } from '@nozbe/watermelondb/react';
@@ -13,6 +13,7 @@ import isEqual from 'react-fast-compare';
 import styles from './styles';
 
 type AccountListProps = {
+  title: string;
   isDeactivate?: boolean;
   isGroup?: boolean;
   isItemSelected?: string;
@@ -32,6 +33,7 @@ const AccountItemObserve = memo(
 );
 
 function AccountList({
+  title,
   isDeactivate,
   isGroup = false,
   isShowSearch = false,
@@ -40,6 +42,7 @@ function AccountList({
   onItemPress,
   accountsObservables,
 }: AccountListProps) {
+  const [collapse, setCollapse] = useState(false);
   const [accounts, setAccounts] = useState<SectionListData<TAccount, any>>([]);
 
   useEffect(() => {
@@ -47,6 +50,10 @@ function AccountList({
       setActiveAccounts(accountsObservables);
     }
   }, [isGroup, accountsObservables]);
+
+  useEffect(() => {
+    setCollapse(!Boolean(accounts.length));
+  }, [accounts]);
 
   useEffect(() => {
     if (isDeactivate) {
@@ -92,7 +99,7 @@ function AccountList({
   };
 
   return (
-    <>
+    <Card title={title} collapse={collapse}>
       {isShowSearch && <InputSearch onChangeText={onInputChange} />}
       <SectionListComponent
         style={{ maxHeight }}
@@ -102,7 +109,7 @@ function AccountList({
         renderSectionHeader={renderSectionHeader}
         ListEmptyComponent={<Empty text="Không có tài khoản nào!" />}
       />
-    </>
+    </Card>
   );
 }
 

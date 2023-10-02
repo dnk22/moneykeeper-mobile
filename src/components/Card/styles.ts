@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   content: {
+    height: 'auto',
     paddingBottom: 10,
   },
 });
