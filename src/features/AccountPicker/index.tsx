@@ -14,14 +14,12 @@ function AccountPicker() {
   };
 
   return (
-    <View style={{ padding: 10 }}>
-      <AccountList
-        isGroup
-        isShowSearch
-        isItemSelected={params?.accountSelectedId}
-        onItemPress={handleOnItemPress}
-      />
-    </View>
+    <AccountList
+      isGroup
+      isShowSearch
+      isItemSelected={params?.accountSelectedId}
+      onItemPress={handleOnItemPress}
+    />
   );
 }
 export default AccountPicker;

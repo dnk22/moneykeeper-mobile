@@ -8,14 +8,23 @@ import styles from './styles';
 type InputSearch = TextInputProps & {
   backgroundColor?: string;
 };
-function InputSearch({ placeholder = 'Tìm kiếm...', onChangeText, backgroundColor }: InputSearch) {
+function InputSearch({
+  placeholder = 'Tìm kiếm...',
+  onChangeText,
+  backgroundColor,
+  style,
+  ...rest
+}: InputSearch) {
   const { colors } = useCustomTheme();
   return (
-    <View style={[styles.inputGroup, { backgroundColor: backgroundColor || colors.surface }]}>
+    <View
+      style={[styles.inputGroup, style, { backgroundColor: backgroundColor || colors.surface }]}
+    >
       <TextInput
         placeholder={placeholder}
         style={[styles.inputSearch, { color: colors.text }]}
         onChangeText={onChangeText}
+        {...rest}
       />
       <SvgIcon name="search" style={styles.iconSearch} size={18} color="gray" />
     </View>

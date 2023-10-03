@@ -1,19 +1,19 @@
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { SectionListData, View } from 'react-native';
+import isEqual from 'react-fast-compare';
 import { Card, Empty, InputSearch, RNText, SectionListComponent } from 'components/index';
 import { TAccount } from 'database/types/index';
 import Item from './Item';
 import { withObservables } from '@nozbe/watermelondb/react';
-import { getAccounts, getActiveAccountObserve } from 'database/querying';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
 import { AccountModel } from 'database/models';
 import { groupDataByValue } from 'utils/algorithm';
 import { SCREEN_HEIGHT } from 'share/dimensions';
-import isEqual from 'react-fast-compare';
+import { fetchAccountData, getAccountsData } from 'services/api/accounts';
 import styles from './styles';
 
 type AccountListProps = {
-  title: string;
+  title?: string;
   isDeactivate?: boolean;
   isGroup?: boolean;
   isItemSelected?: string;
@@ -23,7 +23,7 @@ type AccountListProps = {
   accountsObservables?: Observable<AccountModel[]>;
 };
 
-const maxHeight = SCREEN_HEIGHT * 0.5;
+const maxHeight = SCREEN_HEIGHT * 0.55;
 
 const AccountItemObserve = memo(
   withObservables(['account'], ({ account }) => ({
@@ -44,30 +44,29 @@ function AccountList({
 }: AccountListProps) {
   const [collapse, setCollapse] = useState(false);
   const [accounts, setAccounts] = useState<SectionListData<TAccount, any>>([]);
+  const renderKey = useRef(0);
 
   useEffect(() => {
     if (!isDeactivate) {
       setActiveAccounts(accountsObservables);
+    } else {
+      const result = accountsObservables?.length ? [{ data: accountsObservables }] : [];
+      setAccounts(result);
     }
   }, [isGroup, accountsObservables]);
 
   useEffect(() => {
-    setCollapse(!Boolean(accounts.length));
+    // change key to force-render collapse view
+    renderKey.current = renderKey.current + 1;
+    if (!Boolean(accounts.length) !== collapse) {
+      setCollapse(!Boolean(accounts.length));
+    }
   }, [accounts]);
 
-  useEffect(() => {
-    if (isDeactivate) {
-      const result = accountsObservables?.length ? [{ data: accountsObservables }] : [];
-      setAccounts(result);
-    }
-  }, [accountsObservables]);
-
   const setActiveAccounts = async (data: any) => {
-    const dataGroup: any[] = groupAccount(data);
+    const dataGroup: any[] = groupDataByValue(data);
     setAccounts(dataGroup);
   };
-
-  const groupAccount = useCallback((account: any) => groupDataByValue(account), []);
 
   const renderSectionHeader = useCallback(
     ({ section }: { section: SectionListData<TAccount> }) => {
@@ -94,13 +93,18 @@ function AccountList({
   }, []);
 
   const onInputChange = async (text: string) => {
-    const res = await getAccounts({ text });
+    const res = await getAccountsData({ text });
     setActiveAccounts(res);
   };
 
   return (
-    <Card title={title} collapse={collapse}>
-      {isShowSearch && <InputSearch onChangeText={onInputChange} />}
+    <Card
+      title={title}
+      disabled={!!isItemSelected}
+      collapse={collapse}
+      renderKey={renderKey.current}
+    >
+      {isShowSearch && <InputSearch onChangeText={onInputChange} style={{ marginVertical: 10 }} />}
       <SectionListComponent
         style={{ maxHeight }}
         sections={accounts}
@@ -116,6 +120,6 @@ function AccountList({
 export default withObservables(
   ['accountsObservables'],
   ({ isDeactivate = false }: AccountListProps) => ({
-    accountsObservables: getActiveAccountObserve(!isDeactivate),
+    accountsObservables: fetchAccountData(!isDeactivate),
   }),
 )<any>(memo(AccountList, isEqual));

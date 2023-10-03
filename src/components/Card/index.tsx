@@ -11,9 +11,11 @@ export type CardProps = {
   children?: React.ReactNode;
   title?: string;
   collapse: boolean;
+  renderKey: any;
+  disabled?: boolean;
 };
 
-function Card({ children, title, collapse = false }: CardProps) {
+function Card({ children, title, collapse = false, disabled = false, renderKey }: CardProps) {
   const { colors } = useCustomTheme();
   const [isCollapse, setIsCollapse] = useState(collapse);
   const rotateAnim = useRef(new Animated.Value(1)).current;
@@ -41,13 +43,15 @@ function Card({ children, title, collapse = false }: CardProps) {
 
   return (
     <View style={[styles.wrapper, { backgroundColor: colors.surface }]}>
-      <PressableHaptic style={styles.header} onPress={onCardToggle}>
-        <RNText style={styles.title}>{title}</RNText>
-        <Animated.View style={[styles.iconDropdown, { transform: [{ rotate: rotate }] }]}>
-          <SvgIcon name="remote" />
-        </Animated.View>
-      </PressableHaptic>
-      <Collapsible style={styles.content} collapsed={isCollapse}>
+      {!disabled && (
+        <PressableHaptic style={styles.header} onPress={onCardToggle}>
+          <RNText style={styles.title}>{title}</RNText>
+          <Animated.View style={[styles.iconDropdown, { transform: [{ rotate: rotate }] }]}>
+            <SvgIcon name="remote" />
+          </Animated.View>
+        </PressableHaptic>
+      )}
+      <Collapsible style={styles.content} collapsed={isCollapse} key={renderKey}>
         {children}
       </Collapsible>
     </View>

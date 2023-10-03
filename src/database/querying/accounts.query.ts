@@ -4,6 +4,11 @@ import { ACCOUNTS } from 'database/constants';
 import { database } from 'database/index';
 import { Q } from '@nozbe/watermelondb';
 
+export type TGetAccounts = {
+  isActive?: boolean;
+  text: string;
+};
+
 /** OBSERVE  */
 export const getActiveAccountObserve = (isActive: boolean) =>
   database.get<AccountModel>(ACCOUNTS).query(Q.where('isActive', isActive)).observe();
@@ -12,13 +17,7 @@ export const getAccountCountObserve = (isActive: boolean) =>
   database.get<AccountModel>(ACCOUNTS).query(Q.where('isActive', isActive)).observeCount();
 
 /** READ */
-export const getAccounts = async ({
-  isActive = true,
-  text = '',
-}: {
-  isActive?: boolean;
-  text: string;
-}) => {
+export const getAccounts = async ({ isActive = true, text = '' }: TGetAccounts) => {
   try {
     return await database.read(async () => {
       return await database

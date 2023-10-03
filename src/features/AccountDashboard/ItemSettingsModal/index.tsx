@@ -1,6 +1,5 @@
 import { ModalComponent, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
 import { IModalComponentProps } from 'components/Modal';
-import isEqual from 'react-fast-compare';
 import { Alert, View } from 'react-native';
 import styles from './styles';
 import { TAccount } from 'database/types/index';
@@ -71,12 +70,6 @@ function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsMo
             <RNText>Chuyển khoản</RNText>
           </View>
         </TouchableHighlightComponent>
-        <TouchableHighlightComponent onPress={() => onItemPress(EDIT)} isDisable={isAccountDisable}>
-          <View style={styles.item}>
-            <SvgIcon name="pencil" size={18} />
-            <RNText>Sửa tài khoản</RNText>
-          </View>
-        </TouchableHighlightComponent>
         <TouchableHighlightComponent
           onPress={() => onItemPress(ADJUSTMENT)}
           isDisable={isAccountDisable}
@@ -84,6 +77,12 @@ function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsMo
           <View style={styles.item}>
             <SvgIcon name="plusMinus" size={18} />
             <RNText>Điều chỉnh số dư tài khoản</RNText>
+          </View>
+        </TouchableHighlightComponent>
+        <TouchableHighlightComponent onPress={() => onItemPress(EDIT)} isDisable={isAccountDisable}>
+          <View style={styles.item}>
+            <SvgIcon name="pencil" size={18} />
+            <RNText>Sửa tài khoản</RNText>
           </View>
         </TouchableHighlightComponent>
         <TouchableHighlightComponent
