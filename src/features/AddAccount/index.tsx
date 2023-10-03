@@ -16,15 +16,15 @@ import { useAppSelector } from 'store/index';
 import { selectAllAccountType } from 'store/account/account.selector';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AddAccountRouteProp } from 'navigation/types';
-import { addAccount, getAccountById, updateAccount, deleteAccountById } from 'database/querying';
 import Submit from 'navigation/elements/Submit';
 import AccountTypeSelect from './AccountTypeSelect';
 import AccountBankSelect from './AccountBankSelect';
-import styles from './styles';
 import { BankModel } from 'database/models';
 import Collapsible from 'react-native-collapsible';
 import StatementModalPicker from './StatementModalPicker';
 import Notifications from './Notifications';
+import { deleteAccountById, getAccountById, updateAccountDB } from 'services/api/accounts';
+import styles from './styles';
 
 const defaultValues = {
   accountName: '',
@@ -103,42 +103,7 @@ function AddAccount() {
 
   const fetchDataInEditMode = async (id: string) => {
     const editAccountData = await getAccountById(id);
-    if (editAccountData?.id) {
-      let result = {
-        accountName: editAccountData.accountName,
-        initialAmount: editAccountData.initialAmount,
-        currentAmount: editAccountData.currentAmount,
-        accountTypeId: editAccountData.accountTypeId,
-        accountTypeName: editAccountData.accountTypeName,
-        bankId: editAccountData.bankId,
-        currency: editAccountData.currency,
-        descriptions: editAccountData.descriptions,
-        isActive: editAccountData.isActive,
-        isNotAddReport: editAccountData.isNotAddReport,
-        userId: editAccountData.userId,
-        accountLogo: editAccountData.accountLogo,
-        sortOrder: editAccountData.sortOrder,
-        termType: editAccountData.termType,
-        termMonth: editAccountData.termMonth,
-        interestRate: editAccountData.interestRate,
-        interestPaymentType: editAccountData.interestPaymentType,
-        dueType: editAccountData.dueType,
-        startDate: editAccountData.startDate,
-        endDate: editAccountData.endDate,
-        interestPaymentToAccount: editAccountData.interestPaymentToAccount,
-        savingFromAccountId: editAccountData.savingFromAccountId,
-        numberDayOfYear: editAccountData.numberDayOfYear,
-
-        //credit card
-        creditCardLimit: editAccountData.creditCardLimit,
-        creditCardIsReminder: editAccountData.creditCardIsReminder,
-        creditCardReminderList: editAccountData.creditCardReminderList,
-        creditCardPaymentDay: editAccountData.creditCardPaymentDay,
-        creditCardStatementDay: editAccountData.creditCardStatementDay,
-        creditCardDayAfterStatement: editAccountData.creditCardDayAfterStatement,
-      };
-      reset(result);
-    }
+    reset(editAccountData);
   };
 
   const onAccountTypeChange = (item: TAccountType) => {
@@ -198,16 +163,12 @@ function AddAccount() {
       creditCardLimit: +data?.creditCardLimit,
       accountLogo: bankLogo.current || accountTypeLogo.current || accountTypeState[0].icon,
     };
-    if (params?.accountId) {
-      updateAccount({ id: params.accountId, account: requestData });
-    } else {
-      addAccount(requestData);
-    }
+    updateAccountDB({ id: params?.accountId, data: requestData });
     navigation.goBack();
   };
 
   const onOkDelete = () => {
-    params?.accountId && deleteAccountById({ id: params.accountId });
+    params?.accountId && deleteAccountById(params.accountId);
     navigation.goBack();
   };
 

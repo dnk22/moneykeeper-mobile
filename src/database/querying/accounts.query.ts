@@ -11,7 +11,10 @@ export type TGetAccounts = {
 
 /** OBSERVE  */
 export const getActiveAccountObserve = (isActive: boolean) =>
-  database.get<AccountModel>(ACCOUNTS).query(Q.where('isActive', isActive)).observe();
+  database
+    .get<AccountModel>(ACCOUNTS)
+    .query(Q.and(Q.where('_status', Q.notEq('deleted')), Q.where('isActive', isActive)))
+    .observe();
 
 export const getAccountCountObserve = (isActive: boolean) =>
   database.get<AccountModel>(ACCOUNTS).query(Q.where('isActive', isActive)).observeCount();
@@ -33,10 +36,15 @@ export const getAccounts = async ({ isActive = true, text = '' }: TGetAccounts) 
   }
 };
 
-export const getAccountById = async (id: string) => {
+export const queryAccountById = async (id: string) => {
   try {
+    const query = `select * from ${ACCOUNTS} where id='${id}'`;
     return await database.read(async () => {
-      return await database.get<AccountModel>(ACCOUNTS).find(id);
+      const res = await database
+        .get<AccountModel>(ACCOUNTS)
+        .query(Q.unsafeSqlQuery(query))
+        .unsafeFetchRaw();
+      return res[0] || {};
     });
   } catch (error) {
     console.log(error, 'read by id err');
@@ -102,10 +110,10 @@ export const changeAccountStatusById = async ({ id }: { id: string }) => {
 
 /** DELETE */
 
-export const deleteAccountById = async ({ id }: { id: string }) => {
+export const deleteAccount = async (id: string) => {
   try {
     await database.write(async () => {
-      await database.get<AccountModel>(ACCOUNTS).query(Q.where('id', id)).destroyAllPermanently();
+      (await database.get<AccountModel>(ACCOUNTS).find(id)).markAsDeleted();
     });
   } catch (error) {
     console.log(error, 'delete err');

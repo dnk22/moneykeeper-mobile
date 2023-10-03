@@ -5,7 +5,8 @@ import styles from './styles';
 import { TAccount } from 'database/types/index';
 import { useNavigation } from '@react-navigation/native';
 import { ADD_ACCOUNT } from 'navigation/constants';
-import { changeAccountStatusById, deleteAccountById } from 'database/querying/accounts.query';
+import { changeAccountStatusById } from 'database/querying/accounts.query';
+import { deleteAccountById } from 'services/api/accounts';
 
 type ItemSettingsModalProps = IModalComponentProps & { account: TAccount };
 
@@ -41,7 +42,7 @@ function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsMo
   };
 
   const onOk = () => {
-    account?.id && deleteAccountById({ id: account.id });
+    account?.id && deleteAccountById(account.id);
     onToggleModal();
   };
 
