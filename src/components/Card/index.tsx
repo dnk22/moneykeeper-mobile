@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Animated, View } from 'react-native';
+import { Animated, StyleProp, View, ViewStyle } from 'react-native';
 import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
 import Collapsible from 'react-native-collapsible';
@@ -13,12 +13,21 @@ export type CardProps = {
   collapse: boolean;
   renderKey: any;
   disabled?: boolean;
+  containerStyle?: StyleProp<ViewStyle>;
 };
 
-function Card({ children, title, collapse = false, disabled = false, renderKey }: CardProps) {
+function Card({
+  children,
+  title,
+  collapse = false,
+  disabled = false,
+  renderKey,
+  containerStyle,
+}: CardProps) {
   const { colors } = useCustomTheme();
   const [isCollapse, setIsCollapse] = useState(collapse);
   const rotateAnim = useRef(new Animated.Value(1)).current;
+  const collapseStatus = disabled ? false : isCollapse;
 
   useEffect(() => {
     setIsCollapse(collapse);
@@ -51,7 +60,11 @@ function Card({ children, title, collapse = false, disabled = false, renderKey }
           </Animated.View>
         </PressableHaptic>
       )}
-      <Collapsible style={styles.content} collapsed={isCollapse} key={renderKey}>
+      <Collapsible
+        style={[styles.content, containerStyle]}
+        collapsed={collapseStatus}
+        key={renderKey}
+      >
         {children}
       </Collapsible>
     </View>

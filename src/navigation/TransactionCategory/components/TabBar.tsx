@@ -4,24 +4,25 @@ import {
   EXPENSE_CATEGORY,
   INCOME_CATEGORY,
   LEND_BORROW,
+  TRANSACTION_CATEGORY_LIST,
   UPDATE_TRANSACTION_CATEGORY,
 } from 'navigation/constants';
 import { Loading, PressableHaptic, SvgIcon } from 'components/index';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import styles from '../styles';
 import { useCustomTheme } from 'resources/theme';
-import { getFocusedRouteNameFromRoute, useRoute } from '@react-navigation/native';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { updateTabView } from 'store/transactionCategory/transactionCategory.slice';
-import { TransactionCategoryListParams, TransactionCategoryListProp } from 'navigation/types';
-import HOCTransactionCategory from './HOC';
+import { TransactionCategoryListParams, TransactionCategoryParamProps } from 'navigation/types';
 import { selectUpdateModeStatus } from 'store/transactionCategory/transactionCategory.selector';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
+import CategoryTab from 'features/TransactionCategory/CategoryTab';
+import styles from '../styles';
 
 const TabBar = createMaterialTopTabNavigator<TransactionCategoryListParams>();
 
 type TransactionCategoryTapBarProps = {
-  route: TransactionCategoryListProp;
+  route: TransactionCategoryParamProps<typeof TRANSACTION_CATEGORY_LIST>['route'];
   navigation: any;
 };
 
@@ -83,21 +84,15 @@ function TransactionCategoryTapBar({ route, navigation }: TransactionCategoryTap
         tabBarPosition="bottom"
         screenOptions={tabBarOptions}
       >
-        <TabBar.Screen
-          name={INCOME_CATEGORY}
-          options={{ title: 'Danh mục thu' }}
-          component={HOCTransactionCategory}
-        />
-        <TabBar.Screen
-          name={EXPENSE_CATEGORY}
-          options={{ title: 'Danh mục chi' }}
-          component={HOCTransactionCategory}
-        />
-        <TabBar.Screen
-          name={LEND_BORROW}
-          options={{ title: 'Vay mượn' }}
-          component={HOCTransactionCategory}
-        />
+        <TabBar.Screen name={INCOME_CATEGORY} options={{ title: 'Danh mục thu' }}>
+          {(props) => <CategoryTab {...props} type={TRANSACTION_CATEGORY_TYPE.INCOME} />}
+        </TabBar.Screen>
+        <TabBar.Screen name={EXPENSE_CATEGORY} options={{ title: 'Danh mục chi' }}>
+          {(props) => <CategoryTab {...props} type={TRANSACTION_CATEGORY_TYPE.EXPENSE} />}
+        </TabBar.Screen>
+        <TabBar.Screen name={LEND_BORROW} options={{ title: 'Vay mượn' }}>
+          {(props) => <CategoryTab {...props} type={TRANSACTION_CATEGORY_TYPE.LEND_BORROW} />}
+        </TabBar.Screen>
       </TabBar.Navigator>
     </SafeAreaView>
   );

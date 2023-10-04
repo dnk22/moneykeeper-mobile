@@ -1,10 +1,10 @@
 import { memo, useCallback, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import InputSelection from 'components/InputSelection';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { isEqual } from 'lodash';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { ACCOUNT_PICKER } from 'navigation/constants';
-import { getAccountById } from 'database/querying';
+import { getAccountById } from 'services/api/accounts';
 
 type AccountProp = {
   accountLogo: string;

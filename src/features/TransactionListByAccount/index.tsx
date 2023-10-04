@@ -1,15 +1,14 @@
+import React, { useLayoutEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import PressableHaptic from 'components/PressableHaptic';
-import styles from './styles';
+import { PressableHaptic, SvgIcon } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
-import SvgIcon from 'components/SvgIcon';
 import { CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
-import { AccountDetailProp, AccountStackParamListProps } from 'navigation/types';
+import { AccountStackParamListProps } from 'navigation/types';
+import { ButtonText, TransactionListByAccountConfig } from 'navigation/elements';
 import Summary from './Summary';
 import TransactionList from './TransactionList';
-import { useEffect, useLayoutEffect, useState } from 'react';
-import { ButtonText, TransactionListByAccountConfig } from 'navigation/elements';
+import styles from './styles';
 
 function TransactionListByAccount() {
   const { colors } = useCustomTheme();
@@ -17,7 +16,8 @@ function TransactionListByAccount() {
     useNavigation<
       AccountStackParamListProps<typeof CREATE_TRANSACTION_FROM_ACCOUNT>['navigation']
     >();
-  const { params } = useRoute<AccountDetailProp>();
+  const { params } =
+    useRoute<AccountStackParamListProps<typeof CREATE_TRANSACTION_FROM_ACCOUNT>['route']>();
   const [isSelectMode, setIsSelectMode] = useState(false);
 
   // Use `setOptions` to update the button that submit form

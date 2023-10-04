@@ -1,13 +1,13 @@
-import { View } from 'react-native';
+import React from 'react';
 import AccountList from 'features/AccountList';
 import { TAccount } from 'database/types/index';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { AccountPickerProp } from 'navigation/types';
-import { ADD_TRANSACTION } from 'navigation/constants';
+import { RootStackScreenProps } from 'navigation/types';
+import { ACCOUNT_PICKER, ADD_TRANSACTION } from 'navigation/constants';
 
 function AccountPicker() {
   const navigation = useNavigation<any>();
-  const { params } = useRoute<AccountPickerProp>();
+  const { params } = useRoute<RootStackScreenProps<typeof ACCOUNT_PICKER>['route']>();
 
   const handleOnItemPress = (account: TAccount) => {
     navigation.navigate(ADD_TRANSACTION, { accountId: account.id });

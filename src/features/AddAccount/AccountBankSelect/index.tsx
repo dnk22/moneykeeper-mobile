@@ -58,6 +58,7 @@ function AccountBankSelect({
   };
 
   const setBankSelectedValue = async (id?: string) => {
+    console.log(id);
     if (id && id !== bankSelectedState?.id) {
       const res = await getBankById(id);
       if (res) {

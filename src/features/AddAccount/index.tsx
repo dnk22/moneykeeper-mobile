@@ -15,7 +15,7 @@ import { TAccountType, TAccount } from 'database/types';
 import { useAppSelector } from 'store/index';
 import { selectAllAccountType } from 'store/account/account.selector';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { AddAccountRouteProp } from 'navigation/types';
+import { AccountStackParamListProps } from 'navigation/types';
 import Submit from 'navigation/elements/Submit';
 import AccountTypeSelect from './AccountTypeSelect';
 import AccountBankSelect from './AccountBankSelect';
@@ -25,6 +25,7 @@ import StatementModalPicker from './StatementModalPicker';
 import Notifications from './Notifications';
 import { deleteAccountById, getAccountById, updateAccountDB } from 'services/api/accounts';
 import styles from './styles';
+import { ADD_ACCOUNT } from 'navigation/constants';
 
 const defaultValues = {
   accountName: '',
@@ -43,7 +44,7 @@ const defaultValues = {
 function AddAccount() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
-  const { params } = useRoute<AddAccountRouteProp>();
+  const { params } = useRoute<AccountStackParamListProps<typeof ADD_ACCOUNT>['route']>();
   const [isShowModalStatement, setIsShowModalStatement] = useState(false);
 
   // state local

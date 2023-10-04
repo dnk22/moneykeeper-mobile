@@ -10,13 +10,13 @@ import {
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { TBank } from 'database/types';
 import { BANK_TYPE } from 'utils/constant';
-import { ADD_ACCOUNT } from 'navigation/constants';
+import { ADD_ACCOUNT, BANK_HOME_LIST } from 'navigation/constants';
 import { fetchBankData } from 'services/api/banks';
-import { BankRouteProp } from 'navigation/types';
+import { BankParamsProps } from 'navigation/types';
 import styles from './styles';
 
 function BankList() {
-  const { params } = useRoute<BankRouteProp>();
+  const { params } = useRoute<BankParamsProps<typeof BANK_HOME_LIST>['route']>();
   const navigation = useNavigation<any>();
 
   const [banks, setBanks] = useState<any>([]);

@@ -6,7 +6,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { SelectTransactionType } from 'navigation/elements';
 import { TRANSACTION_TYPE } from 'utils/constant';
 import ExpenseAndIncome from './ExpenseAndIncome';
-import { AddTransactionRouteProp } from 'navigation/types';
+import { TransactionParamListProps } from 'navigation/types';
 import { isEqual } from 'lodash';
 import styles from './styles';
 import Transfer from './Transfer';
@@ -14,11 +14,12 @@ import { useForm } from 'react-hook-form';
 import { TTransactions } from 'database/types';
 import { getFirstAccount, getTransactionById } from 'database/querying';
 import { defaultValues } from './constant';
+import { ADD_TRANSACTION } from 'navigation/constants';
 
 function AddTransactions() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation<any>();
-  const { params } = useRoute<AddTransactionRouteProp>();
+  const { params } = useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
   const currentTransactionType = useRef<any>(params?.transactionType);
 
   /** setup form */

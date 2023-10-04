@@ -23,6 +23,7 @@ type CategoryTabProps = {
   expenseCategoryObserve?: Observable<TransactionCategoryModel[]>;
   type: TRANSACTION_CATEGORY_TYPE;
 };
+
 function CategoryTab({ expenseCategoryObserve, type }: CategoryTabProps) {
   const { colors } = useCustomTheme();
   const useDispatch = useAppDispatch();

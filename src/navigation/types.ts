@@ -1,5 +1,5 @@
-import { NavigatorScreenParams, RouteProp } from '@react-navigation/native';
-import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
+import { NavigatorScreenParams } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {
   HOME,
   ADD_ACCOUNT,
@@ -122,33 +122,6 @@ export type BankParams = {
   };
 };
 export type BankParamsProps<T extends keyof BankParams> = NativeStackScreenProps<BankParams, T>;
-
-/** ----------------------------------------- */
-// route type props
-export type AddAccountRouteProp = RouteProp<AccountStackParamList, typeof ADD_ACCOUNT>;
-export type AddTransactionRouteProp = RouteProp<TransactionParamList, typeof ADD_TRANSACTION>;
-export type BankRouteProp = RouteProp<BankParams, typeof BANK_HOME_LIST>;
-export type UpdateTransactionCategoryRouteProps = RouteProp<
-  TransactionCategoryParams,
-  typeof UPDATE_TRANSACTION_CATEGORY
->;
-export type AccountDetailProp = RouteProp<AccountStackParamList, typeof ACCOUNT_DETAIL>;
-export type AccountPickerProp = RouteProp<RootStackParamList, typeof ACCOUNT_PICKER>;
-export type TransactionGroupRouteProp = RouteProp<TransactionCategoryParams, typeof PARENT_LIST>;
-export type TransactionCategoryListProp = RouteProp<
-  TransactionCategoryParams,
-  typeof TRANSACTION_CATEGORY_LIST
->;
-
-// navigation type props
-export type UpdateTransactionCategoryProps = NativeStackNavigationProp<
-  TransactionCategoryParams,
-  typeof UPDATE_TRANSACTION_CATEGORY
->;
-export type ParentListProps = NativeStackNavigationProp<
-  TransactionCategoryParams,
-  typeof PARENT_LIST
->;
 
 declare global {
   namespace ReactNavigation {

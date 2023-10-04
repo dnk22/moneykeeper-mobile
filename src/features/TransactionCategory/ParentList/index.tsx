@@ -6,14 +6,14 @@ import { fetchGroupTransactionCategory } from 'database/querying';
 import { TTransactionsCategory } from 'database/types';
 import { useCustomTheme } from 'resources/theme';
 import { PARENT_LIST, UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
+import { TransactionCategoryParamProps } from 'navigation/types';
 import styles from './styles';
-import { TransactionCategoryParamProps, TransactionGroupRouteProp } from 'navigation/types';
 
 function ParentList() {
   const navigation =
     useNavigation<TransactionCategoryParamProps<typeof PARENT_LIST>['navigation']>();
   const { colors } = useCustomTheme();
-  const { params } = useRoute<TransactionGroupRouteProp>();
+  const { params } = useRoute<TransactionCategoryParamProps<typeof PARENT_LIST>['route']>();
   const [data, setData] = useState<any>([]);
 
   useEffect(() => {

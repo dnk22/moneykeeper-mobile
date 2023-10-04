@@ -1,16 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import {
-  Submit,
-  InputField,
-  InputSelection,
-  SvgIcon,
-  TouchableHighlightComponent,
-  RNText,
-  PressableHaptic,
-  FormAction,
-} from 'components/index';
-import { ParentListProps, UpdateTransactionCategoryRouteProps } from 'navigation/types';
+import { InputField, InputSelection, SvgIcon, PressableHaptic, FormAction } from 'components/index';
+import { TransactionCategoryParamProps } from 'navigation/types';
 import { useForm } from 'react-hook-form';
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
@@ -21,16 +12,18 @@ import {
   getTransactionCategoryById,
   updateTransactionCategory,
 } from 'database/querying/transactionsCategory.query';
-import styles from './styles';
-import { ICON_SELECT, PARENT_LIST } from 'navigation/constants';
+import { ICON_SELECT, PARENT_LIST, UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
 import { selectTabActive } from 'store/transactionCategory/transactionCategory.selector';
 import { useAppSelector } from 'store/index';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
+import styles from './styles';
 
 function UpdateTransactionCategory() {
   const { colors } = useCustomTheme();
-  const navigation = useNavigation<ParentListProps>();
-  const { params } = useRoute<UpdateTransactionCategoryRouteProps>();
+  const navigation =
+    useNavigation<TransactionCategoryParamProps<typeof PARENT_LIST>['navigation']>();
+  const { params } =
+    useRoute<TransactionCategoryParamProps<typeof UPDATE_TRANSACTION_CATEGORY>['route']>();
   const isTabActive = useAppSelector((state) => selectTabActive(state));
   const [parentGroup, setParentGroup] = useState<TransactionCategoryModel | undefined>(undefined);
 

@@ -12,6 +12,7 @@ import {
 import { getTransactionCategoryById } from 'database/querying';
 import { isEqual } from 'lodash';
 import { CategoryProp } from '../../type';
+import { Alert } from 'react-native';
 
 type CategorySelectProps = {
   value?: string;
@@ -64,7 +65,7 @@ function CategorySelect({ value, control, error, currentScreen }: CategorySelect
       }
       return true;
     } catch (error) {
-      console.log(error, 'setCategorySelected error');
+      Alert.alert('Lỗi rồi!', 'Có lỗi trong quá trình lấy dữ liệu');
       return false;
     }
   };

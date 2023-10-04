@@ -4,13 +4,13 @@ import { BOX_SHADOW } from 'resources/theme/constants';
 const styles = StyleSheet.create({
   wrapper: {
     margin: 5,
-    marginBottom: 10,
+    // marginBottom: 10,
     paddingHorizontal: 10,
     borderRadius: 10,
     ...BOX_SHADOW,
   },
   header: {
-    height: 50,
+    height: 44,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
   },
   content: {
     height: 'auto',
-    paddingBottom: 10,
   },
 });
 

@@ -98,22 +98,29 @@ function AccountList({
   };
 
   return (
-    <Card
-      title={title}
-      disabled={!!isItemSelected}
-      collapse={collapse}
-      renderKey={renderKey.current}
-    >
-      {isShowSearch && <InputSearch onChangeText={onInputChange} style={{ marginVertical: 10 }} />}
-      <SectionListComponent
-        style={{ maxHeight }}
-        sections={accounts}
-        initialNumToRender={8}
-        renderItem={renderItem}
-        renderSectionHeader={renderSectionHeader}
-        ListEmptyComponent={<Empty text="Không có tài khoản nào!" />}
-      />
-    </Card>
+    <>
+      {isShowSearch && (
+        <View style={{ margin: 5 }}>
+          <InputSearch onChangeText={onInputChange} />
+        </View>
+      )}
+      <Card
+        title={title}
+        disabled={!!isItemSelected}
+        collapse={collapse}
+        renderKey={renderKey.current}
+        containerStyle={{ paddingVertical: 10 }}
+      >
+        <SectionListComponent
+          style={{ maxHeight }}
+          sections={accounts}
+          initialNumToRender={8}
+          renderItem={renderItem}
+          renderSectionHeader={renderSectionHeader}
+          ListEmptyComponent={<Empty text="Không có tài khoản nào!" />}
+        />
+      </Card>
+    </>
   );
 }
 

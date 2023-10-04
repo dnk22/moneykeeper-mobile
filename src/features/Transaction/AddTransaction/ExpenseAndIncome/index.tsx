@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
@@ -6,29 +6,26 @@ import {
   InputField,
   RNText,
   SvgIcon,
-  Switch,
   SwitchField,
   InputCalculator,
   FormAction,
 } from 'components/index';
-import Animated, { StretchInY } from 'react-native-reanimated';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
-import { AddTransactionRouteProp } from 'navigation/types';
+import { ADD_TRANSACTION, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
+import { TransactionParamListProps } from 'navigation/types';
 import { deleteTransactionById } from 'database/querying';
-import Collapsible from 'react-native-collapsible';
 import { ButtonText } from 'navigation/elements';
 import { isEqual } from 'lodash';
 import { TRANSACTION_TYPE } from 'utils/constant';
 import DateTimeSelect from '../common/DateTimeSelect';
 import MoreDetail from '../common/MoreDetail';
-import styles from '../styles.common';
 import { updateTransaction } from 'services/api/transactions';
 import { AddTransactionType } from '../type';
 import CategorySelect from '../common/CategorySelect';
 import AccountSelect from '../common/AccountSelect';
 import Fee from '../common/Fee';
 import RelatedPersonSelect from '../common/RelatedPersonSelect';
+import styles from '../styles.common';
 
 function ExpenseAndIncome({
   params,
@@ -41,7 +38,7 @@ function ExpenseAndIncome({
 }: AddTransactionType) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
-  const { name } = useRoute<AddTransactionRouteProp>();
+  const { name } = useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
 
   // Use `setOptions` to update the button that submit form
   useEffect(() => {
