@@ -12,9 +12,7 @@ import {
 } from 'components/index';
 import { useNavigation } from '@react-navigation/native';
 import { deleteTransactionById } from 'database/querying';
-import Collapsible from 'react-native-collapsible';
 import { ButtonText } from 'navigation/elements';
-import { TRANSACTION_TYPE } from 'utils/constant';
 import MoreDetail from '../common/MoreDetail';
 import styles from '../styles.common';
 import { AddTransactionType } from '../type';

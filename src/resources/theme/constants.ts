@@ -6,6 +6,6 @@ export const BOX_SHADOW = {
     height: 0,
   },
   shadowOpacity: 0.1,
-  shadowRadius: 10,
+  shadowRadius: 2,
   elevation: 5,
 };

@@ -74,9 +74,10 @@ function CategorySelect({ value, control, error, currentScreen }: CategorySelect
     navigation.navigate(TRANSACTION_CATEGORY, {
       screen: TRANSACTION_CATEGORY_LIST,
       params: {
-        screen: mapTransactionTypeToTransactionCategory[categorySelected?.categoryType],
-        returnScreen: currentScreen,
+        screen: LEND_BORROW,
+        params: { idActive: value, returnScreen: currentScreen },
       },
+      initial: false,
     });
   };
 

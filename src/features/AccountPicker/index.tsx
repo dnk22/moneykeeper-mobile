@@ -19,6 +19,7 @@ function AccountPicker() {
       isShowSearch
       isItemSelected={params?.accountSelectedId}
       onItemPress={handleOnItemPress}
+      disabledCard
     />
   );
 }

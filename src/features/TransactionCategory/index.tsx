@@ -1,15 +1,11 @@
+import React from 'react';
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { InputSearch, VirtualizedListComponent } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
-import styles from './styles';
 import { getTransactionCategoryParentObserve } from 'database/querying';
 import { withObservables } from '@nozbe/watermelondb/react';
 import { TTransactionsCategory } from 'database/types';
-import { useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { toggleUpdateMode } from 'store/transactionCategory/transactionCategory.slice';
-import { useAppDispatch } from 'store/index';
-import CategoryGroupItem from '../CategoryGroupItem';
+import CategoryGroupItem from './CategoryGroupItem';
 import MostAndRecent from './MostAndRecent';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
@@ -19,37 +15,30 @@ const CategoryGroupItemObserve = withObservables(['item'], ({ item }) => ({
   item: item.observe(),
 }))(CategoryGroupItem);
 
-type CategoryTabProps = {
+type TransactionCategoryProps = {
   expenseCategoryObserve?: Observable<TransactionCategoryModel[]>;
   type: TRANSACTION_CATEGORY_TYPE;
 };
 
-function CategoryTab({ expenseCategoryObserve, type }: CategoryTabProps) {
+function TransactionCategory({ expenseCategoryObserve, type }: TransactionCategoryProps) {
   const { colors } = useCustomTheme();
-  const useDispatch = useAppDispatch();
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove', () => {
-      useDispatch(toggleUpdateMode(false));
-    });
-    return unsubscribe;
-  }, [navigation]);
 
   const renderItem = ({ item }: { item: TTransactionsCategory }) => {
     return <CategoryGroupItemObserve item={item} id={item?.id} type={type} />;
   };
 
   const handleOnSearch = () => {};
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.container}>
+      <View style={{ padding: 6 }}>
         {type !== TRANSACTION_CATEGORY_TYPE.LEND_BORROW && (
           <>
             <InputSearch
               placeholder="Nhập tên"
               onChangeText={handleOnSearch}
               backgroundColor={colors.surface}
+              style={{ marginBottom: 10 }}
             />
             <MostAndRecent type={type} />
           </>
@@ -60,6 +49,6 @@ function CategoryTab({ expenseCategoryObserve, type }: CategoryTabProps) {
   );
 }
 
-export default withObservables([], ({ type }: CategoryTabProps) => ({
+export default withObservables([], ({ type }: TransactionCategoryProps) => ({
   expenseCategoryObserve: getTransactionCategoryParentObserve(type),
-}))<any>(CategoryTab);
+}))<any>(TransactionCategory);

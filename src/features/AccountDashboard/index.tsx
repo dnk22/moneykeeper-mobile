@@ -43,8 +43,20 @@ function Accounts() {
         <View style={styles.totalBalance}>
           <RNText style={styles.totalCurrency}>{'Tổng tiền:'}</RNText>
         </View>
-        <AccountList title="Đang sử dụng" isGroup={group} onActionPress={onActionPress} />
-        <AccountList title="Ngưng sử dụng" isDeactivate onActionPress={onActionPress} />
+        <View style={{ gap: 10, paddingHorizontal: 5 }}>
+          <AccountList
+            enabledCard
+            title="Đang sử dụng"
+            isGroup={group}
+            onActionPress={onActionPress}
+          />
+          <AccountList
+            enabledCard
+            title="Ngưng sử dụng"
+            isDeactivate
+            onActionPress={onActionPress}
+          />
+        </View>
         <PressableHaptic
           style={[styles.createButton, { backgroundColor: colors.primary }]}
           onPress={handleOnCreateAccount}

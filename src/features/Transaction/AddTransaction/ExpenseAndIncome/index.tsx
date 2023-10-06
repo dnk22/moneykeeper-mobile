@@ -50,8 +50,8 @@ function ExpenseAndIncome({
   const resetAccount = () => {
     setValue('accountId', '');
   };
-  /** start account function */
 
+  /** start account function */
   const renderIfExpenseAndIncome = () => {
     return [TRANSACTION_TYPE.EXPENSE, TRANSACTION_TYPE.INCOME].includes(params.transactionType);
   };
@@ -136,6 +136,7 @@ function ExpenseAndIncome({
           value={watch('accountId')}
           control={control}
           error={errors.accountId}
+          setValue={setValue}
           onReset={resetAccount}
         />
       </View>

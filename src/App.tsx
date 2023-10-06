@@ -18,6 +18,7 @@ import {
 } from 'database/querying';
 import BlurScreen from 'features/BlurScreen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 LogBox.ignoreAllLogs();
 
@@ -48,17 +49,19 @@ const App = () => {
   }
 
   return (
-    <Provider store={store}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <StatusBar />
       <BlurScreen />
-      <PersistGate loading={<Loading />} persistor={persistor}>
-        <NavigationContainer theme={theme}>
-          <GestureHandlerRootView style={{ flex: 1 }}>
-            <AppNavigators />
-          </GestureHandlerRootView>
-        </NavigationContainer>
-      </PersistGate>
-    </Provider>
+      <Provider store={store}>
+        <PersistGate loading={<Loading />} persistor={persistor}>
+          <NavigationContainer theme={theme}>
+            <BottomSheetModalProvider>
+              <AppNavigators />
+            </BottomSheetModalProvider>
+          </NavigationContainer>
+        </PersistGate>
+      </Provider>
+    </GestureHandlerRootView>
   );
 };
 

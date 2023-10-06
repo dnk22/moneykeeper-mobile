@@ -1,5 +1,7 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import {
   HOME,
   ADD_ACCOUNT,
@@ -26,7 +28,6 @@ import {
   LEND_BORROW,
   APPEARANCE,
 } from './constants';
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { BANK_TYPE, TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
 
 /** root stack navigation */
@@ -84,7 +85,7 @@ export type TransactionParamListProps<T extends keyof TransactionParamList> =
 
 /** transaction category stack navigation */
 export type TransactionCategoryParams = {
-  [TRANSACTION_CATEGORY_LIST]: { screen: any; returnScreen: any };
+  [TRANSACTION_CATEGORY_LIST]: MaterialTopTabScreenProps<TransactionCategoryListParams>;
   [UPDATE_TRANSACTION_CATEGORY]: {
     icon?: string;
     transactionCategoryId?: string;
@@ -99,9 +100,9 @@ export type TransactionCategoryParamProps<T extends keyof TransactionCategoryPar
 
 /** transaction category list stack navigation */
 export type TransactionCategoryListParams = {
-  [EXPENSE_CATEGORY]: undefined;
-  [INCOME_CATEGORY]: undefined;
-  [LEND_BORROW]: undefined;
+  [EXPENSE_CATEGORY]: { idActive?: string; returnScreen: any };
+  [INCOME_CATEGORY]: { idActive?: string; returnScreen: any };
+  [LEND_BORROW]: { idActive?: string; returnScreen: any };
 };
 export type TransactionCategoryListParamsProps<T extends keyof TransactionCategoryListParams> =
   NativeStackScreenProps<TransactionCategoryListParams, T>;

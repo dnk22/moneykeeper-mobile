@@ -1,9 +1,7 @@
 import { StyleSheet } from 'react-native';
+import { BOX_SHADOW } from 'resources/theme/constants';
 
 const styles = StyleSheet.create({
-  groupTitle: {
-    marginTop: 5,
-  },
   itemContainer: {
     paddingVertical: 5,
     borderBottomWidth: 0.2,
@@ -32,6 +30,29 @@ const styles = StyleSheet.create({
   itemSubTitle: {
     width: '100%',
     opacity: 0.7,
+  },
+
+  // card
+  wrapper: {
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    // ...BOX_SHADOW,
+  },
+  header: {
+    height: 44,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  title: {
+    flex: 1,
+    fontWeight: '700',
+  },
+  iconDropdown: {
+    width: 30,
+    marginRight: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   ICON_SELECT,
@@ -9,29 +9,14 @@ import {
 import { HEADER_TITLE_FONT_SIZE } from 'resources/theme/constants';
 import { TransactionCategoryParams } from 'navigation/types';
 import TransactionCategoryTapBar from './components/TabBar';
-import UpdateTransactionCategoryHeader from './components/Update';
 import UpdateTransactionCategory from 'features/TransactionCategory/Update';
 import ParentList from 'features/TransactionCategory/ParentList';
 import IconSelect from 'features/TransactionCategory/IconSelect';
-import { useAppSelector } from 'store/index';
-import { selectTabActive } from 'store/transactionCategory/transactionCategory.selector';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 
 //set up routes
 const TransactionCategoryStack = createNativeStackNavigator<TransactionCategoryParams>();
 
 function TransactionCategoryNavigation() {
-  const isTabActive = useAppSelector((state) => selectTabActive(state));
-  const UpdateButton = useMemo(
-    () =>
-      isTabActive !== TRANSACTION_CATEGORY_TYPE.LEND_BORROW ? (
-        <UpdateTransactionCategoryHeader />
-      ) : (
-        <></>
-      ),
-    [isTabActive],
-  );
-
   return (
     <TransactionCategoryStack.Navigator initialRouteName={TRANSACTION_CATEGORY_LIST}>
       <TransactionCategoryStack.Screen
@@ -42,7 +27,6 @@ function TransactionCategoryNavigation() {
             fontSize: HEADER_TITLE_FONT_SIZE,
           },
           headerBackTitleVisible: false,
-          headerRight: () => UpdateButton,
         }}
       />
       <TransactionCategoryStack.Screen

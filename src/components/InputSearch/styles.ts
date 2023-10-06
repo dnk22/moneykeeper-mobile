@@ -7,10 +7,10 @@ const styles = StyleSheet.create({
   },
   inputSearch: {
     paddingVertical: 10,
-    paddingHorizontal: 30,
+    paddingHorizontal: 40,
   },
   iconSearch: {
-    left: 3,
+    left: 10,
     position: 'absolute',
   },
 });

@@ -1,18 +1,15 @@
 import { memo, useEffect, useMemo, useState } from 'react';
+import { View } from 'react-native';
+import isEqual from 'react-fast-compare';
 import { MenuAction, MenuView, NativeActionEvent } from '@react-native-menu/menu';
 import { Empty, RNText, SvgIcon } from 'components/index';
-import isEqual from 'react-fast-compare';
-import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
-import styles from './styles';
 import { getMostUsedOrRecentTransactionCategoryUsed } from 'database/querying';
 import { MOST, RECENT, TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 import { TTransactionsCategory } from 'database/types';
 import GroupChild from '../common/GroupChild';
 import { useNavigation } from '@react-navigation/native';
-import { useAppDispatch, useAppSelector } from 'store/index';
-import { selectMostOrRecentMode } from 'store/app/app.selector';
-import { updateMostOrRecentMode } from 'store/app/app.slice';
+import styles from './styles';
 
 const ON = 'on';
 const OFF = 'off';
@@ -36,34 +33,30 @@ const dropDownDefault: MenuAction[] = [
 function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
-  const dispatch = useAppDispatch();
-  const { expense, income } = useAppSelector((state) => selectMostOrRecentMode(state));
-  const fastSelectType = type === TRANSACTION_CATEGORY_TYPE.EXPENSE ? expense : income;
+  const [fastView, setFastView] = useState<typeof MOST | typeof RECENT>(MOST);
   const [data, setData] = useState<TTransactionsCategory[]>([]);
 
   useEffect(() => {
-    getRecentTransactionCategory();
-  }, [fastSelectType]);
+    getRecentTransactionCategory(fastView);
+  }, [fastView]);
 
-  const getRecentTransactionCategory = async () => {
+  const getRecentTransactionCategory = async (queryColumn: typeof MOST | typeof RECENT) => {
     const res = await getMostUsedOrRecentTransactionCategoryUsed({
       categoryType: type,
-      column: fastSelectType,
+      column: queryColumn,
     });
     setData(res);
   };
 
   const renderActions = useMemo(() => {
     return dropDownDefault.map((x) => {
-      x.state = x.id === fastSelectType ? ON : OFF;
+      x.state = x.id === fastView ? ON : OFF;
       return x;
     });
-  }, [fastSelectType]);
+  }, []);
 
   const onHandlePressAction = ({ nativeEvent: { event } }: NativeActionEvent) => {
-    const typeAs =
-      type === TRANSACTION_CATEGORY_TYPE.EXPENSE ? { expense: event } : { income: event };
-    dispatch(updateMostOrRecentMode(typeAs));
+    setFastView(event);
   };
 
   const onItemCategoryPress = (category: TTransactionsCategory) => {
@@ -84,7 +77,7 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
       >
         <View style={styles.menu}>
           <RNText color="#1BA7EF" style={{ opacity: 0.7 }}>
-            {mapTitle[fastSelectType]}
+            {mapTitle[fastView]}
           </RNText>
           <SvgIcon name="forward" size={14} opacity={0.7} color="#1BA7EF" />
         </View>
