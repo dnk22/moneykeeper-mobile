@@ -55,7 +55,7 @@ export type TTransactionType = {
 
 // account
 export type TAccount = {
-  id: string;
+  id?: string;
   accountName: string;
   initialAmount: number;
   currentAmount: number;

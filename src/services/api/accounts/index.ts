@@ -17,6 +17,7 @@ export async function getAccountsData(query: TGetAccounts) {
 }
 export async function updateAccountDB({ id, data }: { id?: string; data: TAccount }) {
   if (id) {
+    delete data.id
     updateAccount({ id, account: data });
   } else {
     addAccount(data);

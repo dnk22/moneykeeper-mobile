@@ -159,7 +159,7 @@ function AddAccount() {
     const requestData = {
       ...data,
       initialAmount: +data?.initialAmount,
-      creditCardLimit: +data?.creditCardLimit,
+      creditCardLimit: +data?.creditCardLimit || 0,
       accountLogo: bankLogo.current || accountTypeLogo.current || AccountType[0].icon,
     };
     updateAccountDB({ id: params?.accountId, data: requestData });
