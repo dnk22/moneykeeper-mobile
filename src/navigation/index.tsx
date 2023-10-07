@@ -14,7 +14,6 @@ import TransactionCategoryNavigation from './TransactionCategory';
 
 import HomeNavigation from './Home';
 import BankNavigation from './Bank';
-import AccountPicker from 'features/AccountPicker';
 import Appearance from 'features/Settings/Appearance';
 
 //set up routes
@@ -32,16 +31,6 @@ function AppNavigators() {
       <RootStack.Screen name={HOME} component={HomeNavigation} />
       <RootStack.Group screenOptions={{ presentation: 'modal' }}>
         <RootStack.Screen name={BANK_NAVIGATION} component={BankNavigation} />
-        <RootStack.Screen
-          name={ACCOUNT_PICKER}
-          component={AccountPicker}
-          options={{
-            headerShown: true,
-            title: 'Chọn tài khoản',
-            headerTitleStyle: { fontSize: HEADER_TITLE_FONT_SIZE },
-            headerRight: () => <Cancel />,
-          }}
-        />
         <RootStack.Screen name={TRANSACTION_CATEGORY} component={TransactionCategoryNavigation} />
       </RootStack.Group>
       <RootStack.Group screenOptions={{ headerShown: true }}>

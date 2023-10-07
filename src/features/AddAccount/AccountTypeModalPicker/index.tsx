@@ -1,6 +1,6 @@
 import { memo, useEffect, useState } from 'react';
-import isEqual from 'react-fast-compare';
 import { View } from 'react-native';
+import isEqual from 'react-fast-compare';
 import {
   ModalComponent,
   CheckboxComponent,
@@ -10,10 +10,9 @@ import {
   TouchableHighlightComponent,
 } from 'components/index';
 import { IModalComponentProps } from 'components/Modal';
-import styles from './styles';
-import { useAppSelector } from 'store/index';
-import { selectAllAccountType } from 'store/account/account.selector';
 import { TAccountType } from 'database/types';
+import { AccountType } from 'utils/data';
+import styles from './styles';
 
 type AccountTypeModalPickerProps = IModalComponentProps & {
   idSelected?: string;
@@ -26,8 +25,6 @@ function AccountTypeModalPicker({
   idSelected,
   onPressItem,
 }: AccountTypeModalPickerProps) {
-  const accountTypeState = useAppSelector((state) => selectAllAccountType(state));
-
   const [isSelected, setIsSelected] = useState(idSelected);
 
   useEffect(() => {
@@ -62,7 +59,7 @@ function AccountTypeModalPicker({
       onToggleModal={onToggleModal}
       title="Chọn loại tài khoản"
     >
-      <FlatListComponent data={accountTypeState} renderItem={renderItem} />
+      <FlatListComponent data={AccountType} renderItem={renderItem} />
     </ModalComponent>
   );
 }

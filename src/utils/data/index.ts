@@ -42,7 +42,7 @@ export const TransactionTypeData = [
   },
 ];
 
-export const Account_Type: TAccountType[] = [
+export const AccountType: TAccountType[] = [
   {
     id: '0',
     name: 'Tiền mặt',

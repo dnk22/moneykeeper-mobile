@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Alert, Pressable, View } from 'react-native';
 import {
   InputCalculator,
   InputField,
@@ -7,13 +8,10 @@ import {
   SwitchField,
   FormAction,
 } from 'components/index';
-import { Alert, Pressable, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useForm } from 'react-hook-form';
 import { TAccountType, TAccount } from 'database/types';
-import { useAppSelector } from 'store/index';
-import { selectAllAccountType } from 'store/account/account.selector';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AccountStackParamListProps } from 'navigation/types';
 import Submit from 'navigation/elements/Submit';
@@ -24,8 +22,9 @@ import Collapsible from 'react-native-collapsible';
 import StatementModalPicker from './StatementModalPicker';
 import Notifications from './Notifications';
 import { deleteAccountById, getAccountById, updateAccountDB } from 'services/api/accounts';
-import styles from './styles';
 import { ADD_ACCOUNT } from 'navigation/constants';
+import { AccountType } from 'utils/data';
+import styles from './styles';
 
 const defaultValues = {
   accountName: '',
@@ -54,8 +53,7 @@ function AddAccount() {
   const isModalType = useRef<'dayAfter' | 'statementDay'>('statementDay');
 
   // state from store
-  const accountTypeState = useAppSelector((state) => selectAllAccountType(state));
-  const ACCOUNT_NOT_SHOW_BANK = [accountTypeState[0].id, accountTypeState[5].id];
+  const ACCOUNT_NOT_SHOW_BANK = [AccountType[0].id, AccountType[5].id];
 
   const {
     control,
@@ -68,13 +66,13 @@ function AddAccount() {
   } = useForm<TAccount>({
     defaultValues: {
       ...defaultValues,
-      accountTypeId: accountTypeState[0].id,
-      accountTypeName: accountTypeState[0].name,
+      accountTypeId: AccountType[0].id,
+      accountTypeName: AccountType[0].name,
     },
   });
 
   const isCreditCard = useMemo(
-    () => watch('accountTypeId') === accountTypeState[2].id,
+    () => watch('accountTypeId') === AccountType[2].id,
     [watch('accountTypeId')],
   );
   const currentAccountType = useMemo(() => watch('accountTypeId'), [watch('accountTypeId')]);
@@ -162,7 +160,7 @@ function AddAccount() {
       ...data,
       initialAmount: +data?.initialAmount,
       creditCardLimit: +data?.creditCardLimit,
-      accountLogo: bankLogo.current || accountTypeLogo.current || accountTypeState[0].icon,
+      accountLogo: bankLogo.current || accountTypeLogo.current || AccountType[0].icon,
     };
     updateAccountDB({ id: params?.accountId, data: requestData });
     navigation.goBack();
@@ -229,7 +227,7 @@ function AddAccount() {
         </View>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <AccountTypeSelect
-            value={accountTypeState[currentAccountType]}
+            value={AccountType[currentAccountType]}
             onValueChange={onAccountTypeChange}
           />
           {!ACCOUNT_NOT_SHOW_BANK.includes(watch('accountTypeId')) && (

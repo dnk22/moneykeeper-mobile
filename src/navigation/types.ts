@@ -13,7 +13,6 @@ import {
   SETTINGS,
   ACCOUNT_DETAIL,
   ADD_TRANSACTION,
-  ACCOUNT_PICKER,
   TRANSACTION_CATEGORY,
   TRANSACTION_CATEGORY_LIST,
   UPDATE_TRANSACTION_CATEGORY,
@@ -34,7 +33,6 @@ import { BANK_TYPE, TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/co
 export type RootStackParamList = {
   [HOME]: NavigatorScreenParams<HomeStackParamList>;
   [BANK_NAVIGATION]: NavigatorScreenParams<BankParams>;
-  [ACCOUNT_PICKER]: { accountSelectedId?: string } | undefined;
   [TRANSACTION_CATEGORY]: NavigatorScreenParams<TransactionCategoryParams>;
   [APPEARANCE]: undefined;
 };

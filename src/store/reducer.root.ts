@@ -3,7 +3,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 import { reduxPersistStorage } from 'share/storage';
 
 import appReducer, { appSlice } from './app/app.slice';
-import accountReducer, { accountSlice } from './account/account.slice';
+// import accountReducer, { accountSlice } from './account/account.slice';
 import transactionsReducer, { transactionsSlice } from './transactions/transactions.slice';
 import transactionCategoryReducer, {
   transactionCategorySlice,
@@ -15,7 +15,7 @@ const appPersistConfig = {
   storage: reduxPersistStorage,
   blacklist: [
     transactionsSlice.name,
-    accountSlice.name,
+    // accountSlice.name,
     transactionCategorySlice.name,
     // appSlice.name,
   ],
@@ -31,15 +31,15 @@ const transactionPersistConfig = {
   ],
 };
 
-const accountPersistConfig = {
-  key: accountSlice.name,
-  storage: reduxPersistStorage,
-  blacklist: ['bankIdSelected'],
-};
+// const accountPersistConfig = {
+//   key: accountSlice.name,
+//   storage: reduxPersistStorage,
+//   blacklist: ['bankIdSelected'],
+// };
 
 const allReducer = combineReducers({
   [appSlice.name]: appReducer,
-  [accountSlice.name]: persistReducer(accountPersistConfig, accountReducer),
+  // [accountSlice.name]: persistReducer(accountPersistConfig, accountReducer),
   [transactionsSlice.name]: persistReducer(transactionPersistConfig, transactionsReducer),
   [transactionCategorySlice.name]: transactionCategoryReducer,
 });

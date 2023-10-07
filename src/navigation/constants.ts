@@ -20,7 +20,6 @@ export const CREATE_TRANSACTION_FROM_ACCOUNT = 'createTransactionFromAccount';
 // transaction screen constants
 export const TRANSACTIONS = 'transactions';
 export const ADD_TRANSACTION = 'addTransaction';
-export const ACCOUNT_PICKER = 'accountPicker';
 export const TRANSACTION_CATEGORY = 'transactionCategory';
 export const TRANSACTION_CATEGORY_LIST = 'transactionCategoryList';
 export const UPDATE_TRANSACTION_CATEGORY = 'updateTransactionCategory';

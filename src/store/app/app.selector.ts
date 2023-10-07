@@ -6,7 +6,6 @@ const accountViewSettingsState = (state: RootState) => state[appSlice.name].acco
 const reportViewSettingsState = (state: RootState) => state[appSlice.name].isReportViewByGrid;
 const transactionListConfigState = (state: RootState) => state[appSlice.name].transactionListConfig;
 const homeBottomBarTypeState = (state: RootState) => state[appSlice.name].homeBottomBarType;
-const accountListExpandState = (state: RootState) => state[appSlice.name].accountListExpand;
 
 // export selectors
 export const selectAccountViewSettings = createSelector(
@@ -19,7 +18,4 @@ export const selectTransactionListConfig = createSelector(
   (config) => config,
 );
 export const selectHomeBottomBarType = createSelector(homeBottomBarTypeState, (state) => state);
-export const selectAccountListExpandState = createSelector(
-  accountListExpandState,
-  (state) => state,
-);
+
