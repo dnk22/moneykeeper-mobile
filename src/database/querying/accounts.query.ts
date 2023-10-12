@@ -29,7 +29,7 @@ export const getAccounts = async ({ isActive = true, text = '' }: TGetAccounts) 
           Q.where('isActive', isActive),
           Q.where('accountName', Q.like(`%${Q.sanitizeLikeString(text)}%`)),
         )
-        .fetch()
+        .fetch();
     });
   } catch (error) {
     console.log(error, 'read accounts err');

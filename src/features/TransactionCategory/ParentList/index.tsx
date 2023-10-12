@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { FlatListComponent, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
+import {
+  Empty,
+  FlatListComponent,
+  RNText,
+  SvgIcon,
+  TouchableHighlightComponent,
+} from 'components/index';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { fetchGroupTransactionCategory } from 'database/querying';
 import { TTransactionsCategory } from 'database/types';
 import { useCustomTheme } from 'resources/theme';
 import { PARENT_LIST, UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
 import { TransactionCategoryParamProps } from 'navigation/types';
+import { getGroupList } from 'services/api/transactionsCategory';
 import styles from './styles';
 
 function ParentList() {
@@ -21,7 +27,7 @@ function ParentList() {
   }, []);
 
   async function fetchGroup() {
-    const res = await fetchGroupTransactionCategory(params.type);
+    const res = await getGroupList(params.type);
     setData(res);
   }
   const onPress = (item: TTransactionsCategory) => {
@@ -45,7 +51,7 @@ function ParentList() {
 
   return (
     <View style={styles.container}>
-      <FlatListComponent data={data} renderItem={onRenderItem} />
+      <FlatListComponent data={data} renderItem={onRenderItem} ListEmptyComponent={<Empty />} />
     </View>
   );
 }

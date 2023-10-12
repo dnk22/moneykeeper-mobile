@@ -1,21 +1,18 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { InputField, InputSelection, SvgIcon, PressableHaptic, FormAction } from 'components/index';
 import { TransactionCategoryParamProps } from 'navigation/types';
 import { useForm } from 'react-hook-form';
-import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactionsCategory } from 'database/types/index';
-import {
-  addTransactionCategory,
-  deleteTransactionCategoryById,
-  getTransactionCategoryById,
-  updateTransactionCategory,
-} from 'database/querying/transactionsCategory.query';
 import { ICON_SELECT, PARENT_LIST, UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
-import { selectTabActive } from 'store/transactionCategory/transactionCategory.selector';
-import { useAppSelector } from 'store/index';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
+import {
+  deleteTransactionCategoryByID,
+  getTransactionCategoryByID,
+  updateTransactionCategory,
+} from 'services/api/transactionsCategory';
 import styles from './styles';
 
 function UpdateTransactionCategory() {
@@ -24,8 +21,8 @@ function UpdateTransactionCategory() {
     useNavigation<TransactionCategoryParamProps<typeof PARENT_LIST>['navigation']>();
   const { params } =
     useRoute<TransactionCategoryParamProps<typeof UPDATE_TRANSACTION_CATEGORY>['route']>();
-  const isTabActive = useAppSelector((state) => selectTabActive(state));
   const [parentGroup, setParentGroup] = useState<TransactionCategoryModel | undefined>(undefined);
+  const [isShowSelectParent, setIsShowSelectParent] = useState(true);
 
   const { control, handleSubmit, reset, setValue, watch, getValues } =
     useForm<TTransactionsCategory>({
@@ -45,8 +42,8 @@ function UpdateTransactionCategory() {
   }, [params?.transactionCategoryId]);
 
   useEffect(() => {
-    setValue('categoryType', isTabActive);
-  }, [isTabActive]);
+    setValue('categoryType', params?.type);
+  }, [params?.type]);
 
   useEffect(() => {
     if (params?.parentId) {
@@ -60,36 +57,29 @@ function UpdateTransactionCategory() {
 
   const fetchDataInEditMode = async (id?: string) => {
     if (!id) return;
-    const res = await getTransactionCategoryById(id);
+    const res = await getTransactionCategoryByID(id);
     if (res?.id) {
-      let result = {
-        categoryName: res.categoryName,
-        categoryType: res.categoryType,
-        description: res.description,
-        parentId: res.parentId,
-        icon: res.icon,
-        useCount: res.useCount,
-      };
-      reset(result);
+      setIsShowSelectParent(res.parentId)
+      reset(res);
     }
   };
 
   const setParentState = async (id: any) => {
     if (!id) return;
     setValue('parentId', id);
-    const res = await getTransactionCategoryById(id);
+    const res = await getTransactionCategoryByID(id);
     setParentGroup(res);
   };
 
   const handleOnSelectParent = () => {
     navigation.navigate(PARENT_LIST, {
-      type: isTabActive,
+      type: params?.type || getValues('categoryType'),
     });
   };
 
   const handleOnDeleteRecord = async () => {
     if (params?.transactionCategoryId) {
-      deleteTransactionCategoryById(params.transactionCategoryId).then(({ status }) => {
+      deleteTransactionCategoryByID(params.transactionCategoryId).then(({ status }) => {
         if (status) {
           navigation.goBack();
         }
@@ -111,11 +101,8 @@ function UpdateTransactionCategory() {
   };
 
   const onHandleSubmit = (data: TTransactionsCategory) => {
-    if (params?.transactionCategoryId) {
-      updateTransactionCategory({ id: params?.transactionCategoryId, data });
-    } else {
-      addTransactionCategory(data);
-    }
+    delete data.id;
+    updateTransactionCategory({ id: params.transactionCategoryId, data });
     navigation.goBack();
   };
 
@@ -164,15 +151,17 @@ function UpdateTransactionCategory() {
             </View>
           </View>
         </View>
-        <View style={[styles.group, { backgroundColor: colors.surface }]}>
-          <InputSelection
-            title="Chọn nhóm"
-            icon={parentGroup?.icon || 'group'}
-            value={parentGroup?.categoryName}
-            onSelect={handleOnSelectParent}
-            onDelete={handleOnDeleteParent}
-          />
-        </View>
+        {isShowSelectParent && (
+          <View style={[styles.group, { backgroundColor: colors.surface }]}>
+            <InputSelection
+              title="Chọn nhóm"
+              icon={parentGroup?.icon || 'group'}
+              value={parentGroup?.categoryName}
+              onSelect={handleOnSelectParent}
+              onDelete={handleOnDeleteParent}
+            />
+          </View>
+        )}
         <FormAction
           isShowDelete={Boolean(params?.transactionCategoryId)}
           onSubmit={handleSubmit(onHandleSubmit)}

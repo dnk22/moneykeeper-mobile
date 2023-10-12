@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 import InputSelection from 'components/InputSelection';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
+import { TRANSACTION_TYPE } from 'utils/constant';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import {
   EXPENSE_CATEGORY,
@@ -9,27 +10,33 @@ import {
   TRANSACTION_CATEGORY,
   TRANSACTION_CATEGORY_LIST,
 } from 'navigation/constants';
-import { getTransactionCategoryById } from 'database/querying';
+import { getTransactionCategoryByID } from 'services/api/transactionsCategory';
 import { isEqual } from 'lodash';
 import { CategoryProp } from '../../type';
-import { Alert } from 'react-native';
 
 type CategorySelectProps = {
   value?: string;
   control: any;
   error: any;
   currentScreen: string;
+  categoryType: TRANSACTION_TYPE;
 };
 
 const mapTransactionTypeToTransactionCategory: any = {
-  [TRANSACTION_CATEGORY_TYPE.INCOME]: INCOME_CATEGORY,
-  [TRANSACTION_CATEGORY_TYPE.EXPENSE]: EXPENSE_CATEGORY,
-  [TRANSACTION_CATEGORY_TYPE.LEND_BORROW]: LEND_BORROW,
+  [TRANSACTION_TYPE.INCOME]: INCOME_CATEGORY,
+  [TRANSACTION_TYPE.EXPENSE]: EXPENSE_CATEGORY,
+  [TRANSACTION_TYPE.LEND]: LEND_BORROW,
+  [TRANSACTION_TYPE.BORROW]: LEND_BORROW,
 };
 
-function CategorySelect({ value, control, error, currentScreen }: CategorySelectProps) {
+function CategorySelect({
+  value,
+  control,
+  error,
+  currentScreen,
+  categoryType,
+}: CategorySelectProps) {
   const navigation = useNavigation();
-
   const [categorySelected, setCategorySelected] = useState<CategoryProp | undefined>(undefined);
 
   useFocusEffect(
@@ -48,25 +55,17 @@ function CategorySelect({ value, control, error, currentScreen }: CategorySelect
   const fetchCategoryData = async () => {
     if (!value) return;
     try {
-      const res = await getTransactionCategoryById(value);
+      const res = await getTransactionCategoryByID(value);
       if (!res) {
         resetTransactionCategory();
         return;
       }
-      const newCategorySelected = {
-        icon: res.icon,
-        categoryType: res.categoryType,
-        categoryName: res.categoryName,
-        value: res.value,
-      };
       // if data no change , don't setState
-      if (!isEqual(newCategorySelected, categorySelected)) {
-        setCategorySelected(newCategorySelected);
+      if (!isEqual(res, categorySelected)) {
+        setCategorySelected(res);
       }
-      return true;
     } catch (error) {
       Alert.alert('Lỗi rồi!', 'Có lỗi trong quá trình lấy dữ liệu');
-      return false;
     }
   };
 
@@ -74,10 +73,10 @@ function CategorySelect({ value, control, error, currentScreen }: CategorySelect
     navigation.navigate(TRANSACTION_CATEGORY, {
       screen: TRANSACTION_CATEGORY_LIST,
       params: {
-        screen: LEND_BORROW,
+        screen: mapTransactionTypeToTransactionCategory[categoryType],
         params: { idActive: value, returnScreen: currentScreen },
+        initial: false,
       },
-      initial: false,
     });
   };
 

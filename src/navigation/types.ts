@@ -89,6 +89,7 @@ export type TransactionCategoryParams = {
     transactionCategoryId?: string;
     transactionCategoryTypeId?: TRANSACTION_CATEGORY_TYPE;
     parentId?: string;
+    type?: any;
   };
   [PARENT_LIST]: { type: TRANSACTION_CATEGORY_TYPE };
   [ICON_SELECT]: undefined;
@@ -103,7 +104,7 @@ export type TransactionCategoryListParams = {
   [LEND_BORROW]: { idActive?: string; returnScreen: any };
 };
 export type TransactionCategoryListParamsProps<T extends keyof TransactionCategoryListParams> =
-  NativeStackScreenProps<TransactionCategoryListParams, T>;
+  MaterialTopTabScreenProps<TransactionCategoryListParams, T>;
 
 /** report list stack navigation */
 export type ReportParamList = {

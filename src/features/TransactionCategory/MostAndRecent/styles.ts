@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   menu: {
-    paddingBottom: 5,
+    paddingBottom: 8,
     flexDirection: 'row',
     alignItems: 'center',
   },

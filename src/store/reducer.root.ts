@@ -3,11 +3,11 @@ import { combineReducers } from '@reduxjs/toolkit';
 import { reduxPersistStorage } from 'share/storage';
 
 import appReducer, { appSlice } from './app/app.slice';
-// import accountReducer, { accountSlice } from './account/account.slice';
 import transactionsReducer, { transactionsSlice } from './transactions/transactions.slice';
-import transactionCategoryReducer, {
-  transactionCategorySlice,
-} from './transactionCategory/transactionCategory.slice';
+// import accountReducer, { accountSlice } from './account/account.slice';
+// import transactionCategoryReducer, {
+//   transactionCategorySlice,
+// } from './transactionCategory/transactionCategory.slice';
 
 const appPersistConfig = {
   key: 'root',
@@ -16,7 +16,7 @@ const appPersistConfig = {
   blacklist: [
     transactionsSlice.name,
     // accountSlice.name,
-    transactionCategorySlice.name,
+    // transactionCategorySlice.name,
     // appSlice.name,
   ],
 };
@@ -40,8 +40,8 @@ const transactionPersistConfig = {
 const allReducer = combineReducers({
   [appSlice.name]: appReducer,
   // [accountSlice.name]: persistReducer(accountPersistConfig, accountReducer),
+  // [transactionCategorySlice.name]: transactionCategoryReducer,
   [transactionsSlice.name]: persistReducer(transactionPersistConfig, transactionsReducer),
-  [transactionCategorySlice.name]: transactionCategoryReducer,
 });
 
 export const persistedReducer = persistReducer(appPersistConfig, allReducer);

@@ -1,3 +1,11 @@
+import { TTransactions } from 'database/types';
+import {
+  FieldErrors,
+  UseFormHandleSubmit,
+  UseFormReset,
+  UseFormSetValue,
+  UseFormWatch,
+} from 'react-hook-form';
 import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
 
 export type TransactionTypeProps = {
@@ -16,12 +24,11 @@ export type AddTransactionType = {
     categoryId?: string;
     accountId?: string;
   };
-  control: any;
-  handleSubmit: any;
-  setValue: any;
-  watch: any;
-  reset: any;
-  errors: any;
+  handleSubmit: UseFormHandleSubmit<TTransactions, undefined>;
+  setValue: UseFormSetValue<TTransactions>;
+  watch: UseFormWatch<TTransactions>;
+  reset: UseFormReset<TTransactions>;
+  errors: FieldErrors<TTransactions>;
 };
 
 export type CategoryProp = {

@@ -1,14 +1,14 @@
-import { memo, useEffect, useMemo, useState } from 'react';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import isEqual from 'react-fast-compare';
 import { MenuAction, MenuView, NativeActionEvent } from '@react-native-menu/menu';
 import { Empty, RNText, SvgIcon } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
-import { getMostUsedOrRecentTransactionCategoryUsed } from 'database/querying';
 import { MOST, RECENT, TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 import { TTransactionsCategory } from 'database/types';
 import GroupChild from '../common/GroupChild';
 import { useNavigation } from '@react-navigation/native';
+import { getTransactionByCondition } from 'services/api/transactionsCategory';
 import styles from './styles';
 
 const ON = 'on';
@@ -32,7 +32,7 @@ const dropDownDefault: MenuAction[] = [
 
 function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
   const { colors } = useCustomTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const [fastView, setFastView] = useState<typeof MOST | typeof RECENT>(MOST);
   const [data, setData] = useState<TTransactionsCategory[]>([]);
 
@@ -41,7 +41,7 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
   }, [fastView]);
 
   const getRecentTransactionCategory = async (queryColumn: typeof MOST | typeof RECENT) => {
-    const res = await getMostUsedOrRecentTransactionCategoryUsed({
+    const res = await getTransactionByCondition({
       categoryType: type,
       column: queryColumn,
     });
@@ -61,7 +61,7 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
 
   const onItemCategoryPress = (category: TTransactionsCategory) => {
     navigation.navigate({
-      name: navigation.getParent()?.getState().routes[0].params?.returnScreen,
+      name: navigation.getParent()?.getState().routes[0].params?.params?.returnScreen,
       params: { categoryId: category.id },
       merge: true,
     });

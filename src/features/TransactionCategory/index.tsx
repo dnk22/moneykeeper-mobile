@@ -4,27 +4,22 @@ import { InputSearch, VirtualizedListComponent } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { getTransactionCategoryParentObserve } from 'database/querying';
 import { withObservables } from '@nozbe/watermelondb/react';
-import { TTransactionsCategory } from 'database/types';
 import CategoryGroupItem from './CategoryGroupItem';
 import MostAndRecent from './MostAndRecent';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 
-const CategoryGroupItemObserve = withObservables(['item'], ({ item }) => ({
-  item: item.observe(),
-}))(CategoryGroupItem);
-
 type TransactionCategoryProps = {
-  expenseCategoryObserve?: Observable<TransactionCategoryModel[]>;
+  dataObserve?: Observable<TransactionCategoryModel[]>;
   type: TRANSACTION_CATEGORY_TYPE;
 };
 
-function TransactionCategory({ expenseCategoryObserve, type }: TransactionCategoryProps) {
+function TransactionCategory({ dataObserve, type }: TransactionCategoryProps) {
   const { colors } = useCustomTheme();
 
-  const renderItem = ({ item }: { item: TTransactionsCategory }) => {
-    return <CategoryGroupItemObserve item={item} id={item?.id} type={type} />;
+  const renderItem = ({ item }: { item: TransactionCategoryModel }) => {
+    return <CategoryGroupItem item={item} id={item?.id} type={type} />;
   };
 
   const handleOnSearch = () => {};
@@ -43,12 +38,12 @@ function TransactionCategory({ expenseCategoryObserve, type }: TransactionCatego
             <MostAndRecent type={type} />
           </>
         )}
-        <VirtualizedListComponent data={expenseCategoryObserve} renderItem={renderItem} />
+        <VirtualizedListComponent data={dataObserve} renderItem={renderItem} />
       </View>
     </TouchableWithoutFeedback>
   );
 }
 
-export default withObservables([], ({ type }: TransactionCategoryProps) => ({
-  expenseCategoryObserve: getTransactionCategoryParentObserve(type),
+export default withObservables(['dataObserve'], ({ type }: TransactionCategoryProps) => ({
+  dataObserve: getTransactionCategoryParentObserve(type),
 }))<any>(TransactionCategory);

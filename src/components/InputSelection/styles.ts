@@ -22,10 +22,10 @@ const styles = StyleSheet.create({
   },
   value: {
     maxWidth: '80%',
-    backgroundColor: '#c8d0ce',
+    backgroundColor: '#e8ebea',
     padding: 5,
     paddingHorizontal: 10,
-    borderRadius: 15,
+    borderRadius: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

@@ -60,7 +60,6 @@ function Transfer({
       amount: +data.amount,
       fee: +data?.fee,
     };
-    console.log(requestData);
   };
 
   const handleOnClearFee = () => {
@@ -77,6 +76,7 @@ function Transfer({
           error={errors.accountId}
           title="Từ tài khoản"
           onReset={resetAccount}
+          setValue={setValue}
         />
         <AccountSelect
           name="toAccountId"
@@ -85,6 +85,7 @@ function Transfer({
           error={errors.toAccountId}
           title="Tới tài khoản"
           onReset={resetAccount}
+          setValue={setValue}
         />
       </View>
       <View style={[styles.group, { backgroundColor: colors.surface }]}>

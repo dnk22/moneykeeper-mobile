@@ -110,6 +110,7 @@ function ExpenseAndIncome({
           control={control}
           error={errors.categoryId}
           currentScreen={name}
+          categoryType={watch('transactionType')}
         />
         {!renderIfExpenseAndIncome() && (
           <RelatedPersonSelect

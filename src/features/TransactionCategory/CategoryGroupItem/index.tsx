@@ -1,3 +1,4 @@
+import React, { useContext } from 'react';
 import { View } from 'react-native';
 import { RNText, TouchableHighlightComponent } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
@@ -5,33 +6,30 @@ import { useNavigation } from '@react-navigation/native';
 import { withObservables } from '@nozbe/watermelondb/react';
 import { TTransactionsCategory } from 'database/types';
 import { getTransactionCategoryChildrenObserve } from 'database/querying';
-import { TRANSACTION_CATEGORY_LIST, UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
-import { useAppSelector } from 'store/index';
-import { selectUpdateModeStatus } from 'store/transactionCategory/transactionCategory.selector';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
-import { TransactionCategoryParamProps } from 'navigation/types';
 import { mapCategoryTypeToTransactionType } from 'utils/helper';
+import TransactionCategoryModel from 'database/models/transactionCategory.model';
+import { UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
+import { TransactionCategoryContext } from 'navigation/TransactionCategory/components/TabBar';
 import Icon from '../common/Icon';
 import GroupChild from '../common/GroupChild';
 import styles from './styles';
 
 type CategoryGroupItemProps = {
   expenseCategoryChildObserve?: any;
-  item: TTransactionsCategory;
+  item: TransactionCategoryModel;
   id: string;
   type: TRANSACTION_CATEGORY_TYPE;
 };
 
 function CategoryGroupItem({ expenseCategoryChildObserve, item }: CategoryGroupItemProps) {
   const { colors } = useCustomTheme();
-  const navigation =
-    useNavigation<TransactionCategoryParamProps<typeof TRANSACTION_CATEGORY_LIST>['navigation']>();
-
-  const isUpdateMode = useAppSelector((state) => selectUpdateModeStatus(state));
+  const { isUpdate } = useContext<any>(TransactionCategoryContext);
+  const navigation = useNavigation<any>();
   const isHaveChild = Boolean(expenseCategoryChildObserve.length);
 
   const onItemCategoryPress = (category: TTransactionsCategory) => {
-    if (isUpdateMode) {
+    if (isUpdate) {
       navigation.navigate(UPDATE_TRANSACTION_CATEGORY, { transactionCategoryId: category.id });
       return;
     }
@@ -40,7 +38,7 @@ function CategoryGroupItem({ expenseCategoryChildObserve, item }: CategoryGroupI
       value: category.value,
     });
     navigation.navigate({
-      name: navigation.getParent()?.getState().routes[0].params?.returnScreen,
+      name: navigation.getParent()?.getState().routes[0].params?.params.returnScreen,
       params: { categoryId: category.id, transactionType: transactionTypeTarget },
       merge: true,
     });
@@ -63,8 +61,9 @@ function CategoryGroupItem({ expenseCategoryChildObserve, item }: CategoryGroupI
 }
 
 export default withObservables(
-  ['expenseCategoryChildObserve'],
-  ({ id, type }: CategoryGroupItemProps) => ({
+  ['expenseCategoryChildObserve', 'item'],
+  ({ id, type, item }: CategoryGroupItemProps) => ({
+    item: item.observe(),
     expenseCategoryChildObserve: getTransactionCategoryChildrenObserve(type, id),
   }),
 )<any>(CategoryGroupItem);

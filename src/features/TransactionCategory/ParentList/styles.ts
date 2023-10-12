@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   item: {
+    marginBottom: 8,
     borderRadius: 10,
     padding: 5,
     paddingVertical: 10,

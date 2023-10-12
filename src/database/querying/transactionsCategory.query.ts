@@ -37,29 +37,37 @@ export const getAllTransactionGroupIds = async (type: TRANSACTION_CATEGORY_TYPE)
   }
 };
 
-export const getTransactionCategoryById = async (id: string) => {
+export const queryTransactionCategoryById = async (id: string) => {
   try {
+    const query = `select * from ${TRANSACTION_CATEGORY} where id='${id}'`;
     return await database.read(async () => {
-      const res = database.get<TransactionCategoryModel>(TRANSACTION_CATEGORY).find(id);
-      return res;
+      const res = await database
+        .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
+        .query(Q.unsafeSqlQuery(query))
+        .unsafeFetchRaw();
+      return res[0] || {};
     });
   } catch (error) {
-    console.log(error, 'fetch getTransactionCategoryById err');
+    console.log(error, 'fetch queryTransactionCategoryById err');
     return null;
   }
 };
 
-export const fetchGroupTransactionCategory = async (type: TRANSACTION_CATEGORY_TYPE) => {
+export const queryGroupTransactionCategory = async (type: TRANSACTION_CATEGORY_TYPE) => {
   try {
     return await database.read(async () => {
-      const res = database
+      const res = await database
         .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-        .query(Q.where('categoryType', type), Q.where('parentId', Q.eq(null)))
+        .query(
+          Q.and(Q.where('_status', Q.notEq('deleted')), Q.where('categoryType', type)),
+          Q.where('parentId', Q.eq(null)),
+        )
         .fetch();
+      console.log(res, 'res');
       return res;
     });
   } catch (error) {
-    console.log(error, 'fetch fetchGroupTransactionCategory err');
+    console.log(error, 'queryGroupTransactionCategory err');
   }
 };
 
@@ -76,7 +84,7 @@ export const getIsTransactionCategoryDataExist = async () => {
   }
 };
 
-export const getMostUsedOrRecentTransactionCategoryUsed = async ({
+export const queryMostUsedOrRecentTransactionCategoryUsed = async ({
   categoryType,
   column,
 }: {
@@ -87,27 +95,16 @@ export const getMostUsedOrRecentTransactionCategoryUsed = async ({
     return await database
       .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
       .query(
-        Q.where('categoryType', categoryType),
-        Q.where(column, Q.notEq(null)),
+        Q.and(
+          Q.where('_status', Q.notEq('deleted')),
+          Q.where('categoryType', categoryType),
+          Q.where(column, Q.notEq(null)),
+        ),
+        Q.take(10),
         Q.sortBy(column, Q.desc),
-        Q.take(4),
       )
       .fetch();
   });
-};
-
-/** create */
-export const addTransactionCategory = async (tCategory: TTransactionsCategory) => {
-  try {
-    await database.write(async () => {
-      const res = database.get<TransactionCategoryModel>(TRANSACTION_CATEGORY).create((item) => {
-        Object.assign(item, tCategory);
-      });
-      return res;
-    });
-  } catch (error) {
-    console.log(error, 'add transaction category err');
-  }
 };
 
 export const importDefaultTransactionCategory = async () => {
@@ -130,8 +127,23 @@ export const importDefaultTransactionCategory = async () => {
     console.log('Import transaction category failed: ', error);
   }
 };
+
+/** create */
+export const queryAddTransactionCategory = async (tCategory: TTransactionsCategory) => {
+  try {
+    await database.write(async () => {
+      const res = database.get<TransactionCategoryModel>(TRANSACTION_CATEGORY).create((item) => {
+        Object.assign(item, tCategory);
+      });
+      return res;
+    });
+  } catch (error) {
+    console.log(error, 'add transaction category err');
+  }
+};
+
 /** update */
-export const updateTransactionCategory = async ({
+export const queryUpdateTransactionCategory = async ({
   id,
   data,
 }: {
@@ -168,7 +180,7 @@ export const updateUseCountTransactionCategory = async (id: string) => {
 
 /** delete */
 
-export const deleteTransactionCategoryById = async (id: string) => {
+export const queryDeleteTransactionCategoryById = async (id: string) => {
   try {
     return await database.write(async () => {
       const transactionCategoryCollection =

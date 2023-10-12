@@ -1,17 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {
-  ACCOUNT_PICKER,
-  APPEARANCE,
-  BANK_NAVIGATION,
-  HOME,
-  TRANSACTION_CATEGORY,
-} from './constants';
+import { APPEARANCE, BANK_NAVIGATION, HOME, TRANSACTION_CATEGORY } from './constants';
 import { RootStackParamList } from './types';
-import { HEADER_TITLE_FONT_SIZE } from 'resources/theme/constants';
-
-import { Cancel } from './elements';
 import TransactionCategoryNavigation from './TransactionCategory';
-
 import HomeNavigation from './Home';
 import BankNavigation from './Bank';
 import Appearance from 'features/Settings/Appearance';
