@@ -38,3 +38,4 @@ export const HOME_REPORT = 'homeReport';
 // bank screen constants
 export const BANK_NAVIGATION = 'bank';
 export const BANK_HOME_LIST = 'bankHomeList';
+export const TransactionCategoryContext = createContext({});

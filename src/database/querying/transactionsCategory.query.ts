@@ -37,9 +37,31 @@ export const getAllTransactionGroupIds = async (type: TRANSACTION_CATEGORY_TYPE)
   }
 };
 
+export const queryTransactionCategoryByParams = async ({
+  column,
+  value,
+}: {
+  column: any;
+  value: any;
+}) => {
+  try {
+    const query = `select * from ${TRANSACTION_CATEGORY} where ${column}='${value}'`;
+    return await database.read(async () => {
+      const res = await database
+        .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
+        .query(Q.unsafeSqlQuery(query))
+        .unsafeFetchRaw();
+      return res[0] || {};
+    });
+  } catch (error) {
+    console.log(error, 'fetch queryTransactionCategoryById err');
+    return null;
+  }
+};
+
 export const queryTransactionCategoryById = async (id: string) => {
   try {
-    const query = `select * from ${TRANSACTION_CATEGORY} where id='${id}'`;
+    const query = `select * from ${TRANSACTION_CATEGORY} where id='${id}' and _status != 'deleted'`;
     return await database.read(async () => {
       const res = await database
         .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
@@ -98,7 +120,7 @@ export const queryMostUsedOrRecentTransactionCategoryUsed = async ({
         Q.and(
           Q.where('_status', Q.notEq('deleted')),
           Q.where('categoryType', categoryType),
-          Q.where(column, Q.notEq(null)),
+          Q.where(column, Q.notEq(column === 'lastUseAt' ? null : 0)),
         ),
         Q.take(10),
         Q.sortBy(column, Q.desc),

@@ -17,28 +17,30 @@ import { deleteTransactionById } from 'database/querying';
 import { ButtonText } from 'navigation/elements';
 import { isEqual } from 'lodash';
 import { TRANSACTION_TYPE } from 'utils/constant';
+import { updateTransaction } from 'services/api/transactions';
+import CategorySelect from '../common/CategorySelect';
 import DateTimeSelect from '../common/DateTimeSelect';
 import MoreDetail from '../common/MoreDetail';
-import { updateTransaction } from 'services/api/transactions';
-import { AddTransactionType } from '../type';
-import CategorySelect from '../common/CategorySelect';
 import AccountSelect from '../common/AccountSelect';
-import Fee from '../common/Fee';
 import RelatedPersonSelect from '../common/RelatedPersonSelect';
+import { AddTransactionType } from '../type';
+import Fee from '../common/Fee';
+import { useFormContext } from 'react-hook-form';
 import styles from '../styles.common';
 
-function ExpenseAndIncome({
-  params,
-  control,
-  handleSubmit,
-  setValue,
-  watch,
-  reset,
-  errors,
-}: AddTransactionType) {
+function ExpenseAndIncome({ params }: AddTransactionType) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
   const { name } = useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    getValues,
+    watch,
+    reset,
+    formState: { errors },
+  } = useFormContext<any>();
 
   // Use `setOptions` to update the button that submit form
   useEffect(() => {
@@ -53,11 +55,13 @@ function ExpenseAndIncome({
 
   /** start account function */
   const renderIfExpenseAndIncome = () => {
-    return [TRANSACTION_TYPE.EXPENSE, TRANSACTION_TYPE.INCOME].includes(params.transactionType);
+    return [TRANSACTION_TYPE.EXPENSE, TRANSACTION_TYPE.INCOME].includes(
+      getValues('transactionType'),
+    );
   };
 
   const currentTransactionTypeIs = (types: TRANSACTION_TYPE[]) => {
-    return types.includes(params.transactionType);
+    return types.includes(getValues('transactionType'));
   };
 
   const handleOnDateTimePicker = (date: Date) => {
@@ -105,13 +109,7 @@ function ExpenseAndIncome({
     <View>
       <InputCalculator name="amount" control={control} />
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
-        <CategorySelect
-          value={watch('categoryId')}
-          control={control}
-          error={errors.categoryId}
-          currentScreen={name}
-          categoryType={watch('transactionType')}
-        />
+        <CategorySelect currentScreen={name} />
         {!renderIfExpenseAndIncome() && (
           <RelatedPersonSelect
             control={control}

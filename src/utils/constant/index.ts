@@ -1,8 +1,8 @@
 export const CREATE_MODE = 'create';
-export const LEND = 'lend';
-export const BORROW = 'borrow';
-export const COLLECT_DEBTS = 'collectDebts';
-export const REPAYMENT = 'repayment';
+export const LEND = 'Cho vay';
+export const BORROW = 'Đi vay';
+export const COLLECT_DEBTS = 'Thu nợ';
+export const REPAYMENT = 'Trả nợ';
 export const RECENT = 'lastUseAt';
 export const MOST = 'useCount';
 export const FLAT = 'flat';

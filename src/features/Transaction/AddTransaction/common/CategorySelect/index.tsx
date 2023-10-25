@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
+import { useFormContext } from 'react-hook-form';
 import InputSelection from 'components/InputSelection';
-import { TRANSACTION_TYPE } from 'utils/constant';
+import { BORROW, COLLECT_DEBTS, LEND, REPAYMENT, TRANSACTION_TYPE } from 'utils/constant';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import {
   EXPENSE_CATEGORY,
@@ -12,14 +13,10 @@ import {
 } from 'navigation/constants';
 import { getTransactionCategoryByID } from 'services/api/transactionsCategory';
 import { isEqual } from 'lodash';
-import { CategoryProp } from '../../type';
+import { TTransactionsCategory } from 'database/types';
 
 type CategorySelectProps = {
-  value?: string;
-  control: any;
-  error: any;
   currentScreen: string;
-  categoryType: TRANSACTION_TYPE;
 };
 
 const mapTransactionTypeToTransactionCategory: any = {
@@ -29,43 +26,64 @@ const mapTransactionTypeToTransactionCategory: any = {
   [TRANSACTION_TYPE.BORROW]: LEND_BORROW,
 };
 
-function CategorySelect({
-  value,
-  control,
-  error,
-  currentScreen,
-  categoryType,
-}: CategorySelectProps) {
+function CategorySelect({ currentScreen }: CategorySelectProps) {
   const navigation = useNavigation();
-  const [categorySelected, setCategorySelected] = useState<CategoryProp | undefined>(undefined);
+  const {
+    control,
+    getValues,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext<any>();
+  const [categorySelected, setCategorySelected] = useState<TTransactionsCategory | undefined>(
+    undefined,
+  );
 
   useFocusEffect(
     useCallback(() => {
       fetchCategoryData();
-    }, [value]),
+    }, [watch('categoryId')]),
   );
 
   useEffect(() => {
     fetchCategoryData();
-    return () => {
-      resetTransactionCategory();
-    };
-  }, [value]);
+  }, [watch('categoryId')]);
 
   const fetchCategoryData = async () => {
-    if (!value) return;
+    if (!getValues('categoryId')) return;
     try {
-      const res = await getTransactionCategoryByID(value);
+      const res = await getTransactionCategoryByID(getValues('categoryId'));
       if (!res) {
         resetTransactionCategory();
         return;
       }
       // if data no change , don't setState
-      if (!isEqual(res, categorySelected)) {
+      if (!isEqual(res.id, categorySelected?.id)) {
         setCategorySelected(res);
+        // handleSetTransactionType(res);
       }
     } catch (error) {
       Alert.alert('Lỗi rồi!', 'Có lỗi trong quá trình lấy dữ liệu');
+    }
+  };
+
+  const handleSetTransactionType = (item: TTransactionsCategory) => {
+    let newTransactionType = watch('transactionType');
+    switch (item.categoryName) {
+      case LEND:
+        newTransactionType = TRANSACTION_TYPE.LEND;
+        break;
+      case REPAYMENT:
+        newTransactionType = TRANSACTION_TYPE.EXPENSE;
+        break;
+      case BORROW:
+        newTransactionType = TRANSACTION_TYPE.BORROW;
+        break;
+      case COLLECT_DEBTS:
+        newTransactionType = TRANSACTION_TYPE.BORROW;
+        break;
+      default:
+        break;
     }
   };
 
@@ -73,8 +91,8 @@ function CategorySelect({
     navigation.navigate(TRANSACTION_CATEGORY, {
       screen: TRANSACTION_CATEGORY_LIST,
       params: {
-        screen: mapTransactionTypeToTransactionCategory[categoryType],
-        params: { idActive: value, returnScreen: currentScreen },
+        screen: mapTransactionTypeToTransactionCategory[getValues('transactionType')],
+        params: { idActive: getValues('categoryId'), returnScreen: currentScreen },
         initial: false,
       },
     });
@@ -89,7 +107,7 @@ function CategorySelect({
       required
       name="categoryId"
       control={control}
-      error={error}
+      error={errors.categoryId}
       icon={categorySelected?.icon}
       title="Chọn danh mục"
       value={categorySelected?.categoryName}

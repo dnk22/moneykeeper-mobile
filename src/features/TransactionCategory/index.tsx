@@ -4,11 +4,11 @@ import { InputSearch, VirtualizedListComponent } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { getTransactionCategoryParentObserve } from 'database/querying';
 import { withObservables } from '@nozbe/watermelondb/react';
-import CategoryGroupItem from './CategoryGroupItem';
-import MostAndRecent from './MostAndRecent';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
+import CategoryGroupItem from './CategoryGroupItem';
+import MostAndRecent from './MostAndRecent';
 
 type TransactionCategoryProps = {
   dataObserve?: Observable<TransactionCategoryModel[]>;

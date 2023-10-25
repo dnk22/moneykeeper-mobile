@@ -8,7 +8,7 @@ import { MOST, RECENT, TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 import { TTransactionsCategory } from 'database/types';
 import GroupChild from '../common/GroupChild';
 import { useNavigation } from '@react-navigation/native';
-import { getTransactionByCondition } from 'services/api/transactionsCategory';
+import { getMostUsedOrRecentTransaction } from 'services/api/transactionsCategory';
 import styles from './styles';
 
 const ON = 'on';
@@ -39,9 +39,9 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
   useEffect(() => {
     getRecentTransactionCategory(fastView);
   }, [fastView]);
-
+  
   const getRecentTransactionCategory = async (queryColumn: typeof MOST | typeof RECENT) => {
-    const res = await getTransactionByCondition({
+    const res = await getMostUsedOrRecentTransaction({
       categoryType: type,
       column: queryColumn,
     });
@@ -53,7 +53,7 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
       x.state = x.id === fastView ? ON : OFF;
       return x;
     });
-  }, []);
+  }, [fastView]);
 
   const onHandlePressAction = ({ nativeEvent: { event } }: NativeActionEvent) => {
     setFastView(event);

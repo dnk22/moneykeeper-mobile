@@ -3,17 +3,17 @@ import { SectionListData, View } from 'react-native';
 import isEqual from 'react-fast-compare';
 import { Empty, InputSearch, RNText, SectionListComponent } from 'components/index';
 import { TAccount } from 'database/types/index';
-import Item from './Item';
 import { withObservables } from '@nozbe/watermelondb/react';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
 import { AccountModel } from 'database/models';
 import { groupDataByValue } from 'utils/algorithm';
 import { SCREEN_HEIGHT } from 'share/dimensions';
 import { fetchAccountData, getAccountsData } from 'services/api/accounts';
-import styles from './styles';
 import Collapsible from 'react-native-collapsible';
 import Header from './Header';
+import Item from './Item';
 import { useCustomTheme } from 'resources/theme';
+import styles from './styles';
 
 type AccountListProps = {
   title?: string;

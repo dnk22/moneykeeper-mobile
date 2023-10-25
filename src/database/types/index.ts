@@ -36,10 +36,9 @@ export type TTransactions = {
 };
 
 export type TTransactionsCategory = {
-  id: string;
+  id?: string;
   categoryName: string;
   categoryType: TRANSACTION_CATEGORY_TYPE;
-  value?: string;
   parentId: string | null;
   description?: string;
   isSystem: boolean;
@@ -51,6 +50,7 @@ export type TTransactionType = {
   id: TRANSACTION_TYPE;
   name: string;
   icon: string;
+  categoryType?: string;
 };
 
 // account

@@ -5,20 +5,35 @@ import {
   queryTransactionCategoryById,
   queryAddTransactionCategory,
   queryUpdateTransactionCategory,
+  queryTransactionCategoryByParams,
 } from 'database/querying';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 
-type getTransactionByConditionProps = {
+type getMostUsedOrRecentTransactionProps = {
   categoryType: TRANSACTION_CATEGORY_TYPE;
   column: 'lastUseAt' | 'useCount';
 };
+type getTransactionCategoryByParamsProps = {
+  column: any;
+  value: any;
+};
 
-export const getTransactionByCondition = async (params: getTransactionByConditionProps) => {
+export const getTransactionCategoryByParams = async (params: getTransactionCategoryByParamsProps) => {
+  try {
+    const res = await queryTransactionCategoryByParams(params);
+    return res;
+  } catch (error) {
+    console.log(error, 'getTransactionCategoryByParams err ');
+    return [];
+  }
+};
+
+export const getMostUsedOrRecentTransaction = async (params: getMostUsedOrRecentTransactionProps) => {
   try {
     const res = await queryMostUsedOrRecentTransactionCategoryUsed(params);
     return res;
   } catch (error) {
-    console.log(error, 'getTransactionByCondition err ');
+    console.log(error, 'getMostUsedOrRecentTransaction err ');
     return [];
   }
 };

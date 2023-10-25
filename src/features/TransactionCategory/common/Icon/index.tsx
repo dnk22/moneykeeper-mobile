@@ -3,8 +3,8 @@ import { View } from 'react-native';
 import SvgIcon from 'components/SvgIcon';
 import isEqual from 'react-fast-compare';
 import ShakeAnimation from 'resources/animations/Shake';
-import { TransactionCategoryContext } from 'navigation/TransactionCategory/components/TabBar';
 import styles from './styles';
+import { TransactionCategoryContext } from 'navigation/constants';
 
 type IconProps = {
   icon: any;

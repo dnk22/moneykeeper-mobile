@@ -3,7 +3,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 import { reduxPersistStorage } from 'share/storage';
 
 import appReducer, { appSlice } from './app/app.slice';
-import transactionsReducer, { transactionsSlice } from './transactions/transactions.slice';
+// import transactionsReducer, { transactionsSlice } from './transactions/transactions.slice';
 // import accountReducer, { accountSlice } from './account/account.slice';
 // import transactionCategoryReducer, {
 //   transactionCategorySlice,
@@ -14,22 +14,22 @@ const appPersistConfig = {
   version: 1,
   storage: reduxPersistStorage,
   blacklist: [
-    transactionsSlice.name,
+    // transactionsSlice.name,
     // accountSlice.name,
     // transactionCategorySlice.name,
     // appSlice.name,
   ],
 };
 
-const transactionPersistConfig = {
-  key: transactionsSlice.name,
-  storage: reduxPersistStorage,
-  blacklist: [
-    'transactionAccountSelected',
-    'transactionCategorySelected',
-    'transactionTypeIdSelected',
-  ],
-};
+// const transactionPersistConfig = {
+//   key: transactionsSlice.name,
+//   storage: reduxPersistStorage,
+//   blacklist: [
+//     'transactionAccountSelected',
+//     'transactionCategorySelected',
+//     'transactionTypeIdSelected',
+//   ],
+// };
 
 // const accountPersistConfig = {
 //   key: accountSlice.name,
@@ -41,7 +41,7 @@ const allReducer = combineReducers({
   [appSlice.name]: appReducer,
   // [accountSlice.name]: persistReducer(accountPersistConfig, accountReducer),
   // [transactionCategorySlice.name]: transactionCategoryReducer,
-  [transactionsSlice.name]: persistReducer(transactionPersistConfig, transactionsReducer),
+  // [transactionsSlice.name]: persistReducer(transactionPersistConfig, transactionsReducer),
 });
 
 export const persistedReducer = persistReducer(appPersistConfig, allReducer);

@@ -73,7 +73,6 @@ export type AccountStackParamListProps<T extends keyof AccountStackParamList> =
 export type TransactionParamList = {
   [ADD_TRANSACTION]: {
     transactionId?: string;
-    transactionType: TRANSACTION_TYPE;
     categoryId?: string;
     accountId?: string;
   };

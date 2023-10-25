@@ -55,18 +55,18 @@ export const getTransactionLisGroupByDate = async ({ accountId }: GetTransaction
       return dateList;
     });
   } catch (error) {
-    console.log(error, 'read getTransactionByCondition err');
+    console.log(error, 'read getTransactionLisGroupByDate err');
   }
 };
 
-export const getTransactionById = async (id: string) => {
+export const queryTransactionById = async (id: string) => {
   try {
     return await database.read(async () => {
       const res = database.get<TransactionModel>(TRANSACTIONS).find(id);
       return res;
     });
   } catch (error) {
-    console.log(error, 'read getTransactionById err');
+    console.log(error, 'read queryTransactionById err');
   }
 };
 

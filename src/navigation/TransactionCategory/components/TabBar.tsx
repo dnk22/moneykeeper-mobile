@@ -4,6 +4,7 @@ import {
   EXPENSE_CATEGORY,
   INCOME_CATEGORY,
   LEND_BORROW,
+  TransactionCategoryContext,
   UPDATE_TRANSACTION_CATEGORY,
 } from 'navigation/constants';
 import { Loading, PressableHaptic, SvgIcon } from 'components/index';
@@ -16,7 +17,7 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import UpdateTransactionCategoryHeader from './Update';
 import styles from '../styles';
 
-export const TransactionCategoryContext = createContext({});
+
 const TabBar = createMaterialTopTabNavigator<TransactionCategoryListParams>();
 const mapTransactionCategoryType = {
   [EXPENSE_CATEGORY]: TRANSACTION_CATEGORY_TYPE.EXPENSE,

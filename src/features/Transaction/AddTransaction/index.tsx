@@ -1,54 +1,50 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Alert, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { SelectTransactionType } from 'navigation/elements';
 import { TRANSACTION_TYPE } from 'utils/constant';
 import ExpenseAndIncome from './ExpenseAndIncome';
 import { TransactionParamListProps } from 'navigation/types';
 import { isEqual } from 'lodash';
-import styles from './styles';
 import Transfer from './Transfer';
-import { useForm } from 'react-hook-form';
-import { TTransactions } from 'database/types';
-import { getFirstAccount, getTransactionById } from 'database/querying';
+import { FormProvider, useForm } from 'react-hook-form';
+import { TTransactionType, TTransactions } from 'database/types';
+import { getFirstAccount } from 'database/querying';
 import { defaultValues } from './constant';
 import { ADD_TRANSACTION } from 'navigation/constants';
+import styles from './styles';
+import SelectTransactionType from './common/SelectTransactionType';
+import { getTransactionCategoryByParams } from 'services/api/transactionsCategory';
+import { getTransactionById } from 'services/api/transactions';
 
 function AddTransactions() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation<any>();
   const { params } = useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
-  const currentTransactionType = useRef<any>(params?.transactionType);
+  const currentTransactionType = useRef<any>(TRANSACTION_TYPE.EXPENSE);
 
   /** setup form */
-  const {
-    control,
-    handleSubmit,
-    getValues,
-    setValue,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm<TTransactions>({
+  const transactionForm = useForm<TTransactions>({
     defaultValues: {
       ...defaultValues,
-      transactionType: params.transactionType,
+      transactionType: TRANSACTION_TYPE.EXPENSE,
     },
   });
+
+  const { getValues, setValue, watch, reset } = transactionForm;
 
   // Use `setOptions` to update the transaction type select in header
   useEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
         <SelectTransactionType
-          isSelected={params?.transactionType}
+          isSelected={getValues('transactionType')}
           onItemPress={handleOnChangeTransactionType}
         />
       ),
     });
-  }, [params?.transactionType]);
+  }, [watch('transactionType')]);
 
   // set default account when mode = add & accountId = null
   useFocusEffect(
@@ -56,7 +52,7 @@ function AddTransactions() {
       if (!params?.transactionId && !watch('accountId')) {
         setDefaultAccountInModeAdd();
       }
-    }, [!params?.transactionId, watch('accountId')]),
+    }, [params?.transactionId, watch('accountId')]),
   );
 
   useEffect(() => {
@@ -82,11 +78,7 @@ function AddTransactions() {
   const fetchDataInEditMode = async (id: string) => {
     const res = await getTransactionById(id);
     if (res?.id) {
-      const result: any = {};
-      Object.keys(defaultValues).forEach(
-        (item) => (result[item] = res[item] || defaultValues[item]),
-      );
-      reset(result);
+      reset(res);
     }
   };
 
@@ -101,58 +93,45 @@ function AddTransactions() {
     }
   };
 
-  const handleOnChangeTransactionType = (item: TRANSACTION_TYPE) => {
-    if (!isEqual(item, currentTransactionType.current)) {
-      navigation.setParams({ transactionType: item, categoryId: undefined });
-      setValue('transactionType', item);
-      setValue('categoryId', undefined);
-      currentTransactionType.current = item;
+  const handleOnChangeTransactionType = async (item: TTransactionType) => {
+    if (!isEqual(item.id, currentTransactionType.current)) {
+      setValue('transactionType', item.id);
+      let categoryId = undefined;
+      if (item?.categoryType) {
+        const newCategoryId = await getTransactionCategoryByParams({
+          column: 'categoryName',
+          value: item?.categoryType,
+        });
+        if (newCategoryId) {
+          categoryId = newCategoryId.id;
+        }
+      }
+      setValue('categoryId', categoryId);
+      currentTransactionType.current = item.id;
     }
   };
 
-  const RenderForm = useMemo(() => {
-    switch (params?.transactionType) {
-      case TRANSACTION_TYPE.EXPENSE:
-      case TRANSACTION_TYPE.INCOME:
-      case TRANSACTION_TYPE.LEND:
-      case TRANSACTION_TYPE.BORROW:
-        return (
-          <ExpenseAndIncome
-            params={params}
-            control={control}
-            handleSubmit={handleSubmit}
-            watch={watch}
-            reset={reset}
-            errors={errors}
-            setValue={setValue}
-          />
-        );
-      case TRANSACTION_TYPE.TRANSFER:
-        return (
-          <Transfer
-            params={params}
-            control={control}
-            handleSubmit={handleSubmit}
-            watch={watch}
-            reset={reset}
-            errors={errors}
-            setValue={setValue}
-          />
-        );
-      default:
-        break;
-    }
-  }, [params?.transactionType, watch()]);
+  const transactionTypeSelected = (values: any[]) => {
+    return values.includes(getValues('transactionType'));
+  };
 
   return (
     <View style={styles.container}>
-      <KeyboardAwareScrollView
-        style={[styles.form, { backgroundColor: colors.background }]}
-        showsVerticalScrollIndicator={false}
-        extraScrollHeight={40}
-      >
-        {RenderForm}
-      </KeyboardAwareScrollView>
+      <FormProvider {...transactionForm}>
+        <KeyboardAwareScrollView
+          style={[styles.form, { backgroundColor: colors.background }]}
+          showsVerticalScrollIndicator={false}
+          extraScrollHeight={40}
+        >
+          {transactionTypeSelected([
+            TRANSACTION_TYPE.EXPENSE,
+            TRANSACTION_TYPE.INCOME,
+            TRANSACTION_TYPE.LEND,
+            TRANSACTION_TYPE.BORROW,
+          ]) && <ExpenseAndIncome params={params} />}
+          {transactionTypeSelected([TRANSACTION_TYPE.TRANSFER]) && <Transfer params={params} />}
+        </KeyboardAwareScrollView>
+      </FormProvider>
     </View>
   );
 }

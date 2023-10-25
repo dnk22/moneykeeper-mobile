@@ -1,4 +1,4 @@
-import { TTransactionsCategory } from 'database/types/index';
+import { TTransactionType, TTransactionsCategory } from 'database/types/index';
 import { TAccountType } from 'database/types';
 import {
   BORROW,
@@ -9,7 +9,7 @@ import {
   TRANSACTION_TYPE,
 } from 'utils/constant';
 
-export const TransactionTypeData = [
+export const TransactionTypeData: TTransactionType[] = [
   {
     id: TRANSACTION_TYPE.EXPENSE,
     name: 'Chi Tiền',
@@ -24,11 +24,13 @@ export const TransactionTypeData = [
     id: TRANSACTION_TYPE.LEND,
     name: 'Cho vay',
     icon: 'lend',
+    categoryType: LEND,
   },
   {
     id: TRANSACTION_TYPE.BORROW,
     name: 'Đi vay',
     icon: 'borrowed',
+    categoryType: BORROW,
   },
   {
     id: TRANSACTION_TYPE.TRANSFER,
@@ -83,10 +85,8 @@ export const AccountType: TAccountType[] = [
 
 export const TransactionCategoryData: TTransactionsCategory[] = [
   {
-    id: '1',
-    categoryName: 'Đi vay',
+    categoryName: BORROW,
     categoryType: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
-    value: BORROW,
     parentId: null,
     description: '',
     isSystem: true,
@@ -94,10 +94,8 @@ export const TransactionCategoryData: TTransactionsCategory[] = [
     useCount: 0,
   },
   {
-    id: '2',
-    categoryName: 'Trả nợ',
+    categoryName: REPAYMENT,
     categoryType: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
-    value: REPAYMENT,
     parentId: null,
     description: '',
     isSystem: true,
@@ -105,10 +103,8 @@ export const TransactionCategoryData: TTransactionsCategory[] = [
     useCount: 0,
   },
   {
-    id: '3',
-    categoryName: 'Cho vay',
+    categoryName: LEND,
     categoryType: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
-    value: LEND,
     parentId: null,
     description: '',
     isSystem: true,
@@ -116,10 +112,8 @@ export const TransactionCategoryData: TTransactionsCategory[] = [
     useCount: 0,
   },
   {
-    id: '4',
-    categoryName: 'Thu nợ',
+    categoryName: COLLECT_DEBTS,
     categoryType: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
-    value: COLLECT_DEBTS,
     parentId: null,
     description: '',
     isSystem: true,
