@@ -1,44 +1,48 @@
-import { TTransactionType, TTransactionsCategory } from 'database/types/index';
+import { TTransactionsCategory } from 'database/types';
 import { TAccountType } from 'database/types';
 import {
-  BORROW,
-  COLLECT_DEBTS,
-  LEND,
-  REPAYMENT,
   TRANSACTION_CATEGORY_TYPE,
+  TRANSACTION_LEND_BORROW_NAME,
   TRANSACTION_TYPE,
 } from 'utils/constant';
+import { TTransactionType } from 'utils/types';
 
 export const TransactionTypeData: TTransactionType[] = [
   {
-    id: TRANSACTION_TYPE.EXPENSE,
+    id: '0',
+    value: TRANSACTION_TYPE.EXPENSE,
     name: 'Chi Tiền',
     icon: 'expenseType',
   },
   {
-    id: TRANSACTION_TYPE.INCOME,
+    id: '1',
+    value: TRANSACTION_TYPE.INCOME,
     name: 'Thu tiền',
     icon: 'incomeType',
   },
   {
-    id: TRANSACTION_TYPE.LEND,
+    id: '2',
+    value: TRANSACTION_TYPE.EXPENSE,
     name: 'Cho vay',
     icon: 'lend',
-    categoryType: LEND,
+    categoryType: TRANSACTION_LEND_BORROW_NAME.LEND,
   },
   {
-    id: TRANSACTION_TYPE.BORROW,
+    id: '3',
+    value: TRANSACTION_TYPE.INCOME,
     name: 'Đi vay',
     icon: 'borrowed',
-    categoryType: BORROW,
+    categoryType: TRANSACTION_LEND_BORROW_NAME.BORROW,
   },
   {
-    id: TRANSACTION_TYPE.TRANSFER,
+    id: '4',
+    value: TRANSACTION_TYPE.TRANSFER,
     name: 'Chuyển khoản',
     icon: 'transfer',
   },
   {
-    id: TRANSACTION_TYPE.ADJUSTMENT,
+    id: '5',
+    value: TRANSACTION_TYPE.ADJUSTMENT,
     name: 'Cân bằng số dư',
     icon: 'adjustment',
   },
@@ -85,8 +89,8 @@ export const AccountType: TAccountType[] = [
 
 export const TransactionCategoryData: TTransactionsCategory[] = [
   {
-    categoryName: BORROW,
-    categoryType: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
+    categoryName: TRANSACTION_LEND_BORROW_NAME.BORROW,
+    categoryType: TRANSACTION_CATEGORY_TYPE.INCOME,
     parentId: null,
     description: '',
     isSystem: true,
@@ -94,8 +98,8 @@ export const TransactionCategoryData: TTransactionsCategory[] = [
     useCount: 0,
   },
   {
-    categoryName: REPAYMENT,
-    categoryType: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
+    categoryName: TRANSACTION_LEND_BORROW_NAME.REPAYMENT,
+    categoryType: TRANSACTION_CATEGORY_TYPE.EXPENSE,
     parentId: null,
     description: '',
     isSystem: true,
@@ -103,8 +107,8 @@ export const TransactionCategoryData: TTransactionsCategory[] = [
     useCount: 0,
   },
   {
-    categoryName: LEND,
-    categoryType: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
+    categoryName: TRANSACTION_LEND_BORROW_NAME.LEND,
+    categoryType: TRANSACTION_CATEGORY_TYPE.EXPENSE,
     parentId: null,
     description: '',
     isSystem: true,
@@ -112,8 +116,8 @@ export const TransactionCategoryData: TTransactionsCategory[] = [
     useCount: 0,
   },
   {
-    categoryName: COLLECT_DEBTS,
-    categoryType: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
+    categoryName: TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS,
+    categoryType: TRANSACTION_CATEGORY_TYPE.INCOME,
     parentId: null,
     description: '',
     isSystem: true,

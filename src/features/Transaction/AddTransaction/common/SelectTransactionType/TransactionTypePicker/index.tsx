@@ -32,7 +32,7 @@ function TransactionTypePicker({
     setIsSelected(isTypeSelected);
   }, [isTypeSelected]);
 
-  const currentSelected = (itemId: TRANSACTION_TYPE) => isSelected === itemId;
+  const currentSelected = (itemId: TRANSACTION_TYPE) => +isSelected === +itemId;
 
   function renderItem({ item }: { item: TTransactionType }) {
     const onPress = () => {

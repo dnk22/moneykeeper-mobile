@@ -50,13 +50,12 @@ function CategorySelect({ currentScreen }: CategorySelectProps) {
   }, [watch('categoryId')]);
 
   const fetchCategoryData = async () => {
-    if (!getValues('categoryId')) return;
+    if (!getValues('categoryId')) {
+      resetTransactionCategory();
+      return;
+    }
     try {
       const res = await getTransactionCategoryByID(getValues('categoryId'));
-      if (!res) {
-        resetTransactionCategory();
-        return;
-      }
       // if data no change , don't setState
       if (!isEqual(res.id, categorySelected?.id)) {
         setCategorySelected(res);
@@ -71,16 +70,16 @@ function CategorySelect({ currentScreen }: CategorySelectProps) {
     let newTransactionType = watch('transactionType');
     switch (item.categoryName) {
       case LEND:
-        newTransactionType = TRANSACTION_TYPE.LEND;
+        newTransactionType = TRANSACTION_TYPE.INCOME;
         break;
       case REPAYMENT:
         newTransactionType = TRANSACTION_TYPE.EXPENSE;
         break;
       case BORROW:
-        newTransactionType = TRANSACTION_TYPE.BORROW;
+        newTransactionType = TRANSACTION_TYPE.EXPENSE;
         break;
       case COLLECT_DEBTS:
-        newTransactionType = TRANSACTION_TYPE.BORROW;
+        newTransactionType = TRANSACTION_TYPE.INCOME;
         break;
       default:
         break;

@@ -19,18 +19,18 @@ import { AddTransactionType } from '../type';
 import AccountSelect from '../common/AccountSelect';
 import Fee from '../common/Fee';
 import DateTimeSelect from '../common/DateTimeSelect';
+import { useFormContext } from 'react-hook-form';
 
-function Transfer({
-  params,
-  control,
-  handleSubmit,
-  setValue,
-  watch,
-  reset,
-  errors,
-}: AddTransactionType) {
+function Transfer({ params }: AddTransactionType) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext<any>();
 
   // Use `setOptions` to update the button that submit form
   useEffect(() => {

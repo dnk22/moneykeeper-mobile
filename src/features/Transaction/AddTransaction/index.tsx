@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
@@ -6,23 +6,25 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { TRANSACTION_TYPE } from 'utils/constant';
 import ExpenseAndIncome from './ExpenseAndIncome';
 import { TransactionParamListProps } from 'navigation/types';
-import { isEqual } from 'lodash';
-import Transfer from './Transfer';
 import { FormProvider, useForm } from 'react-hook-form';
-import { TTransactionType, TTransactions } from 'database/types';
+import { TTransactions } from 'database/types';
 import { getFirstAccount } from 'database/querying';
 import { defaultValues } from './constant';
 import { ADD_TRANSACTION } from 'navigation/constants';
-import styles from './styles';
+import Transfer from './Transfer';
 import SelectTransactionType from './common/SelectTransactionType';
 import { getTransactionCategoryByParams } from 'services/api/transactionsCategory';
 import { getTransactionById } from 'services/api/transactions';
+import { TTransactionType } from 'utils/types';
+import styles from './styles';
 
 function AddTransactions() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation<any>();
   const { params } = useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
-  const currentTransactionType = useRef<any>(TRANSACTION_TYPE.EXPENSE);
+  const [isCurrentTransactionType, setIsCurrentTransactionType] = useState(
+    TRANSACTION_TYPE.EXPENSE,
+  );
 
   /** setup form */
   const transactionForm = useForm<TTransactions>({
@@ -39,12 +41,12 @@ function AddTransactions() {
     navigation.setOptions({
       headerTitle: () => (
         <SelectTransactionType
-          isSelected={getValues('transactionType')}
+          currentIndex={isCurrentTransactionType}
           onItemPress={handleOnChangeTransactionType}
         />
       ),
     });
-  }, [watch('transactionType')]);
+  }, [isCurrentTransactionType]);
 
   // set default account when mode = add & accountId = null
   useFocusEffect(
@@ -94,21 +96,34 @@ function AddTransactions() {
   };
 
   const handleOnChangeTransactionType = async (item: TTransactionType) => {
-    if (!isEqual(item.id, currentTransactionType.current)) {
-      setValue('transactionType', item.id);
-      let categoryId = undefined;
-      if (item?.categoryType) {
-        const newCategoryId = await getTransactionCategoryByParams({
-          column: 'categoryName',
-          value: item?.categoryType,
-        });
-        if (newCategoryId) {
-          categoryId = newCategoryId.id;
-        }
+    setValue('transactionType', item.value);
+    handleChangeTransactionCategoryByType(item);
+    updateIndexPicker(item);
+  };
+
+  const handleChangeTransactionCategoryByType = async (item: TTransactionType) => {
+    let categoryId = undefined;
+    if (item?.categoryType) {
+      const newCategoryId = await getTransactionCategoryByParams({
+        column: 'categoryName',
+        value: item?.categoryType,
+      });
+      if (newCategoryId) {
+        categoryId = newCategoryId.id;
       }
-      setValue('categoryId', categoryId);
-      currentTransactionType.current = item.id;
     }
+    setValue('categoryId', categoryId);
+  };
+
+  const updateIndexPicker = (item: TTransactionType) => {
+    let newIndexInPicker = item.value;
+    if (
+      ![TRANSACTION_TYPE.INCOME, TRANSACTION_TYPE.EXPENSE].includes(item.value) ||
+      item.categoryType
+    ) {
+      newIndexInPicker = +newIndexInPicker + 2;
+    }
+    setIsCurrentTransactionType(newIndexInPicker);
   };
 
   const transactionTypeSelected = (values: any[]) => {
@@ -123,12 +138,9 @@ function AddTransactions() {
           showsVerticalScrollIndicator={false}
           extraScrollHeight={40}
         >
-          {transactionTypeSelected([
-            TRANSACTION_TYPE.EXPENSE,
-            TRANSACTION_TYPE.INCOME,
-            TRANSACTION_TYPE.LEND,
-            TRANSACTION_TYPE.BORROW,
-          ]) && <ExpenseAndIncome params={params} />}
+          {transactionTypeSelected([TRANSACTION_TYPE.EXPENSE, TRANSACTION_TYPE.INCOME]) && (
+            <ExpenseAndIncome params={params} />
+          )}
           {transactionTypeSelected([TRANSACTION_TYPE.TRANSFER]) && <Transfer params={params} />}
         </KeyboardAwareScrollView>
       </FormProvider>

@@ -46,13 +46,6 @@ export type TTransactionsCategory = {
   useCount: number;
 };
 
-export type TTransactionType = {
-  id: TRANSACTION_TYPE;
-  name: string;
-  icon: string;
-  categoryType?: string;
-};
-
 // account
 export type TAccount = {
   id?: string;

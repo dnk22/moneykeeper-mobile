@@ -39,9 +39,9 @@ const appPersistConfig = {
 
 const allReducer = combineReducers({
   [appSlice.name]: appReducer,
+  // [transactionsSlice.name]: persistReducer(transactionPersistConfig, transactionsReducer),
   // [accountSlice.name]: persistReducer(accountPersistConfig, accountReducer),
   // [transactionCategorySlice.name]: transactionCategoryReducer,
-  // [transactionsSlice.name]: persistReducer(transactionPersistConfig, transactionsReducer),
 });
 
 export const persistedReducer = persistReducer(appPersistConfig, allReducer);

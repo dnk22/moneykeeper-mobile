@@ -1,20 +1,17 @@
 import React, { useState } from 'react';
 import { RNText, PressableHaptic } from 'components/index';
-import { TTransactionType } from 'database/types';
 import TransactionTypePicker from './TransactionTypePicker';
 import { TRANSACTION_TYPE } from 'utils/constant';
 import { TransactionTypeData } from 'utils/data';
+import { TTransactionType } from 'utils/types';
 import styles from './styles';
 
 type SelectTransactionTypeProps = {
-  isSelected: TRANSACTION_TYPE;
+  currentIndex: any;
   onItemPress: (item: TTransactionType) => void;
 };
 
-function SelectTransactionType({
-  isSelected = TRANSACTION_TYPE.EXPENSE,
-  onItemPress,
-}: SelectTransactionTypeProps) {
+function SelectTransactionType({ currentIndex, onItemPress }: SelectTransactionTypeProps) {
   const [isShowTransactionTypeModal, setIsShowTransactionTypeModal] = useState(false);
 
   const onToggleTransactionTypeModal = () => {
@@ -31,12 +28,12 @@ function SelectTransactionType({
       <TransactionTypePicker
         data={TransactionTypeData}
         isVisible={isShowTransactionTypeModal}
-        isTypeSelected={isSelected}
+        isTypeSelected={currentIndex}
         onToggleModal={onToggleTransactionTypeModal}
         onPressItem={onHandleTransactionTypeItemPress}
       />
       <PressableHaptic style={styles.transactionTypePicker} onPress={onToggleTransactionTypeModal}>
-        <RNText color="white">{TransactionTypeData[+isSelected]?.name}</RNText>
+        <RNText color="white">{TransactionTypeData[+currentIndex]?.name}</RNText>
       </PressableHaptic>
     </>
   );
