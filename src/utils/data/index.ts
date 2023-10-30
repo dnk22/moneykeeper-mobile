@@ -1,6 +1,7 @@
 import { TTransactionsCategory } from 'database/types';
 import { TAccountType } from 'database/types';
 import {
+  ACCOUNT_CATEGORY_ID,
   TRANSACTION_CATEGORY_TYPE,
   TRANSACTION_LEND_BORROW_NAME,
   TRANSACTION_TYPE,
@@ -50,37 +51,37 @@ export const TransactionTypeData: TTransactionType[] = [
 
 export const AccountType: TAccountType[] = [
   {
-    id: '0',
+    id: ACCOUNT_CATEGORY_ID.MONEY,
     name: 'Tiền mặt',
     value: 'cash',
     icon: 'cash',
   },
   {
-    id: '1',
+    id: ACCOUNT_CATEGORY_ID.BANK,
     name: 'Tài khoản ngân hàng',
     value: 'bank',
     icon: 'bank',
   },
   {
-    id: '2',
+    id: ACCOUNT_CATEGORY_ID.CREDITCARD,
     name: 'Thẻ tín dụng',
     value: 'credit',
     icon: 'credit',
   },
   {
-    id: '3',
+    id: ACCOUNT_CATEGORY_ID.INVESTMENT,
     name: 'Tài khoản đầu tư',
     value: 'investment',
     icon: 'investment',
   },
   {
-    id: '4',
+    id: ACCOUNT_CATEGORY_ID.EWALLET,
     name: 'Ví điện tử',
     value: 'eWallet',
     icon: 'eWallet',
   },
   {
-    id: '5',
+    id: ACCOUNT_CATEGORY_ID.OTHER,
     name: 'Khác',
     value: 'other',
     icon: 'money',
@@ -91,7 +92,7 @@ export const TransactionCategoryData: TTransactionsCategory[] = [
   {
     categoryName: TRANSACTION_LEND_BORROW_NAME.BORROW,
     categoryType: TRANSACTION_CATEGORY_TYPE.INCOME,
-    parentId: null,
+    parentId: '',
     description: '',
     isSystem: true,
     icon: 'borrow',
@@ -100,7 +101,7 @@ export const TransactionCategoryData: TTransactionsCategory[] = [
   {
     categoryName: TRANSACTION_LEND_BORROW_NAME.REPAYMENT,
     categoryType: TRANSACTION_CATEGORY_TYPE.EXPENSE,
-    parentId: null,
+    parentId: '',
     description: '',
     isSystem: true,
     icon: 'repayment',
@@ -109,7 +110,7 @@ export const TransactionCategoryData: TTransactionsCategory[] = [
   {
     categoryName: TRANSACTION_LEND_BORROW_NAME.LEND,
     categoryType: TRANSACTION_CATEGORY_TYPE.EXPENSE,
-    parentId: null,
+    parentId: '',
     description: '',
     isSystem: true,
     icon: 'lend',
@@ -118,7 +119,7 @@ export const TransactionCategoryData: TTransactionsCategory[] = [
   {
     categoryName: TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS,
     categoryType: TRANSACTION_CATEGORY_TYPE.INCOME,
-    parentId: null,
+    parentId: '',
     description: '',
     isSystem: true,
     icon: 'collectDebts',

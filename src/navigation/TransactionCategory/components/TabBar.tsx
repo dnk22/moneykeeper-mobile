@@ -17,7 +17,6 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import UpdateTransactionCategoryHeader from './Update';
 import styles from '../styles';
 
-
 const TabBar = createMaterialTopTabNavigator<TransactionCategoryListParams>();
 const mapTransactionCategoryType = {
   [EXPENSE_CATEGORY]: TRANSACTION_CATEGORY_TYPE.EXPENSE,
@@ -109,7 +108,7 @@ function TransactionCategoryTapBar({ navigation, route }: any) {
             {(props) => <CategoryTab {...props} type={TRANSACTION_CATEGORY_TYPE.EXPENSE} />}
           </TabBar.Screen>
           <TabBar.Screen name={LEND_BORROW} options={{ title: 'Vay mượn' }}>
-            {(props) => <CategoryTab {...props} type={TRANSACTION_CATEGORY_TYPE.LEND_BORROW} />}
+            {(props) => <CategoryTab {...props} />}
           </TabBar.Screen>
         </TabBar.Navigator>
       </SafeAreaView>

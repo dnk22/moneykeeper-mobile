@@ -1,5 +1,5 @@
 import { IconProps } from 'components/SvgIcon/const';
-import { TRANSACTION_TYPE, TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
+import { TRANSACTION_TYPE, TRANSACTION_CATEGORY_TYPE, ACCOUNT_CATEGORY_ID } from 'utils/constant';
 
 // user
 export type TUsers = {
@@ -39,10 +39,10 @@ export type TTransactionsCategory = {
   id?: string;
   categoryName: string;
   categoryType: TRANSACTION_CATEGORY_TYPE;
-  parentId: string | null;
-  description?: string;
+  parentId: string;
+  description: string;
   isSystem: boolean;
-  icon?: string;
+  icon: string;
   useCount: number;
 };
 
@@ -87,7 +87,7 @@ export type TAccount = {
 
 // account type
 export type TAccountType = {
-  id: string;
+  id: ACCOUNT_CATEGORY_ID;
   name: string;
   value: string;
   icon: IconProps | any;

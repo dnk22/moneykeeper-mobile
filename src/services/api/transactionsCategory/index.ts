@@ -6,6 +6,9 @@ import {
   queryAddTransactionCategory,
   queryUpdateTransactionCategory,
   queryTransactionCategoryByParams,
+  queryExpenseIncomeParentObserve,
+  queryLendBorrowParentObserve,
+  queryExpenseIncomeChildrenObserve,
 } from 'database/querying';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 
@@ -18,7 +21,9 @@ type getTransactionCategoryByParamsProps = {
   value: any;
 };
 
-export const getTransactionCategoryByParams = async (params: getTransactionCategoryByParamsProps) => {
+export const getTransactionCategoryByParams = async (
+  params: getTransactionCategoryByParamsProps,
+) => {
   try {
     const res = await queryTransactionCategoryByParams(params);
     return res;
@@ -28,7 +33,9 @@ export const getTransactionCategoryByParams = async (params: getTransactionCateg
   }
 };
 
-export const getMostUsedOrRecentTransaction = async (params: getMostUsedOrRecentTransactionProps) => {
+export const getMostUsedOrRecentTransaction = async (
+  params: getMostUsedOrRecentTransactionProps,
+) => {
   try {
     const res = await queryMostUsedOrRecentTransactionCategoryUsed(params);
     return res;
@@ -77,6 +84,29 @@ export const updateTransactionCategory = async ({ id, data }: { id?: string; dat
     }
   } catch (error) {
     console.log(error, 'deleteTransactionCategoryByID err ');
+    return { status: false, errorMessage: 'fail' };
+  }
+};
+
+export const getTransactionCategoryParentObserve = (type?: TRANSACTION_CATEGORY_TYPE) => {
+  try {
+    return type !== undefined
+      ? queryExpenseIncomeParentObserve(type)
+      : queryLendBorrowParentObserve();
+  } catch (error) {
+    console.log(error, 'getTransactionCategoryParentObserve err ');
+    return { status: false, errorMessage: 'fail' };
+  }
+};
+
+export const getTransactionCategoryChildrenObserve = (
+  type: TRANSACTION_CATEGORY_TYPE,
+  id: string,
+) => {
+  try {
+    return queryExpenseIncomeChildrenObserve(type, id);
+  } catch (error) {
+    console.log(error, 'getTransactionCategoryChildrenObserve err ');
     return { status: false, errorMessage: 'fail' };
   }
 };

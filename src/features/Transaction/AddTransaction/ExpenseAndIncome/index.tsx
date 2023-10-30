@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
-import { TTransactions } from 'database/types';
+import { TTransactions, TTransactionsCategory } from 'database/types';
 import {
   InputField,
   RNText,
@@ -11,7 +11,12 @@ import {
   FormAction,
 } from 'components/index';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { ADD_TRANSACTION, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
+import {
+  ADD_TRANSACTION,
+  CREATE_TRANSACTION_FROM_ACCOUNT,
+  TRANSACTION_CATEGORY,
+  TRANSACTION_CATEGORY_LIST,
+} from 'navigation/constants';
 import { TransactionParamListProps } from 'navigation/types';
 import { deleteTransactionById } from 'database/querying';
 import { ButtonText } from 'navigation/elements';
@@ -74,6 +79,18 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
     }
   };
 
+  const handleOnCategoryPress = (item: TTransactionsCategory) => {
+    console.log(item, 'item');
+    navigation.navigate(TRANSACTION_CATEGORY, {
+      screen: TRANSACTION_CATEGORY_LIST,
+      params: {
+        // screen: mapTransactionTypeToTransactionCategory[getValues('transactionType')],
+        params: { idActive: getValues('categoryId'), returnScreen: name },
+        initial: false,
+      },
+    });
+  };
+
   const onSubmit = (data: TTransactions) => {
     const requestData = {
       ...data,
@@ -109,7 +126,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
     <View>
       <InputCalculator name="amount" control={control} />
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
-        <CategorySelect currentScreen={name} />
+        <CategorySelect onPress={handleOnCategoryPress} />
         {!renderIfExpenseAndIncome() && (
           <RelatedPersonSelect
             control={control}

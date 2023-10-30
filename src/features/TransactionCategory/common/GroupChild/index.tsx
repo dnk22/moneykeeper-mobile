@@ -1,11 +1,11 @@
+import React from 'react';
 import { View } from 'react-native';
 import { FlatListComponent, RNText, TouchableHighlightComponent } from 'components/index';
 import { TTransactionsCategory } from 'database/types';
 import { SCREEN_WIDTH } from 'share/dimensions';
 import { withObservables } from '@nozbe/watermelondb/react';
-
-import styles from './styles';
 import Icon from '../Icon';
+import styles from './styles';
 
 const width = (SCREEN_WIDTH - 40) / 4;
 
@@ -34,6 +34,7 @@ function GroupChild({ data, isDisabled, horizontal, onItemCategoryPress }: Child
     />
   );
 }
+export default GroupChild;
 
 const CategoryChildItemObserve = withObservables(['item'], ({ item }) => ({
   item: item.observe(),
@@ -47,5 +48,3 @@ function Item({ item, isDisabled }: { item: TTransactionsCategory; isDisabled?: 
     </View>
   );
 }
-
-export default GroupChild;

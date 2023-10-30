@@ -1,13 +1,13 @@
 import React, { memo, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import isEqual from 'react-fast-compare';
+import { useNavigation } from '@react-navigation/native';
 import { MenuAction, MenuView, NativeActionEvent } from '@react-native-menu/menu';
 import { Empty, RNText, SvgIcon } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { MOST, RECENT, TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 import { TTransactionsCategory } from 'database/types';
 import GroupChild from '../common/GroupChild';
-import { useNavigation } from '@react-navigation/native';
 import { getMostUsedOrRecentTransaction } from 'services/api/transactionsCategory';
 import styles from './styles';
 

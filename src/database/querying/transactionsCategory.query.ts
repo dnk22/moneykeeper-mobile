@@ -3,33 +3,67 @@ import TransactionCategoryModel from 'database/models/transactionCategory.model'
 import { TRANSACTION_CATEGORY } from 'database/constants';
 import { TTransactionsCategory } from 'database/types';
 import { TransactionCategoryData } from 'utils/data';
-import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
+import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constant';
 import { Q } from '@nozbe/watermelondb';
 
 /** observe */
-export const getTransactionCategoryParentObserve = (type: TRANSACTION_CATEGORY_TYPE) =>
+export const queryExpenseIncomeParentObserve = (type: TRANSACTION_CATEGORY_TYPE) =>
   database
     .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-    .query(Q.where('categoryType', type), Q.where('parentId', Q.eq(null)))
+    .query(
+      Q.and(
+        Q.where(
+          'categoryName',
+          Q.notIn([
+            TRANSACTION_LEND_BORROW_NAME.BORROW,
+            TRANSACTION_LEND_BORROW_NAME.LEND,
+            TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS,
+            TRANSACTION_LEND_BORROW_NAME.REPAYMENT,
+          ]),
+        ),
+        Q.where('categoryType', type),
+      ),
+      Q.where('parentId', Q.eq('')),
+      Q.where('_status', Q.notEq('deleted')),
+    )
     .observe();
 
-export const getTransactionCategoryChildrenObserve = (
-  type: TRANSACTION_CATEGORY_TYPE,
-  id: string,
-) =>
+export const queryLendBorrowParentObserve = () =>
   database
     .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-    .query(Q.where('categoryType', type), Q.where('parentId', id))
+    .query(
+      Q.where(
+        'categoryName',
+        Q.oneOf([
+          TRANSACTION_LEND_BORROW_NAME.BORROW,
+          TRANSACTION_LEND_BORROW_NAME.LEND,
+          TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS,
+          TRANSACTION_LEND_BORROW_NAME.REPAYMENT,
+        ]),
+      ),
+      Q.where('_status', Q.notEq('deleted')),
+    )
+    .observe();
+
+export const queryExpenseIncomeChildrenObserve = (type: TRANSACTION_CATEGORY_TYPE, id: string) =>
+  database
+    .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
+    .query(
+      Q.where('categoryType', type || null),
+      Q.where('parentId', id),
+      Q.where('_status', Q.notEq('deleted')),
+    )
     .observe();
 
 /** read */
 export const getAllTransactionGroupIds = async (type: TRANSACTION_CATEGORY_TYPE) => {
   try {
+    const query = `select * from ${TRANSACTION_CATEGORY} where categoryType='${type}' and _status != 'deleted' and parentId=''`;
     return await database.read(async () => {
       const res = database
         .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-        .query(Q.where('categoryType', type), Q.where('parentId', Q.eq(null)))
-        .fetch();
+        .query(Q.unsafeSqlQuery(query))
+        .unsafeFetchRaw();
       return res;
     });
   } catch (error) {
@@ -45,7 +79,7 @@ export const queryTransactionCategoryByParams = async ({
   value: any;
 }) => {
   try {
-    const query = `select * from ${TRANSACTION_CATEGORY} where ${column}='${value}'`;
+    const query = `select * from ${TRANSACTION_CATEGORY} where ${column}='${value}' and _status != 'deleted'`;
     return await database.read(async () => {
       const res = await database
         .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
@@ -82,10 +116,9 @@ export const queryGroupTransactionCategory = async (type: TRANSACTION_CATEGORY_T
         .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
         .query(
           Q.and(Q.where('_status', Q.notEq('deleted')), Q.where('categoryType', type)),
-          Q.where('parentId', Q.eq(null)),
+          Q.where('parentId', Q.eq('')),
         )
         .fetch();
-      console.log(res, 'res');
       return res;
     });
   } catch (error) {
@@ -136,11 +169,11 @@ export const importDefaultTransactionCategory = async () => {
         await database.get<TransactionCategoryModel>(TRANSACTION_CATEGORY).create((tCategory) => {
           tCategory.categoryName = record.categoryName;
           tCategory.categoryType = record.categoryType;
-          tCategory.value = record.value;
           tCategory.parentId = record.parentId;
           tCategory.description = record.description;
           tCategory.isSystem = record.isSystem;
           tCategory.useCount = record.useCount;
+          tCategory.icon = record.icon;
         });
       }
     });
