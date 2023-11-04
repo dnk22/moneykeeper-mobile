@@ -115,8 +115,20 @@ export const queryGroupTransactionCategory = async (type: TRANSACTION_CATEGORY_T
       const res = await database
         .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
         .query(
-          Q.and(Q.where('_status', Q.notEq('deleted')), Q.where('categoryType', type)),
-          Q.where('parentId', Q.eq('')),
+          Q.and(
+            Q.where('parentId', Q.eq('')),
+            Q.where('_status', Q.notEq('deleted')),
+            Q.where('categoryType', type),
+            Q.where(
+              'categoryName',
+              Q.notIn([
+                TRANSACTION_LEND_BORROW_NAME.BORROW,
+                TRANSACTION_LEND_BORROW_NAME.LEND,
+                TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS,
+                TRANSACTION_LEND_BORROW_NAME.REPAYMENT,
+              ]),
+            ),
+          ),
         )
         .fetch();
       return res;

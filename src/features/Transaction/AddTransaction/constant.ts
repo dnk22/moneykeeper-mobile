@@ -1,3 +1,5 @@
+import { createContext } from 'react';
+
 export let defaultValues = {
   amount: 0,
   dateTimeAt: new Date(),
@@ -14,3 +16,4 @@ export let defaultValues = {
   attachment: '',
   userId: '',
 };
+export const TransactionContext = createContext<any>(null);

@@ -14,6 +14,9 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import {
   ADD_TRANSACTION,
   CREATE_TRANSACTION_FROM_ACCOUNT,
+  EXPENSE_CATEGORY,
+  INCOME_CATEGORY,
+  LEND_BORROW,
   TRANSACTION_CATEGORY,
   TRANSACTION_CATEGORY_LIST,
 } from 'navigation/constants';
@@ -21,7 +24,7 @@ import { TransactionParamListProps } from 'navigation/types';
 import { deleteTransactionById } from 'database/querying';
 import { ButtonText } from 'navigation/elements';
 import { isEqual } from 'lodash';
-import { TRANSACTION_TYPE } from 'utils/constant';
+import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constant';
 import { updateTransaction } from 'services/api/transactions';
 import CategorySelect from '../common/CategorySelect';
 import DateTimeSelect from '../common/DateTimeSelect';
@@ -79,12 +82,27 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
     }
   };
 
+  const getCategoryTabTarget = (currentCategory: TTransactionsCategory) => {
+    const { transactionType } = getValues();
+    if (currentCategory) {
+      if (Object.values(TRANSACTION_LEND_BORROW_NAME).includes(currentCategory.categoryName)) {
+        return LEND_BORROW;
+      }
+    }
+    if (transactionType === TRANSACTION_TYPE.EXPENSE) {
+      return EXPENSE_CATEGORY;
+    }
+    if (transactionType === TRANSACTION_TYPE.INCOME) {
+      return INCOME_CATEGORY;
+    }
+  };
+
   const handleOnCategoryPress = (item: TTransactionsCategory) => {
-    console.log(item, 'item');
+    const screenTarget = getCategoryTabTarget(item);
     navigation.navigate(TRANSACTION_CATEGORY, {
       screen: TRANSACTION_CATEGORY_LIST,
       params: {
-        // screen: mapTransactionTypeToTransactionCategory[getValues('transactionType')],
+        screen: screenTarget,
         params: { idActive: getValues('categoryId'), returnScreen: name },
         initial: false,
       },

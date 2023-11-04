@@ -24,7 +24,7 @@ function ParentList() {
 
   useEffect(() => {
     fetchGroup();
-  }, []);
+  }, [params.type]);
 
   async function fetchGroup() {
     const res = await getGroupList(params.type);

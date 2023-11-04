@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { RNText, PressableHaptic } from 'components/index';
 import TransactionTypePicker from './TransactionTypePicker';
-import { TRANSACTION_TYPE } from 'utils/constant';
 import { TransactionTypeData } from 'utils/data';
 import { TTransactionType } from 'utils/types';
 import styles from './styles';

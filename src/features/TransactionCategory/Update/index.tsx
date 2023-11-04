@@ -29,12 +29,14 @@ function UpdateTransactionCategory() {
       defaultValues: {
         isSystem: false,
         useCount: 0,
-        parentId: null,
+        parentId: '',
       },
     });
 
   useEffect(() => {
-    setValue('icon', params?.icon);
+    if (params?.icon) {
+      setValue('icon', params.icon);
+    }
   }, [params?.icon]);
 
   useEffect(() => {
@@ -52,14 +54,16 @@ function UpdateTransactionCategory() {
   }, [params?.parentId]);
 
   useEffect(() => {
-    setParentState(getValues('parentId'));
+    if (getValues('parentId')) {
+      setParentState(getValues('parentId'));
+    }
   }, [watch('parentId')]);
 
   const fetchDataInEditMode = async (id?: string) => {
     if (!id) return;
     const res = await getTransactionCategoryByID(id);
     if (res?.id) {
-      setIsShowSelectParent(res.parentId)
+      setIsShowSelectParent(res.parentId);
       reset(res);
     }
   };
@@ -88,12 +92,12 @@ function UpdateTransactionCategory() {
   };
 
   const handleOnDeleteParent = () => {
-    setValue('parentId', null);
+    setValue('parentId', '');
     setParentGroup(undefined);
   };
 
   const handleOnDeleteIcon = () => {
-    setValue('icon', undefined);
+    setValue('icon', '');
   };
 
   const navigateToSelectIcon = () => {

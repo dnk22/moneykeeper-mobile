@@ -9,20 +9,20 @@ import { TransactionParamListProps } from 'navigation/types';
 import { FormProvider, useForm } from 'react-hook-form';
 import { TTransactions } from 'database/types';
 import { getFirstAccount } from 'database/querying';
-import { defaultValues } from './constant';
 import { ADD_TRANSACTION } from 'navigation/constants';
-import Transfer from './Transfer';
-import SelectTransactionType from './common/SelectTransactionType';
 import { getTransactionCategoryByParams } from 'services/api/transactionsCategory';
 import { getTransactionById } from 'services/api/transactions';
 import { TTransactionType } from 'utils/types';
+import { TransactionContext, defaultValues } from './constant';
+import SelectTransactionType from './common/SelectTransactionType';
+import Transfer from './Transfer';
 import styles from './styles';
 
 function AddTransactions() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation<any>();
   const { params } = useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
-  const [isCurrentTransactionType, setIsCurrentTransactionType] = useState(
+  const [isCurrentTransactionTypeIndex, setIsCurrentTransactionTypeIndex] = useState(
     TRANSACTION_TYPE.EXPENSE,
   );
 
@@ -35,18 +35,19 @@ function AddTransactions() {
   });
 
   const { getValues, setValue, watch, reset } = transactionForm;
+  const isRenderTopBar = isCurrentTransactionTypeIndex || isCurrentTransactionTypeIndex !== null;
 
   // Use `setOptions` to update the transaction type select in header
   useEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
         <SelectTransactionType
-          currentIndex={isCurrentTransactionType}
+          currentIndex={isCurrentTransactionTypeIndex}
           onItemPress={handleOnChangeTransactionType}
         />
       ),
     });
-  }, [isCurrentTransactionType]);
+  }, [isRenderTopBar]);
 
   // set default account when mode = add & accountId = null
   useFocusEffect(
@@ -97,8 +98,8 @@ function AddTransactions() {
 
   const handleOnChangeTransactionType = async (item: TTransactionType) => {
     setValue('transactionType', item.value);
-    handleChangeTransactionCategoryByType(item);
     updateIndexPicker(item);
+    handleChangeTransactionCategoryByType(item);
   };
 
   const handleChangeTransactionCategoryByType = async (item: TTransactionType) => {
@@ -123,7 +124,7 @@ function AddTransactions() {
     ) {
       newIndexInPicker = +newIndexInPicker + 2;
     }
-    setIsCurrentTransactionType(newIndexInPicker);
+    setIsCurrentTransactionTypeIndex(newIndexInPicker);
   };
 
   const transactionTypeSelected = (values: any[]) => {
@@ -131,20 +132,26 @@ function AddTransactions() {
   };
 
   return (
-    <View style={styles.container}>
-      <FormProvider {...transactionForm}>
-        <KeyboardAwareScrollView
-          style={[styles.form, { backgroundColor: colors.background }]}
-          showsVerticalScrollIndicator={false}
-          extraScrollHeight={40}
-        >
-          {transactionTypeSelected([TRANSACTION_TYPE.EXPENSE, TRANSACTION_TYPE.INCOME]) && (
-            <ExpenseAndIncome params={params} />
-          )}
-          {transactionTypeSelected([TRANSACTION_TYPE.TRANSFER]) && <Transfer params={params} />}
-        </KeyboardAwareScrollView>
-      </FormProvider>
-    </View>
+    <TransactionContext.Provider
+      value={{
+        setIsCurrentTransactionTypeIndex,
+      }}
+    >
+      <View style={styles.container}>
+        <FormProvider {...transactionForm}>
+          <KeyboardAwareScrollView
+            style={[styles.form, { backgroundColor: colors.background }]}
+            showsVerticalScrollIndicator={false}
+            extraScrollHeight={40}
+          >
+            {transactionTypeSelected([TRANSACTION_TYPE.EXPENSE, TRANSACTION_TYPE.INCOME]) && (
+              <ExpenseAndIncome params={params} />
+            )}
+            {transactionTypeSelected([TRANSACTION_TYPE.TRANSFER]) && <Transfer params={params} />}
+          </KeyboardAwareScrollView>
+        </FormProvider>
+      </View>
+    </TransactionContext.Provider>
   );
 }
 

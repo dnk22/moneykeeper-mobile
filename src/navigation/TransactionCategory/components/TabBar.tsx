@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native';
 import {
   EXPENSE_CATEGORY,
@@ -10,18 +10,18 @@ import {
 import { Loading, PressableHaptic, SvgIcon } from 'components/index';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useCustomTheme } from 'resources/theme';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { TransactionCategoryListParams } from 'navigation/types';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 import CategoryTab from 'features/TransactionCategory';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import UpdateTransactionCategoryHeader from './Update';
 import styles from '../styles';
 
 const TabBar = createMaterialTopTabNavigator<TransactionCategoryListParams>();
+
 const mapTransactionCategoryType = {
   [EXPENSE_CATEGORY]: TRANSACTION_CATEGORY_TYPE.EXPENSE,
   [INCOME_CATEGORY]: TRANSACTION_CATEGORY_TYPE.INCOME,
-  [LEND_BORROW]: TRANSACTION_CATEGORY_TYPE.LEND_BORROW,
 };
 
 function TransactionCategoryTapBar({ navigation, route }: any) {
