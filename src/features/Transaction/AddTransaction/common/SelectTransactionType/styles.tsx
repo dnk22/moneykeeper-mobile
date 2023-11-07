@@ -11,6 +11,26 @@ const styles = StyleSheet.create({
     borderColor: '#BCCEF8',
     borderRadius: 30,
   },
+  modal: {
+    padding: 5,
+  },
+  item: {
+    flex: 1,
+    padding: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  itemContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  itemIcon: {
+    marginRight: 10,
+  },
+  title: {
+    fontSize: 16,
+  },
 });
 
 export default styles;

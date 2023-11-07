@@ -9,6 +9,7 @@ import {
   queryExpenseIncomeParentObserve,
   queryLendBorrowParentObserve,
   queryExpenseIncomeChildrenObserve,
+  getLendBorrowIds,
 } from 'database/querying';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 
@@ -107,6 +108,15 @@ export const getTransactionCategoryChildrenObserve = (
     return queryExpenseIncomeChildrenObserve(type, id);
   } catch (error) {
     console.log(error, 'getTransactionCategoryChildrenObserve err ');
+    return { status: false, errorMessage: 'fail' };
+  }
+};
+
+export const getLendBorrowCategory = async () => {
+  try {
+    return await getLendBorrowIds();
+  } catch (error) {
+    console.log(error, 'getLendBorrowCategory err ');
     return { status: false, errorMessage: 'fail' };
   }
 };

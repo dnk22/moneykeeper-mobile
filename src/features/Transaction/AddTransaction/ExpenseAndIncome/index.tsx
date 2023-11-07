@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions, TTransactionsCategory } from 'database/types';
@@ -23,23 +23,25 @@ import {
 import { TransactionParamListProps } from 'navigation/types';
 import { deleteTransactionById } from 'database/querying';
 import { ButtonText } from 'navigation/elements';
-import { isEqual } from 'lodash';
+import { isEqual, isObject, size } from 'lodash';
 import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constant';
 import { updateTransaction } from 'services/api/transactions';
+import { useFormContext } from 'react-hook-form';
 import CategorySelect from '../common/CategorySelect';
 import DateTimeSelect from '../common/DateTimeSelect';
 import MoreDetail from '../common/MoreDetail';
 import AccountSelect from '../common/AccountSelect';
 import RelatedPersonSelect from '../common/RelatedPersonSelect';
-import { AddTransactionType } from '../type';
 import Fee from '../common/Fee';
-import { useFormContext } from 'react-hook-form';
+import { AddTransactionType } from '../type';
+import { TransactionContext } from '../constant';
 import styles from '../styles.common';
 
 function ExpenseAndIncome({ params }: AddTransactionType) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
   const { name } = useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
+  const { lendBorrowData } = useContext(TransactionContext);
   const {
     control,
     handleSubmit,
@@ -57,19 +59,13 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
     });
   }, []);
 
-  const resetAccount = () => {
-    setValue('accountId', '');
-  };
-
   /** start account function */
-  const renderIfExpenseAndIncome = () => {
-    return [TRANSACTION_TYPE.EXPENSE, TRANSACTION_TYPE.INCOME].includes(
-      getValues('transactionType'),
+  const renderIfLendBorrow = () => {
+    return Boolean(
+      isObject(lendBorrowData) &&
+        size(lendBorrowData) &&
+        Object.keys(lendBorrowData).includes(getValues('categoryId')),
     );
-  };
-
-  const currentTransactionTypeIs = (types: TRANSACTION_TYPE[]) => {
-    return types.includes(getValues('transactionType'));
   };
 
   const handleOnDateTimePicker = (date: Date) => {
@@ -82,7 +78,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
     }
   };
 
-  const getCategoryTabTarget = (currentCategory: TTransactionsCategory) => {
+  const getCategoryTabTarget = (currentCategory?: TTransactionsCategory) => {
     const { transactionType } = getValues();
     if (currentCategory) {
       if (Object.values(TRANSACTION_LEND_BORROW_NAME).includes(currentCategory.categoryName)) {
@@ -97,7 +93,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
     }
   };
 
-  const handleOnCategoryPress = (item: TTransactionsCategory) => {
+  const handleOnCategoryPress = (item?: TTransactionsCategory) => {
     const screenTarget = getCategoryTabTarget(item);
     navigation.navigate(TRANSACTION_CATEGORY, {
       screen: TRANSACTION_CATEGORY_LIST,
@@ -107,6 +103,14 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
         initial: false,
       },
     });
+  };
+
+  const handleOnClearFee = () => {
+    setValue('fee', 0);
+  };
+
+  const resetAccount = () => {
+    setValue('accountId', '');
   };
 
   const onSubmit = (data: TTransactions) => {
@@ -136,20 +140,21 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
     });
   };
 
-  const handleOnClearFee = () => {
-    setValue('fee', 0);
-  };
-
   return (
     <View>
       <InputCalculator name="amount" control={control} />
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
         <CategorySelect onPress={handleOnCategoryPress} />
-        {!renderIfExpenseAndIncome() && (
+        {renderIfLendBorrow() && watch('categoryId') && (
           <RelatedPersonSelect
             control={control}
             title={
-              watch('transactionType') === TRANSACTION_TYPE.BORROW ? 'Người cho vay' : 'Người vay'
+              [
+                TRANSACTION_LEND_BORROW_NAME.BORROW,
+                TRANSACTION_LEND_BORROW_NAME.REPAYMENT,
+              ].includes(lendBorrowData[watch('categoryId')])
+                ? 'Người cho vay'
+                : 'Người vay'
             }
           />
         )}
@@ -176,7 +181,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
       </View>
       <MoreDetail>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
-          {currentTransactionTypeIs([TRANSACTION_TYPE.EXPENSE, TRANSACTION_TYPE.INCOME]) && (
+          {!renderIfLendBorrow() && (
             <>
               <View style={styles.itemGroup}>
                 <SvgIcon name="people" style={styles.icon} />

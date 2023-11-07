@@ -58,7 +58,7 @@ export const queryExpenseIncomeChildrenObserve = (type: TRANSACTION_CATEGORY_TYP
 /** read */
 export const getAllTransactionGroupIds = async (type: TRANSACTION_CATEGORY_TYPE) => {
   try {
-    const query = `select * from ${TRANSACTION_CATEGORY} where categoryType='${type}' and _status != 'deleted' and parentId=''`;
+    const query = `SELECT * FROM ${TRANSACTION_CATEGORY} WHERE categoryType='${type}' AND _status != 'deleted' AND parentId=''`;
     return await database.read(async () => {
       const res = database
         .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
@@ -70,6 +70,23 @@ export const getAllTransactionGroupIds = async (type: TRANSACTION_CATEGORY_TYPE)
     console.log(error, 'fetch getAllTransactionGroupIds err');
   }
 };
+export const getLendBorrowIds = async () => {
+  try {
+    const query = `SELECT id,categoryName FROM ${TRANSACTION_CATEGORY} 
+      WHERE categoryName 
+      IN ('${TRANSACTION_LEND_BORROW_NAME.BORROW}','${TRANSACTION_LEND_BORROW_NAME.LEND}','${TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS}','${TRANSACTION_LEND_BORROW_NAME.REPAYMENT}')
+      AND _status != 'deleted'`;
+    return await database.read(async () => {
+      const res = database
+        .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
+        .query(Q.unsafeSqlQuery(query))
+        .unsafeFetchRaw();
+      return res;
+    });
+  } catch (error) {
+    console.log(error, 'fetch getLendBorrowIds err');
+  }
+};
 
 export const queryTransactionCategoryByParams = async ({
   column,
@@ -79,7 +96,7 @@ export const queryTransactionCategoryByParams = async ({
   value: any;
 }) => {
   try {
-    const query = `select * from ${TRANSACTION_CATEGORY} where ${column}='${value}' and _status != 'deleted'`;
+    const query = `SELECT * FROM ${TRANSACTION_CATEGORY} WHERE ${column}='${value}' AND _status != 'deleted'`;
     return await database.read(async () => {
       const res = await database
         .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
@@ -95,7 +112,7 @@ export const queryTransactionCategoryByParams = async ({
 
 export const queryTransactionCategoryById = async (id: string) => {
   try {
-    const query = `select * from ${TRANSACTION_CATEGORY} where id='${id}' and _status != 'deleted'`;
+    const query = `SELECT * FROM ${TRANSACTION_CATEGORY} WHERE id='${id}' AND _status != 'deleted'`;
     return await database.read(async () => {
       const res = await database
         .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)

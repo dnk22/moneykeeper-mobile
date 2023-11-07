@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { useFormContext } from 'react-hook-form';
 import { useFocusEffect } from '@react-navigation/native';
@@ -6,8 +6,6 @@ import { debounce, isEqual } from 'lodash';
 import InputSelection from 'components/InputSelection';
 import { getTransactionCategoryByID } from 'services/api/transactionsCategory';
 import { TTransactionsCategory } from 'database/types';
-import { TRANSACTION_LEND_BORROW_NAME } from 'utils/constant';
-import { TransactionContext } from '../../constant';
 
 type CategorySelectProps = {
   onPress: (item?: TTransactionsCategory) => void;
@@ -24,7 +22,6 @@ function CategorySelect({ onPress }: CategorySelectProps) {
   const [categorySelected, setCategorySelected] = useState<TTransactionsCategory | undefined>(
     undefined,
   );
-  const { setIsCurrentTransactionTypeIndex } = useContext(TransactionContext);
 
   const fetchCategoryData = debounce(() => {
     if (!getValues('categoryId')) {
@@ -36,27 +33,13 @@ function CategorySelect({ onPress }: CategorySelectProps) {
         // if data no change , don't setState
         if (!isEqual(res.id, categorySelected?.id)) {
           setCategorySelected(res);
-          changeTypeByCategory(res);
+          setValue('transactionType', res.categoryType);
         }
       });
     } catch (error) {
       Alert.alert('Lỗi rồi!', 'Có lỗi trong quá trình lấy dữ liệu');
     }
   }, 30);
-
-  const changeTypeByCategory = (res: TTransactionsCategory) => {
-    if (
-      [TRANSACTION_LEND_BORROW_NAME.LEND, TRANSACTION_LEND_BORROW_NAME.BORROW].includes(
-        res.categoryName,
-      )
-    ) {
-      setIsCurrentTransactionTypeIndex(res.categoryType + 2);
-    }
-    if (res.categoryType !== getValues('transactionType')) {
-      setIsCurrentTransactionTypeIndex(res.categoryType);
-    }
-    setValue('transactionType', res.categoryType);
-  };
 
   const handleOnSelectTransactionCategory = () => {
     onPress && onPress(categorySelected);

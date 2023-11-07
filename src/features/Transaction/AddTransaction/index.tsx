@@ -10,7 +10,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { TTransactions } from 'database/types';
 import { getFirstAccount } from 'database/querying';
 import { ADD_TRANSACTION } from 'navigation/constants';
-import { getTransactionCategoryByParams } from 'services/api/transactionsCategory';
+import {
+  getLendBorrowCategory,
+  getTransactionCategoryByParams,
+} from 'services/api/transactionsCategory';
 import { getTransactionById } from 'services/api/transactions';
 import { TTransactionType } from 'utils/types';
 import { TransactionContext, defaultValues } from './constant';
@@ -22,9 +25,7 @@ function AddTransactions() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation<any>();
   const { params } = useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
-  const [isCurrentTransactionTypeIndex, setIsCurrentTransactionTypeIndex] = useState(
-    TRANSACTION_TYPE.EXPENSE,
-  );
+  const [lendBorrowData, setLendBorrowData] = useState<any>({});
 
   /** setup form */
   const transactionForm = useForm<TTransactions>({
@@ -35,20 +36,31 @@ function AddTransactions() {
   });
 
   const { getValues, setValue, watch, reset } = transactionForm;
-  const isRenderTopBar = isCurrentTransactionTypeIndex || isCurrentTransactionTypeIndex !== null;
+
+  useEffect(() => {
+    getLendBorrowCategory().then((res: any[]) => {
+      const data = res.reduce((accumulator, currentValue) => {
+        accumulator[currentValue.id] = currentValue.categoryName;
+        return accumulator;
+      }, {});
+      setLendBorrowData(data);
+    });
+  }, []);
 
   // Use `setOptions` to update the transaction type select in header
   useEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
         <SelectTransactionType
-          currentIndex={isCurrentTransactionTypeIndex}
+          lendBorrowData={lendBorrowData}
+          currentCategoryId={getValues('categoryId')}
+          currentType={getValues('transactionType')}
           onItemPress={handleOnChangeTransactionType}
         />
       ),
     });
-  }, [isRenderTopBar]);
-
+  }, [watch('categoryId'), watch('transactionType'), lendBorrowData]);
+  
   // set default account when mode = add & accountId = null
   useFocusEffect(
     useCallback(() => {
@@ -98,7 +110,6 @@ function AddTransactions() {
 
   const handleOnChangeTransactionType = async (item: TTransactionType) => {
     setValue('transactionType', item.value);
-    updateIndexPicker(item);
     handleChangeTransactionCategoryByType(item);
   };
 
@@ -116,17 +127,6 @@ function AddTransactions() {
     setValue('categoryId', categoryId);
   };
 
-  const updateIndexPicker = (item: TTransactionType) => {
-    let newIndexInPicker = item.value;
-    if (
-      ![TRANSACTION_TYPE.INCOME, TRANSACTION_TYPE.EXPENSE].includes(item.value) ||
-      item.categoryType
-    ) {
-      newIndexInPicker = +newIndexInPicker + 2;
-    }
-    setIsCurrentTransactionTypeIndex(newIndexInPicker);
-  };
-
   const transactionTypeSelected = (values: any[]) => {
     return values.includes(getValues('transactionType'));
   };
@@ -134,7 +134,7 @@ function AddTransactions() {
   return (
     <TransactionContext.Provider
       value={{
-        setIsCurrentTransactionTypeIndex,
+        lendBorrowData,
       }}
     >
       <View style={styles.container}>
