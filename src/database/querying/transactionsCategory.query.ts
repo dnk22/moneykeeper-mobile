@@ -246,19 +246,27 @@ export const queryUpdateTransactionCategory = async ({
   }
 };
 
-export const updateUseCountTransactionCategory = async (id: string) => {
+export const queryUpdateUseCountTransactionCategory = async (id: string) => {
   try {
-    const now = new Date();
-    const transactionCategory = await database
-      .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-      .find(id);
-    await transactionCategory.update((item) => {
-      item.useCount = item.useCount + 1;
-      item.lastUseAt = now.getTime();
+    const date = new Date();
+    return await database.write(async () => {
+      const transactionCategory = await database
+        .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
+        .find(id);
+      await transactionCategory.update((item) => {
+        item.useCount = item.useCount + 1;
+        item.lastUseAt = date.getTime();
+      });
+      return {
+        success: true,
+      };
     });
-    return true;
   } catch (error) {
-    console.log(error, 'updateUseCountTransactionCategory err');
+    console.log(error, 'queryUpdateUseCountTransactionCategory err');
+    return {
+      error,
+      success: false,
+    };
   }
 };
 

@@ -17,7 +17,7 @@ export type TTransactions = {
   id: string;
   amount: number;
   transactionType: TRANSACTION_TYPE;
-  categoryId?: string;
+  categoryId: string;
   descriptions?: string;
   dateTimeAt: Date;
   accountId: string;

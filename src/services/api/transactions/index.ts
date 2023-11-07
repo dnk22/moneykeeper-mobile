@@ -2,27 +2,29 @@ import { Q } from '@nozbe/watermelondb';
 import { TRANSACTIONS } from 'database/constants';
 import { database } from 'database/index';
 import { TransactionModel } from 'database/models';
-import { addNewTransaction, queryTransactionById, updateTransactionById } from 'database/querying';
+import {
+  queryAddNewTransaction,
+  queryTransactionById,
+  queryUpdateTransaction,
+  queryUpdateUseCountTransactionCategory,
+} from 'database/querying';
 import { TTransactions } from 'database/types';
 
-type transactionRequestUpdateProp = {
-  id?: string;
-  data: TTransactions;
-};
-
-export const updateTransaction = async ({ id, data }: transactionRequestUpdateProp) => {
+export const updateTransaction = async ({ id, data }: { id?: string; data: TTransactions }) => {
   try {
     if (!id) {
-      await addNewTransaction(data);
+      const res = await queryAddNewTransaction(data);
+      if (res.success) {
+        await queryUpdateUseCountTransactionCategory(data.categoryId);
+      }
     } else {
-      await updateTransactionById({ id, data });
+      await queryUpdateTransaction({ id, data });
     }
     return true;
   } catch (error) {
-    console.log(error);
+    return false;
   }
 };
-
 
 export const getTransactionById = async (id: string) => {
   try {

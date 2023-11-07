@@ -13,6 +13,6 @@ export default class TransactionCategoryModel extends Model {
   @field('icon') icon!: string;
   @field('isSystem') isSystem!: boolean;
   @field('useCount') useCount!: number;
-  @field('lastUseAt') lastUseAt!: Date;
+  @field('lastUseAt') lastUseAt!: number;
   @readonly @date('create_at') createAt!: Date;
 }

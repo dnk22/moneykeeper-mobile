@@ -3,7 +3,6 @@ import { TRANSACTIONS } from 'database/constants';
 import { TransactionModel } from 'database/models';
 import { TTransactions } from 'database/types';
 import { Q } from '@nozbe/watermelondb';
-import { updateUseCountTransactionCategory } from './transactionsCategory.query';
 
 export type GetTransactionProps = {
   accountId: string;
@@ -76,17 +75,22 @@ export const queryTransactionById = async (id: string) => {
  * @param transaction : TTransactions
  * add new transaction , if success then update useCount in transaction category
  */
-export const addNewTransaction = async (transaction: TTransactions) => {
+export const queryAddNewTransaction = async (transaction: TTransactions) => {
   try {
     return await database.write(async () => {
       database.get<TransactionModel>(TRANSACTIONS).create((item) => {
         Object.assign(item, transaction);
       });
-      await updateUseCountTransactionCategory(transaction.categoryId);
-      return true;
+      return {
+        success: true,
+      };
     });
   } catch (error) {
-    console.log(error);
+    console.log(error, 'queryAddNewTransaction error');
+    return {
+      success: true,
+      error,
+    };
   }
 };
 /** update */
@@ -99,7 +103,7 @@ export const addNewTransaction = async (transaction: TTransactions) => {
  * update transaction by id , if update successfully then update useCount in transaction category
  *
  */
-export const updateTransactionById = async ({ id, data }: { id: string; data: TTransactions }) => {
+export const queryUpdateTransaction = async ({ id, data }: { id: string; data: TTransactions }) => {
   let useDiffCategory = false;
   await database.write(async () => {
     const res = await database.get<TransactionModel>(TRANSACTIONS).find(id);
@@ -108,7 +112,6 @@ export const updateTransactionById = async ({ id, data }: { id: string; data: TT
       Object.assign(item, data);
     });
     if (!useDiffCategory) return;
-    await updateUseCountTransactionCategory(data.categoryId);
   });
 };
 /** delete */

@@ -10,6 +10,8 @@ export let defaultValues = {
   eventName: '',
   payFor: '',
   relatedPerson: '',
+  payee: '',
+  giver: '',
   fee: 0,
   feeType: '',
   isNotAddReport: false,

@@ -62,8 +62,6 @@ export type AccountStackParamList = {
   [CREATE_TRANSACTION_FROM_ACCOUNT]: {
     transactionId?: string;
     categoryId?: string;
-    accountId?: string;
-    toAccountId?: string;
   };
 };
 export type AccountStackParamListProps<T extends keyof AccountStackParamList> =
@@ -74,7 +72,6 @@ export type TransactionParamList = {
   [ADD_TRANSACTION]: {
     transactionId?: string;
     categoryId?: string;
-    accountId?: string;
   };
 };
 export type TransactionParamListProps<T extends keyof TransactionParamList> =

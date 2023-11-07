@@ -34,12 +34,13 @@ import AccountSelect from '../common/AccountSelect';
 import RelatedPersonSelect from '../common/RelatedPersonSelect';
 import Fee from '../common/Fee';
 import { AddTransactionType } from '../type';
-import { TransactionContext } from '../constant';
+import { TransactionContext, defaultValues } from '../constant';
 import styles from '../styles.common';
 
 function ExpenseAndIncome({ params }: AddTransactionType) {
   const { colors } = useCustomTheme();
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<TransactionParamListProps<typeof ADD_TRANSACTION>['navigation']>();
   const { name } = useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
   const { lendBorrowData } = useContext(TransactionContext);
   const {
@@ -117,10 +118,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
     const requestData = {
       ...data,
       amount: +data.amount,
-      fee: +data?.fee,
     };
-    console.log(requestData, 'requestData');
-    return;
     updateTransaction({
       id: params?.transactionId,
       data: requestData,
@@ -132,9 +130,12 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
           accountId: data?.accountId,
           transactionType: data?.transactionType,
         });
+        navigation.setParams({
+          categoryId: '',
+        });
       }
       if (navigation.canGoBack() && isEqual(name, CREATE_TRANSACTION_FROM_ACCOUNT)) {
-        // navigate to prev screen
+        // navigate to previous screen
         navigation.goBack();
       }
     });

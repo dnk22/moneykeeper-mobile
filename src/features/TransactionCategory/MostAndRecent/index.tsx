@@ -7,8 +7,8 @@ import { Empty, RNText, SvgIcon } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { MOST, RECENT, TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 import { TTransactionsCategory } from 'database/types';
-import GroupChild from '../common/GroupChild';
 import { getMostUsedOrRecentTransaction } from 'services/api/transactionsCategory';
+import GroupChild from '../common/GroupChild';
 import styles from './styles';
 
 const ON = 'on';
@@ -39,7 +39,7 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
   useEffect(() => {
     getRecentTransactionCategory(fastView);
   }, [fastView]);
-  
+
   const getRecentTransactionCategory = async (queryColumn: typeof MOST | typeof RECENT) => {
     const res = await getMostUsedOrRecentTransaction({
       categoryType: type,

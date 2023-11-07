@@ -60,7 +60,7 @@ function AddTransactions() {
       ),
     });
   }, [watch('categoryId'), watch('transactionType'), lendBorrowData]);
-  
+
   // set default account when mode = add & accountId = null
   useFocusEffect(
     useCallback(() => {
@@ -75,13 +75,6 @@ function AddTransactions() {
       fetchDataInEditMode(params.transactionId);
     }
   }, [params?.transactionId]);
-
-  /** watch accountId */
-  useEffect(() => {
-    if (params?.accountId && params?.accountId !== getValues('accountId')) {
-      setValue('accountId', params.accountId);
-    }
-  }, [params?.accountId]);
 
   /** get transaction category selected data */
   useEffect(() => {
@@ -110,11 +103,8 @@ function AddTransactions() {
 
   const handleOnChangeTransactionType = async (item: TTransactionType) => {
     setValue('transactionType', item.value);
-    handleChangeTransactionCategoryByType(item);
-  };
-
-  const handleChangeTransactionCategoryByType = async (item: TTransactionType) => {
-    let categoryId = undefined;
+    // handle Change TransactionCategory By Type
+    let categoryId = '';
     if (item?.categoryType) {
       const newCategoryId = await getTransactionCategoryByParams({
         column: 'categoryName',
@@ -127,9 +117,12 @@ function AddTransactions() {
     setValue('categoryId', categoryId);
   };
 
-  const transactionTypeSelected = (values: any[]) => {
-    return values.includes(getValues('transactionType'));
-  };
+  const transactionTypeSelected = useCallback(
+    (values: any[]) => {
+      return values.includes(getValues('transactionType'));
+    },
+    [watch('transactionType')],
+  );
 
   return (
     <TransactionContext.Provider
