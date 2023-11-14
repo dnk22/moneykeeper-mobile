@@ -22,6 +22,7 @@ import TouchableHighlightComponent from 'components/TouchableHighlight';
 import InputSearch from 'components/InputSearch';
 import VirtualizedListComponent from 'components/VirtualizedList';
 import Empty from 'components/Empty';
+import BottomSheet from 'components/BottomSheetModal';
 
 import Submit from 'components/common/Submit';
 import FormAction from 'components/common/FormAction';
@@ -53,4 +54,5 @@ export {
   VirtualizedListComponent,
   Empty,
   FormAction,
+  BottomSheet,
 };

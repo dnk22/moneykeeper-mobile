@@ -148,7 +148,6 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
         <CategorySelect onPress={handleOnCategoryPress} />
         {renderIfLendBorrow() && watch('categoryId') && (
           <RelatedPersonSelect
-            control={control}
             title={
               [
                 TRANSACTION_LEND_BORROW_NAME.BORROW,

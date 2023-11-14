@@ -108,5 +108,9 @@ export default appSchema({
         { name: 'transactionDateAt', type: 'boolean' },
       ],
     }),
+    tableSchema({
+      name: 'contact',
+      columns: [{ name: 'contactName', type: 'string' }],
+    }),
   ],
 });

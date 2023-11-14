@@ -29,7 +29,7 @@ function SwipeableComponent({
       extrapolate: 'clamp',
     });
     return (
-      <View style={{ width: 80 }}>
+      <View style={{ width: 80, zIndex: 1 }}>
         <RectButton style={styles.rightAction} onPress={close}>
           <AnimatedView style={{ transform: [{ scale }] }}>
             <TrashIcon color={'white'} />

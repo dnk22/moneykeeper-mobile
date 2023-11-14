@@ -1,18 +1,12 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Alert } from 'react-native';
-import InputSelection from 'components/InputSelection';
 import { isEqual } from 'lodash';
+import { InputSelection, BottomSheet } from 'components/index';
+import AccountList from 'features/AccountList';
 import { useFocusEffect } from '@react-navigation/native';
 import { getAccountById } from 'services/api/accounts';
-import AccountList from 'features/AccountList';
-import {
-  BottomSheetBackdrop,
-  BottomSheetBackdropProps,
-  BottomSheetModal,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { TAccount } from 'database/types';
-import { useCustomTheme } from 'resources/theme';
 
 type AccountProp = {
   accountLogo: string;
@@ -40,10 +34,8 @@ function AccountSelect({
   title = 'Chọn tài khoản',
   isShowSubTitle,
 }: AccountSelectProps) {
-  const { colors } = useCustomTheme();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const [accountSelected, setAccountSelected] = useState<AccountProp | undefined>(undefined);
-  const snapPoints = useMemo(() => ['50%', '70%', '90%'], []);
 
   useFocusEffect(
     useCallback(() => {
@@ -54,10 +46,6 @@ function AccountSelect({
   useEffect(() => {
     fetchAccountData();
   }, [value]);
-
-  const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {
-    return <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} />;
-  }, []);
 
   const handleOnSelectAccount = () => {
     bottomSheetModalRef.current?.present();
@@ -112,16 +100,9 @@ function AccountSelect({
         error={error}
         onSelect={handleOnSelectAccount}
       />
-      <BottomSheetModal
-        ref={bottomSheetModalRef}
-        index={0}
-        snapPoints={snapPoints}
-        backdropComponent={renderBackdrop}
-      >
-        <BottomSheetView style={{ backgroundColor: colors.background, flex: 1, paddingTop: 10 }}>
-          <AccountList isItemSelected={value} isGroup onItemPress={onAccountItemPress} />
-        </BottomSheetView>
-      </BottomSheetModal>
+      <BottomSheet ref={bottomSheetModalRef}>
+        <AccountList isItemSelected={value} isGroup onItemPress={onAccountItemPress} />
+      </BottomSheet>
     </>
   );
 }

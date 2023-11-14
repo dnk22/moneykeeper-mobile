@@ -1,28 +1,49 @@
-import { View } from 'react-native';
-import { SvgIcon, InputField } from 'components/index';
-import styles from '../../styles.common';
+import React, { useMemo, useRef } from 'react';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useFormContext } from 'react-hook-form';
+import { BottomSheet, InputSelection } from 'components/index';
+import Contact from 'features/Contact';
 
 type RelatedPersonSelectProps = {
-  control: any;
   title: string;
 };
 
-function RelatedPersonSelect({ control, title }: RelatedPersonSelectProps) {
+function RelatedPersonSelect({ title }: RelatedPersonSelectProps) {
+  const {
+    control,
+    getValues,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext<any>();
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  const handleOnSelectContact = () => {
+    bottomSheetModalRef.current?.present();
+  };
+
+  const onSelectContact = (name: string) => {
+    console.log(name, 'name');
+    setValue('relatedPerson', name);
+    bottomSheetModalRef.current?.close();
+  };
+
   return (
-    <View style={styles.itemGroup}>
-      <SvgIcon name="people" style={styles.icon} />
-      <View style={styles.groupContent}>
-        <InputField
-          name="relatedPerson"
-          control={control}
-          placeholder={title}
-          style={styles.formInput}
-          maxLength={20}
-          rules={{ require: true }}
-        />
-        {/* <SvgIcon name="location" size={18} style={styles.iconForward} /> */}
-      </View>
-    </View>
+    <>
+      <InputSelection
+        required
+        icon="people"
+        name="relatedPerson"
+        value={watch('relatedPerson')}
+        title={title}
+        control={control}
+        error={errors['relatedPerson']}
+        onSelect={handleOnSelectContact}
+      />
+      <BottomSheet ref={bottomSheetModalRef} snapPoints={['80%']}>
+        <Contact onItemPress={onSelectContact} />
+      </BottomSheet>
+    </>
   );
 }
 export default RelatedPersonSelect;

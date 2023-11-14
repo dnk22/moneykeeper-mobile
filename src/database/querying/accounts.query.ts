@@ -26,6 +26,7 @@ export const getAccounts = async ({ isActive = true, text = '' }: TGetAccounts) 
       return await database
         .get<AccountModel>(ACCOUNTS)
         .query(
+          Q.where('_status', Q.notEq('deleted')),
           Q.where('isActive', isActive),
           Q.where('accountName', Q.like(`%${Q.sanitizeLikeString(text)}%`)),
         )
@@ -38,7 +39,7 @@ export const getAccounts = async ({ isActive = true, text = '' }: TGetAccounts) 
 
 export const queryAccountById = async (id: string) => {
   try {
-    const query = `select * from ${ACCOUNTS} where id='${id}'`;
+    const query = `select * from ${ACCOUNTS} where id='${id}' and _status != 'deleted' `;
     return await database.read(async () => {
       const res = await database
         .get<AccountModel>(ACCOUNTS)
@@ -57,7 +58,7 @@ export const getFirstAccount = async () => {
     return await database.read(async () => {
       return await database
         .get<AccountModel>(ACCOUNTS)
-        .query(Q.where('isActive', true), Q.take(1))
+        .query(Q.where('_status', Q.notEq('deleted')), Q.where('isActive', true), Q.take(1))
         .fetch();
     });
   } catch (error) {
@@ -122,6 +123,6 @@ export const deleteAccount = async (id: string) => {
 
 export const deleteAllAccount = async () => {
   await database.write(async () => {
-    await database.get<AccountModel>(ACCOUNTS).query().destroyAllPermanently();
+    await database.get<AccountModel>(ACCOUNTS).query().markAllAsDeleted();
   });
 };

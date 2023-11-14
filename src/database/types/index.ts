@@ -102,3 +102,8 @@ export type TBank = {
   isSystem: boolean;
   isWallet?: boolean;
 };
+
+export type TContact = {
+  id: string;
+  contactName: string;
+};

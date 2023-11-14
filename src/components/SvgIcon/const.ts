@@ -67,6 +67,8 @@ import checkMark from 'assets/svg/checkMark.svg';
 import exclamationMark from 'assets/svg/exclamationMark.svg';
 import remote from 'assets/svg/remote.svg';
 import more from 'assets/svg/more.svg';
+import contact from 'assets/svg/contact.svg';
+import contactEdit from 'assets/svg/icon-contactEdit.svg';
 
 const icon = {
   add,
@@ -138,6 +140,8 @@ const icon = {
   exclamationMark,
   remote,
   more,
+  contactEdit,
+  contact,
 };
 
 export type IconProps = keyof typeof icon;
