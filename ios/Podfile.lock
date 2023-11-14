@@ -87,32 +87,6 @@ PODS:
     - MMKVCore (~> 1.2.15)
   - MMKVCore (1.2.15)
   - OpenSSL-Universal (1.1.1100)
-  - Permission-AppTrackingTransparency (3.8.0):
-    - RNPermissions
-  - Permission-Calendars (3.8.0):
-    - RNPermissions
-  - Permission-Camera (3.8.0):
-    - RNPermissions
-  - Permission-FaceID (3.8.0):
-    - RNPermissions
-  - Permission-LocationAccuracy (3.8.0):
-    - RNPermissions
-  - Permission-LocationAlways (3.8.0):
-    - RNPermissions
-  - Permission-LocationWhenInUse (3.8.0):
-    - RNPermissions
-  - Permission-Microphone (3.8.0):
-    - RNPermissions
-  - Permission-Notifications (3.8.0):
-    - RNPermissions
-  - Permission-PhotoLibrary (3.8.0):
-    - RNPermissions
-  - Permission-PhotoLibraryAddOnly (3.8.0):
-    - RNPermissions
-  - Permission-Reminders (3.8.0):
-    - RNPermissions
-  - Permission-StoreKit (3.8.0):
-    - RNPermissions
   - RCT-Folly (2021.07.22.00):
     - boost
     - DoubleConversion
@@ -416,6 +390,8 @@ PODS:
     - React-Core
   - react-native-color-picker-ios (0.1.2):
     - React
+  - react-native-contacts (7.0.7):
+    - React-Core
   - react-native-ios-context-menu (1.15.3):
     - React-Core
   - react-native-menu (0.8.0):
@@ -560,7 +536,7 @@ PODS:
     - RNNotifee/NotifeeCore (= 7.8.0)
   - RNNotifee/NotifeeCore (7.8.0):
     - React-Core
-  - RNPermissions (3.8.0):
+  - RNPermissions (3.10.1):
     - React-Core
   - RNReactNativeHapticFeedback (2.0.3):
     - React-Core
@@ -642,19 +618,6 @@ DEPENDENCIES:
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
   - OpenSSL-Universal (= 1.1.1100)
-  - Permission-AppTrackingTransparency (from `../node_modules/react-native-permissions/ios/AppTrackingTransparency`)
-  - Permission-Calendars (from `../node_modules/react-native-permissions/ios/Calendars`)
-  - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera`)
-  - Permission-FaceID (from `../node_modules/react-native-permissions/ios/FaceID`)
-  - Permission-LocationAccuracy (from `../node_modules/react-native-permissions/ios/LocationAccuracy`)
-  - Permission-LocationAlways (from `../node_modules/react-native-permissions/ios/LocationAlways`)
-  - Permission-LocationWhenInUse (from `../node_modules/react-native-permissions/ios/LocationWhenInUse`)
-  - Permission-Microphone (from `../node_modules/react-native-permissions/ios/Microphone`)
-  - Permission-Notifications (from `../node_modules/react-native-permissions/ios/Notifications`)
-  - Permission-PhotoLibrary (from `../node_modules/react-native-permissions/ios/PhotoLibrary`)
-  - Permission-PhotoLibraryAddOnly (from `../node_modules/react-native-permissions/ios/PhotoLibraryAddOnly`)
-  - Permission-Reminders (from `../node_modules/react-native-permissions/ios/Reminders`)
-  - Permission-StoreKit (from `../node_modules/react-native-permissions/ios/StoreKit`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -674,6 +637,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-color-picker-ios (from `../node_modules/react-native-color-picker-ios`)
+  - react-native-contacts (from `../node_modules/react-native-contacts`)
   - react-native-ios-context-menu (from `../node_modules/react-native-ios-context-menu`)
   - "react-native-menu (from `../node_modules/@react-native-menu/menu`)"
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
@@ -748,32 +712,6 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-03-20-RNv0.72.0-49794cfc7c81fb8f69fd60c3bbf85a7480cc5a77
-  Permission-AppTrackingTransparency:
-    :path: "../node_modules/react-native-permissions/ios/AppTrackingTransparency"
-  Permission-Calendars:
-    :path: "../node_modules/react-native-permissions/ios/Calendars"
-  Permission-Camera:
-    :path: "../node_modules/react-native-permissions/ios/Camera"
-  Permission-FaceID:
-    :path: "../node_modules/react-native-permissions/ios/FaceID"
-  Permission-LocationAccuracy:
-    :path: "../node_modules/react-native-permissions/ios/LocationAccuracy"
-  Permission-LocationAlways:
-    :path: "../node_modules/react-native-permissions/ios/LocationAlways"
-  Permission-LocationWhenInUse:
-    :path: "../node_modules/react-native-permissions/ios/LocationWhenInUse"
-  Permission-Microphone:
-    :path: "../node_modules/react-native-permissions/ios/Microphone"
-  Permission-Notifications:
-    :path: "../node_modules/react-native-permissions/ios/Notifications"
-  Permission-PhotoLibrary:
-    :path: "../node_modules/react-native-permissions/ios/PhotoLibrary"
-  Permission-PhotoLibraryAddOnly:
-    :path: "../node_modules/react-native-permissions/ios/PhotoLibraryAddOnly"
-  Permission-Reminders:
-    :path: "../node_modules/react-native-permissions/ios/Reminders"
-  Permission-StoreKit:
-    :path: "../node_modules/react-native-permissions/ios/StoreKit"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -808,6 +746,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/blur"
   react-native-color-picker-ios:
     :path: "../node_modules/react-native-color-picker-ios"
+  react-native-contacts:
+    :path: "../node_modules/react-native-contacts"
   react-native-ios-context-menu:
     :path: "../node_modules/react-native-ios-context-menu"
   react-native-menu:
@@ -905,19 +845,6 @@ SPEC CHECKSUMS:
   MMKV: 7f34558bbb5a33b0eaefae2de4b6a20a2ffdad6f
   MMKVCore: ddf41b9d9262f058419f9ba7598719af56c02cd3
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
-  Permission-AppTrackingTransparency: 7a48e816f801d10f2402c5b4edbe620ad8a412d9
-  Permission-Calendars: cd50284b7a311813fb893a488bad61771e6cb494
-  Permission-Camera: e6d142d7d8b714afe0a83e5e6ae17eb949f1e3e9
-  Permission-FaceID: 257965cb6ba2dc098cd485642df13e8ee6e281ef
-  Permission-LocationAccuracy: d6aa5146c084e7077e7efc4cbb543c7f6c72c51a
-  Permission-LocationAlways: e7ce67f3091ec096b6ac274bc30a18830a66b33c
-  Permission-LocationWhenInUse: 1c80e4797ae587642a83125e80b86686cefeba53
-  Permission-Microphone: 644b1de8bcc2afcaf934e09a22bee507a95796a7
-  Permission-Notifications: aa91ec29236626ff59cb60e08389c0a59a9d32c5
-  Permission-PhotoLibrary: 31787bbe77d0d3ae6a5267b8435e4a2e9ef78f1d
-  Permission-PhotoLibraryAddOnly: 16c92ad62b802514f3f788e00b298080be996337
-  Permission-Reminders: be7699ff02c2ef670647204c0f759258cdfad07c
-  Permission-StoreKit: df32d0883219ddb237d673eed9165734203bfecc
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: c52ee8fb2b35c1b54031dd8e92d88ad4dba8f2ce
   RCTTypeSafety: 75fa444becadf0ebfa0a456b8c64560c7c89c7df
@@ -935,6 +862,7 @@ SPEC CHECKSUMS:
   React-logger: b8103c9b04e707b50cdd2b1aeb382483900cbb37
   react-native-blur: cfdad7b3c01d725ab62a8a729f42ea463998afa2
   react-native-color-picker-ios: 2e23dbcbfd3506c7560632c58b7e130b6015fbeb
+  react-native-contacts: 61971364bf9f11a846587eeb736a4e65632815d4
   react-native-ios-context-menu: e529171ba760a1af7f2ef0729f5a7f4d226171c5
   react-native-menu: 5b9b82dabcc779cebde15d292ccbcba4469ff311
   react-native-mmkv: 725623a679fec884bf18a37400e753afb8a1b924
@@ -964,7 +892,7 @@ SPEC CHECKSUMS:
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNGestureHandler: dec4645026e7401a0899f2846d864403478ff6a5
   RNNotifee: f3c01b391dd8e98e67f539f9a35a9cbcd3bae744
-  RNPermissions: 215c54462104b3925b412b0fb3c9c497b21c358b
+  RNPermissions: a5f810927be28902eaa35e47d665a30c52912809
   RNReactNativeHapticFeedback: afa5bf2794aecbb2dba2525329253da0d66656df
   RNReanimated: 9f7068e43b9358a46a688d94a5a3adb258139457
   RNScreens: 68fd1060f57dd1023880bf4c05d74784b5392789
@@ -977,6 +905,6 @@ SPEC CHECKSUMS:
   Yoga: 65286bb6a07edce5e4fe8c90774da977ae8fc009
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 6dc20580ba1990e48d46f1531b8011f5c10a9b3a
+PODFILE CHECKSUM: e9148c40ea7966594768bf73251d5332a639d75c
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.14.2

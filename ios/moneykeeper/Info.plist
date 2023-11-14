@@ -35,8 +35,8 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSCalendarsUsageDescription</key>
-	<string></string>
+  	<key>NSContactsUsageDescription</key>
+  	<string>Giúp bạn nhập được tên từ danh bạ của bạn</string>
 	<key>NSCameraUsageDescription</key>
 	<string></string>
 	<key>NSFaceIDUsageDescription</key>
@@ -47,15 +47,11 @@
 	<string></string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string></string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string></string>
 	<key>NSRemindersUsageDescription</key>
-	<string></string>
-	<key>NSUserTrackingUsageDescription</key>
 	<string></string>
 	<key>UIBackgroundModes</key>
 	<array>
