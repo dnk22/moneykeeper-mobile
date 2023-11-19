@@ -64,7 +64,7 @@ function Selected({
                 style={{
                   maxWidth: '90%',
                   fontWeight: isError ? 'bold' : '500',
-                  opacity: value ? 1 : 0.5,
+                  opacity: value || isError ? 1 : 0.6,
                 }}
                 numberOfLines={1}
                 color={isError ? 'red' : ''}

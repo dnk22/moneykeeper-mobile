@@ -1,4 +1,3 @@
-import { SCREEN_HEIGHT, normalize } from 'share/dimensions';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -16,16 +15,14 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 60,
     textAlign: 'right',
-    fontSize: 32,
+    fontSize: 40,
     fontWeight: '500',
     borderBottomWidth: 1,
-    borderColor: 'rgb(242,242,242)',
   },
   amountLabel: {
     textAlign: 'right',
   },
   currency: {
-    fontSize: 24,
     marginLeft: 5,
   },
   calcRow: {

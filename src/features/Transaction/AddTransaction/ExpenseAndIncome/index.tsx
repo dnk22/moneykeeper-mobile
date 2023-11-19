@@ -7,7 +7,6 @@ import {
   RNText,
   SvgIcon,
   SwitchField,
-  InputCalculator,
   FormAction,
 } from 'components/index';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -21,7 +20,6 @@ import {
   TRANSACTION_CATEGORY_LIST,
 } from 'navigation/constants';
 import { TransactionParamListProps } from 'navigation/types';
-import { deleteTransactionById } from 'database/querying';
 import { ButtonText } from 'navigation/elements';
 import { isEqual, isObject, size } from 'lodash';
 import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constant';
@@ -33,9 +31,11 @@ import MoreDetail from '../common/MoreDetail';
 import AccountSelect from '../common/AccountSelect';
 import RelatedPersonSelect from '../common/RelatedPersonSelect';
 import Fee from '../common/Fee';
+import InputCalculator from '../common/InputCalculator';
 import { AddTransactionType } from '../type';
 import { TransactionContext, defaultValues } from '../constant';
 import styles from '../styles.common';
+import { deleteTransactionById } from 'database/querying';
 
 function ExpenseAndIncome({ params }: AddTransactionType) {
   const { colors } = useCustomTheme();

@@ -13,7 +13,6 @@ import PressableHaptic from 'components/PressableHaptic';
 import ContextMenu from 'components/ContextMenu';
 import SwipeableComponent from 'components/SwipeableComponent';
 import DateTimeModalPicker from 'components/DateTimeModalPicker';
-import InputCalculator from 'components/InputCalculator';
 import Loading from 'components/Loading';
 import StatusBar from 'components/StatusBar';
 import InputSelection from 'components/InputSelection';
@@ -43,7 +42,6 @@ export {
   SwipeableComponent,
   SvgIcon,
   DateTimeModalPicker,
-  InputCalculator,
   Loading,
   StatusBar,
   InputSelection,

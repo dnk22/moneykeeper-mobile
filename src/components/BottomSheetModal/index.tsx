@@ -11,27 +11,30 @@ type BottomSheetProps = {
   ref: any;
   children: React.ReactElement;
   snapPoints?: string[];
+  index?: number;
 };
 
-const BottomSheet = forwardRef(({ children, snapPoints }: BottomSheetProps, ref: any) => {
-  const { colors } = useCustomTheme();
-  const snapPointsInit = useMemo(() => ['50%', '70%', '90%'], []);
+const BottomSheet = forwardRef(
+  ({ children, snapPoints, index = 0 }: BottomSheetProps, ref: any) => {
+    const { colors } = useCustomTheme();
+    const snapPointsInit = useMemo(() => ['50%', '70%', '90%'], []);
 
-  const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {
-    return <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} />;
-  }, []);
+    const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {
+      return <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} />;
+    }, []);
 
-  return (
-    <BottomSheetModal
-      ref={ref}
-      index={0}
-      snapPoints={snapPoints || snapPointsInit}
-      backdropComponent={renderBackdrop}
-    >
-      <BottomSheetView style={{ backgroundColor: colors.background, flex: 1, paddingTop: 10 }}>
-        {children}
-      </BottomSheetView>
-    </BottomSheetModal>
-  );
-});
+    return (
+      <BottomSheetModal
+        ref={ref}
+        index={index}
+        snapPoints={snapPoints || snapPointsInit}
+        backdropComponent={renderBackdrop}
+      >
+        <BottomSheetView style={{ backgroundColor: colors.background, flex: 1, paddingTop: 10 }}>
+          {children}
+        </BottomSheetView>
+      </BottomSheetModal>
+    );
+  },
+);
 export default BottomSheet;

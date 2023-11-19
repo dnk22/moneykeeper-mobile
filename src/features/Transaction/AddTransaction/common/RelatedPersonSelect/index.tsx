@@ -1,8 +1,9 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useFormContext } from 'react-hook-form';
 import { BottomSheet, InputSelection } from 'components/index';
 import Contact from 'features/Contact';
+import { TransactionContext } from '../../constant';
 
 type RelatedPersonSelectProps = {
   title: string;
@@ -16,6 +17,7 @@ function RelatedPersonSelect({ title }: RelatedPersonSelectProps) {
     watch,
     formState: { errors },
   } = useFormContext<any>();
+  const { lendBorrowData } = useContext(TransactionContext);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const handleOnSelectContact = () => {
@@ -23,10 +25,22 @@ function RelatedPersonSelect({ title }: RelatedPersonSelectProps) {
   };
 
   const onSelectContact = (name: string) => {
-    console.log(name, 'name');
     setValue('relatedPerson', name);
     bottomSheetModalRef.current?.close();
   };
+
+  useEffect(() => {
+    const noteText = getValues('descriptions') ? getValues('descriptions').split(':') : '';
+    if (
+      (!getValues('descriptions') && getValues('relatedPerson')) ||
+      Object.values(lendBorrowData).includes(noteText[0].trim())
+    ) {
+      setValue(
+        'descriptions',
+        `${lendBorrowData[getValues('categoryId')]} : ${getValues('relatedPerson')}`,
+      );
+    }
+  }, [getValues('categoryId'), getValues('relatedPerson')]);
 
   return (
     <>
@@ -40,8 +54,8 @@ function RelatedPersonSelect({ title }: RelatedPersonSelectProps) {
         error={errors['relatedPerson']}
         onSelect={handleOnSelectContact}
       />
-      <BottomSheet ref={bottomSheetModalRef} snapPoints={['80%']}>
-        <Contact onItemPress={onSelectContact} />
+      <BottomSheet ref={bottomSheetModalRef} index={1}>
+        <Contact onItemPress={onSelectContact} readOnly />
       </BottomSheet>
     </>
   );

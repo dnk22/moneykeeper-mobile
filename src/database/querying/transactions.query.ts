@@ -59,14 +59,14 @@ export const getTransactionLisGroupByDate = async ({ accountId }: GetTransaction
 };
 
 export const queryTransactionById = async (id: string) => {
-  try {
-    return await database.read(async () => {
-      const res = database.get<TransactionModel>(TRANSACTIONS).find(id);
-      return res;
-    });
-  } catch (error) {
-    console.log(error, 'read queryTransactionById err');
-  }
+  const query = `select * from ${TRANSACTIONS} where id='${id}' and _status != 'deleted'`;
+  return await database.read(async () => {
+    const res = await database
+      .get<TransactionModel>(TRANSACTIONS)
+      .query(Q.unsafeSqlQuery(query))
+      .unsafeFetchRaw();
+    return res[0] || {};
+  });
 };
 
 /** create */
@@ -116,7 +116,7 @@ export const queryUpdateTransaction = async ({ id, data }: { id: string; data: T
 };
 /** delete */
 
-export const deleteTransactionById = async (id: string) => {
+export const queryDeleteTransactionById = async (id: string) => {
   try {
     return await database.write(async () => {
       const res = await database.get<TransactionModel>(TRANSACTIONS).find(id);

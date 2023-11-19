@@ -23,7 +23,8 @@ import styles from './styles';
 
 function AddTransactions() {
   const { colors } = useCustomTheme();
-  const navigation = useNavigation<any>();
+  const navigation =
+    useNavigation<TransactionParamListProps<typeof ADD_TRANSACTION>['navigation']>();
   const { params } = useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
   const [lendBorrowData, setLendBorrowData] = useState<any>({});
 
@@ -36,16 +37,6 @@ function AddTransactions() {
   });
 
   const { getValues, setValue, watch, reset } = transactionForm;
-
-  useEffect(() => {
-    getLendBorrowCategory().then((res: any[]) => {
-      const data = res.reduce((accumulator, currentValue) => {
-        accumulator[currentValue.id] = currentValue.categoryName;
-        return accumulator;
-      }, {});
-      setLendBorrowData(data);
-    });
-  }, []);
 
   // Use `setOptions` to update the transaction type select in header
   useEffect(() => {
@@ -60,6 +51,16 @@ function AddTransactions() {
       ),
     });
   }, [watch('categoryId'), watch('transactionType'), lendBorrowData]);
+
+  useEffect(() => {
+    getLendBorrowCategory().then((res: any[]) => {
+      const data = res.reduce((accumulator, currentValue) => {
+        accumulator[currentValue.id] = currentValue.categoryName;
+        return accumulator;
+      }, {});
+      setLendBorrowData(data);
+    });
+  }, []);
 
   // set default account when mode = add & accountId = null
   useFocusEffect(

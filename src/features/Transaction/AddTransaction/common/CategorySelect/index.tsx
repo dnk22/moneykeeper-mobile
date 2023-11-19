@@ -31,7 +31,7 @@ function CategorySelect({ onPress }: CategorySelectProps) {
     try {
       getTransactionCategoryByID(getValues('categoryId')).then((res) => {
         // if data no change , don't setState
-        if (!isEqual(res.id, categorySelected?.id)) {
+        if (!isEqual(res, categorySelected)) {
           setCategorySelected(res);
           setValue('transactionType', res.categoryType);
         }

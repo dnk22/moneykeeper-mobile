@@ -69,7 +69,7 @@ function NormalItem({
   const onOk = () => {
     deleteContact(item.id).then((res) => {
       if (res.success) {
-        onEditSuccess;
+        onEditSuccess();
       }
     });
   };

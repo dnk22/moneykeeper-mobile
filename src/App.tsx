@@ -9,7 +9,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { Loading, StatusBar } from 'components/index';
 
 import RnKeyboard from 'rn-keyboard'; // <-- Import here
-import KeyboardCalculator from 'components/InputCalculator/KeyboardCalculator';
+import KeyboardCalculator from 'features/Transaction/AddTransaction/common/InputCalculator/KeyboardCalculator';
 import {
   getIsBankDataExist,
   getIsTransactionCategoryDataExist,

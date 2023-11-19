@@ -166,7 +166,9 @@ function InputCalculator({
 
   return (
     <View style={[styles.group, { backgroundColor: colors.surface }]}>
-      <RNText style={styles.amountLabel}>{text}</RNText>
+      <RNText style={styles.amountLabel} fontSize={15}>
+        {text}
+      </RNText>
       <View style={styles.inputGroup}>
         {/* <RnKeyboard.Input
           selectTextOnFocus
@@ -183,11 +185,15 @@ function InputCalculator({
           allowFontScaling={false}
           keyboardType="decimal-pad"
           value={value.toString()}
-          style={[styles.amountInput, { color: inputTextColor }]}
+          style={[styles.amountInput, { color: inputTextColor, borderColor: colors.divider }]}
           onChangeText={onHandleInputChange}
           onBlur={handleOnBlurInput}
         />
-        {isShowPrefix && <RNText style={styles.currency}>₫</RNText>}
+        {isShowPrefix && (
+          <RNText style={styles.currency} fontSize={22}>
+            ₫
+          </RNText>
+        )}
       </View>
     </View>
   );

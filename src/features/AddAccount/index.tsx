@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Pressable, View } from 'react-native';
 import {
-  InputCalculator,
   InputField,
   RNText,
   SvgIcon,
@@ -24,6 +23,7 @@ import Notifications from './Notifications';
 import { deleteAccountById, getAccountById, updateAccountDB } from 'services/api/accounts';
 import { ADD_ACCOUNT } from 'navigation/constants';
 import { AccountType } from 'utils/data';
+import InputCalculator from 'features/Transaction/AddTransaction/common/InputCalculator';
 import styles from './styles';
 
 const defaultValues = {

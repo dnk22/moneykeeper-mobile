@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   listContainer: {
     borderRadius: 5,
     flex: 1,
-    paddingBottom: 40,
+    marginBottom: 40,
   },
 });
 export default styles;

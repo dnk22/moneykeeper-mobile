@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   itemGroup: {
-    height: 50,
+    height: 55,
     flexDirection: 'row',
     alignItems: 'center',
   },

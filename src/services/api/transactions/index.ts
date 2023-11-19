@@ -1,9 +1,6 @@
-import { Q } from '@nozbe/watermelondb';
-import { TRANSACTIONS } from 'database/constants';
-import { database } from 'database/index';
-import { TransactionModel } from 'database/models';
 import {
   queryAddNewTransaction,
+  queryDeleteTransactionById,
   queryTransactionById,
   queryUpdateTransaction,
   queryUpdateUseCountTransactionCategory,
@@ -22,22 +19,32 @@ export const updateTransaction = async ({ id, data }: { id?: string; data: TTran
     }
     return true;
   } catch (error) {
-    return false;
+    return {
+      success: false,
+      error,
+    };
   }
 };
 
 export const getTransactionById = async (id: string) => {
   try {
-    const query = `select * from ${TRANSACTIONS} where id='${id}' and _status != 'deleted'`;
-    return await database.read(async () => {
-      const res = await database
-        .get<TransactionModel>(TRANSACTIONS)
-        .query(Q.unsafeSqlQuery(query))
-        .unsafeFetchRaw();
-      return res[0] || {};
-    });
+    return await queryTransactionById(id);
   } catch (error) {
     console.log(error, 'fetch getTransactionById err');
-    return null;
+    return {
+      success: false,
+      error: 'Có lỗi, vui lòng thử lại.',
+    };
+  }
+};
+export const deleteTransactionById = async (id: string) => {
+  try {
+    return await queryDeleteTransactionById(id);
+  } catch (error) {
+    console.log(error, 'deleteTransactionById err');
+    return {
+      success: false,
+      error: 'Có lỗi, vui lòng thử lại.',
+    };
   }
 };

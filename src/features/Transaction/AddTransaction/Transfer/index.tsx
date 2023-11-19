@@ -7,7 +7,6 @@ import {
   RNText,
   SvgIcon,
   SwitchField,
-  InputCalculator,
   FormAction,
 } from 'components/index';
 import { useNavigation } from '@react-navigation/native';
@@ -20,6 +19,7 @@ import AccountSelect from '../common/AccountSelect';
 import Fee from '../common/Fee';
 import DateTimeSelect from '../common/DateTimeSelect';
 import { useFormContext } from 'react-hook-form';
+import InputCalculator from '../common/InputCalculator';
 
 function Transfer({ params }: AddTransactionType) {
   const { colors } = useCustomTheme();

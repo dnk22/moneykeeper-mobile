@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, View } from 'react-native';
 import { isEqual } from 'lodash';
 import { InputSelection, BottomSheet } from 'components/index';
 import AccountList from 'features/AccountList';

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { size } from 'lodash';
+import { debounce, size } from 'lodash';
 import Contacts from 'react-native-contacts';
 import {
   FlatListComponent,
@@ -18,12 +18,19 @@ import NormalItem from './Item';
 import ContactItem from './ContactItem';
 import styles from './styles';
 
-function Contact({ onItemPress }: { onItemPress: (name: string) => void }) {
+function Contact({
+  onItemPress,
+  readOnly = false,
+}: {
+  onItemPress: (name: string) => void;
+  readOnly?: boolean;
+}) {
   const { colors } = useCustomTheme();
   const [searchText, setSearchText] = useState('');
   const [isContactMode, setContactMode] = useState(false);
   const [isInputFocus, setInputFocus] = useState(false);
   const [contactData, setContactData] = useState([]);
+  const [contactDataFromDevice, setContactDataFromDevice] = useState([]);
 
   const getContacts = (text?: string) => {
     getAllContact(text).then((res) => {
@@ -32,6 +39,9 @@ function Contact({ onItemPress }: { onItemPress: (name: string) => void }) {
   };
 
   const getContactFromDevice = (text: string) => {
+    if (size(contactDataFromDevice)) {
+      return;
+    }
     Contacts.checkPermission().then((res) => {
       switch (res) {
         case 'denied':
@@ -44,7 +54,7 @@ function Contact({ onItemPress }: { onItemPress: (name: string) => void }) {
                 id: item.recordID,
                 contactName: `${item.familyName} ${item.givenName}`,
               }));
-              setContactData(contactConvert);
+              setContactDataFromDevice(contactConvert);
             });
             break;
           }
@@ -53,7 +63,7 @@ function Contact({ onItemPress }: { onItemPress: (name: string) => void }) {
               id: item.recordID,
               contactName: item.familyName + item.givenName,
             }));
-            setContactData(contactConvert);
+            setContactDataFromDevice(contactConvert);
           });
           break;
         default:
@@ -63,9 +73,9 @@ function Contact({ onItemPress }: { onItemPress: (name: string) => void }) {
     });
   };
 
-  const onSearch = (text: string) => {
+  const onSearch = debounce((text: string) => {
     setSearchText(text);
-  };
+  }, 100);
 
   const onAddNewContact = (contactName?: string) => {
     addNewContact(contactName || searchText).then((res) => {
@@ -78,7 +88,7 @@ function Contact({ onItemPress }: { onItemPress: (name: string) => void }) {
   const renderContactItem = ({ item }: { item: TContact }) => {
     return (
       <>
-        {isContactMode ? (
+        {isContactMode || readOnly ? (
           <ContactItem colors={colors} item={item} onItemPress={onAddNewContact} />
         ) : (
           <NormalItem
@@ -99,6 +109,8 @@ function Contact({ onItemPress }: { onItemPress: (name: string) => void }) {
       getContacts(searchText);
     }
   }, [searchText, isContactMode]);
+
+  const data = isContactMode ? contactDataFromDevice : contactData;
 
   return (
     <View style={styles.container}>
@@ -128,7 +140,7 @@ function Contact({ onItemPress }: { onItemPress: (name: string) => void }) {
         </TouchableHighlightComponent>
       )}
       <View style={[styles.listContainer, { backgroundColor: colors.surface }]}>
-        <FlatListComponent data={contactData} renderItem={renderContactItem} />
+        <FlatListComponent data={data} renderItem={renderContactItem} />
       </View>
     </View>
   );
