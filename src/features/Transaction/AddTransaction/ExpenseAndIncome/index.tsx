@@ -2,13 +2,7 @@ import { useContext, useEffect } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions, TTransactionsCategory } from 'database/types';
-import {
-  InputField,
-  RNText,
-  SvgIcon,
-  SwitchField,
-  FormAction,
-} from 'components/index';
+import { InputField, RNText, SvgIcon, SwitchField, FormAction } from 'components/index';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import {
   ADD_TRANSACTION,
@@ -123,7 +117,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
       id: params?.transactionId,
       data: requestData,
     }).then((res) => {
-      if (res) {
+      if (res.success) {
         // reset form state
         reset({
           ...defaultValues,
@@ -159,14 +153,14 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
           />
         )}
         <View style={styles.itemGroup}>
-          <SvgIcon name="textWord" style={styles.icon} />
+          <SvgIcon name="textWord" style={styles.iconShadow} />
           <View style={styles.groupContent}>
             <InputField
               name="descriptions"
               control={control}
               placeholder="Chi tiết"
               style={styles.formInput}
-              maxLength={100}
+              maxLength={50}
             />
           </View>
         </View>
@@ -184,7 +178,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
           {!renderIfLendBorrow() && (
             <>
               <View style={styles.itemGroup}>
-                <SvgIcon name="people" style={styles.icon} />
+                <SvgIcon name="people" style={styles.iconShadow} />
                 <View style={styles.groupContent}>
                   <InputField
                     name={watch('transactionType') === TRANSACTION_TYPE.EXPENSE ? 'giver' : 'payee'}
@@ -200,7 +194,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
                 </View>
               </View>
               <View style={styles.itemGroup}>
-                <SvgIcon name="camp" style={styles.icon} />
+                <SvgIcon name="camp" style={styles.iconShadow} />
                 <View style={styles.groupContent}>
                   <InputField
                     name="eventName"
@@ -214,7 +208,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
             </>
           )}
           <View style={styles.itemGroup}>
-            <SvgIcon name="map" style={styles.icon} />
+            <SvgIcon name="map" style={styles.iconShadow} />
             <View style={styles.groupContent}>
               <InputField
                 name="location"

@@ -12,12 +12,11 @@ export const updateTransaction = async ({ id, data }: { id?: string; data: TTran
     if (!id) {
       const res = await queryAddNewTransaction(data);
       if (res.success) {
-        await queryUpdateUseCountTransactionCategory(data.categoryId);
+        return await queryUpdateUseCountTransactionCategory(data.categoryId);
       }
     } else {
-      await queryUpdateTransaction({ id, data });
+      return await queryUpdateTransaction({ id, data });
     }
-    return true;
   } catch (error) {
     return {
       success: false,

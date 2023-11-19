@@ -3,7 +3,7 @@ import { Alert, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { TRANSACTION_TYPE } from 'utils/constant';
+import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constant';
 import ExpenseAndIncome from './ExpenseAndIncome';
 import { TransactionParamListProps } from 'navigation/types';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -104,6 +104,15 @@ function AddTransactions() {
 
   const handleOnChangeTransactionType = async (item: TTransactionType) => {
     setValue('transactionType', item.value);
+    setValue('descriptions', '');
+    setValue('toAccountId', '');
+    if (
+      ![TRANSACTION_LEND_BORROW_NAME.BORROW, TRANSACTION_LEND_BORROW_NAME.LEND].includes(
+        item.name,
+      )
+    ) {
+      setValue('relatedPerson', '');
+    }
     // handle Change TransactionCategory By Type
     let categoryId = '';
     if (item?.categoryType) {

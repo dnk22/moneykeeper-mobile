@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import {
   RNText,
@@ -27,6 +27,7 @@ function SelectTransactionType({
   currentType,
   onItemPress,
 }: SelectTransactionTypeProps) {
+  const prevActive = useRef(0);
   const [isActive, setIsActive] = useState<any>(0);
   const [isShowTransactionTypeModal, setIsShowTransactionTypeModal] = useState(false);
 
@@ -50,8 +51,11 @@ function SelectTransactionType({
 
   function renderItem({ item }: { item: TTransactionType }) {
     const onHandleTransactionTypeItemPress = () => {
-      setIsActive(item.id);
-      onItemPress(item);
+      if (+prevActive.current !== +item.id) {
+        prevActive.current = +item.id;
+        setIsActive(item.id);
+        onItemPress(item);
+      }
       onToggleTransactionTypeModal();
     };
 

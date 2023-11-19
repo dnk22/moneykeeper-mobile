@@ -30,7 +30,7 @@ function RelatedPersonSelect({ title }: RelatedPersonSelectProps) {
   };
 
   useEffect(() => {
-    const noteText = getValues('descriptions') ? getValues('descriptions').split(':') : '';
+    const noteText = getValues('descriptions') ? getValues('descriptions').split(':') : [''];
     if (
       (!getValues('descriptions') && getValues('relatedPerson')) ||
       Object.values(lendBorrowData).includes(noteText[0].trim())

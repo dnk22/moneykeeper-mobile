@@ -23,7 +23,7 @@ function RNText({
   t18n,
   t18nOptions,
   color,
-  fontSize = 14,
+  fontSize = 16,
   style,
   preset = 'default',
   numberOfLines = 1,

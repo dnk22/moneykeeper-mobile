@@ -76,22 +76,14 @@ export const queryTransactionById = async (id: string) => {
  * add new transaction , if success then update useCount in transaction category
  */
 export const queryAddNewTransaction = async (transaction: TTransactions) => {
-  try {
-    return await database.write(async () => {
-      database.get<TransactionModel>(TRANSACTIONS).create((item) => {
-        Object.assign(item, transaction);
-      });
-      return {
-        success: true,
-      };
+  return await database.write(async () => {
+    database.get<TransactionModel>(TRANSACTIONS).create((item) => {
+      Object.assign(item, transaction);
     });
-  } catch (error) {
-    console.log(error, 'queryAddNewTransaction error');
     return {
       success: true,
-      error,
     };
-  }
+  });
 };
 /** update */
 /**

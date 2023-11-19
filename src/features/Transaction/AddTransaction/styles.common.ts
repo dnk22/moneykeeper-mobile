@@ -32,8 +32,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 10,
   },
-  icon: {
-    opacity: 0.6,
+  iconShadow: {
+    color: '#adb5bd',
   },
   iconForward: {
     position: 'absolute',
@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
   },
   formInput: {
     height: 50,
-    fontSize: 20,
     width: '100%',
   },
 });

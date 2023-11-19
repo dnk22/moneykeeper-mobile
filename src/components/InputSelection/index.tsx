@@ -51,7 +51,7 @@ function Selected({
             )}
             {value && !required ? (
               <View style={styles.value}>
-                <RNText fontSize={16} numberOfLines={1} style={{ maxWidth: '90%' }}>
+                <RNText numberOfLines={1} style={{ maxWidth: '90%' }}>
                   {value}
                 </RNText>
                 <Pressable onPress={onDelete}>
@@ -60,7 +60,6 @@ function Selected({
               </View>
             ) : (
               <RNText
-                fontSize={16}
                 style={{
                   maxWidth: '90%',
                   fontWeight: isError ? 'bold' : '500',
