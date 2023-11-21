@@ -9,15 +9,15 @@ import {
 } from 'database/querying';
 import { TAccount } from 'database/types';
 
-export function fetchAccountData(isActive: boolean) {
-  return getActiveAccountObserve(isActive);
+export function fetchAccountData(isActive: boolean, exclude?: string) {
+  return getActiveAccountObserve(isActive, exclude);
 }
 export async function getAccountsData(query: TGetAccounts) {
   return getAccounts(query);
 }
 export async function updateAccountDB({ id, data }: { id?: string; data: TAccount }) {
   if (id) {
-    delete data.id
+    delete data.id;
     updateAccount({ id, account: data });
   } else {
     addAccount(data);

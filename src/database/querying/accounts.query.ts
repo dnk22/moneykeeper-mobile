@@ -7,20 +7,27 @@ import { Q } from '@nozbe/watermelondb';
 export type TGetAccounts = {
   isActive?: boolean;
   text: string;
+  exclude?: string;
 };
 
 /** OBSERVE  */
-export const getActiveAccountObserve = (isActive: boolean) =>
+export const getActiveAccountObserve = (isActive: boolean, exclude?: string) =>
   database
     .get<AccountModel>(ACCOUNTS)
-    .query(Q.and(Q.where('_status', Q.notEq('deleted')), Q.where('isActive', isActive)))
+    .query(
+      Q.and(
+        Q.where('_status', Q.notEq('deleted')),
+        Q.where('id', Q.notEq(exclude || '')),
+        Q.where('isActive', isActive),
+      ),
+    )
     .observe();
 
 export const getAccountCountObserve = (isActive: boolean) =>
   database.get<AccountModel>(ACCOUNTS).query(Q.where('isActive', isActive)).observeCount();
 
 /** READ */
-export const getAccounts = async ({ isActive = true, text = '' }: TGetAccounts) => {
+export const getAccounts = async ({ isActive = true, text = '', exclude }: TGetAccounts) => {
   try {
     return await database.read(async () => {
       return await database
@@ -29,6 +36,7 @@ export const getAccounts = async ({ isActive = true, text = '' }: TGetAccounts) 
           Q.where('_status', Q.notEq('deleted')),
           Q.where('isActive', isActive),
           Q.where('accountName', Q.like(`%${Q.sanitizeLikeString(text)}%`)),
+          Q.where('id', Q.notEq(exclude || '')),
         )
         .fetch();
     });

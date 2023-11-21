@@ -1,25 +1,19 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
-import {
-  InputField,
-  RNText,
-  SvgIcon,
-  SwitchField,
-  FormAction,
-} from 'components/index';
+import { InputField, RNText, SvgIcon, SwitchField, FormAction } from 'components/index';
+import { useFormContext } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
-import { deleteTransactionById } from 'database/querying';
 import { ButtonText } from 'navigation/elements';
+import { deleteTransactionById } from 'services/api/transactions';
 import MoreDetail from '../common/MoreDetail';
-import styles from '../styles.common';
 import { AddTransactionType } from '../type';
 import AccountSelect from '../common/AccountSelect';
 import Fee from '../common/Fee';
 import DateTimeSelect from '../common/DateTimeSelect';
-import { useFormContext } from 'react-hook-form';
 import InputCalculator from '../common/InputCalculator';
+import styles from '../styles.common';
 
 function Transfer({ params }: AddTransactionType) {
   const { colors } = useCustomTheme();
@@ -42,7 +36,10 @@ function Transfer({ params }: AddTransactionType) {
   const resetAccount = () => {
     setValue('accountId', '');
   };
-  /** start account function */
+
+  const resetToAccount = () => {
+    setValue('toAccountId', '');
+  };
 
   const handleOnDateTimePicker = (date: Date) => {
     setValue('dateTimeAt', date);
@@ -60,6 +57,7 @@ function Transfer({ params }: AddTransactionType) {
       amount: +data.amount,
       fee: +data?.fee,
     };
+    console.log(requestData, 'requestData');
   };
 
   const handleOnClearFee = () => {
@@ -77,20 +75,24 @@ function Transfer({ params }: AddTransactionType) {
           title="Từ tài khoản"
           onReset={resetAccount}
           setValue={setValue}
+          isShowSubTitle
         />
         <AccountSelect
+          isShowSubTitle
           name="toAccountId"
           value={watch('toAccountId')}
           control={control}
           error={errors.toAccountId}
           title="Tới tài khoản"
-          onReset={resetAccount}
+          onReset={resetToAccount}
           setValue={setValue}
+          exclude={watch('accountId')}
         />
+        <DateTimeSelect values={watch('dateTimeAt')} onChangeDate={handleOnDateTimePicker} />
       </View>
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
         <View style={styles.itemGroup}>
-          <SvgIcon name="textWord" style={styles.icon} />
+          <SvgIcon name="textWord" style={styles.iconShadow} />
           <View style={styles.groupContent}>
             <InputField
               name="descriptions"
@@ -102,7 +104,7 @@ function Transfer({ params }: AddTransactionType) {
           </View>
         </View>
         <View style={styles.itemGroup}>
-          <SvgIcon name="map" style={styles.icon} />
+          <SvgIcon name="map" style={styles.iconShadow} />
           <View style={styles.groupContent}>
             <InputField
               name="location"
@@ -114,7 +116,6 @@ function Transfer({ params }: AddTransactionType) {
             <SvgIcon name="location" size={18} style={styles.iconForward} />
           </View>
         </View>
-        <DateTimeSelect values={watch('dateTimeAt')} onChangeDate={handleOnDateTimePicker} />
       </View>
       <MoreDetail>
         <Fee onClose={handleOnClearFee}>

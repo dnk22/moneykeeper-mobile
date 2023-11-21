@@ -22,6 +22,7 @@ type AccountSelectProps = {
   setValue: any;
   title?: string;
   isShowSubTitle?: boolean;
+  exclude?: string;
 };
 
 function AccountSelect({
@@ -33,6 +34,7 @@ function AccountSelect({
   setValue,
   title = 'Chọn tài khoản',
   isShowSubTitle,
+  exclude,
 }: AccountSelectProps) {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const [accountSelected, setAccountSelected] = useState<AccountProp | undefined>(undefined);
@@ -82,7 +84,7 @@ function AccountSelect({
   };
 
   const onAccountItemPress = (account: TAccount) => {
-    setValue('accountId', account.id);
+    setValue(name, account.id);
     bottomSheetModalRef.current?.dismiss();
   };
 
@@ -101,7 +103,7 @@ function AccountSelect({
         onSelect={handleOnSelectAccount}
       />
       <BottomSheet ref={bottomSheetModalRef}>
-        <AccountList isItemSelected={value} isGroup onItemPress={onAccountItemPress} />
+        <AccountList exclude={exclude} isItemSelected={value} isGroup onItemPress={onAccountItemPress} />
       </BottomSheet>
     </>
   );

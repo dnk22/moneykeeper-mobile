@@ -4,7 +4,7 @@ import { SCREEN_WIDTH } from 'share/dimensions';
 const styles = StyleSheet.create({
   transactionTypePicker: {
     height: 35,
-    width: SCREEN_WIDTH / 3,
+    width: SCREEN_WIDTH / 2.5,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,

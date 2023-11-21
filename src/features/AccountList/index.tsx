@@ -24,6 +24,7 @@ type AccountListProps = {
   onActionPress?: (account: TAccount) => void;
   onItemPress?: (account: TAccount) => void;
   accountsObservables?: Observable<AccountModel[]>;
+  exclude?: string;
 };
 
 const maxHeight = SCREEN_HEIGHT * 0.55;
@@ -44,6 +45,7 @@ function AccountList({
   onActionPress,
   onItemPress,
   accountsObservables,
+  exclude,
 }: AccountListProps) {
   const { colors } = useCustomTheme();
   const renderKey = useRef(0);
@@ -93,7 +95,7 @@ function AccountList({
   }, []);
 
   const onInputChange = async (text: string) => {
-    const res = await getAccountsData({ text });
+    const res = await getAccountsData({ text, exclude });
     setActiveAccounts(res);
   };
 
@@ -124,8 +126,8 @@ function AccountList({
 }
 
 export default withObservables(
-  ['accountsObservables'],
-  ({ isDeactivate = false }: AccountListProps) => ({
-    accountsObservables: fetchAccountData(!isDeactivate),
+  ['accountsObservables', 'exclude'],
+  ({ isDeactivate = false, exclude }: AccountListProps) => ({
+    accountsObservables: fetchAccountData(!isDeactivate, exclude),
   }),
 )<any>(memo(AccountList, isEqual));
