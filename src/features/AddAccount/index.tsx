@@ -1,12 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Pressable, View } from 'react-native';
-import {
-  InputField,
-  RNText,
-  SvgIcon,
-  SwitchField,
-  FormAction,
-} from 'components/index';
+import { InputField, RNText, SvgIcon, SwitchField, FormAction } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useForm } from 'react-hook-form';
@@ -34,7 +28,7 @@ const defaultValues = {
   creditCardStatementDay: 5,
   creditCardDayAfterStatement: 15,
   creditCardReminderList: '',
-  isNotAddReport: false,
+  excludeReport: false,
   isActive: true,
   currency: 'vnd',
   descriptions: '',
@@ -159,7 +153,7 @@ function AddAccount() {
     const requestData = {
       ...data,
       initialAmount: +data?.initialAmount,
-      creditCardLimit: +data?.creditCardLimit || 0,
+      creditCardLimit: +data?.creditCardLimit,
       accountLogo: bankLogo.current || accountTypeLogo.current || AccountType[0].icon,
     };
     updateAccountDB({ id: params?.accountId, data: requestData });
@@ -288,7 +282,7 @@ function AddAccount() {
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={[styles.itemGroup, styles.itemGroupBetween]}>
             <RNText preset="title">Không tính vào báo cáo</RNText>
-            <SwitchField name="isNotAddReport" control={control} />
+            <SwitchField name="excludeReport" control={control} />
           </View>
           <RNText fontSize={12} style={styles.subText}>
             Ghi chép này sẽ không thống kê vào các báo cáo.

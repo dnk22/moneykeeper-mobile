@@ -47,7 +47,7 @@ function Item({ account, isItemSelected, onActionPress, onItemPress }: ItemProps
               {account.accountName}
             </RNText>
             <RNText numberOfLines={1} style={styles.itemSubTitle}>
-              {account.currentAmount?.toString()}
+              {/* {account.currentAmount?.toString()} */}
             </RNText>
           </View>
           {isItemSelected && isItemSelected === account.id && (

@@ -24,7 +24,7 @@ export default class TransactionModel extends Model {
   @field('relatedPerson') relatedPerson!: string;
   @field('fee') fee!: number;
   @field('feeType') feeType!: string;
-  @field('isNotAddReport') isNotAddReport!: boolean;
+  @field('excludeReport') excludeReport!: boolean;
   @field('attachment') attachment!: string;
   @field('userId') userId!: string;
   @readonly @date('created_at') createdAt!: Date;

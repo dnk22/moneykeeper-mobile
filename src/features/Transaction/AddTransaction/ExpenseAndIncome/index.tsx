@@ -227,7 +227,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={[styles.itemGroup, styles.itemGroupBetween]}>
             <RNText>Không tính vào báo cáo</RNText>
-            <SwitchField name="isNotAddReport" control={control} />
+            <SwitchField name="excludeReport" control={control} />
           </View>
           <RNText preset="subTitle">Ghi chép này sẽ không thống kê vào các báo cáo.</RNText>
         </View>

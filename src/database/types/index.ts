@@ -28,7 +28,7 @@ export type TTransactions = {
   relatedPerson?: string;
   fee?: number;
   feeType?: string;
-  isNotAddReport?: boolean;
+  excludeReport?: boolean;
   attachment?: any;
   userId?: string;
   createdAt?: Date;
@@ -51,14 +51,13 @@ export type TAccount = {
   id?: string;
   accountName: string;
   initialAmount: number;
-  currentAmount: number;
-  accountTypeId: string;
+  accountTypeId: number;
   accountTypeName: string;
   bankId?: string;
   currency?: string;
   descriptions?: string;
   isActive: boolean;
-  isNotAddReport?: boolean;
+  excludeReport?: boolean;
   userId: string;
   accountLogo: string;
   sortOrder?: number;

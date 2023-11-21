@@ -76,7 +76,7 @@ export const getFirstAccount = async () => {
 
 /** CREATE */
 
-export const addAccount = async (account: TAccount) => {
+export const queryAddAccount = async (account: TAccount) => {
   try {
     await database.write(async () => {
       const post = database.get<AccountModel>(ACCOUNTS).create((item) => {
@@ -91,17 +91,13 @@ export const addAccount = async (account: TAccount) => {
 
 /** UPDATE */
 
-export const updateAccount = async ({ id, account }: { id: string; account: TAccount }) => {
-  try {
-    await database.write(async () => {
-      const res = await database.get<AccountModel>(ACCOUNTS).find(id);
-      await res.update((item) => {
-        Object.assign(item, account);
-      });
+export const queryUpdateAccount = async ({ id, account }: { id: string; account: TAccount }) => {
+  return await database.write(async () => {
+    const res = await database.get<AccountModel>(ACCOUNTS).find(id);
+    await res.update((item) => {
+      Object.assign(item, account);
     });
-  } catch (error) {
-    console.log(error, 'update err');
-  }
+  });
 };
 
 export const changeAccountStatusById = async ({ id }: { id: string }) => {

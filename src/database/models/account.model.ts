@@ -13,14 +13,13 @@ export default class AccountModel extends Model {
   @text('accountName') accountName!: string;
   @text('accountLogo') accountLogo!: string;
   @field('initialAmount') initialAmount!: number;
-  @field('currentAmount') currentAmount!: number;
-  @field('accountTypeId') accountTypeId!: string;
+  @field('accountTypeId') accountTypeId!: number;
   @field('accountTypeName') accountTypeName!: string;
   @field('bankId') bankId!: string;
   @field('currency') currency!: string;
   @text('descriptions') descriptions!: string;
   @field('isActive') isActive!: boolean;
-  @field('isNotAddReport') isNotAddReport!: boolean;
+  @field('excludeReport') excludeReport!: boolean;
   @field('userId') userId!: string;
   @field('sortOrder') sortOrder!: number;
   @field('termType') termType!: number;
