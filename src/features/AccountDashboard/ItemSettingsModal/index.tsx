@@ -8,7 +8,7 @@ import { ADD_ACCOUNT } from 'navigation/constants';
 import { changeAccountStatusById } from 'database/querying/accounts.query';
 import { deleteAccountById } from 'services/api/accounts';
 
-type ItemSettingsModalProps = IModalComponentProps & { account: TAccount };
+type ItemSettingsModalProps = IModalComponentProps & { account: TAccount; onActionPressDone?: any };
 
 const TRANSFER = 'transfer';
 const ADJUSTMENT = 'adjustment';
@@ -16,7 +16,12 @@ const EDIT = 'edit';
 const DELETE = 'delete';
 const INACTIVE = 'inactive';
 
-function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsModalProps) {
+function ItemSettingsModal({
+  isVisible,
+  onToggleModal,
+  account,
+  onActionPressDone,
+}: ItemSettingsModalProps) {
   const navigation = useNavigation<any>();
   const isAccountDisable = !account?.isActive;
 
@@ -31,10 +36,11 @@ function ItemSettingsModal({ isVisible, onToggleModal, account }: ItemSettingsMo
         break;
       case DELETE:
         onConfirmDelete();
+        onActionPressDone();
         break;
       default:
         if (account) {
-          changeAccountStatusById({ id: account.id });
+          changeAccountStatusById({ id: account.id }).then(() => onActionPressDone());
         }
         break;
     }

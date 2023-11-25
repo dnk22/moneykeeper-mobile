@@ -7,7 +7,8 @@ export default class AccountModel extends Model {
   static table = ACCOUNTS;
 
   static associations: Associations = {
-    transactions: { type: 'has_many', foreignKey: 'accountId' },
+    transactions: { type: 'has_many', foreignKey: 'id' },
+    balance: { type: 'has_many', foreignKey: 'id' },
   };
 
   @text('accountName') accountName!: string;

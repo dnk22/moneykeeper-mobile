@@ -86,7 +86,7 @@ function Transfer({ params }: AddTransactionType) {
           title="Tới tài khoản"
           onReset={resetToAccount}
           setValue={setValue}
-          exclude={watch('accountId')}
+          excludeId={watch('accountId')}
         />
         <DateTimeSelect values={watch('dateTimeAt')} onChangeDate={handleOnDateTimePicker} />
       </View>

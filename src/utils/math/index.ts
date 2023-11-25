@@ -13,9 +13,9 @@ export const roundMaxFixed = (num: number, decimals: number): number => {
   return Number(Math.round(Number(String(num + 'e' + decimals))) + 'e-' + decimals);
 };
 
-export const formatNumber = (num: number | string, comma = ',') => {
+export const formatNumber = (num: number | string, comma = '.') => {
   if (typeof num !== 'number' && typeof num !== 'string') {
-    return num;
+    return 0;
   }
   return String(num).replace(/(\d)(?=(\d{3})+\b)/g, `$1${comma}`);
 };

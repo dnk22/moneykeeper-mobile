@@ -1,12 +1,12 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { Alert, View } from 'react-native';
+import { Alert } from 'react-native';
 import { isEqual } from 'lodash';
 import { InputSelection, BottomSheet } from 'components/index';
-import AccountList from 'features/AccountList';
 import { useFocusEffect } from '@react-navigation/native';
 import { getAccountById } from 'services/api/accounts';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { TAccount } from 'database/types';
+import AccountList from './AccountList';
 
 type AccountProp = {
   accountLogo: string;
@@ -22,7 +22,7 @@ type AccountSelectProps = {
   setValue: any;
   title?: string;
   isShowSubTitle?: boolean;
-  exclude?: string;
+  excludeId?: string;
 };
 
 function AccountSelect({
@@ -34,7 +34,7 @@ function AccountSelect({
   setValue,
   title = 'Chọn tài khoản',
   isShowSubTitle,
-  exclude,
+  excludeId,
 }: AccountSelectProps) {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const [accountSelected, setAccountSelected] = useState<AccountProp | undefined>(undefined);
@@ -103,7 +103,11 @@ function AccountSelect({
         onSelect={handleOnSelectAccount}
       />
       <BottomSheet ref={bottomSheetModalRef}>
-        <AccountList exclude={exclude} isItemSelected={value} isGroup onItemPress={onAccountItemPress} />
+        <AccountList
+          excludeId={excludeId}
+          isItemSelected={value}
+          onItemPress={onAccountItemPress}
+        />
       </BottomSheet>
     </>
   );

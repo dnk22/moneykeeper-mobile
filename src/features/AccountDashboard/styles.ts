@@ -5,12 +5,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   totalBalance: {
-    height: 30,
+    height: 40,
     justifyContent: 'center',
     alignItems: 'center',
   },
   totalCurrency: {
-    fontWeight: '700',
+    fontWeight: '500',
   },
   createButton: {
     position: 'absolute',

@@ -10,7 +10,6 @@ const jsonBankData = require('utils/data/banks.default.json');
 export const getBanksObserve = () => database.get<BankModel>(BANKS).query().observe();
 
 /** read */
-
 export const getBanksDataLocal = async ({
   type = BANK_TYPE.BANK,
   text = '',

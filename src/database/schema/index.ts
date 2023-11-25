@@ -1,6 +1,13 @@
 // model/schema.js
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
-import { ACCOUNTS, BALANCE, BANKS, CONTACT, TRANSACTIONS, TRANSACTION_CATEGORY } from 'database/constants';
+import {
+  ACCOUNTS,
+  BALANCE,
+  BANKS,
+  CONTACT,
+  TRANSACTIONS,
+  TRANSACTION_CATEGORY,
+} from 'database/constants';
 
 export default appSchema({
   version: 1,
@@ -99,12 +106,12 @@ export default appSchema({
     tableSchema({
       name: BALANCE,
       columns: [
-        { name: 'transactionId', type: 'string' },
-        { name: 'accountId', type: 'string' },
+        { name: 'transactionId', type: 'string', isOptional: true },
+        { name: 'accountId', type: 'string', isOptional: true },
         { name: 'openAmount', type: 'number' },
         { name: 'movementAmount', type: 'number' },
         { name: 'closingAmount', type: 'number' },
-        { name: 'transactionDateAt', type: 'number' },
+        { name: 'transactionDateAt', type: 'number', isOptional: true },
       ],
     }),
     tableSchema({

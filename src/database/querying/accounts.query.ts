@@ -1,33 +1,48 @@
 import { AccountModel } from 'database/models';
 import { TAccount } from 'database/types';
-import { ACCOUNTS } from 'database/constants';
+import { ACCOUNTS, BALANCE } from 'database/constants';
 import { database } from 'database/index';
 import { Q } from '@nozbe/watermelondb';
 
-export type TGetAccounts = {
+export type TGetAllAccounts = {
   isActive?: boolean;
-  text: string;
-  exclude?: string;
+  text?: string;
+  excludeId?: string;
 };
 
 /** OBSERVE  */
-export const getActiveAccountObserve = (isActive: boolean, exclude?: string) =>
-  database
-    .get<AccountModel>(ACCOUNTS)
-    .query(
-      Q.and(
-        Q.where('_status', Q.notEq('deleted')),
-        Q.where('id', Q.notEq(exclude || '')),
-        Q.where('isActive', isActive),
-      ),
-    )
-    .observe();
-
 export const getAccountCountObserve = (isActive: boolean) =>
   database.get<AccountModel>(ACCOUNTS).query(Q.where('isActive', isActive)).observeCount();
 
 /** READ */
-export const getAccounts = async ({ isActive = true, text = '', exclude }: TGetAccounts) => {
+export const queryAllAccount = ({ isActive = '', text = '', excludeId = '' }: TGetAllAccounts) =>
+  database
+    .get<AccountModel>(ACCOUNTS)
+    .query(
+      Q.experimentalJoinTables([BALANCE]),
+      Q.unsafeSqlQuery(
+        `SELECT acc.*, bal.closingAmount FROM ${ACCOUNTS} acc
+          LEFT JOIN (
+            SELECT
+              bal2.*,
+              MAX(bal2.transactionDateAt)
+            FROM
+              ${BALANCE} bal2
+            GROUP BY
+              bal2.accountId
+          ) bal ON bal.accountId = acc.id
+          WHERE acc._status!='deleted' AND acc.id!='${excludeId}' AND acc.accountName LIKE '%${Q.sanitizeLikeString(
+          text,
+        )}%'`,
+      ),
+    )
+    .unsafeFetchRaw();
+
+export const getAccounts = async ({
+  isActive = true,
+  text = '',
+  excludeId = '',
+}: TGetAllAccounts) => {
   try {
     return await database.read(async () => {
       return await database
@@ -36,7 +51,7 @@ export const getAccounts = async ({ isActive = true, text = '', exclude }: TGetA
           Q.where('_status', Q.notEq('deleted')),
           Q.where('isActive', isActive),
           Q.where('accountName', Q.like(`%${Q.sanitizeLikeString(text)}%`)),
-          Q.where('id', Q.notEq(exclude || '')),
+          Q.where('id', Q.notEq(excludeId || '')),
         )
         .fetch();
     });
@@ -75,17 +90,19 @@ export const getFirstAccount = async () => {
 };
 
 /** CREATE */
-
 export const queryAddAccount = async (account: TAccount) => {
   try {
-    await database.write(async () => {
-      const post = database.get<AccountModel>(ACCOUNTS).create((item) => {
+    return await database.write(async () => {
+      const accountDB = database.get<AccountModel>(ACCOUNTS).create((item) => {
         Object.assign(item, account);
       });
-      return post;
+      return accountDB;
     });
   } catch (error) {
-    console.log(error, 'add err');
+    return {
+      success: false,
+      error,
+    };
   }
 };
 

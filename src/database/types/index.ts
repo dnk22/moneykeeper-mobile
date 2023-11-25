@@ -106,3 +106,12 @@ export type TContact = {
   id: string;
   contactName: string;
 };
+
+export type TBalance = {
+  transactionId?: string;
+  accountId?: string;
+  openAmount?: number;
+  movementAmount?: number;
+  closingAmount?: number;
+  transactionDateAt: Date | null;
+};

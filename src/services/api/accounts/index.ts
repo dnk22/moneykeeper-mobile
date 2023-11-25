@@ -1,19 +1,16 @@
 import {
-  TGetAccounts,
+  TGetAllAccounts,
   queryAddAccount,
   deleteAccount,
-  getAccounts,
-  getActiveAccountObserve,
   queryAccountById,
   queryUpdateAccount,
+  queryAllAccount,
 } from 'database/querying';
+import { queryAddBalance } from 'database/querying/balance.query';
 import { TAccount } from 'database/types';
 
-export function fetchAccountData(isActive: boolean, exclude?: string) {
-  return getActiveAccountObserve(isActive, exclude);
-}
-export async function getAccountsData(query: TGetAccounts) {
-  return getAccounts(query);
+export async function getAccountData({ ...rest }: TGetAllAccounts) {
+  return queryAllAccount(rest);
 }
 
 export async function updateAccountDB({ id, data }: { id?: string; data: TAccount }) {
@@ -21,7 +18,14 @@ export async function updateAccountDB({ id, data }: { id?: string; data: TAccoun
     delete data.id;
     return await queryUpdateAccount({ id, account: data });
   } else {
-    return await queryAddAccount(data);
+    return queryAddAccount(data).then(async ({ id }) => {
+      return await queryAddBalance({
+        accountId: id,
+        openAmount: data?.initialAmount,
+        closingAmount: data?.initialAmount,
+        transactionDateAt: null,
+      });
+    });
   }
 }
 
