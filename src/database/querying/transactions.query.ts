@@ -3,6 +3,8 @@ import { TRANSACTIONS } from 'database/constants';
 import { TransactionModel } from 'database/models';
 import { TTransactions } from 'database/types';
 import { Q } from '@nozbe/watermelondb';
+import { queryUpdateUseCountTransactionCategory } from './transactionsCategory.query';
+import { queryAddBalance } from './balance.query';
 
 export type GetTransactionProps = {
   accountId: string;
@@ -76,13 +78,19 @@ export const queryTransactionById = async (id: string) => {
  * add new transaction , if success then update useCount in transaction category
  */
 export const queryAddNewTransaction = async (transaction: TTransactions) => {
-  return await database.write(async () => {
-    database.get<TransactionModel>(TRANSACTIONS).create((item) => {
+  return await database.write(async (writer) => {
+    const res = await database.get<TransactionModel>(TRANSACTIONS).create((item) => {
       Object.assign(item, transaction);
     });
-    return {
-      success: true,
-    };
+    await writer.callWriter(() => {
+      queryUpdateUseCountTransactionCategory(res.categoryId);
+      // queryAddBalance({
+      //   accountId: res.accountId,
+      //   transactionId: res.id,
+      // });
+      return Promise.resolve(true);
+    });
+    return res;
   });
 };
 /** update */

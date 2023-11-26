@@ -3,17 +3,13 @@ import {
   queryDeleteTransactionById,
   queryTransactionById,
   queryUpdateTransaction,
-  queryUpdateUseCountTransactionCategory,
 } from 'database/querying';
 import { TTransactions } from 'database/types';
 
 export const updateTransaction = async ({ id, data }: { id?: string; data: TTransactions }) => {
   try {
     if (!id) {
-      const res = await queryAddNewTransaction(data);
-      if (res.success) {
-        return await queryUpdateUseCountTransactionCategory(data.categoryId);
-      }
+      return await queryAddNewTransaction(data);
     } else {
       return await queryUpdateTransaction({ id, data });
     }

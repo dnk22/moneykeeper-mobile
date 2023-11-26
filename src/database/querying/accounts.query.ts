@@ -3,7 +3,11 @@ import { TAccount } from 'database/types';
 import { ACCOUNTS, BALANCE } from 'database/constants';
 import { database } from 'database/index';
 import { Q } from '@nozbe/watermelondb';
-import { queryUpdateBalanceAfterUpdateAccount } from './balance.query';
+import {
+  queryAddBalance,
+  queryDeleteBalanceAfterDeleteAccount,
+  queryUpdateBalanceAfterUpdateAccount,
+} from './balance.query';
 
 export type TGetAllAccounts = {
   isActive?: boolean;
@@ -93,13 +97,13 @@ export const getFirstAccount = async () => {
 /** CREATE */
 export const queryAddAccount = async (account: TAccount) => {
   try {
-    return await database.write(async () => {
+    return await database.write(async (writer) => {
       const accountDB = await database.get<AccountModel>(ACCOUNTS).create((item) => {
         Object.assign(item, account);
       });
       // create balance also
-      await database.get<BalanceModel>(BALANCE).create((item) => {
-        Object.assign(item, {
+      await writer.callWriter(() => {
+        return queryAddBalance({
           accountId: accountDB.id,
           openAmount: accountDB?.initialAmount,
           closingAmount: accountDB?.initialAmount,
@@ -160,16 +164,12 @@ export const queryChangeAccountStatusById = async (id: string) => {
 /** DELETE */
 
 export const queryDeleteAccount = async (id: string) => {
-  try {
-    return await database.write(async () => {
-      (await database.get<AccountModel>(ACCOUNTS).find(id)).markAsDeleted();
+  return await database.write(async (writer) => {
+    (await database.get<AccountModel>(ACCOUNTS).find(id)).markAsDeleted();
+    return await writer.callWriter(() => {
+      return queryDeleteBalanceAfterDeleteAccount(id);
     });
-  } catch (error) {
-    return Promise.reject({
-      success: false,
-      error: 'Có lỗi trong quá trình xóa tài khoản.',
-    });
-  }
+  });
 };
 
 export const deleteAllAccount = async () => {

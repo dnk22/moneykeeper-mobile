@@ -17,7 +17,7 @@ type BottomSheetProps = {
 const BottomSheet = forwardRef(
   ({ children, snapPoints, index = 0 }: BottomSheetProps, ref: any) => {
     const { colors } = useCustomTheme();
-    const snapPointsInit = useMemo(() => ['50%', '70%', '90%'], []);
+    const snapPointsInit = useMemo(() => ['70%', '90%'], []);
 
     const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {
       return <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} />;
@@ -29,6 +29,7 @@ const BottomSheet = forwardRef(
         index={index}
         snapPoints={snapPoints || snapPointsInit}
         backdropComponent={renderBackdrop}
+        enableDynamicSizing
       >
         <BottomSheetView style={{ backgroundColor: colors.background, flex: 1, paddingTop: 10 }}>
           {children}

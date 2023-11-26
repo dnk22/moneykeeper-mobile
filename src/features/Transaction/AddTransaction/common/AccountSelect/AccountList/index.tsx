@@ -19,8 +19,6 @@ type AccountListProps = {
   excludeId?: string;
 };
 
-const maxHeight = SCREEN_HEIGHT * 0.55;
-
 function AccountList({ isItemSelected, onItemPress, excludeId }: AccountListProps) {
   const [accounts, setAccounts] = useState<SectionListData<TAccount, any>>([]);
 
@@ -54,7 +52,6 @@ function AccountList({ isItemSelected, onItemPress, excludeId }: AccountListProp
         <InputSearch onChangeText={onInputChange} />
       </View>
       <SectionListComponent
-        style={{ maxHeight }}
         sections={accounts}
         initialNumToRender={8}
         renderItem={renderItem}

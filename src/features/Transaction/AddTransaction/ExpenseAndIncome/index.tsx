@@ -116,18 +116,16 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
     updateTransaction({
       id: params?.transactionId,
       data: requestData,
-    }).then((res) => {
-      if (res.success) {
-        // reset form state
-        reset({
-          ...defaultValues,
-          accountId: data?.accountId,
-          transactionType: data?.transactionType,
-        });
-        navigation.setParams({
-          categoryId: '',
-        });
-      }
+    }).then(() => {
+      // reset form state
+      reset({
+        ...defaultValues,
+        accountId: data?.accountId,
+        transactionType: data?.transactionType,
+      });
+      navigation.setParams({
+        categoryId: '',
+      });
       if (navigation.canGoBack() && isEqual(name, CREATE_TRANSACTION_FROM_ACCOUNT)) {
         // navigate to previous screen
         navigation.goBack();

@@ -252,13 +252,10 @@ export const queryUpdateUseCountTransactionCategory = async (id: string) => {
     const transactionCategory = await database
       .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
       .find(id);
-    await transactionCategory.update((item) => {
+    return await transactionCategory.update((item) => {
       item.useCount = item.useCount + 1;
       item.lastUseAt = date.getTime();
     });
-    return {
-      success: true,
-    };
   });
 };
 

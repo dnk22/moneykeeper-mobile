@@ -170,8 +170,10 @@ function AddAccount() {
   };
 
   const onOkDelete = () => {
-    params?.accountId && deleteAccountById(params.accountId);
-    navigation.goBack();
+    params?.accountId &&
+      deleteAccountById(params.accountId).then(() => {
+        navigation.goBack();
+      });
   };
 
   const onConfirmDeleteAccount = () =>

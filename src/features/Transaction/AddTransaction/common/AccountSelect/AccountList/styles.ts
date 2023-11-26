@@ -32,9 +32,9 @@ const styles = StyleSheet.create({
 
   // card
   wrapper: {
+    flex: 1,
     paddingHorizontal: 10,
     borderRadius: 10,
-    // ...BOX_SHADOW,
   },
   header: {
     height: 44,
