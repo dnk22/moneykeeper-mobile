@@ -8,17 +8,18 @@ import { TAccountType, TAccount } from 'database/types';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AccountStackParamListProps } from 'navigation/types';
 import Submit from 'navigation/elements/Submit';
-import AccountTypeSelect from './AccountTypeSelect';
-import AccountBankSelect from './AccountBankSelect';
-import { BankModel } from 'database/models';
 import Collapsible from 'react-native-collapsible';
-import StatementModalPicker from './StatementModalPicker';
-import Notifications from './Notifications';
-import { deleteAccountById, getAccountById, updateAccountDB } from 'services/api/accounts';
+import { BankModel } from 'database/models';
+import InputCalculator from 'features/Transaction/AddTransaction/common/InputCalculator';
 import { ADD_ACCOUNT } from 'navigation/constants';
 import { AccountType } from 'utils/data';
-import InputCalculator from 'features/Transaction/AddTransaction/common/InputCalculator';
+import { deleteAccountById, getAccountById, updateAccountDB } from 'services/api/accounts';
+import Notifications from './Notifications';
+import StatementModalPicker from './StatementModalPicker';
+import AccountTypeSelect from './AccountTypeSelect';
+import AccountBankSelect from './AccountBankSelect';
 import styles from './styles';
+import showToast from 'utils/system/toast';
 
 const defaultValues = {
   accountName: '',
@@ -156,8 +157,16 @@ function AddAccount() {
       creditCardLimit: +data?.creditCardLimit,
       accountLogo: bankLogo.current || accountTypeLogo.current || AccountType[0].icon,
     };
-    updateAccountDB({ id: params?.accountId, data: requestData });
-    navigation.goBack();
+    updateAccountDB({ id: params?.accountId, data: requestData })
+      .then(() => {
+        navigation.goBack();
+      })
+      .catch(({ error }) => {
+        showToast({
+          type: 'error',
+          text2: error,
+        });
+      });
   };
 
   const onOkDelete = () => {

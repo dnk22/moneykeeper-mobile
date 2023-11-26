@@ -7,7 +7,6 @@ import AppNavigators from 'navigation/index';
 import { MyAppTheme } from 'resources/theme';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Loading, StatusBar } from 'components/index';
-
 import RnKeyboard from 'rn-keyboard'; // <-- Import here
 import KeyboardCalculator from 'features/Transaction/AddTransaction/common/InputCalculator/KeyboardCalculator';
 import {
@@ -19,6 +18,7 @@ import {
 import BlurScreen from 'features/BlurScreen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import Toast from 'react-native-toast-message';
 
 LogBox.ignoreAllLogs();
 
@@ -61,6 +61,7 @@ const App = () => {
           </NavigationContainer>
         </PersistGate>
       </Provider>
+      <Toast />
     </GestureHandlerRootView>
   );
 };

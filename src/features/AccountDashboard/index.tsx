@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { PressableHaptic, RNText, SvgIcon } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
@@ -10,6 +10,7 @@ import { selectAccountViewSettings } from 'store/app/app.selector';
 import { getAccountData } from 'services/api/accounts';
 import { groupDataByValue } from 'utils/algorithm';
 import { formatNumber } from 'utils/math';
+import { size } from 'lodash';
 import ItemSettingsModal from './ItemSettingsModal';
 import AccountList from './AccountList';
 import styles from './styles';
@@ -40,30 +41,31 @@ function Accounts() {
     navigation.navigate(ADD_ACCOUNT);
   };
 
-  const onActionPress = (account: TAccount) => {
+  const onActionPress = useCallback((account: TAccount) => {
     currentAccountPressed.current = account;
     onToggleModal();
-  };
+  }, []);
 
   const onActionPressDone = () => {
     fetchListAccount();
   };
 
-  const getInactiveAccount = () => {
-    return accountData.filter((item) => !item.isActive);
-  };
+  const getInactiveAccount = useMemo(() => {
+    const inActiveAccount = accountData.filter((item) => !item.isActive);
+    return size(inActiveAccount) ? [{ data: inActiveAccount }] : [];
+  }, [accountData]);
 
-  const getActiveAccount = () => {
+  const getActiveAccount = useMemo(() => {
     const activeAccount = accountData.filter((item) => item.isActive);
     return group ? groupDataByValue(activeAccount) : activeAccount;
-  };
+  }, [accountData]);
 
-  const getTotalMoneyInAllAccount = () => {
+  const getTotalMoneyInAllAccount = useMemo(() => {
     return accountData.reduce(
-      (accumulator, currentValue) => (accumulator += currentValue.closingAmount),
+      (accumulator, currentValue) => (accumulator += +currentValue?.closingAmount),
       0,
     );
-  };
+  }, [accountData]);
 
   return (
     <>
@@ -76,20 +78,20 @@ function Accounts() {
       <View style={styles.container}>
         <View style={styles.totalBalance}>
           <RNText style={styles.totalCurrency}>{`Tổng tiền: ${formatNumber(
-            getTotalMoneyInAllAccount(),
+            getTotalMoneyInAllAccount,
           )} ₫`}</RNText>
         </View>
         <View style={{ gap: 10, paddingHorizontal: 5 }}>
           <AccountList
             title="Đang sử dụng"
             isGroup={group}
-            account={getActiveAccount()}
+            account={getActiveAccount}
             onActionPress={onActionPress}
           />
           <AccountList
             title="Ngưng sử dụng"
             isDeactivate
-            account={[{ data: getInactiveAccount() }]}
+            account={getInactiveAccount}
             onActionPress={onActionPress}
           />
         </View>

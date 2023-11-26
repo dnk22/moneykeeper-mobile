@@ -1,12 +1,11 @@
 import { ModalComponent, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
 import { IModalComponentProps } from 'components/Modal';
 import { Alert, View } from 'react-native';
-import styles from './styles';
 import { TAccount } from 'database/types/index';
 import { useNavigation } from '@react-navigation/native';
 import { ADD_ACCOUNT } from 'navigation/constants';
-import { changeAccountStatusById } from 'database/querying/accounts.query';
-import { deleteAccountById } from 'services/api/accounts';
+import { changeAccountStatusById, deleteAccountById } from 'services/api/accounts';
+import styles from './styles';
 
 type ItemSettingsModalProps = IModalComponentProps & { account: TAccount; onActionPressDone?: any };
 
@@ -36,11 +35,10 @@ function ItemSettingsModal({
         break;
       case DELETE:
         onConfirmDelete();
-        onActionPressDone();
         break;
       default:
         if (account) {
-          changeAccountStatusById({ id: account.id }).then(() => onActionPressDone());
+          changeAccountStatusById(account.id).then(() => onActionPressDone());
         }
         break;
     }
@@ -48,8 +46,11 @@ function ItemSettingsModal({
   };
 
   const onOk = () => {
-    account?.id && deleteAccountById(account.id);
-    onToggleModal();
+    account?.id &&
+      deleteAccountById(account.id).then(() => {
+        onToggleModal();
+        onActionPressDone();
+      });
   };
 
   const onConfirmDelete = () =>

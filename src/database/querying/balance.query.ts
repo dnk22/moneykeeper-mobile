@@ -1,4 +1,4 @@
-import { TBalance } from 'database/types';
+import { TBalance, TAccount } from 'database/types';
 import { database } from 'database/index';
 import { BalanceModel } from 'database/models';
 import { BALANCE } from 'database/constants';
@@ -15,28 +15,26 @@ export const queryAddBalance = async (balance: TBalance) => {
       };
     });
   } catch (error) {
-    return {
+    return Promise.reject({
       success: false,
-      error,
-    };
+      error: 'Có lỗi trong quá trình cập nhật số dư.',
+    });
   }
 };
 
-export const queryAllBalance = async () => {
-  try {
-    return await database.read(async () => {
-      return await database
-        .get<BalanceModel>(BALANCE)
-        .query(
-          Q.unsafeSqlQuery(
-            `SELECT closingAmount, MAX(transactionDateAt)
-            FROM ${BALANCE}
-            GROUP BY accountId`,
-          ),
-        )
-        .fetch();
+export const queryUpdateBalanceAfterUpdateAccount = ({
+  accountData,
+}: {
+  accountData: TAccount;
+}) => {
+  return database.write(async () => {
+    const balance = await database
+      .get<BalanceModel>(BALANCE)
+      .query(Q.where('accountId', accountData.id))
+      .fetch();
+    await balance[0].update((bal) => {
+      bal.openAmount = accountData.initialAmount;
+      bal.closingAmount = accountData.initialAmount;
     });
-  } catch (error) {
-    return error;
-  }
+  });
 };

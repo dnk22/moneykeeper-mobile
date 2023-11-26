@@ -53,6 +53,7 @@ export type TAccount = {
   initialAmount: number;
   accountTypeId: number;
   accountTypeName: string;
+  closingAmount?: number;
   bankId?: string;
   currency?: string;
   descriptions?: string;

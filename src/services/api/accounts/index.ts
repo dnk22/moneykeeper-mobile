@@ -1,12 +1,12 @@
 import {
   TGetAllAccounts,
   queryAddAccount,
-  deleteAccount,
+  queryDeleteAccount,
   queryAccountById,
   queryUpdateAccount,
   queryAllAccount,
+  queryChangeAccountStatusById,
 } from 'database/querying';
-import { queryAddBalance } from 'database/querying/balance.query';
 import { TAccount } from 'database/types';
 
 export async function getAccountData({ ...rest }: TGetAllAccounts) {
@@ -18,14 +18,7 @@ export async function updateAccountDB({ id, data }: { id?: string; data: TAccoun
     delete data.id;
     return await queryUpdateAccount({ id, account: data });
   } else {
-    return queryAddAccount(data).then(async ({ id }) => {
-      return await queryAddBalance({
-        accountId: id,
-        openAmount: data?.initialAmount,
-        closingAmount: data?.initialAmount,
-        transactionDateAt: null,
-      });
-    });
+    return queryAddAccount(data);
   }
 }
 
@@ -33,7 +26,11 @@ export async function getAccountById(id: string) {
   const res = await queryAccountById(id);
   return res;
 }
+
 export async function deleteAccountById(id: string) {
-  const res = await deleteAccount(id);
-  return res;
+  return await queryDeleteAccount(id);
+}
+
+export async function changeAccountStatusById(id: string) {
+  return await queryChangeAccountStatusById(id);
 }

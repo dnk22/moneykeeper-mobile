@@ -1,8 +1,9 @@
-import { AccountModel } from 'database/models';
+import { AccountModel, BalanceModel } from 'database/models';
 import { TAccount } from 'database/types';
 import { ACCOUNTS, BALANCE } from 'database/constants';
 import { database } from 'database/index';
 import { Q } from '@nozbe/watermelondb';
+import { queryUpdateBalanceAfterUpdateAccount } from './balance.query';
 
 export type TGetAllAccounts = {
   isActive?: boolean;
@@ -93,31 +94,54 @@ export const getFirstAccount = async () => {
 export const queryAddAccount = async (account: TAccount) => {
   try {
     return await database.write(async () => {
-      const accountDB = database.get<AccountModel>(ACCOUNTS).create((item) => {
+      const accountDB = await database.get<AccountModel>(ACCOUNTS).create((item) => {
         Object.assign(item, account);
+      });
+      // create balance also
+      await database.get<BalanceModel>(BALANCE).create((item) => {
+        Object.assign(item, {
+          accountId: accountDB.id,
+          openAmount: accountDB?.initialAmount,
+          closingAmount: accountDB?.initialAmount,
+          transactionDateAt: null,
+        });
       });
       return accountDB;
     });
   } catch (error) {
-    return {
+    return Promise.reject({
       success: false,
-      error,
-    };
+      error: 'Có lỗi trong quá trình thêm mới tài khoản.',
+    });
   }
 };
 
 /** UPDATE */
-
 export const queryUpdateAccount = async ({ id, account }: { id: string; account: TAccount }) => {
-  return await database.write(async () => {
-    const res = await database.get<AccountModel>(ACCOUNTS).find(id);
-    await res.update((item) => {
-      Object.assign(item, account);
+  try {
+    return await database.write(async (writer) => {
+      const res = await database.get<AccountModel>(ACCOUNTS).find(id);
+      const isUpdateBalance = account.initialAmount !== res.initialAmount;
+      await res.update((item) => {
+        Object.assign(item, account);
+      });
+      // check if new initialAmount, update balance also
+      if (isUpdateBalance) {
+        await writer.callWriter(() => {
+          return queryUpdateBalanceAfterUpdateAccount({ accountData: res });
+        });
+      }
+      return res;
     });
-  });
+  } catch (error) {
+    return Promise.reject({
+      success: false,
+      error: 'Có lỗi trong quá trình cập nhật tài khoản.',
+    });
+  }
 };
 
-export const changeAccountStatusById = async ({ id }: { id: string }) => {
+export const queryChangeAccountStatusById = async (id: string) => {
   try {
     await database.write(async () => {
       const account = await database.get<AccountModel>(ACCOUNTS).find(id);
@@ -126,19 +150,25 @@ export const changeAccountStatusById = async ({ id }: { id: string }) => {
       });
     });
   } catch (error) {
-    console.log(error, 'change status err');
+    return Promise.reject({
+      success: false,
+      error: 'Có lỗi trong quá trình cập nhật tài khoản.',
+    });
   }
 };
 
 /** DELETE */
 
-export const deleteAccount = async (id: string) => {
+export const queryDeleteAccount = async (id: string) => {
   try {
-    await database.write(async () => {
+    return await database.write(async () => {
       (await database.get<AccountModel>(ACCOUNTS).find(id)).markAsDeleted();
     });
   } catch (error) {
-    console.log(error, 'delete err');
+    return Promise.reject({
+      success: false,
+      error: 'Có lỗi trong quá trình xóa tài khoản.',
+    });
   }
 };
 

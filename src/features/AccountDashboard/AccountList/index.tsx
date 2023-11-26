@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { SectionListData, View } from 'react-native';
-import { Empty, RNText, SectionListComponent } from 'components/index';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { Animated, SectionListData, View } from 'react-native';
+import isEqual from 'react-fast-compare';
+import { Empty, PressableHaptic, RNText, SectionListComponent, SvgIcon } from 'components/index';
 import { TAccount } from 'database/types/index';
 import { SCREEN_HEIGHT } from 'share/dimensions';
 import Collapsible from 'react-native-collapsible';
 import { useCustomTheme } from 'resources/theme';
-import Header from './Header';
 import Item from './Item';
 import styles from './styles';
 
@@ -23,6 +23,11 @@ function AccountList({ title, isGroup = false, onActionPress, account = [] }: Ac
   const { colors } = useCustomTheme();
   const renderKey = useRef(0);
   const [collapse, setCollapse] = useState(false);
+  const rotateAnim = useRef(new Animated.Value(1)).current;
+  const rotate = rotateAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '90deg'],
+  });
 
   useEffect(() => {
     // change key to force-render collapse view
@@ -32,11 +37,19 @@ function AccountList({ title, isGroup = false, onActionPress, account = [] }: Ac
     }
   }, [account]);
 
+  useEffect(() => {
+    Animated.timing(rotateAnim, {
+      toValue: collapse ? 0 : 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  }, [collapse]);
+
   const renderSectionHeader = useCallback(
     ({ section }: { section: SectionListData<TAccount> }) => {
       if (!isGroup) return null;
       const { title } = section;
-      return <RNText color="#747471">{`${title}`}</RNText>;
+      return <RNText color="#747471" fontSize={13}>{title}</RNText>;
     },
     [isGroup],
   );
@@ -47,7 +60,12 @@ function AccountList({ title, isGroup = false, onActionPress, account = [] }: Ac
 
   return (
     <View style={[styles.wrapper, { backgroundColor: colors.surface }]}>
-      <Header onPress={() => setCollapse(!collapse)} title={title} isActive={collapse} />
+      <PressableHaptic style={styles.header} onPress={() => setCollapse(!collapse)}>
+        <RNText style={styles.title}>{title}</RNText>
+        <Animated.View style={[styles.iconDropdown, { transform: [{ rotate: rotate }] }]}>
+          <SvgIcon name="remote" />
+        </Animated.View>
+      </PressableHaptic>
       <Collapsible collapsed={collapse} key={renderKey.current}>
         <SectionListComponent
           style={{ maxHeight }}
@@ -62,4 +80,4 @@ function AccountList({ title, isGroup = false, onActionPress, account = [] }: Ac
   );
 }
 
-export default AccountList;
+export default memo(AccountList, isEqual);

@@ -24,7 +24,7 @@ function Item({ account, onActionPress }: ItemProps) {
   };
 
   return (
-    <View style={[styles.itemContainer, { borderBottomColor: colors.divider }]}>
+    <View style={styles.itemContainer}>
       <TouchableHighlightComponent
         style={{ backgroundColor: colors.surface }}
         onPress={handleOnItemPress}

@@ -1,6 +1,7 @@
 import { useCallback, memo, useMemo } from 'react';
-import { RefreshControl, SectionList, SectionListProps } from 'react-native';
+import { RefreshControl, SectionList, SectionListProps, View } from 'react-native';
 import isEqual from 'react-fast-compare';
+import { useCustomTheme } from 'resources/theme';
 
 export type TSectionListProps = SectionListProps<any> & {
   onRefresh?: () => void;
@@ -25,6 +26,7 @@ function SectionListComponent({
   id = 'id',
   ...rest
 }: TSectionListProps) {
+  const { colors } = useCustomTheme();
   const keyExtractor = useCallback((item: any) => (id === '' ? item : item[id]), []);
 
   const renderRefreshControl = useMemo(
@@ -54,6 +56,14 @@ function SectionListComponent({
       onEndReached={() => onLoadMore && onLoadMore()}
       maxToRenderPerBatch={maxToRenderPerBatch}
       initialNumToRender={initialNumToRender}
+      ItemSeparatorComponent={({ highlighted }) => (
+        <View
+          style={[
+            { height: 0.4, width: '90%', backgroundColor: colors.divider, alignSelf: 'center' },
+            highlighted,
+          ]}
+        />
+      )}
       {...rest}
     />
   );
