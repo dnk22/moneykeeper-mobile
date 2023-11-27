@@ -32,7 +32,7 @@ function FinancialStatement() {
                 <RNText color="gray">Xem Chi tiết</RNText>
                 <SvgIcon name="forward" preset="forwardLink" color="gray" />
               </View>
-              <RNText preset="homeTotalBalance">12.000.000</RNText>
+              <RNText preset="homeTotalBalance">120.000.000</RNText>
             </View>
             <View style={[styles.topBarToolbar, { backgroundColor: colors.primary }]}>
               <SvgIcon name="bell" color="white" />

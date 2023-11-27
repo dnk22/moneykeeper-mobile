@@ -15,12 +15,6 @@ const styles = StyleSheet.create({
     flex: 1,
     rowGap: 5,
   },
-  itemAction: {
-    width: 30,
-    height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   itemTitle: {
     fontWeight: '500',
     width: '100%',
@@ -36,21 +30,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 10,
   },
-  header: {
-    height: 44,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  title: {
-    flex: 1,
-    fontWeight: '700',
-  },
-  iconDropdown: {
-    width: 30,
-    marginRight: 5,
+  inputGroup: {
     justifyContent: 'center',
-    alignItems: 'center',
+    borderRadius: 10,
+  },
+  inputSearch: {
+    height: 44,
+    paddingVertical: 10,
+    paddingHorizontal: 40,
+  },
+  iconSearch: {
+    left: 10,
+    position: 'absolute',
   },
 });
 

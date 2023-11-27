@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { SectionListData, View } from 'react-native';
-import { Empty, InputSearch, RNText, SectionListComponent } from 'components/index';
+import { RNText } from 'components/index';
 import { TAccount } from 'database/types/index';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
 import { AccountModel } from 'database/models';
 import { groupDataByValue } from 'utils/algorithm';
-import { SCREEN_HEIGHT } from 'share/dimensions';
 import { getAccountData } from 'services/api/accounts';
 import { TGetAllAccounts } from 'database/querying';
+import { BottomSheetSectionList, BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import { useCustomTheme } from 'resources/theme';
 import Item from './Item';
 import styles from './styles';
 
@@ -20,6 +21,7 @@ type AccountListProps = {
 };
 
 function AccountList({ isItemSelected, onItemPress, excludeId }: AccountListProps) {
+  const { colors } = useCustomTheme();
   const [accounts, setAccounts] = useState<SectionListData<TAccount, any>>([]);
 
   useEffect(() => {
@@ -46,17 +48,28 @@ function AccountList({ isItemSelected, onItemPress, excludeId }: AccountListProp
     return <RNText color="#747471">{`${title}`}</RNText>;
   };
 
+  const keyExtractor = useCallback((item: any) => item['id'], []);
+
   return (
     <View style={styles.wrapper}>
       <View style={{ marginBottom: 10 }}>
-        <InputSearch onChangeText={onInputChange} />
+        <View style={[styles.inputGroup, { backgroundColor: colors.surface }]}>
+          <BottomSheetTextInput
+            placeholder="Tìm kiếm tài khoản"
+            style={{
+              height: 46,
+              paddingHorizontal: 20,
+            }}
+            onChangeText={onInputChange}
+          />
+        </View>
       </View>
-      <SectionListComponent
+      <BottomSheetSectionList
         sections={accounts}
         initialNumToRender={8}
         renderItem={renderItem}
+        keyExtractor={keyExtractor}
         renderSectionHeader={renderSectionHeader}
-        ListEmptyComponent={<Empty text="Không có tài khoản nào!" />}
       />
     </View>
   );
