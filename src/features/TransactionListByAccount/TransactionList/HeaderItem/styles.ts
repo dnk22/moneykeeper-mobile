@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { ITEM_HEIGHT } from '../const';
 
 const styles = StyleSheet.create({
   item: {
@@ -27,9 +28,9 @@ const styles = StyleSheet.create({
     zIndex: 2,
     position: 'absolute',
     left: '5%',
-    top: 50,
+    top: ITEM_HEIGHT,
     borderStyle: 'dashed',
-    borderWidth: 0.5,
+    borderWidth: 0.6,
     borderRadius: 1,
     borderColor: '#d3d3d3',
   },

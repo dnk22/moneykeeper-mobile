@@ -1,17 +1,14 @@
 import { database } from 'database/index';
-import { TRANSACTIONS } from 'database/constants';
+import { TRANSACTIONS, TRANSACTION_CATEGORY } from 'database/constants';
 import { TransactionModel } from 'database/models';
 import { TTransactions } from 'database/types';
 import { Q } from '@nozbe/watermelondb';
 import { queryUpdateUseCountTransactionCategory } from './transactionsCategory.query';
-import { queryAddBalance } from './balance.query';
+import { queryAddTransactionBalance } from './balance.query';
 
-export type GetTransactionProps = {
-  accountId: string;
-};
-
-export type GetTransactionByDate = GetTransactionProps & {
+export type GetTransactionByDate = {
   date: string;
+  accountId: string;
 };
 
 /** observe */
@@ -19,45 +16,38 @@ export type GetTransactionByDate = GetTransactionProps & {
 export const getTransactionByIdObserve = (id: string) =>
   database.get<TransactionModel>(TRANSACTIONS).findAndObserve(id);
 
-export const getTransactionByAccountCountObserve = (accountId: string) =>
-  database
-    .get<TransactionModel>(TRANSACTIONS)
-    .query(Q.where('accountId', accountId))
-    .observeCount();
-
-export const getTransactionsByDateObserve = ({ date, accountId }: GetTransactionByDate) => {
-  const startOfDay = new Date(new Date(date).setUTCHours(0, 0, 0, 0)).getTime();
-  const endOfDay = new Date(new Date(date).setUTCHours(23, 59, 59, 999)).getTime();
-  return database
-    .get<TransactionModel>(TRANSACTIONS)
-    .query(
-      Q.where('accountId', accountId),
-      Q.and(Q.where('dateTimeAt', Q.between(startOfDay, endOfDay))),
-      Q.sortBy('dateTimeAt', Q.desc),
-    )
-    .observe();
-};
-
 /** read */
-/** querying Transaction by multi condition  */
-export const getTransactionLisGroupByDate = async ({ accountId }: GetTransactionProps) => {
-  try {
-    const query = `SELECT distinct 
+/** query list transaction group by date  */
+export const queryTransactionLisGroupByDate = async (accountId: string) => {
+  const query = `SELECT DISTINCT 
       strftime('%Y-%m-%d', datetime(dateTimeAt/1000, 'unixepoch')) AS date 
-      FROM ${TRANSACTIONS} 
-      WHERE accountId='${accountId}' AND _status is not 'deleted' 
+      FROM ${TRANSACTIONS}
+      WHERE accountId='${accountId}' AND _status != 'deleted'
       ORDER BY dateTimeAt DESC 
     `;
-    return await database.read(async () => {
-      const dateList = await database
-        .get<TransactionModel>(TRANSACTIONS)
-        .query(Q.unsafeSqlQuery(query))
-        .unsafeFetchRaw();
-      return dateList;
-    });
-  } catch (error) {
-    console.log(error, 'read getTransactionLisGroupByDate err');
-  }
+  return await database.read(async () => {
+    return await database
+      .get<TransactionModel>(TRANSACTIONS)
+      .query(Q.unsafeSqlQuery(query))
+      .unsafeFetchRaw();
+  });
+};
+
+export const queryTransactionsByDate = async ({ date, accountId }: GetTransactionByDate) => {
+  const startOfDay = new Date(new Date(date).setUTCHours(0, 0, 0, 0)).getTime();
+  const endOfDay = new Date(new Date(date).setUTCHours(23, 59, 59, 999)).getTime();
+  const query = `SELECT tran.*, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName
+      FROM ${TRANSACTIONS} tran
+      LEFT JOIN ${TRANSACTION_CATEGORY} tCategory ON tCategory.id=tran.categoryId
+      WHERE tran.accountId='${accountId}' AND tran._status != 'deleted' AND tran.dateTimeAt BETWEEN ${startOfDay} AND ${endOfDay}
+      ORDER BY tran.dateTimeAt DESC 
+    `;
+  return await database.read(async () => {
+    return await database
+      .get<TransactionModel>(TRANSACTIONS)
+      .query(Q.unsafeSqlQuery(query))
+      .unsafeFetchRaw();
+  });
 };
 
 export const queryTransactionById = async (id: string) => {
@@ -84,7 +74,7 @@ export const queryAddNewTransaction = async (transaction: TTransactions) => {
     });
     await writer.callWriter(() => {
       queryUpdateUseCountTransactionCategory(res.categoryId);
-      // queryAddBalance({
+      // queryAddTransactionBalance({
       //   accountId: res.accountId,
       //   transactionId: res.id,
       // });

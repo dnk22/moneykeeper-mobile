@@ -78,14 +78,14 @@ export default appSchema({
         { name: 'excludeReport', type: 'boolean', isOptional: true },
         { name: 'attachment', type: 'string', isOptional: true },
         { name: 'userId', type: 'string', isOptional: true },
-        { name: 'created_at', type: 'number' },
-        { name: 'updated_at', type: 'number' },
         { name: 'giver', type: 'string', isOptional: true },
         { name: 'payee', type: 'string', isOptional: true },
         // lend and borrow
         { name: 'relatedPerson', type: 'string', isOptional: true },
         // transfer
         { name: 'toAccountId', type: 'string', isOptional: true },
+        { name: 'created_at', type: 'number' },
+        { name: 'updated_at', type: 'number' },
       ],
     }),
     tableSchema({

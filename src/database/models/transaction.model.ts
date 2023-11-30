@@ -7,7 +7,7 @@ export default class TransactionModel extends Model {
   static table = TRANSACTIONS;
 
   static associations: Associations = {
-    accounts: { type: 'belongs_to', key: 'accountId' },
+    accounts: { type: 'belongs_to', key: 'id' },
   };
 
   @field('amount') amount!: number;
@@ -19,11 +19,11 @@ export default class TransactionModel extends Model {
   @date('dateTimeAt') dateTimeAt!: Date;
   @field('location') location!: string;
   @text('eventName') eventName!: string;
+  @field('fee') fee!: number;
+  @field('feeType') feeType!: string;
   @field('giver') giver!: string;
   @field('payee') payee!: string;
   @field('relatedPerson') relatedPerson!: string;
-  @field('fee') fee!: number;
-  @field('feeType') feeType!: string;
   @field('excludeReport') excludeReport!: boolean;
   @field('attachment') attachment!: string;
   @field('userId') userId!: string;

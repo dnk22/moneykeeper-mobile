@@ -36,7 +36,7 @@ function Item({ account, onActionPress }: ItemProps) {
               {account.accountName}
             </RNText>
             <RNText numberOfLines={1} style={styles.itemSubTitle}>
-              {formatNumber(account.closingAmount) + ' ₫'}
+              {formatNumber(account.closingAmount, true)}
             </RNText>
           </View>
           <PressableHaptic

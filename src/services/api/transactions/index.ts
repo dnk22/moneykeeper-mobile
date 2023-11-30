@@ -2,6 +2,8 @@ import {
   queryAddNewTransaction,
   queryDeleteTransactionById,
   queryTransactionById,
+  queryTransactionLisGroupByDate,
+  queryTransactionsByDate,
   queryUpdateTransaction,
 } from 'database/querying';
 import { TTransactions } from 'database/types';
@@ -32,14 +34,35 @@ export const getTransactionById = async (id: string) => {
     };
   }
 };
+
 export const deleteTransactionById = async (id: string) => {
   try {
     return await queryDeleteTransactionById(id);
   } catch (error) {
-    console.log(error, 'deleteTransactionById err');
     return {
       success: false,
       error: 'Có lỗi, vui lòng thử lại.',
+    };
+  }
+};
+
+export const getTransactionLisGroupByDate = async (accountId: string) => {
+  try {
+    return await queryTransactionLisGroupByDate(accountId);
+  } catch (error) {
+    return {
+      success: false,
+      error,
+    };
+  }
+};
+export const getTransactionByDate = async (accountId: string, date: string) => {
+  try {
+    return await queryTransactionsByDate({ accountId, date });
+  } catch (error) {
+    return {
+      success: false,
+      error,
     };
   }
 };

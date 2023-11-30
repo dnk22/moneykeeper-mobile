@@ -13,11 +13,11 @@ export const roundMaxFixed = (num: number, decimals: number): number => {
   return Number(Math.round(Number(String(num + 'e' + decimals))) + 'e-' + decimals);
 };
 
-export const formatNumber = (num: number | string, comma = '.') => {
+export const formatNumber = (num: number | string, isShowPrefix = false, comma = '.') => {
   if (typeof num !== 'number' && typeof num !== 'string') {
-    return 0;
+    return `0${isShowPrefix ? ' ₫' : ''}`;
   }
-  return String(num).replace(/(\d)(?=(\d{3})+\b)/g, `$1${comma}`);
+  return String(num).replace(/(\d)(?=(\d{3})+\b)/g, `$1${comma}`) + `${isShowPrefix ? ' ₫' : ''}`;
 };
 
 /**
@@ -30,21 +30,6 @@ export function isNonEmptyNumber(n: number | undefined | null) {
     return false;
   }
   return true;
-}
-
-export function formatThousandNumber(
-  num: number,
-  decimalSeparator: string,
-  thousandSeparator: string,
-): string {
-  const nums = num.toString().split('.');
-  const n = nums[0];
-
-  const res = n.replace(/\d(?=(?:\d{3})+(?:\.|$))/g, (v) => {
-    return v + thousandSeparator;
-  });
-
-  return res + (nums.length > 1 ? decimalSeparator + nums[1] : '');
 }
 
 export const calculateValue = (value: string) => {

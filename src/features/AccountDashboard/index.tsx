@@ -79,7 +79,8 @@ function Accounts() {
         <View style={styles.totalBalance}>
           <RNText style={styles.totalCurrency}>{`Tổng tiền: ${formatNumber(
             getTotalMoneyInAllAccount,
-          )} ₫`}</RNText>
+            true,
+          )}`}</RNText>
         </View>
         <View style={{ gap: 10, paddingHorizontal: 5 }}>
           <AccountList

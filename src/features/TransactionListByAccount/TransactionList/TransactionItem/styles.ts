@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     borderColor: '#d3d3d3',
   },
   transactionCategoryInfo: {
-    flex: 4,
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: 5,
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
   amountInfo: {
     flex: 1,
     alignItems: 'flex-end',
+    rowGap: 6,
   },
 });
 

@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import { Alert, View } from 'react-native';
 import { RNText, SvgIcon, SwipeableComponent, TouchableHighlightComponent } from 'components/index';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
-import { deleteTransactionById, getTransactionCategoryById } from 'database/querying';
 import { useNavigation } from '@react-navigation/native';
 import { AccountStackParamListProps } from 'navigation/types';
 import { ACCOUNT_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
 import { useCustomTheme } from 'resources/theme';
 import { TransactionModel } from 'database/models';
 import styles from './styles';
+import { deleteTransactionById } from 'services/api/transactions';
+import { formatNumber } from 'utils/math';
 
 type TransactionItemProps = {
   data: TransactionModel;
@@ -19,18 +20,6 @@ function TransactionItem({ data }: TransactionItemProps) {
   const tapPosition = useRef<number>(0);
   const navigation =
     useNavigation<AccountStackParamListProps<typeof ACCOUNT_DETAIL>['navigation']>();
-  const [transactionCategory, setTransactionCategory] = useState<TransactionCategoryModel>();
-
-  useEffect(() => {
-    if (data?.categoryId) {
-      getTransactionCategory(data?.categoryId);
-    }
-  }, [data?.categoryId]);
-
-  const getTransactionCategory = async (id: string) => {
-    const res = await getTransactionCategoryById(id);
-    setTransactionCategory(res);
-  };
 
   const onTransactionItemPress = (e: any) => {
     if (e.nativeEvent.locationX === tapPosition.current) {
@@ -72,9 +61,9 @@ function TransactionItem({ data }: TransactionItemProps) {
         >
           <View style={[styles.record, { backgroundColor: colors.surface }]}>
             <View style={styles.transactionCategoryInfo}>
-              <SvgIcon name={transactionCategory?.icon} />
+              <SvgIcon name={data?.categoryIcon} />
               <View>
-                <RNText>{transactionCategory?.categoryName}</RNText>
+                <RNText>{data?.categoryName}</RNText>
                 {data?.descriptions && (
                   <RNText color="gray" fontSize={11}>
                     {data.descriptions}
@@ -83,8 +72,10 @@ function TransactionItem({ data }: TransactionItemProps) {
               </View>
             </View>
             <View style={styles.amountInfo}>
-              <RNText>{data?.amount}</RNText>
-              <RNText>{data?.amount}</RNText>
+              <RNText>{formatNumber(data?.amount, true)}</RNText>
+              <RNText fontSize={13} color="gray">
+                {`(${formatNumber(data?.amount, true)})`}
+              </RNText>
             </View>
           </View>
         </TouchableHighlightComponent>

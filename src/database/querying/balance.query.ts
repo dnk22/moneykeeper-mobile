@@ -12,6 +12,14 @@ export const queryAddBalance = async (balance: TBalance) => {
   });
 };
 
+export const queryAddTransactionBalance = async (balance: TBalance) => {
+  return await database.write(async () => {
+    return await database.get<BalanceModel>(BALANCE).create((item) => {
+      Object.assign(item, balance);
+    });
+  });
+};
+
 export const queryUpdateBalanceAfterUpdateAccount = ({
   accountData,
 }: {

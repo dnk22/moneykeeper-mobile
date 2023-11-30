@@ -111,7 +111,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
   const onSubmit = (data: TTransactions) => {
     const requestData = {
       ...data,
-      amount: +data.amount,
+      amount: data.transactionType === TRANSACTION_TYPE.INCOME ? +data.amount : -data.amount,
     };
     updateTransaction({
       id: params?.transactionId,

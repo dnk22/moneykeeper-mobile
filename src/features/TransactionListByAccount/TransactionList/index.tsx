@@ -1,45 +1,34 @@
-import { memo, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { VirtualizedListComponent } from 'components/index';
-import {
-  getTransactionByAccountCountObserve,
-  getTransactionLisGroupByDate,
-} from 'database/querying';
 import HeaderItem from './HeaderItem';
-import { withObservables } from '@nozbe/watermelondb/react';
-
-import isEqual from 'react-fast-compare';
+import { getTransactionLisGroupByDate } from 'services/api/transactions';
 
 type TransactionListProps = {
   accountId: string;
-  transactionCount?: number;
 };
 type DataProps = {
   date: string;
 };
-function TransactionList({ accountId, transactionCount }: TransactionListProps) {
+
+function TransactionList({ accountId }: TransactionListProps) {
   const [data, setData] = useState<DataProps[]>([]);
 
   useEffect(() => {
     fetchTransactionByGroupDate();
-  }, [transactionCount]);
+  }, []);
 
-  const fetchTransactionByGroupDate = async () => {
-    const res = await getTransactionLisGroupByDate({
-      accountId,
-    });
-    if (res) {
+  const fetchTransactionByGroupDate = () => {
+    getTransactionLisGroupByDate(accountId).then((res) => {
       setData(res);
-    }
+    });
   };
 
   const renderItem = ({ item }: { item: DataProps }) => {
     const { date } = item;
-    return <HeaderItem item={date} accountId={accountId} />;
+    return <HeaderItem date={date} accountId={accountId} />;
   };
 
   return <VirtualizedListComponent data={data} renderItem={renderItem} id="date" />;
 }
 
-export default withObservables(['transactionCount'], ({ accountId }: TransactionListProps) => ({
-  transactionCount: getTransactionByAccountCountObserve(accountId),
-}))<any>(memo(TransactionList, isEqual));
+export default TransactionList;
