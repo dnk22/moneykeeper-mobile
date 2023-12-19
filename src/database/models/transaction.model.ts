@@ -1,14 +1,9 @@
 import { Model } from '@nozbe/watermelondb';
-import { Associations } from '@nozbe/watermelondb/Model';
 import { field, text, date, readonly } from '@nozbe/watermelondb/decorators';
 import { TRANSACTIONS } from 'database/constants';
 
 export default class TransactionModel extends Model {
   static table = TRANSACTIONS;
-
-  static associations: Associations = {
-    accounts: { type: 'belongs_to', key: 'id' },
-  };
 
   @field('amount') amount!: number;
   @field('transactionsType') transactionsType!: string;

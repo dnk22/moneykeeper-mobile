@@ -1,9 +1,11 @@
 import React from 'react';
-import { SafeAreaView, ScrollView, View } from 'react-native';
+import { Pressable, SafeAreaView, ScrollView, View } from 'react-native';
 import FinancialStatement from 'features/Dashboard/Widgets/FinancialStatement';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 import RecentTransactions from 'features/Dashboard/Widgets/RecentTransactions';
+import Text from 'components/Text';
+import { queryGetAllBalance } from 'database/querying';
 
 function Dashboard() {
   const { colors } = useCustomTheme();
@@ -13,10 +15,16 @@ function Dashboard() {
         <FinancialStatement />
         <ScrollView style={{ paddingTop: 160 }}>
           <RecentTransactions />
+          <Pressable
+            style={{ width: 50, height: 50, backgroundColor: 'red' }}
+            onPress={() => {
+              queryGetAllBalance();
+            }}
+          >
+            <Text>call</Text>
+          </Pressable>
         </ScrollView>
       </View>
-      {/* <View style={styles.oval1} />
-      <View style={styles.oval2} /> */}
     </SafeAreaView>
   );
 }

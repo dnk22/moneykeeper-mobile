@@ -1,4 +1,4 @@
-import { AccountModel, BalanceModel } from 'database/models';
+import { AccountModel } from 'database/models';
 import { TAccount } from 'database/types';
 import { ACCOUNTS, BALANCE } from 'database/constants';
 import { database } from 'database/index';
@@ -20,7 +20,7 @@ export const getAccountCountObserve = (isActive: boolean) =>
   database.get<AccountModel>(ACCOUNTS).query(Q.where('isActive', isActive)).observeCount();
 
 /** READ */
-export const queryAllAccount = ({ isActive = '', text = '', excludeId = '' }: TGetAllAccounts) =>
+export const queryAllAccount = ({ text = '', excludeId = '' }: TGetAllAccounts) =>
   database
     .get<AccountModel>(ACCOUNTS)
     .query(
@@ -30,11 +30,11 @@ export const queryAllAccount = ({ isActive = '', text = '', excludeId = '' }: TG
           LEFT JOIN (
             SELECT
               bal2.*,
-              MAX(bal2.transactionDateAt)
+              MAX(bal2.transactionDateAt),
+              MAX(bal2._id)
             FROM
-              ${BALANCE} bal2
-            GROUP BY
-              bal2.accountId
+            ${BALANCE} bal2
+            GROUP BY bal2.accountId
           ) bal ON bal.accountId = acc.id
           WHERE acc._status!='deleted' AND acc.id!='${excludeId}' AND acc.accountName LIKE '%${Q.sanitizeLikeString(
           text,
@@ -81,17 +81,13 @@ export const queryAccountById = async (id: string) => {
   }
 };
 
-export const getFirstAccount = async () => {
-  try {
-    return await database.read(async () => {
-      return await database
-        .get<AccountModel>(ACCOUNTS)
-        .query(Q.where('_status', Q.notEq('deleted')), Q.where('isActive', true), Q.take(1))
-        .fetch();
-    });
-  } catch (error) {
-    console.log(error, 'read first account err');
-  }
+export const queryGetFirstAccount = async () => {
+  return await database.read(async () => {
+    return await database
+      .get<AccountModel>(ACCOUNTS)
+      .query(Q.where('_status', Q.notEq('deleted')), Q.where('isActive', true), Q.take(1))
+      .fetch();
+  });
 };
 
 /** CREATE */

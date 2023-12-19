@@ -1,24 +1,40 @@
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import RNText from 'components/Text';
-import Submit from '../Submit';
+import { useCustomTheme } from 'resources/theme';
+import SvgIcon from 'components/SvgIcon';
+import Loading from 'components/Loading';
 import styles from './styles';
 
 type FormActionProps = {
   isShowDelete?: boolean;
   onSubmit?: () => void;
   onDelete?: () => void;
+  loading?: boolean;
 };
 
-function FormAction({ isShowDelete = false, onDelete, onSubmit }: FormActionProps) {
+function FormAction({ isShowDelete = false, onDelete, onSubmit, loading }: FormActionProps) {
+  const { colors } = useCustomTheme();
   return (
     <View style={styles.action}>
       {isShowDelete && (
         <TouchableHighlightComponent style={styles.buttonDel} onPress={onDelete}>
-          <RNText color="red">Xóa</RNText>
+          <>
+            {loading ? <Loading color={'red'} /> : <SvgIcon name="trash" color="red" />}
+            <RNText color="red">Xóa</RNText>
+          </>
         </TouchableHighlightComponent>
       )}
-      <Submit onPress={onSubmit} />
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={[styles.button, { backgroundColor: colors.primary }]}
+        onPress={onSubmit}
+      >
+        {loading ? <Loading color={'white'} /> : <SvgIcon name="doneCircle" color="white" />}
+        <RNText color="white" style={{ marginLeft: 5 }}>
+          Lưu
+        </RNText>
+      </TouchableOpacity>
     </View>
   );
 }

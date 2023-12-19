@@ -14,7 +14,7 @@ function AccountTab() {
       tabBar={(props) => <TabBar {...props} />}
       screenOptions={{
         lazy: true,
-        lazyPlaceholder: () => <Loading />,
+        lazyPlaceholder: () => <Loading style={{ flex: 1 }} />,
       }}
     >
       <Tab.Screen name={WALLET} options={{ title: 'Ví Tiền' }} component={Accounts} />

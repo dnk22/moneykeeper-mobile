@@ -47,10 +47,14 @@ function ItemSettingsModal({
 
   const onOk = () => {
     account?.id &&
-      deleteAccountById(account.id).then(() => {
-        onToggleModal();
-        onActionPressDone();
-      });
+      deleteAccountById(account.id)
+        .then(() => {
+          onToggleModal();
+          onActionPressDone();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
   };
 
   const onConfirmDelete = () =>

@@ -106,6 +106,7 @@ export default appSchema({
     tableSchema({
       name: BALANCE,
       columns: [
+        { name: '_id', type: 'number' },
         { name: 'transactionId', type: 'string', isOptional: true },
         { name: 'accountId', type: 'string', isOptional: true },
         { name: 'openAmount', type: 'number' },

@@ -1,9 +1,9 @@
-import { useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions, TTransactionsCategory } from 'database/types';
 import { InputField, RNText, SvgIcon, SwitchField, FormAction } from 'components/index';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import {
   ADD_TRANSACTION,
   CREATE_TRANSACTION_FROM_ACCOUNT,
@@ -17,8 +17,9 @@ import { TransactionParamListProps } from 'navigation/types';
 import { ButtonText } from 'navigation/elements';
 import { isEqual, isObject, size } from 'lodash';
 import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constant';
-import { updateTransaction } from 'services/api/transactions';
+import { deleteTransactionById, updateTransaction } from 'services/api/transactions';
 import { useFormContext } from 'react-hook-form';
+import showToast from 'utils/system/toast';
 import CategorySelect from '../common/CategorySelect';
 import DateTimeSelect from '../common/DateTimeSelect';
 import MoreDetail from '../common/MoreDetail';
@@ -29,7 +30,6 @@ import InputCalculator from '../common/InputCalculator';
 import { AddTransactionType } from '../type';
 import { TransactionContext, defaultValues } from '../constant';
 import styles from '../styles.common';
-import { deleteTransactionById } from 'database/querying';
 
 function ExpenseAndIncome({ params }: AddTransactionType) {
   const { colors } = useCustomTheme();
@@ -54,6 +54,27 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
     });
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      if (isEqual(name, CREATE_TRANSACTION_FROM_ACCOUNT)) {
+        setValue('dateTimeAt', new Date());
+      }
+    }, [name]),
+  );
+
+  useEffect(() => {
+    const noteText = getValues('descriptions') ? getValues('descriptions').split(':') : [''];
+    if (
+      (!getValues('descriptions') && getValues('relatedPerson')) ||
+      Object.values(lendBorrowData).includes(noteText[0].trim())
+    ) {
+      setValue(
+        'descriptions',
+        `${lendBorrowData[getValues('categoryId')]} : ${getValues('relatedPerson')}`,
+      );
+    }
+  }, [getValues('categoryId'), getValues('relatedPerson')]);
+
   /** start account function */
   const renderIfLendBorrow = () => {
     return Boolean(
@@ -69,7 +90,14 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
 
   const onDeleteTransaction = () => {
     if (params?.transactionId) {
-      deleteTransactionById(params.transactionId).then(() => navigation.goBack());
+      deleteTransactionById(params.transactionId)
+        .then(() => navigation.goBack())
+        .catch((err) =>
+          showToast({
+            type: 'error',
+            text2: err,
+          }),
+        );
     }
   };
 
@@ -116,21 +144,28 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
     updateTransaction({
       id: params?.transactionId,
       data: requestData,
-    }).then(() => {
-      // reset form state
-      reset({
-        ...defaultValues,
-        accountId: data?.accountId,
-        transactionType: data?.transactionType,
+    })
+      .then(() => {
+        // reset form state
+        reset({
+          ...defaultValues,
+          accountId: data?.accountId,
+          transactionType: data?.transactionType,
+        });
+        navigation.setParams({
+          categoryId: '',
+        });
+        if (navigation.canGoBack() && isEqual(name, CREATE_TRANSACTION_FROM_ACCOUNT)) {
+          // navigate to previous screen
+          navigation.goBack();
+        }
+      })
+      .catch(({ error }) => {
+        showToast({
+          type: 'error',
+          text2: error,
+        });
       });
-      navigation.setParams({
-        categoryId: '',
-      });
-      if (navigation.canGoBack() && isEqual(name, CREATE_TRANSACTION_FROM_ACCOUNT)) {
-        // navigate to previous screen
-        navigation.goBack();
-      }
-    });
   };
 
   return (
@@ -140,6 +175,8 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
         <CategorySelect onPress={handleOnCategoryPress} />
         {renderIfLendBorrow() && watch('categoryId') && (
           <RelatedPersonSelect
+            required
+            fieldName="relatedPerson"
             title={
               [
                 TRANSACTION_LEND_BORROW_NAME.BORROW,
@@ -151,7 +188,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
           />
         )}
         <View style={styles.itemGroup}>
-          <SvgIcon name="textWord" style={styles.iconShadow} />
+          <SvgIcon name="textWord" color={styles.iconShadow.color} />
           <View style={styles.groupContent}>
             <InputField
               name="descriptions"
@@ -175,24 +212,18 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           {!renderIfLendBorrow() && (
             <>
+              <RelatedPersonSelect
+                fieldName={
+                  watch('transactionType') === TRANSACTION_TYPE.EXPENSE ? 'giver' : 'payee'
+                }
+                title={
+                  watch('transactionType') === TRANSACTION_TYPE.EXPENSE
+                    ? 'Chi cho ai'
+                    : 'Nhận từ ai'
+                }
+              />
               <View style={styles.itemGroup}>
-                <SvgIcon name="people" style={styles.iconShadow} />
-                <View style={styles.groupContent}>
-                  <InputField
-                    name={watch('transactionType') === TRANSACTION_TYPE.EXPENSE ? 'giver' : 'payee'}
-                    control={control}
-                    placeholder={
-                      watch('transactionType') === TRANSACTION_TYPE.EXPENSE
-                        ? 'Chi cho ai'
-                        : 'Nhận từ ai'
-                    }
-                    style={styles.formInput}
-                    maxLength={50}
-                  />
-                </View>
-              </View>
-              <View style={styles.itemGroup}>
-                <SvgIcon name="camp" style={styles.iconShadow} />
+                <SvgIcon name="camp" color={styles.iconShadow.color} />
                 <View style={styles.groupContent}>
                   <InputField
                     name="eventName"
@@ -206,7 +237,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
             </>
           )}
           <View style={styles.itemGroup}>
-            <SvgIcon name="map" style={styles.iconShadow} />
+            <SvgIcon name="map" color={styles.iconShadow.color} />
             <View style={styles.groupContent}>
               <InputField
                 name="location"

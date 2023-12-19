@@ -31,7 +31,7 @@ function TransactionCategoryTapBar({ navigation, route }: any) {
   const tabBarOptions = {
     tabBarPressOpacity: 0.7,
     lazy: true,
-    lazyPlaceholder: () => <Loading />,
+    lazyPlaceholder: () => <Loading style={{ flex: 1 }} />,
     tabBarStyle: { backgroundColor: colors.surface },
   };
 

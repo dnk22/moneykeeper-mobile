@@ -1,14 +1,14 @@
 import { Model } from '@nozbe/watermelondb';
 import { Associations } from '@nozbe/watermelondb/Model';
 import { field, text, date, readonly, children } from '@nozbe/watermelondb/decorators';
-import { ACCOUNTS } from 'database/constants';
+import { ACCOUNTS, BALANCE, TRANSACTIONS } from 'database/constants';
 
 export default class AccountModel extends Model {
   static table = ACCOUNTS;
 
   static associations: Associations = {
-    transactions: { type: 'has_many', foreignKey: 'id' },
-    balance: { type: 'has_many', foreignKey: 'id' },
+    [TRANSACTIONS]: { type: 'has_many', foreignKey: 'accountId' },
+    [BALANCE]: { type: 'has_many', foreignKey: 'accountId' },
   };
 
   @text('accountName') accountName!: string;
@@ -44,5 +44,13 @@ export default class AccountModel extends Model {
   @field('creditCardStatementDay') creditCardStatementDay!: number;
   @field('creditCardDayAfterStatement') creditCardDayAfterStatement!: number;
 
-  @children('transaction') transaction!: any;
+  @children(TRANSACTIONS) financeTransaction!: any;
+  @children(BALANCE) balance!: any;
+
+  async markAsDeleted() {
+    // delete all transaction and balance record related
+    await this.balance.destroyAllPermanently();
+    await this.financeTransaction.destroyAllPermanently();
+    await super.markAsDeleted();
+  }
 }

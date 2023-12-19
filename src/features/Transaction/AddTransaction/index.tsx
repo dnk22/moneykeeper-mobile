@@ -8,7 +8,6 @@ import ExpenseAndIncome from './ExpenseAndIncome';
 import { TransactionParamListProps } from 'navigation/types';
 import { FormProvider, useForm } from 'react-hook-form';
 import { TTransactions } from 'database/types';
-import { getFirstAccount } from 'database/querying';
 import { ADD_TRANSACTION } from 'navigation/constants';
 import {
   getLendBorrowCategory,
@@ -20,6 +19,7 @@ import { TransactionContext, defaultValues } from './constant';
 import SelectTransactionType from './common/SelectTransactionType';
 import Transfer from './Transfer';
 import styles from './styles';
+import { getFirstAccount } from 'services/api/accounts';
 
 function AddTransactions() {
   const { colors } = useCustomTheme();
@@ -62,25 +62,34 @@ function AddTransactions() {
     });
   }, []);
 
-  // set default account when mode = add & accountId = null
-  useFocusEffect(
-    useCallback(() => {
-      if (!params?.transactionId && !watch('accountId')) {
-        setDefaultAccountInModeAdd();
-      }
-    }, [params?.transactionId, watch('accountId')]),
-  );
-
   useEffect(() => {
     if (params?.transactionId) {
       fetchDataInEditMode(params.transactionId);
     }
   }, [params?.transactionId]);
 
+  useEffect(() => {
+    if (params?.accountId) {
+      setValue('accountId', params.accountId);
+    }
+  }, [params?.accountId]);
+
+  // set default account when mode = add & accountId = null
+  useFocusEffect(
+    useCallback(() => {
+      if (!params?.transactionId && !watch('accountId') && !params?.accountId) {
+        setDefaultAccountInModeAdd();
+      }
+    }, [params?.transactionId, watch('accountId'), params?.accountId]),
+  );
+
   /** get transaction category selected data */
   useEffect(() => {
     if (params?.categoryId && params?.categoryId !== getValues('categoryId')) {
       setValue('categoryId', params?.categoryId);
+      navigation.setParams({
+        categoryId: undefined,
+      });
     }
   }, [params?.categoryId]);
 
@@ -107,9 +116,7 @@ function AddTransactions() {
     setValue('descriptions', '');
     setValue('toAccountId', '');
     if (
-      ![TRANSACTION_LEND_BORROW_NAME.BORROW, TRANSACTION_LEND_BORROW_NAME.LEND].includes(
-        item.name,
-      )
+      ![TRANSACTION_LEND_BORROW_NAME.BORROW, TRANSACTION_LEND_BORROW_NAME.LEND].includes(item.name)
     ) {
       setValue('relatedPerson', '');
     }
@@ -127,12 +134,9 @@ function AddTransactions() {
     setValue('categoryId', categoryId);
   };
 
-  const transactionTypeSelected = useCallback(
-    (values: any[]) => {
-      return values.includes(getValues('transactionType'));
-    },
-    [watch('transactionType')],
-  );
+  const transactionTypeSelected = (values: any[]) => {
+    return values.includes(getValues('transactionType'));
+  };
 
   return (
     <TransactionContext.Provider

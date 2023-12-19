@@ -1,22 +1,20 @@
-import { useEffect, useRef, useState } from 'react';
+import { memo, useContext, useRef } from 'react';
 import { Alert, View } from 'react-native';
 import { RNText, SvgIcon, SwipeableComponent, TouchableHighlightComponent } from 'components/index';
-import TransactionCategoryModel from 'database/models/transactionCategory.model';
 import { useNavigation } from '@react-navigation/native';
 import { AccountStackParamListProps } from 'navigation/types';
 import { ACCOUNT_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
 import { useCustomTheme } from 'resources/theme';
 import { TransactionModel } from 'database/models';
-import styles from './styles';
 import { deleteTransactionById } from 'services/api/transactions';
 import { formatNumber } from 'utils/math';
+import { isEqual } from 'lodash';
+import { TransactionContext } from '../const';
+import styles from './styles';
 
-type TransactionItemProps = {
-  data: TransactionModel;
-};
-
-function TransactionItem({ data }: TransactionItemProps) {
+function TransactionItem({ data }: { data: TransactionModel }) {
   const { colors } = useCustomTheme();
+  const { onRefresh } = useContext(TransactionContext);
   const tapPosition = useRef<number>(0);
   const navigation =
     useNavigation<AccountStackParamListProps<typeof ACCOUNT_DETAIL>['navigation']>();
@@ -29,7 +27,9 @@ function TransactionItem({ data }: TransactionItemProps) {
 
   const onOk = () => {
     if (data?.id) {
-      deleteTransactionById(data.id);
+      deleteTransactionById(data.id).then(() => {
+        onRefresh();
+      });
     }
   };
 
@@ -72,9 +72,11 @@ function TransactionItem({ data }: TransactionItemProps) {
               </View>
             </View>
             <View style={styles.amountInfo}>
-              <RNText>{formatNumber(data?.amount, true)}</RNText>
+              <RNText color={data?.amount < 0 ? 'red' : 'green'}>
+                {formatNumber(Math.abs(data?.amount), true)}
+              </RNText>
               <RNText fontSize={13} color="gray">
-                {`(${formatNumber(data?.amount, true)})`}
+                {`(${formatNumber(data?.closingAmount, true)})`}
               </RNText>
             </View>
           </View>
@@ -85,4 +87,4 @@ function TransactionItem({ data }: TransactionItemProps) {
   );
 }
 
-export default TransactionItem;
+export default memo(TransactionItem, isEqual);

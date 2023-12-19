@@ -114,5 +114,5 @@ export type TBalance = {
   openAmount?: number;
   movementAmount?: number;
   closingAmount?: number;
-  transactionDateAt: Date | null;
+  transactionDateAt: Date;
 };

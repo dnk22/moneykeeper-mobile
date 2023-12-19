@@ -53,7 +53,7 @@ const App = () => {
       <StatusBar />
       <BlurScreen />
       <Provider store={store}>
-        <PersistGate loading={<Loading />} persistor={persistor}>
+        <PersistGate loading={<Loading style={{ flex: 1 }} />} persistor={persistor}>
           <NavigationContainer theme={theme}>
             <BottomSheetModalProvider>
               <AppNavigators />

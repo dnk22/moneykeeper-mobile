@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { VirtualizedListComponent } from 'components/index';
-import HeaderItem from './HeaderItem';
 import { getTransactionLisGroupByDate } from 'services/api/transactions';
+import { useFocusEffect } from '@react-navigation/native';
+import HeaderItem from './HeaderItem';
+import { TransactionContext } from './const';
 
 type TransactionListProps = {
   accountId: string;
@@ -13,9 +15,11 @@ type DataProps = {
 function TransactionList({ accountId }: TransactionListProps) {
   const [data, setData] = useState<DataProps[]>([]);
 
-  useEffect(() => {
-    fetchTransactionByGroupDate();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchTransactionByGroupDate();
+    }, []),
+  );
 
   const fetchTransactionByGroupDate = () => {
     getTransactionLisGroupByDate(accountId).then((res) => {
@@ -28,7 +32,11 @@ function TransactionList({ accountId }: TransactionListProps) {
     return <HeaderItem date={date} accountId={accountId} />;
   };
 
-  return <VirtualizedListComponent data={data} renderItem={renderItem} id="date" />;
+  return (
+    <TransactionContext.Provider value={{ onRefresh: fetchTransactionByGroupDate }}>
+      <VirtualizedListComponent data={data} renderItem={renderItem} id="date" />
+    </TransactionContext.Provider>
+  );
 }
 
 export default TransactionList;

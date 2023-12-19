@@ -1,10 +1,9 @@
 import { database } from 'database/index';
-import { TRANSACTIONS, TRANSACTION_CATEGORY } from 'database/constants';
+import { BALANCE, TRANSACTIONS, TRANSACTION_CATEGORY } from 'database/constants';
 import { TransactionModel } from 'database/models';
 import { TTransactions } from 'database/types';
 import { Q } from '@nozbe/watermelondb';
-import { queryUpdateUseCountTransactionCategory } from './transactionsCategory.query';
-import { queryAddTransactionBalance } from './balance.query';
+import { queryAddBalance, queryGetLatestBalanceByDate } from './balance.query';
 
 export type GetTransactionByDate = {
   date: string;
@@ -12,7 +11,6 @@ export type GetTransactionByDate = {
 };
 
 /** observe */
-
 export const getTransactionByIdObserve = (id: string) =>
   database.get<TransactionModel>(TRANSACTIONS).findAndObserve(id);
 
@@ -36,11 +34,12 @@ export const queryTransactionLisGroupByDate = async (accountId: string) => {
 export const queryTransactionsByDate = async ({ date, accountId }: GetTransactionByDate) => {
   const startOfDay = new Date(new Date(date).setUTCHours(0, 0, 0, 0)).getTime();
   const endOfDay = new Date(new Date(date).setUTCHours(23, 59, 59, 999)).getTime();
-  const query = `SELECT tran.*, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName
+  const query = `SELECT tran.*, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount, bal._id 
       FROM ${TRANSACTIONS} tran
       LEFT JOIN ${TRANSACTION_CATEGORY} tCategory ON tCategory.id=tran.categoryId
+      LEFT JOIN ${BALANCE} bal ON bal.transactionId=tran.id
       WHERE tran.accountId='${accountId}' AND tran._status != 'deleted' AND tran.dateTimeAt BETWEEN ${startOfDay} AND ${endOfDay}
-      ORDER BY tran.dateTimeAt DESC 
+      ORDER BY tran.dateTimeAt DESC, bal._id DESC
     `;
   return await database.read(async () => {
     return await database
@@ -68,19 +67,30 @@ export const queryTransactionById = async (id: string) => {
  * add new transaction , if success then update useCount in transaction category
  */
 export const queryAddNewTransaction = async (transaction: TTransactions) => {
-  return await database.write(async (writer) => {
+  return await database.write(async () => {
     const res = await database.get<TransactionModel>(TRANSACTIONS).create((item) => {
       Object.assign(item, transaction);
     });
-    await writer.callWriter(() => {
-      queryUpdateUseCountTransactionCategory(res.categoryId);
-      // queryAddTransactionBalance({
-      //   accountId: res.accountId,
-      //   transactionId: res.id,
-      // });
-      return Promise.resolve(true);
-    });
     return res;
+  });
+};
+
+export const queryAddNewBalanceTransaction = async (transaction: TransactionModel) => {
+  const { closingAmount } = await queryGetLatestBalanceByDate(
+    transaction.accountId,
+    new Date(transaction.dateTimeAt).getTime(),
+  );
+  return await database.write(async (writer) => {
+    await writer.callWriter(() => {
+      return queryAddBalance({
+        accountId: transaction.accountId,
+        transactionId: transaction.id,
+        openAmount: closingAmount,
+        movementAmount: transaction.amount,
+        closingAmount: closingAmount + transaction.amount,
+        transactionDateAt: transaction.dateTimeAt,
+      });
+    });
   });
 };
 /** update */
@@ -107,16 +117,9 @@ export const queryUpdateTransaction = async ({ id, data }: { id: string; data: T
 /** delete */
 
 export const queryDeleteTransactionById = async (id: string) => {
-  try {
-    return await database.write(async () => {
-      const res = await database.get<TransactionModel>(TRANSACTIONS).find(id);
-      await res.markAsDeleted();
-      return true;
-    });
-  } catch (error) {
-    return {
-      status: false,
-      message: error,
-    };
-  }
+  return await database.write(async () => {
+    const res = await database.get<TransactionModel>(TRANSACTIONS).find(id);
+    await res.markAsDeleted();
+    return id;
+  });
 };

@@ -5,10 +5,11 @@ import { useCustomTheme } from 'resources/theme';
 import { formatDateStringLocal } from 'utils/date';
 import { isToday, isYesterday, parseISO } from 'date-fns';
 import { isArray, size } from 'lodash';
+import { getTransactionByDate } from 'services/api/transactions';
 import { ITEM_HEIGHT, MARGIN_TOP } from '../const';
 import TransactionItem from '../TransactionItem';
 import styles from './styles';
-import { getTransactionByDate } from 'services/api/transactions';
+import { useFocusEffect } from '@react-navigation/native';
 
 type HeaderItemProps = {
   date: string;
@@ -22,11 +23,13 @@ function HeaderItem({ date, accountId }: HeaderItemProps) {
   const formatDate = useCallback((format: string) => formatDateStringLocal(date, format), [date]);
   const transactionLength = size(transaction);
 
-  useEffect(() => {
-    getTransactionByDate(accountId, date).then((res) => {
-      setTransaction(res);
-    });
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getTransactionByDate(accountId, date).then((res) => {
+        setTransaction(res);
+      });
+    }, []),
+  );
 
   const formatDayOfTheWeek = () => {
     if (isToday(parseISO(date))) {
@@ -74,7 +77,7 @@ function HeaderItem({ date, accountId }: HeaderItemProps) {
       </View>
       {isArray(transaction) &&
         transaction.map((item) => {
-          return <TransactionItem data={item} key={item.id}/>;
+          return <TransactionItem data={item} key={item.id} />;
         })}
     </>
   );

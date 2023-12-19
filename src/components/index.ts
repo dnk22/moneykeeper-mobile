@@ -23,7 +23,6 @@ import VirtualizedListComponent from 'components/VirtualizedList';
 import Empty from 'components/Empty';
 import BottomSheet from 'components/BottomSheetModal';
 
-import Submit from 'components/common/Submit';
 import FormAction from 'components/common/FormAction';
 
 export {
@@ -48,7 +47,6 @@ export {
   CheckboxComponent,
   TouchableHighlightComponent,
   InputSearch,
-  Submit,
   VirtualizedListComponent,
   Empty,
   FormAction,

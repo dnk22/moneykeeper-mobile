@@ -2,12 +2,11 @@ import { memo } from 'react';
 import isEqual from 'react-fast-compare';
 import { Pressable, View } from 'react-native';
 import RNText from 'components/Text';
-import SvgIcon from 'components/SvgIcon';
-import styles from './styles';
-import { IconProps } from 'components/SvgIcon/const';
-import PressableHaptic from 'components/PressableHaptic';
 import { Control } from 'react-hook-form';
+import SvgIcon from 'components/SvgIcon';
+import PressableHaptic from 'components/PressableHaptic';
 import Form from './FORM';
+import styles from './styles';
 
 type SelectedProps = {
   title?: string;
@@ -21,6 +20,7 @@ type SelectedProps = {
   name?: string;
   control?: Control<any, any>;
   error?: any;
+  iconOpacity?: boolean;
 };
 
 function Selected({
@@ -35,13 +35,14 @@ function Selected({
   name,
   control,
   error,
+  iconOpacity = false,
 }: SelectedProps) {
   const isError = error && !Boolean(value);
   return (
     <>
       {name && <Form name={name} control={control} rules={{ required: required }} />}
       <PressableHaptic style={[styles.itemGroup]} onPress={onSelect}>
-        <SvgIcon name={icon} style={{ transform: [{ scale: 1.1 }] }} />
+        <SvgIcon name={icon} style={[iconOpacity ? { color: '#adb5bd' } : {}]} />
         <View style={styles.groupContent}>
           <View style={styles.title}>
             {value && isShowSubTitle && (

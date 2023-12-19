@@ -14,6 +14,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: 'red',
     borderWidth: 1,
+    flexDirection: 'row',
+    gap: 5,
+  },
+  button: {
+    flex: 1,
+    height: 50,
+    padding: 5,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
 });
 

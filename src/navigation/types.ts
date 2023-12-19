@@ -62,16 +62,18 @@ export type AccountStackParamList = {
   [CREATE_TRANSACTION_FROM_ACCOUNT]: {
     transactionId?: string;
     categoryId?: string;
+    accountId?: string;
   };
 };
 export type AccountStackParamListProps<T extends keyof AccountStackParamList> =
   NativeStackScreenProps<AccountStackParamList, T>;
 
-/** account stack navigation */
+/** transaction stack navigation */
 export type TransactionParamList = {
   [ADD_TRANSACTION]: {
     transactionId?: string;
     categoryId?: string;
+    accountId?: string;
   };
 };
 export type TransactionParamListProps<T extends keyof TransactionParamList> =
