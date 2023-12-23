@@ -17,9 +17,12 @@ export type TTransactions = {
   id: string;
   amount: number;
   transactionType: TRANSACTION_TYPE;
+  closingAmount: number;
+  categoryIcon?: any;
   categoryId: string;
+  categoryName?: string;
   descriptions?: string;
-  dateTimeAt: Date;
+  dateTimeAt: number;
   accountId: string;
   toAccountId: string;
   location?: string;
@@ -74,12 +77,12 @@ export type TAccount = {
   numberDayOfYear?: number;
 
   // credit card
-  creditCardLimit?: number;
-  creditCardIsReminder?: boolean;
+  creditCardLimit: number;
+  creditCardIsReminder: boolean;
   creditCardReminderList?: string;
-  creditCardPaymentDay?: number;
-  creditCardStatementDay?: number;
-  creditCardDayAfterStatement?: number;
+  creditCardPaymentDay: number;
+  creditCardStatementDay: number;
+  creditCardDayAfterStatement: number;
 
   createdAt?: Date;
   updatedAt?: Date;
@@ -114,5 +117,5 @@ export type TBalance = {
   openAmount?: number;
   movementAmount?: number;
   closingAmount?: number;
-  transactionDateAt: Date;
+  transactionDateAt: Date | null;
 };

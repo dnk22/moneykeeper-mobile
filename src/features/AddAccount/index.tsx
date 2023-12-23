@@ -14,12 +14,13 @@ import InputCalculator from 'features/Transaction/AddTransaction/common/InputCal
 import { ADD_ACCOUNT } from 'navigation/constants';
 import { AccountType } from 'utils/data';
 import { deleteAccountById, getAccountById, updateAccountDB } from 'services/api/accounts';
+import { showToast } from 'utils/system';
 import Notifications from './Notifications';
 import StatementModalPicker from './StatementModalPicker';
 import AccountTypeSelect from './AccountTypeSelect';
 import AccountBankSelect from './AccountBankSelect';
 import styles from './styles';
-import showToast from 'utils/system/toast';
+import { get } from 'lodash';
 
 const defaultValues = {
   accountName: '',
@@ -153,11 +154,11 @@ function AddAccount() {
   const onHandleSubmit = (data: TAccount) => {
     const requestData = {
       ...data,
-      initialAmount: +data?.initialAmount,
-      creditCardLimit: +data?.creditCardLimit,
+      initialAmount: get(data, 'initialAmount', 0),
+      creditCardLimit: get(data, 'creditCardLimit', 0),
       accountLogo: bankLogo.current || accountTypeLogo.current || AccountType[0].icon,
     };
-    updateAccountDB({ id: params?.accountId, data: requestData })
+    updateAccountDB({ id: params?.accountId, account: requestData })
       .then(() => {
         navigation.goBack();
       })
@@ -197,10 +198,20 @@ function AddAccount() {
         extraScrollHeight={60}
       >
         {!isCreditCard && (
-          <InputCalculator text="Số dư ban đầu" name="initialAmount" control={control} />
+          <InputCalculator
+            text="Số dư ban đầu"
+            name="initialAmount"
+            control={control}
+            inputTextColor="#007FFF"
+          />
         )}
         {isCreditCard && (
-          <InputCalculator text="Hạn mức thẻ" name="creditCardLimit" control={control} />
+          <InputCalculator
+            text="Hạn mức thẻ"
+            name="creditCardLimit"
+            control={control}
+            inputTextColor="#007FFF"
+          />
         )}
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={styles.itemGroup}>

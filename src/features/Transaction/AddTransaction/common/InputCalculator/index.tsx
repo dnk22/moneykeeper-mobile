@@ -184,7 +184,7 @@ function InputCalculator({
           selectTextOnFocus
           allowFontScaling={false}
           keyboardType="decimal-pad"
-          value={value.toString()}
+          value={Math.abs(value).toString()}
           style={[styles.amountInput, { color: inputTextColor, borderColor: colors.divider }]}
           onChangeText={onHandleInputChange}
           onBlur={handleOnBlurInput}

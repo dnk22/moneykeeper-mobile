@@ -1,7 +1,11 @@
 import { StyleSheet } from 'react-native';
+import { CONTAINER_PADDING } from 'share/dimensions';
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 5 },
+  container: {
+    flex: 1,
+    padding: CONTAINER_PADDING,
+  },
   createButton: {
     zIndex: 5,
     position: 'absolute',

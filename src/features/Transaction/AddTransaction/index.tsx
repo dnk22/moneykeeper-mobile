@@ -50,7 +50,7 @@ function AddTransactions() {
         />
       ),
     });
-  }, [watch('categoryId'), watch('transactionType'), lendBorrowData]);
+  }, [watch('categoryId'), watch('transactionType').toString(), lendBorrowData]);
 
   useEffect(() => {
     getLendBorrowCategory().then((res: any[]) => {

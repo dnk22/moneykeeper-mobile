@@ -49,3 +49,30 @@ export const groupDataByValue = (data: any) => {
   });
   return Object.values(groupedData);
 };
+
+
+function convertDataToQuery(data: TTransactions[]) {
+  // Extract unique id values from the data array
+  const uniqueIds = data.map((record) => `'${record.id}'`);
+  // Define the common conditions for the WHERE clause
+  const commonConditions = `id IN (${uniqueIds.join(', ')})`;
+  // Start building the SQL query
+  let updateQuery = `UPDATE ${BALANCE} SET `;
+
+  data.forEach((record, index) => {
+    const { id, closingAmount, transactionDateAt } = record;
+    // Construct the CASE statement for each record
+    const caseStatement = `CASE WHEN id = ${id} THEN ${closingAmount} END`;
+    // Add a comma and space after the SET if not the first record
+    if (index !== 0) {
+      updateQuery += ', ';
+    }
+    // Add the cod_user field with the CASE statement
+    updateQuery += `cod_user = COALESCE(${caseStatement}, cod_user)`;
+  });
+
+  // Add the common conditions to the WHERE clause
+  updateQuery += ` WHERE ${commonConditions};`;
+
+  console.log(updateQuery);
+}

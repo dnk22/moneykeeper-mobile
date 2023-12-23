@@ -19,7 +19,7 @@ import { isEqual, isObject, size } from 'lodash';
 import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constant';
 import { deleteTransactionById, updateTransaction } from 'services/api/transactions';
 import { useFormContext } from 'react-hook-form';
-import showToast from 'utils/system/toast';
+import { showToast } from 'utils/system';
 import CategorySelect from '../common/CategorySelect';
 import DateTimeSelect from '../common/DateTimeSelect';
 import MoreDetail from '../common/MoreDetail';
@@ -56,10 +56,10 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
 
   useFocusEffect(
     useCallback(() => {
-      if (isEqual(name, CREATE_TRANSACTION_FROM_ACCOUNT)) {
+      if (isEqual(name, CREATE_TRANSACTION_FROM_ACCOUNT) && !params?.transactionId) {
         setValue('dateTimeAt', new Date());
       }
-    }, [name]),
+    }, [name, params?.transactionId]),
   );
 
   useEffect(() => {
@@ -136,16 +136,26 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
     setValue('accountId', '');
   };
 
+  const getInputCalculatorColor = () => {
+    return getValues('transactionType') === TRANSACTION_TYPE.INCOME ? 'green' : 'red';
+  };
+
   const onSubmit = (data: TTransactions) => {
     const requestData = {
       ...data,
-      amount: data.transactionType === TRANSACTION_TYPE.INCOME ? +data.amount : -data.amount,
+      amount:
+        data.transactionType === TRANSACTION_TYPE.INCOME
+          ? Math.abs(+data.amount)
+          : -Math.abs(+data.amount),
     };
     updateTransaction({
       id: params?.transactionId,
       data: requestData,
     })
-      .then(() => {
+      .then(({ success }) => {
+        if (!success) {
+          return;
+        }
         // reset form state
         reset({
           ...defaultValues,
@@ -161,6 +171,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
         }
       })
       .catch(({ error }) => {
+        console.log(error);
         showToast({
           type: 'error',
           text2: error,
@@ -170,7 +181,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
 
   return (
     <View>
-      <InputCalculator name="amount" control={control} />
+      <InputCalculator name="amount" control={control} inputTextColor={getInputCalculatorColor()} />
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
         <CategorySelect onPress={handleOnCategoryPress} />
         {renderIfLendBorrow() && watch('categoryId') && (

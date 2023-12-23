@@ -3,11 +3,8 @@ import { TAccount } from 'database/types';
 import { ACCOUNTS, BALANCE } from 'database/constants';
 import { database } from 'database/index';
 import { Q } from '@nozbe/watermelondb';
-import {
-  queryAddBalance,
-  queryDeleteBalanceAfterDeleteAccount,
-  queryUpdateBalanceAfterUpdateAccount,
-} from './balance.query';
+import { queryAddBalanceFromAccount, queryUpdateBalanceAfterUpdateAccount } from './balance.query';
+import { isEqual } from 'lodash';
 
 export type TGetAllAccounts = {
   isActive?: boolean;
@@ -93,25 +90,21 @@ export const queryGetFirstAccount = async () => {
 /** CREATE */
 export const queryAddAccount = async (account: TAccount) => {
   try {
-    return await database.write(async (writer) => {
+    return await database.write(async () => {
       const accountDB = await database.get<AccountModel>(ACCOUNTS).create((item) => {
         Object.assign(item, account);
       });
-      // create balance also
-      await writer.callWriter(() => {
-        return queryAddBalance({
-          accountId: accountDB.id,
-          openAmount: accountDB?.initialAmount,
-          closingAmount: accountDB?.initialAmount,
-          transactionDateAt: null,
-        });
-      });
-      return accountDB;
+      return {
+        accountId: accountDB.id,
+        openAmount: accountDB?.initialAmount,
+        closingAmount: accountDB?.initialAmount,
+        transactionDateAt: null,
+      };
     });
   } catch (error) {
     return Promise.reject({
       success: false,
-      error: 'Có lỗi trong quá trình thêm mới tài khoản.',
+      error: 'Có lỗi trong quá trình tạo tài khoản.',
     });
   }
 };
@@ -119,19 +112,19 @@ export const queryAddAccount = async (account: TAccount) => {
 /** UPDATE */
 export const queryUpdateAccount = async ({ id, account }: { id: string; account: TAccount }) => {
   try {
-    return await database.write(async (writer) => {
+    return await database.write(async () => {
       const res = await database.get<AccountModel>(ACCOUNTS).find(id);
-      const isUpdateBalance = account.initialAmount !== res.initialAmount;
+      const isUpdateBalance =
+        !isEqual(account.initialAmount, res.initialAmount) ||
+        !isEqual(account.creditCardLimit, res.creditCardLimit);
       await res.update((item) => {
         Object.assign(item, account);
       });
-      // check if new initialAmount, update balance also
-      if (isUpdateBalance) {
-        await writer.callWriter(() => {
-          return queryUpdateBalanceAfterUpdateAccount({ accountData: res });
-        });
-      }
-      return res;
+      // check if has new initialAmount, update balance also
+      return {
+        isUpdateBalance,
+        data: res,
+      };
     });
   } catch (error) {
     return Promise.reject({
@@ -158,13 +151,9 @@ export const queryChangeAccountStatusById = async (id: string) => {
 };
 
 /** DELETE */
-
 export const queryDeleteAccount = async (id: string) => {
-  return await database.write(async (writer) => {
-    (await database.get<AccountModel>(ACCOUNTS).find(id)).markAsDeleted();
-    return await writer.callWriter(() => {
-      return queryDeleteBalanceAfterDeleteAccount(id);
-    });
+  return await database.write(async () => {
+    return (await database.get<AccountModel>(ACCOUNTS).find(id)).markAsDeleted();
   });
 };
 

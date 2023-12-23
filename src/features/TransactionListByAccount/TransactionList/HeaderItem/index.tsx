@@ -1,33 +1,48 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { RNText } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { formatDateStringLocal } from 'utils/date';
 import { isToday, isYesterday, parseISO } from 'date-fns';
-import { isArray, size } from 'lodash';
+import { isArray, isEmpty, isEqual as isEqualLodash, size } from 'lodash';
 import { getTransactionByDate } from 'services/api/transactions';
-import { ITEM_HEIGHT, MARGIN_TOP } from '../const';
+import { useFocusEffect } from '@react-navigation/native';
+import isEqual from 'react-fast-compare';
+import { formatNumber } from 'utils/math';
+import { TTransactions } from 'database/types';
+import { TRANSACTION_TYPE } from 'utils/constant';
+import { ITEM_HEIGHT, MARGIN_TOP } from 'share/dimensions';
 import TransactionItem from '../TransactionItem';
 import styles from './styles';
-import { useFocusEffect } from '@react-navigation/native';
 
 type HeaderItemProps = {
   date: string;
   accountId: string;
   accountObserve?: any;
+  onRefreshDate: () => void;
 };
 
-function HeaderItem({ date, accountId }: HeaderItemProps) {
+function HeaderItem({ date, accountId, onRefreshDate }: HeaderItemProps) {
   const { colors } = useCustomTheme();
-  const [transaction, setTransaction] = useState([]);
+  const [transaction, setTransaction] = useState<TTransactions[] | any[]>([]);
   const formatDate = useCallback((format: string) => formatDateStringLocal(date, format), [date]);
   const transactionLength = size(transaction);
 
+  const fetchTransactionInDay = useCallback(() => {
+    getTransactionByDate(accountId, date).then((res) => {
+      if (isEqualLodash(res, transaction)) {
+        return;
+      }
+      if (isEmpty(res)) {
+        onRefreshDate();
+      }
+      setTransaction(res);
+    });
+  }, []);
+
   useFocusEffect(
     useCallback(() => {
-      getTransactionByDate(accountId, date).then((res) => {
-        setTransaction(res);
-      });
+      fetchTransactionInDay();
     }, []),
   );
 
@@ -43,6 +58,15 @@ function HeaderItem({ date, accountId }: HeaderItemProps) {
   const parentLineHeight = useMemo(() => {
     return ITEM_HEIGHT * (transactionLength - 1) + MARGIN_TOP * transactionLength + ITEM_HEIGHT / 2;
   }, [transactionLength]);
+
+  const getTotalMoneyInDay = (itemKey: TRANSACTION_TYPE[]) => {
+    return transaction.reduce((prevItem, currentItem) => {
+      if (itemKey.includes(currentItem.transactionType)) {
+        return (prevItem += currentItem.amount || 0);
+      }
+      return prevItem;
+    }, 0);
+  };
 
   return (
     <>
@@ -70,17 +94,31 @@ function HeaderItem({ date, accountId }: HeaderItemProps) {
             </RNText>
           </View>
           <View style={styles.dayExpense}>
-            <RNText>Hôm nay</RNText>
-            <RNText>Hôm nay</RNText>
+            {!!getTotalMoneyInDay([TRANSACTION_TYPE.INCOME]) && (
+              <RNText color="green">
+                {formatNumber(getTotalMoneyInDay([TRANSACTION_TYPE.INCOME]), true)}
+              </RNText>
+            )}
+            {!!getTotalMoneyInDay([TRANSACTION_TYPE.EXPENSE]) && (
+              <RNText color="red">
+                {formatNumber(getTotalMoneyInDay([TRANSACTION_TYPE.EXPENSE]), true)}
+              </RNText>
+            )}
           </View>
         </View>
       </View>
       {isArray(transaction) &&
         transaction.map((item) => {
-          return <TransactionItem data={item} key={item.id} />;
+          return (
+            <TransactionItem
+              data={item}
+              key={item.id}
+              onRefreshTransactionList={fetchTransactionInDay}
+            />
+          );
         })}
     </>
   );
 }
 
-export default HeaderItem;
+export default memo(HeaderItem, isEqual);

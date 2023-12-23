@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { ITEM_HEIGHT, MARGIN_TOP } from '../const';
+import { CHILD_LINE_WIDTH, CONTAINER_PADDING, ITEM_HEIGHT, MARGIN_LEFT, MARGIN_TOP } from 'share/dimensions';
+import { SCREEN_WIDTH } from 'share/dimensions';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   swipe: {
-    width: '90%',
+    width: SCREEN_WIDTH - MARGIN_LEFT - CONTAINER_PADDING * 2 - CHILD_LINE_WIDTH,
     marginTop: MARGIN_TOP,
     borderRadius: 10,
     alignSelf: 'flex-end',
@@ -22,8 +23,8 @@ const styles = StyleSheet.create({
   childLine: {
     position: 'absolute',
     top: (ITEM_HEIGHT + MARGIN_TOP) / 2,
-    width: '5%',
-    left: '5%',
+    width: CHILD_LINE_WIDTH,
+    left: MARGIN_LEFT,
     borderStyle: 'dashed',
     borderWidth: 0.5,
     borderColor: '#d3d3d3',
@@ -32,12 +33,18 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    columnGap: 5,
+    columnGap: 10,
+  },
+  detailInfo: {
+    gap: 5,
+  },
+  textDescription: {
+    fontStyle: 'italic',
   },
   amountInfo: {
     flex: 1,
     alignItems: 'flex-end',
-    rowGap: 6,
+    rowGap: 5,
   },
 });
 

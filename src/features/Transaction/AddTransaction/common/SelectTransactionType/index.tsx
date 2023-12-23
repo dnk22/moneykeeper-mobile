@@ -27,7 +27,7 @@ function SelectTransactionType({
   currentType,
   onItemPress,
 }: SelectTransactionTypeProps) {
-  const prevActive = useRef(0);
+  const prevActive = useRef<any>(undefined);
   const [isActive, setIsActive] = useState<any>(0);
   const [isShowTransactionTypeModal, setIsShowTransactionTypeModal] = useState(false);
 
@@ -51,7 +51,7 @@ function SelectTransactionType({
 
   function renderItem({ item }: { item: TTransactionType }) {
     const onHandleTransactionTypeItemPress = () => {
-      if (+prevActive.current !== +item.id) {
+      if (prevActive.current !== +item.id) {
         prevActive.current = +item.id;
         setIsActive(item.id);
         onItemPress(item);

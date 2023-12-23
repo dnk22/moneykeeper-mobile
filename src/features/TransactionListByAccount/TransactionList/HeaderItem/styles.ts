@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { ITEM_HEIGHT } from '../const';
+import { ITEM_HEIGHT, MARGIN_LEFT } from 'share/dimensions';
 
 const styles = StyleSheet.create({
   item: {
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   parentLine: {
     zIndex: 2,
     position: 'absolute',
-    left: '5%',
+    left: MARGIN_LEFT,
     top: ITEM_HEIGHT,
     borderStyle: 'dashed',
     borderWidth: 0.6,

@@ -3,7 +3,6 @@ import { BALANCE, TRANSACTIONS, TRANSACTION_CATEGORY } from 'database/constants'
 import { TransactionModel } from 'database/models';
 import { TTransactions } from 'database/types';
 import { Q } from '@nozbe/watermelondb';
-import { queryAddBalance, queryGetLatestBalanceByDate } from './balance.query';
 
 export type GetTransactionByDate = {
   date: string;
@@ -31,7 +30,7 @@ export const queryTransactionLisGroupByDate = async (accountId: string) => {
   });
 };
 
-export const queryTransactionsByDate = async ({ date, accountId }: GetTransactionByDate) => {
+export const queryGetTransactionsListByDate = async ({ date, accountId }: GetTransactionByDate) => {
   const startOfDay = new Date(new Date(date).setUTCHours(0, 0, 0, 0)).getTime();
   const endOfDay = new Date(new Date(date).setUTCHours(23, 59, 59, 999)).getTime();
   const query = `SELECT tran.*, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount, bal._id 
@@ -68,28 +67,8 @@ export const queryTransactionById = async (id: string) => {
  */
 export const queryAddNewTransaction = async (transaction: TTransactions) => {
   return await database.write(async () => {
-    const res = await database.get<TransactionModel>(TRANSACTIONS).create((item) => {
+    return await database.get<TransactionModel>(TRANSACTIONS).create((item) => {
       Object.assign(item, transaction);
-    });
-    return res;
-  });
-};
-
-export const queryAddNewBalanceTransaction = async (transaction: TransactionModel) => {
-  const { closingAmount } = await queryGetLatestBalanceByDate(
-    transaction.accountId,
-    new Date(transaction.dateTimeAt).getTime(),
-  );
-  return await database.write(async (writer) => {
-    await writer.callWriter(() => {
-      return queryAddBalance({
-        accountId: transaction.accountId,
-        transactionId: transaction.id,
-        openAmount: closingAmount,
-        movementAmount: transaction.amount,
-        closingAmount: closingAmount + transaction.amount,
-        transactionDateAt: transaction.dateTimeAt,
-      });
     });
   });
 };
@@ -104,18 +83,19 @@ export const queryAddNewBalanceTransaction = async (transaction: TransactionMode
  *
  */
 export const queryUpdateTransaction = async ({ id, data }: { id: string; data: TTransactions }) => {
-  let useDiffCategory = false;
-  await database.write(async () => {
+  let isUpdateCountCategory = false;
+  let isUpdateBalance = false;
+  return await database.write(async () => {
     const res = await database.get<TransactionModel>(TRANSACTIONS).find(id);
-    useDiffCategory = res.categoryId !== data.categoryId;
+    isUpdateCountCategory = res.categoryId !== data.categoryId;
+    isUpdateBalance = res.amount !== data.amount;
     await res.update((item) => {
       Object.assign(item, data);
     });
-    if (!useDiffCategory) return;
+    return { isUpdateCountCategory, isUpdateBalance };
   });
 };
 /** delete */
-
 export const queryDeleteTransactionById = async (id: string) => {
   return await database.write(async () => {
     const res = await database.get<TransactionModel>(TRANSACTIONS).find(id);

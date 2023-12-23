@@ -1,20 +1,24 @@
-import { memo, useContext, useRef } from 'react';
+import { memo, useRef } from 'react';
 import { Alert, View } from 'react-native';
 import { RNText, SvgIcon, SwipeableComponent, TouchableHighlightComponent } from 'components/index';
 import { useNavigation } from '@react-navigation/native';
 import { AccountStackParamListProps } from 'navigation/types';
 import { ACCOUNT_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
 import { useCustomTheme } from 'resources/theme';
-import { TransactionModel } from 'database/models';
+import { TTransactions } from 'database/types';
 import { deleteTransactionById } from 'services/api/transactions';
 import { formatNumber } from 'utils/math';
-import { isEqual } from 'lodash';
-import { TransactionContext } from '../const';
+import isEqual from 'react-fast-compare';
 import styles from './styles';
 
-function TransactionItem({ data }: { data: TransactionModel }) {
+function TransactionItem({
+  data,
+  onRefreshTransactionList,
+}: {
+  data: TTransactions;
+  onRefreshTransactionList: () => void;
+}) {
   const { colors } = useCustomTheme();
-  const { onRefresh } = useContext(TransactionContext);
   const tapPosition = useRef<number>(0);
   const navigation =
     useNavigation<AccountStackParamListProps<typeof ACCOUNT_DETAIL>['navigation']>();
@@ -27,8 +31,8 @@ function TransactionItem({ data }: { data: TransactionModel }) {
 
   const onOk = () => {
     if (data?.id) {
-      deleteTransactionById(data.id).then(() => {
-        onRefresh();
+      deleteTransactionById(data).then(() => {
+        onRefreshTransactionList();
       });
     }
   };
@@ -62,10 +66,10 @@ function TransactionItem({ data }: { data: TransactionModel }) {
           <View style={[styles.record, { backgroundColor: colors.surface }]}>
             <View style={styles.transactionCategoryInfo}>
               <SvgIcon name={data?.categoryIcon} />
-              <View>
+              <View style={styles.detailInfo}>
                 <RNText>{data?.categoryName}</RNText>
                 {data?.descriptions && (
-                  <RNText color="gray" fontSize={11}>
+                  <RNText color="gray" fontSize={11} style={styles.textDescription}>
                     {data.descriptions}
                   </RNText>
                 )}

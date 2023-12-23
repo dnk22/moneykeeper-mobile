@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Pressable, PressableProps, View, GestureResponderEvent } from 'react-native';
 import isEqual from 'react-fast-compare';
-import { hapticFeedback } from 'utils/system/haptic';
+import { hapticFeedback } from 'utils/system';
 
 type baseType = PressableProps & React.RefAttributes<View>;
 

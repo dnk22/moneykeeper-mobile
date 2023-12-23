@@ -6,7 +6,7 @@ export default class TransactionModel extends Model {
   static table = TRANSACTIONS;
 
   @field('amount') amount!: number;
-  @field('transactionsType') transactionsType!: string;
+  @field('transactionType') transactionType!: number;
   @field('categoryId') categoryId!: string;
   @text('descriptions') descriptions!: string;
   @field('accountId') accountId!: string;
