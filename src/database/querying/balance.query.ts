@@ -9,7 +9,6 @@ import { handleError } from 'utils/axios';
 
 /** read  */
 export const queryGetLatestBalanceByDate = async (accountId: string, date: number) => {
-  console.log(date, 'date');
   const query = `SELECT closingAmount FROM ${BALANCE}
                 WHERE accountId='${accountId}'
                 AND (

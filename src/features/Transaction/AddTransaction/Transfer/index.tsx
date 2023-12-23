@@ -57,7 +57,6 @@ function Transfer({ params }: AddTransactionType) {
       amount: +data.amount,
       fee: +data?.fee,
     };
-    console.log(requestData, 'requestData');
   };
 
   const handleOnClearFee = () => {

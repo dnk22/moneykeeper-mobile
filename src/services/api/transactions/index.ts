@@ -19,7 +19,6 @@ export const getTransactionById = async (id: string) => {
   try {
     return await queryTransactionById(id);
   } catch (error) {
-    console.log(error, 'fetch getTransactionById err');
     return {
       success: false,
       error: 'Có lỗi, vui lòng thử lại.',

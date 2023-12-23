@@ -171,7 +171,6 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
         }
       })
       .catch(({ error }) => {
-        console.log(error);
         showToast({
           type: 'error',
           text2: error,
