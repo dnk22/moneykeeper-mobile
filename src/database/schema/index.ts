@@ -41,12 +41,12 @@ export default appSchema({
         { name: 'savingFromAccountId', type: 'string', isOptional: true },
         { name: 'numberDayOfYear', type: 'number', isOptional: true },
         // credit card
-        { name: 'numberDayOfYear', type: 'number', isOptional: true },
-        { name: 'creditCardIsReminder', type: 'boolean', isOptional: true },
-        { name: 'creditCardReminderList', type: 'string', isOptional: true },
-        { name: 'creditCardPaymentDay', type: 'number', isOptional: true },
-        { name: 'creditCardStatementDay', type: 'number', isOptional: true },
-        { name: 'creditCardDayAfterStatement', type: 'number', isOptional: true },
+        { name: 'creditCardLimit', type: 'number' },
+        { name: 'creditCardIsReminder', type: 'boolean' },
+        { name: 'creditCardReminderList', type: 'string' },
+        { name: 'creditCardPaymentDay', type: 'number' },
+        { name: 'creditCardStatementDay', type: 'number' },
+        { name: 'creditCardDayAfterStatement', type: 'number' },
       ],
     }),
     tableSchema({

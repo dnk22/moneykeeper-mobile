@@ -3,11 +3,11 @@ import { useNavigation } from '@react-navigation/native';
 import InputSelection from 'components/InputSelection';
 import { BankModel } from 'database/models';
 import { BANK_HOME_LIST, BANK_NAVIGATION } from 'navigation/constants';
-import { getBankById } from 'database/querying';
-import { BANK_TYPE } from 'utils/constant';
+import { ACCOUNT_CATEGORY_ID, BANK_TYPE } from 'utils/constant';
+import { getBankById } from 'services/api/banks';
 
 type AccountBankSelectProps = {
-  accountType: string;
+  accountType: ACCOUNT_CATEGORY_ID;
   value?: string;
   onDelete: () => void;
   onValueChange: (bank: BankModel) => void;
@@ -33,10 +33,10 @@ function AccountBankSelect({
   const onSelectBank = () => {
     let bankType = BANK_TYPE.BANK;
     switch (accountType) {
-      case '3':
+      case ACCOUNT_CATEGORY_ID.INVESTMENT:
         bankType = BANK_TYPE.INVESTMENT;
         break;
-      case '4':
+      case ACCOUNT_CATEGORY_ID.EWALLET:
         bankType = BANK_TYPE.WALLET;
         break;
       default:
@@ -50,7 +50,7 @@ function AccountBankSelect({
 
   const getInputBankPlaceHolder = () => {
     switch (accountType) {
-      case '4':
+      case ACCOUNT_CATEGORY_ID.EWALLET:
         return 'Chọn nhà cung cấp';
       default:
         return 'Chọn ngân hàng';

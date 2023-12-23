@@ -1,6 +1,6 @@
 /** read  */
 import { TSearchBankParams } from 'utils/types';
-import { getBanksDataLocal } from 'database/querying';
+import { getBanksDataLocal, queryGetBankById } from 'database/querying';
 
 export async function fetchBankData({ type, text }: TSearchBankParams) {
   const res = await getBanksDataLocal({ type, text });
@@ -9,4 +9,7 @@ export async function fetchBankData({ type, text }: TSearchBankParams) {
   } else {
     return [];
   }
+}
+export async function getBankById(id: string) {
+  return await queryGetBankById(id);
 }

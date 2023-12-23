@@ -47,7 +47,7 @@ export const getIsBankDataExist = async () => {
   }
 };
 
-export const getBankById = async (id: string) => {
+export const queryGetBankById = async (id: string) => {
   try {
     return await database.read(async () => {
       return await database.get<BankModel>(BANKS).find(id);

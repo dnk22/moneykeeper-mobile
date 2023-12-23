@@ -37,7 +37,7 @@ export default class AccountModel extends Model {
   @readonly @date('updated_at') updatedAt!: Date;
 
   //credit card
-  @field('numberDayOfYear') creditCardLimit!: number;
+  @field('creditCardLimit') creditCardLimit!: number;
   @field('creditCardIsReminder') creditCardIsReminder!: boolean;
   @field('creditCardReminderList') creditCardReminderList!: string;
   @field('creditCardPaymentDay') creditCardPaymentDay!: number;

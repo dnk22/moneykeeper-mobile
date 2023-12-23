@@ -21,6 +21,7 @@ import AccountTypeSelect from './AccountTypeSelect';
 import AccountBankSelect from './AccountBankSelect';
 import styles from './styles';
 import { get } from 'lodash';
+import { ACCOUNT_CATEGORY_ID } from 'utils/constant';
 
 const defaultValues = {
   accountName: '',
@@ -154,8 +155,9 @@ function AddAccount() {
   const onHandleSubmit = (data: TAccount) => {
     const requestData = {
       ...data,
-      initialAmount: get(data, 'initialAmount', 0),
-      creditCardLimit: get(data, 'creditCardLimit', 0),
+      initialAmount:
+        data.accountTypeId !== ACCOUNT_CATEGORY_ID.CREDITCARD ? +get(data, 'initialAmount', 0) : 0,
+      creditCardLimit: +get(data, 'creditCardLimit', 0),
       accountLogo: bankLogo.current || accountTypeLogo.current || AccountType[0].icon,
     };
     updateAccountDB({ id: params?.accountId, account: requestData })
