@@ -5,7 +5,7 @@ import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { ADD_ACCOUNT } from 'navigation/constants';
 import { useAppSelector } from 'store/index';
-import { TAccount } from 'database/types/index';
+import { TAccount } from 'database/types';
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import { getAccountData } from 'services/api/accounts';
 import { groupDataByValue } from 'utils/algorithm';

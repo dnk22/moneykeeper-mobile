@@ -51,9 +51,15 @@ export const getTransactionByDate = async (accountId: string, date: string) => {
 export const updateTransaction = async ({ id, data }: { id?: string; data: TTransactions }) => {
   try {
     if (!id) {
-      return queryAddNewTransaction(data).then(async (res) => {
-        await queryUpdateUseCountTransactionCategory(res.categoryId);
-        await queryAddNewBalanceTransaction(res);
+      return queryAddNewTransaction(data).then(async (transaction) => {
+        await queryUpdateUseCountTransactionCategory(transaction.categoryId);
+        queryAddNewBalanceTransaction(transaction).then(async (balance) => {
+          await queryCalculateAllBalanceAfterDate({
+            accountId: transaction.accountId,
+            date: new Date(transaction.dateTimeAt).getTime(),
+            openAmount: balance.closingAmount,
+          });
+        });
         return {
           success: true,
         };
@@ -61,18 +67,19 @@ export const updateTransaction = async ({ id, data }: { id?: string; data: TTran
     } else {
       delete data.id;
       return queryUpdateTransaction({ id, data }).then(
-        async ({ isUpdateCountCategory, isUpdateBalance }) => {
+        async ({ isUpdateCountCategory, isUpdateBalance }: any) => {
           if (isUpdateCountCategory) {
             await queryUpdateUseCountTransactionCategory(data.categoryId);
           }
           if (isUpdateBalance) {
-            await queryUpdateBalanceTransaction(data).then(async (balance) => {
-              console.log(balance, 'balance');
-              return await queryCalculateAllBalanceAfterDate({
-                accountId: data.accountId,
-                date: data.dateTimeAt,
-                openAmount: balance.closingAmount,
-              });
+            await queryUpdateBalanceTransaction({ ...data, id }).then(async (balance) => {
+              if (balance) {
+                return await queryCalculateAllBalanceAfterDate({
+                  accountId: data.accountId,
+                  date: new Date(data.dateTimeAt).getTime(),
+                  openAmount: balance.closingAmount,
+                });
+              }
             });
           }
           return {
@@ -81,7 +88,7 @@ export const updateTransaction = async ({ id, data }: { id?: string; data: TTran
         },
       );
     }
-  } catch (error) {
+  } catch ({ error }) {
     return Promise.reject({
       success: false,
       error,
@@ -93,15 +100,17 @@ export const updateTransaction = async ({ id, data }: { id?: string; data: TTran
 export const deleteTransactionById = async (transaction: TTransactions) => {
   try {
     return queryDeleteTransactionById(transaction.id).then(async (id) => {
-      queryDeleteBalanceById(id);
+      await queryDeleteBalanceById(id);
       await queryCalculateAllBalanceAfterDate({
         accountId: transaction.accountId,
         date: transaction.dateTimeAt,
         openAmount: transaction.closingAmount - transaction.amount,
       });
-      return true;
+      return {
+        success: true,
+      };
     });
   } catch (error) {
-    handleError({ error });
+    return handleError({ error });
   }
 };

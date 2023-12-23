@@ -3,6 +3,7 @@ import { VirtualizedListComponent } from 'components/index';
 import { getTransactionLisGroupByDate } from 'services/api/transactions';
 import { useFocusEffect } from '@react-navigation/native';
 import HeaderItem from './HeaderItem';
+import { isArray } from 'lodash';
 
 type TransactionListProps = {
   accountId: string;
@@ -22,7 +23,9 @@ function TransactionList({ accountId }: TransactionListProps) {
 
   const fetchTransactionByGroupDate = () => {
     getTransactionLisGroupByDate(accountId).then((res) => {
-      setData(res);
+      if (isArray(res)) {
+        setData(res);
+      }
     });
   };
 

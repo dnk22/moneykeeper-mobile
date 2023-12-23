@@ -10,6 +10,7 @@ import { deleteTransactionById } from 'services/api/transactions';
 import { formatNumber } from 'utils/math';
 import isEqual from 'react-fast-compare';
 import styles from './styles';
+import { showToast } from 'utils/system';
 
 function TransactionItem({
   data,
@@ -31,9 +32,18 @@ function TransactionItem({
 
   const onOk = () => {
     if (data?.id) {
-      deleteTransactionById(data).then(() => {
-        onRefreshTransactionList();
-      });
+      deleteTransactionById(data)
+        .then(({ success }) => {
+          if (success) {
+            onRefreshTransactionList();
+          }
+        })
+        .catch(({ error }) => {
+          showToast({
+            type: 'error',
+            text2: error,
+          });
+        });
     }
   };
 

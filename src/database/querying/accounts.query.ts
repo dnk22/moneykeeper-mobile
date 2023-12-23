@@ -3,7 +3,6 @@ import { TAccount } from 'database/types';
 import { ACCOUNTS, BALANCE } from 'database/constants';
 import { database } from 'database/index';
 import { Q } from '@nozbe/watermelondb';
-import { queryAddBalanceFromAccount, queryUpdateBalanceAfterUpdateAccount } from './balance.query';
 import { isEqual } from 'lodash';
 
 export type TGetAllAccounts = {
@@ -26,9 +25,9 @@ export const queryAllAccount = ({ text = '', excludeId = '' }: TGetAllAccounts) 
         `SELECT acc.*, bal.closingAmount FROM ${ACCOUNTS} acc
           LEFT JOIN (
             SELECT
-              bal2.*,
-              MAX(bal2.transactionDateAt),
-              MAX(bal2._id)
+              accountId,
+              closingAmount,
+              MAX(bal2.transactionDateAt)
             FROM
             ${BALANCE} bal2
             GROUP BY bal2.accountId

@@ -5,6 +5,7 @@ import { TTransactionsCategory } from 'database/types';
 import { TransactionCategoryData } from 'utils/data';
 import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constant';
 import { Q } from '@nozbe/watermelondb';
+import { handleError } from 'utils/axios';
 
 /** observe */
 export const queryExpenseIncomeParentObserve = (type: TRANSACTION_CATEGORY_TYPE) =>
@@ -247,16 +248,22 @@ export const queryUpdateTransactionCategory = async ({
 };
 
 export const queryUpdateUseCountTransactionCategory = async (id: string) => {
-  const date = new Date();
-  return await database.write(async () => {
-    const transactionCategory = await database
-      .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-      .find(id);
-    return await transactionCategory.update((item) => {
-      item.useCount = item.useCount + 1;
-      item.lastUseAt = date.getTime();
+  try {
+    const date = new Date();
+    return await database.write(async () => {
+      const transactionCategory = await database
+        .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
+        .find(id);
+      return await transactionCategory.update((item) => {
+        item.useCount = item.useCount + 1;
+        item.lastUseAt = date.getTime();
+      });
     });
-  });
+  } catch (error) {
+    return handleError({
+      error: 'UPD-COUNT-TRANS-CAT',
+    });
+  }
 };
 
 /** delete */

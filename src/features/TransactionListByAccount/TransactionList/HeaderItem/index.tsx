@@ -30,7 +30,7 @@ function HeaderItem({ date, accountId, onRefreshDate }: HeaderItemProps) {
 
   const fetchTransactionInDay = useCallback(() => {
     getTransactionByDate(accountId, date).then((res) => {
-      if (isEqualLodash(res, transaction)) {
+      if (!isArray(res) || isEqualLodash(res, transaction)) {
         return;
       }
       if (isEmpty(res)) {
@@ -38,7 +38,7 @@ function HeaderItem({ date, accountId, onRefreshDate }: HeaderItemProps) {
       }
       setTransaction(res);
     });
-  }, []);
+  }, [onRefreshDate, useCallback, date]);
 
   useFocusEffect(
     useCallback(() => {

@@ -23,6 +23,7 @@ function VirtualizedListComponent({
   return (
     <VirtualizedList
       data={data}
+      showsVerticalScrollIndicator={false}
       initialNumToRender={initialNumToRender}
       windowSize={windowSize}
       maxToRenderPerBatch={maxToRenderPerBatch}

@@ -26,16 +26,22 @@ export const queryGetLatestBalanceByDate = async (accountId: string, date: numbe
   });
 };
 export const queryGetAllBalanceAfterDate = async (accountId: string, date: number) => {
-  const query = `SELECT * FROM ${BALANCE}
+  try {
+    const query = `SELECT * FROM ${BALANCE}
                 WHERE accountId='${accountId}'
                 AND transactionDateAt > ${date}
                 ORDER BY transactionDateAt, _id`;
-  return await database.read(async () => {
-    return await database
-      .get<BalanceModel>(BALANCE)
-      .query(Q.unsafeSqlQuery(query))
-      .unsafeFetchRaw();
-  });
+    return await database.read(async () => {
+      return await database
+        .get<BalanceModel>(BALANCE)
+        .query(Q.unsafeSqlQuery(query))
+        .unsafeFetchRaw();
+    });
+  } catch (error) {
+    return handleError({
+      error: 'R-ALL-BAL',
+    });
+  }
 };
 
 /** create */
@@ -84,18 +90,28 @@ export const queryUpdateBalanceTransaction = async (transaction: TTransactions) 
     transaction.accountId,
     new Date(transaction.dateTimeAt).getTime(),
   );
-  console.log(closingAmount, 'closingAmount');
-  return await database.write(async () => {
-    return await database.get<BalanceModel>(BALANCE).create((item) => {
-      Object.assign(item, {
-        accountId: transaction.accountId,
-        openAmount: closingAmount,
-        movementAmount: transaction.amount,
-        closingAmount: closingAmount + transaction.amount,
-        transactionDateAt: transaction.dateTimeAt,
-      });
+  try {
+    return await database.write(async () => {
+      const currentBalance = await database
+        .get<BalanceModel>(BALANCE)
+        .query(Q.where('transactionId', transaction.id))
+        .fetch();
+      if (!isEmpty(currentBalance)) {
+        await currentBalance[0].update((bal) => {
+          bal.accountId = transaction.accountId;
+          bal.openAmount = closingAmount;
+          bal.movementAmount = transaction.amount;
+          bal.closingAmount = closingAmount + transaction.amount;
+          bal.transactionDateAt = new Date(transaction.dateTimeAt);
+        });
+      }
+      return currentBalance[0];
     });
-  });
+  } catch (error) {
+    return handleError({
+      error: 'UPD-BAL-TRANS',
+    });
+  }
 };
 
 export const queryUpdateBalanceAfterUpdateAccount = ({
@@ -118,7 +134,7 @@ export const queryUpdateBalanceAfterUpdateAccount = ({
       return true;
     });
   } catch (error) {
-    handleError({
+    return handleError({
       error: 'CR-BAL',
     });
   }
@@ -149,7 +165,7 @@ export const queryCalculateAllBalanceAfterDate = async ({
     const updateStatements: SQLiteQuery[] = newDataUpdate.map((record) => {
       const { id, openAmount, closingAmount } = record;
       return [
-        `update ${BALANCE} set openAmount = ?, closingAmount = ? where id = ?`,
+        `UPDATE ${BALANCE} SET openAmount = ?, closingAmount = ? where id = ?`,
         [openAmount, closingAmount, id],
       ];
     });
@@ -171,7 +187,7 @@ export const queryCalculateAllBalanceAfterDate = async ({
       return true;
     });
   } catch (error) {
-    handleError({
+    return handleError({
       error: 'UPD-BAL-ONE',
     });
   }
@@ -197,12 +213,18 @@ export const queryDeleteBalanceAfterDeleteAccount = (accountId: string) => {
 };
 
 export const queryDeleteBalanceById = async (id: string) => {
-  return await database.write(async () => {
-    const res = await database
-      .get<BalanceModel>(BALANCE)
-      .query(Q.where('transactionId', id))
-      .fetch();
-    await res[0].destroyPermanently();
-    return true;
-  });
+  try {
+    return await database.write(async () => {
+      const res = await database
+        .get<BalanceModel>(BALANCE)
+        .query(Q.where('transactionId', id))
+        .fetch();
+      await res[0].destroyPermanently();
+      return true;
+    });
+  } catch (error) {
+    return handleError({
+      error: 'DEL-BAL',
+    });
+  }
 };

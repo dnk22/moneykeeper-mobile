@@ -3,6 +3,8 @@ import { BALANCE, TRANSACTIONS, TRANSACTION_CATEGORY } from 'database/constants'
 import { TransactionModel } from 'database/models';
 import { TTransactions } from 'database/types';
 import { Q } from '@nozbe/watermelondb';
+import { isEqual } from 'lodash';
+import { handleError } from 'utils/axios';
 
 export type GetTransactionByDate = {
   date: string;
@@ -83,23 +85,37 @@ export const queryAddNewTransaction = async (transaction: TTransactions) => {
  *
  */
 export const queryUpdateTransaction = async ({ id, data }: { id: string; data: TTransactions }) => {
-  let isUpdateCountCategory = false;
-  let isUpdateBalance = false;
-  return await database.write(async () => {
-    const res = await database.get<TransactionModel>(TRANSACTIONS).find(id);
-    isUpdateCountCategory = res.categoryId !== data.categoryId;
-    isUpdateBalance = res.amount !== data.amount;
-    await res.update((item) => {
-      Object.assign(item, data);
+  try {
+    let isUpdateCountCategory = false;
+    let isUpdateBalance = false;
+    return await database.write(async () => {
+      const res = await database.get<TransactionModel>(TRANSACTIONS).find(id);
+      isUpdateCountCategory = res.categoryId !== data.categoryId;
+      isUpdateBalance =
+        !isEqual(res.amount, data.amount) ||
+        !isEqual(new Date(res.dateTimeAt).getTime(), data.dateTimeAt);
+      await res.update((item) => {
+        Object.assign(item, data);
+      });
+      return { isUpdateCountCategory, isUpdateBalance };
     });
-    return { isUpdateCountCategory, isUpdateBalance };
-  });
+  } catch (error) {
+    return handleError({
+      error: 'UPD-TRANS',
+    });
+  }
 };
 /** delete */
 export const queryDeleteTransactionById = async (id: string) => {
-  return await database.write(async () => {
-    const res = await database.get<TransactionModel>(TRANSACTIONS).find(id);
-    await res.markAsDeleted();
-    return id;
-  });
+  try {
+    return await database.write(async () => {
+      const res = await database.get<TransactionModel>(TRANSACTIONS).find(id);
+      await res.markAsDeleted();
+      return id;
+    });
+  } catch (error) {
+    return handleError({
+      error: 'DEL-TRANS',
+    });
+  }
 };
