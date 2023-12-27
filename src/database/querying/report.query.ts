@@ -4,14 +4,14 @@ import { BalanceModel, TransactionModel } from 'database/models';
 import { Q } from '@nozbe/watermelondb';
 
 export const queryGetAllBalance = async () => {
-  const query = `select * from ${BALANCE}`;
-  // const query2 = `SELECT
-  //               bal2.*,
-  //               MAX(bal2.transactionDateAt), MAX(bal2._id)
-  //             FROM
-  //               ${BALANCE} bal2
-  //             GROUP BY
-  //               bal2.accountId`;
+  const query = `SELECT * FROM ${BALANCE}
+  WHERE accountId='${'OyfDHCYy6fKiYypm'}'
+  AND (
+    transactionDateAt > ${'1703684781518'}
+    OR transactionDateAt IS NULL
+  )
+  ORDER BY transactionDateAt DESC, _id DESC
+  LIMIT 10`;
   return await database.read(async () => {
     const res = await database
       .get<BalanceModel>(BALANCE)

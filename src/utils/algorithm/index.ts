@@ -1,4 +1,4 @@
-import { TAccount } from 'database/types/index';
+import { TAccount } from 'database/types';
 
 /**
  * Find object in array with @param
@@ -50,6 +50,15 @@ export const groupDataByValue = (data: any) => {
   return Object.values(groupedData);
 };
 
+export function getKeyByValue(obj: Record<string, string>, value?: string): string {
+  const keys = Object.keys(obj) as Array<keyof Record<string, string>>;
+  for (const key of keys) {
+    if (obj[key] === value) {
+      return key;
+    }
+  }
+  return '';
+}
 
 function convertDataToQuery(data: TTransactions[]) {
   // Extract unique id values from the data array

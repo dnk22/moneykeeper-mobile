@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Alert, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
@@ -9,24 +9,27 @@ import { TransactionParamListProps } from 'navigation/types';
 import { FormProvider, useForm } from 'react-hook-form';
 import { TTransactions } from 'database/types';
 import { ADD_TRANSACTION } from 'navigation/constants';
-import {
-  getLendBorrowCategory,
-  getTransactionCategoryByParams,
-} from 'services/api/transactionsCategory';
+import { getLendBorrowCategory } from 'services/api/transactionsCategory';
 import { getTransactionById } from 'services/api/transactions';
 import { TTransactionType } from 'utils/types';
-import { TransactionContext, defaultValues } from './constant';
+import { getFirstAccount } from 'services/api/accounts';
+import { useAppDispatch, useAppSelector } from 'store/index';
+import { setLendBorrowData } from 'store/transactionCategory/transactionCategory.slice';
+import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';
+import { isEmpty } from 'lodash';
+import { getKeyByValue } from 'utils/algorithm';
+import { defaultValues } from './constant';
 import SelectTransactionType from './common/SelectTransactionType';
 import Transfer from './Transfer';
 import styles from './styles';
-import { getFirstAccount } from 'services/api/accounts';
 
 function AddTransactions() {
   const { colors } = useCustomTheme();
   const navigation =
     useNavigation<TransactionParamListProps<typeof ADD_TRANSACTION>['navigation']>();
   const { params } = useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
-  const [lendBorrowData, setLendBorrowData] = useState<any>({});
+  const lendBorrowData = useAppSelector((state) => selectLendBorrowData(state));
+  const useDispatch = useAppDispatch();
 
   /** setup form */
   const transactionForm = useForm<TTransactions>({
@@ -45,22 +48,33 @@ function AddTransactions() {
         <SelectTransactionType
           lendBorrowData={lendBorrowData}
           currentCategoryId={getValues('categoryId')}
-          currentType={getValues('transactionType')}
+          currentType={watch('transactionType')}
           onItemPress={handleOnChangeTransactionType}
         />
       ),
     });
-  }, [watch('categoryId'), watch('transactionType').toString(), lendBorrowData]);
+  }, [watch('categoryId'), watch('transactionType'), lendBorrowData]);
 
   useEffect(() => {
-    getLendBorrowCategory().then((res: any[]) => {
-      const data = res.reduce((accumulator, currentValue) => {
-        accumulator[currentValue.id] = currentValue.categoryName;
-        return accumulator;
-      }, {});
-      setLendBorrowData(data);
-    });
+    // if (isEmpty(lendBorrowData)) {
+      getLendBorrowCategory().then((res: any[]) => {
+        const data = res.reduce((accumulator, currentValue) => {
+          accumulator[currentValue.id] = currentValue.categoryName;
+          return accumulator;
+        }, {});
+        useDispatch(setLendBorrowData(data));
+      });
+    // }
   }, []);
+
+  // set default account when mode = add & accountId = null
+  useFocusEffect(
+    useCallback(() => {
+      if (!params?.transactionId && !watch('accountId') && !params?.accountId) {
+        setDefaultAccountInModeAdd();
+      }
+    }, [params?.transactionId, watch('accountId'), params?.accountId]),
+  );
 
   useEffect(() => {
     if (params?.transactionId) {
@@ -74,16 +88,6 @@ function AddTransactions() {
     }
   }, [params?.accountId]);
 
-  // set default account when mode = add & accountId = null
-  useFocusEffect(
-    useCallback(() => {
-      if (!params?.transactionId && !watch('accountId') && !params?.accountId) {
-        setDefaultAccountInModeAdd();
-      }
-    }, [params?.transactionId, watch('accountId'), params?.accountId]),
-  );
-
-  /** get transaction category selected data */
   useEffect(() => {
     if (params?.categoryId && params?.categoryId !== getValues('categoryId')) {
       setValue('categoryId', params?.categoryId);
@@ -111,27 +115,29 @@ function AddTransactions() {
     }
   };
 
-  const handleOnChangeTransactionType = async (item: TTransactionType) => {
-    setValue('transactionType', item.value);
+  const resetFormAfterChangeTransactionType = (item: TTransactionType) => {
     setValue('descriptions', '');
+    setValue('toAccountId', '');
+    setValue('toAmount', 0);
     setValue('toAccountId', '');
     if (
       ![TRANSACTION_LEND_BORROW_NAME.BORROW, TRANSACTION_LEND_BORROW_NAME.LEND].includes(item.name)
     ) {
       setValue('relatedPerson', '');
+    } else {
+      setValue('giver', '');
+      setValue('payee', '');
     }
-    // handle Change TransactionCategory By Type
-    let categoryId = '';
-    if (item?.categoryType) {
-      const newCategoryId = await getTransactionCategoryByParams({
-        column: 'categoryName',
-        value: item?.categoryType,
-      });
-      if (newCategoryId) {
-        categoryId = newCategoryId.id;
-      }
+    if ([TRANSACTION_TYPE.TRANSFER, TRANSACTION_TYPE.ADJUSTMENT].includes(item.value)) {
+      setValue('eventName', '');
     }
-    setValue('categoryId', categoryId);
+  };
+
+  const handleOnChangeTransactionType = async (item: TTransactionType) => {
+    resetFormAfterChangeTransactionType(item);
+    // handle change category by type : LEND , BORROW
+    setValue('categoryId', getKeyByValue(lendBorrowData, item?.categoryType));
+    setValue('transactionType', item.value);
   };
 
   const transactionTypeSelected = (values: any[]) => {
@@ -139,26 +145,20 @@ function AddTransactions() {
   };
 
   return (
-    <TransactionContext.Provider
-      value={{
-        lendBorrowData,
-      }}
-    >
-      <View style={styles.container}>
-        <FormProvider {...transactionForm}>
-          <KeyboardAwareScrollView
-            style={[styles.form, { backgroundColor: colors.background }]}
-            showsVerticalScrollIndicator={false}
-            extraScrollHeight={40}
-          >
-            {transactionTypeSelected([TRANSACTION_TYPE.EXPENSE, TRANSACTION_TYPE.INCOME]) && (
-              <ExpenseAndIncome params={params} />
-            )}
-            {transactionTypeSelected([TRANSACTION_TYPE.TRANSFER]) && <Transfer params={params} />}
-          </KeyboardAwareScrollView>
-        </FormProvider>
-      </View>
-    </TransactionContext.Provider>
+    <View style={styles.container}>
+      <FormProvider {...transactionForm}>
+        <KeyboardAwareScrollView
+          style={[styles.form, { backgroundColor: colors.background }]}
+          showsVerticalScrollIndicator={false}
+          extraScrollHeight={40}
+        >
+          {transactionTypeSelected([TRANSACTION_TYPE.EXPENSE, TRANSACTION_TYPE.INCOME]) && (
+            <ExpenseAndIncome params={params} />
+          )}
+          {transactionTypeSelected([TRANSACTION_TYPE.TRANSFER]) && <Transfer params={params} />}
+        </KeyboardAwareScrollView>
+      </FormProvider>
+    </View>
   );
 }
 

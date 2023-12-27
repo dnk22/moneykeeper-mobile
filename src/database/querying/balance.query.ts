@@ -3,16 +3,16 @@ import { database } from 'database/index';
 import { BalanceModel, TransactionModel } from 'database/models';
 import { BALANCE } from 'database/constants';
 import { Q } from '@nozbe/watermelondb';
-import { isEmpty } from 'lodash';
+import { isEmpty, size } from 'lodash';
 import { SQLiteQuery } from '@nozbe/watermelondb/adapters/sqlite';
 import { handleError } from 'utils/axios';
 
 /** read  */
 export const queryGetLatestBalanceByDate = async (accountId: string, date: number) => {
-  const query = `SELECT closingAmount FROM ${BALANCE}
+  const query = `SELECT closingAmount, transactionDateAt FROM ${BALANCE}
                 WHERE accountId='${accountId}'
                 AND (
-                  transactionDateAt <= ${date}
+                  transactionDateAt < ${date}
                   OR transactionDateAt IS NULL
                 )
                 ORDER BY transactionDateAt DESC, _id DESC
@@ -59,49 +59,50 @@ export const queryAddBalanceFromAccount = async (balance: TBalance) => {
   });
 };
 
-export const queryAddNewBalanceTransaction = async (transaction: TransactionModel) => {
-  const { closingAmount } = await queryGetLatestBalanceByDate(
-    transaction.accountId,
-    new Date(transaction.dateTimeAt).getTime(),
-  );
-  return await database.write(async () => {
-    const query = `SELECT MAX(_id) AS maxId from ${BALANCE}`;
-    const currentLatestId = await database
-      .get<BalanceModel>(BALANCE)
-      .query(Q.unsafeSqlQuery(query))
-      .unsafeFetchRaw();
-    return await database.get<BalanceModel>(BALANCE).create((item) => {
-      Object.assign(item, {
-        accountId: transaction.accountId,
-        transactionId: transaction.id,
-        openAmount: closingAmount,
-        movementAmount: transaction.amount,
-        closingAmount: closingAmount + transaction.amount,
-        transactionDateAt: transaction.dateTimeAt,
-        _id: currentLatestId[0].maxId + 1,
+export const queryAddNewBalanceTransaction = async (transaction: TransactionModel | any) => {
+  try {
+    return await database.write(async () => {
+      const query = `SELECT MAX(_id) AS maxId from ${BALANCE}`;
+      const currentLatestId = await database
+        .get<BalanceModel>(BALANCE)
+        .query(Q.unsafeSqlQuery(query))
+        .unsafeFetchRaw();
+      return await database.get<BalanceModel>(BALANCE).create((item) => {
+        Object.assign(item, {
+          accountId: transaction.accountId,
+          transactionId: transaction.id,
+          movementAmount: transaction.amount,
+          transactionDateAt: transaction.dateTimeAt,
+          _id: currentLatestId[0].maxId + 1,
+        });
       });
     });
-  });
+  } catch (error) {
+    return handleError({
+      error: 'CR-BAL-TRAN',
+    });
+  }
 };
 
 /** update */
-export const queryUpdateBalanceTransaction = async (transaction: TTransactions) => {
-  const { closingAmount } = await queryGetLatestBalanceByDate(
-    transaction.accountId,
-    new Date(transaction.dateTimeAt).getTime(),
-  );
+export const queryUpdateBalanceTransaction = async (
+  transaction: TTransactions,
+  prevAccount?: string,
+) => {
   try {
+    const query = [Q.where('transactionId', transaction.id)];
+    if (prevAccount) {
+      query.push(Q.where('accountId', prevAccount));
+    }
     return await database.write(async () => {
       const currentBalance = await database
         .get<BalanceModel>(BALANCE)
-        .query(Q.where('transactionId', transaction.id))
+        .query(...query)
         .fetch();
       if (!isEmpty(currentBalance)) {
         await currentBalance[0].update((bal) => {
           bal.accountId = transaction.accountId;
-          bal.openAmount = closingAmount;
           bal.movementAmount = transaction.amount;
-          bal.closingAmount = closingAmount + transaction.amount;
           bal.transactionDateAt = new Date(transaction.dateTimeAt);
         });
       }
@@ -143,20 +144,22 @@ export const queryUpdateBalanceAfterUpdateAccount = ({
 export const queryCalculateAllBalanceAfterDate = async ({
   accountId,
   date,
-  openAmount,
 }: {
   accountId: string;
   date: number;
-  openAmount: number;
 }) => {
   try {
-    const recordUpdate = await queryGetAllBalanceAfterDate(accountId, date);
+    const { closingAmount, transactionDateAt: prevDate } = await queryGetLatestBalanceByDate(
+      accountId,
+      date,
+    );
+    const recordUpdate = await queryGetAllBalanceAfterDate(accountId, prevDate || 0);
     if (isEmpty(recordUpdate)) {
       return;
     }
     /** calculate all openAmount and closingAmount base on current amount */
     const newDataUpdate = recordUpdate.map((item, index) => {
-      item.openAmount = index ? recordUpdate[index - 1].closingAmount : openAmount;
+      item.openAmount = index ? recordUpdate[index - 1].closingAmount : closingAmount;
       item.closingAmount = item.openAmount + item.movementAmount;
       return item;
     });
@@ -219,7 +222,9 @@ export const queryDeleteBalanceById = async (id: string) => {
         .get<BalanceModel>(BALANCE)
         .query(Q.where('transactionId', id))
         .fetch();
-      await res[0].destroyPermanently();
+      for await (const item of res) {
+        await item.destroyPermanently();
+      }
       return true;
     });
   } catch (error) {

@@ -72,21 +72,16 @@ export const getAllTransactionGroupIds = async (type: TRANSACTION_CATEGORY_TYPE)
   }
 };
 export const getLendBorrowIds = async () => {
-  try {
-    const query = `SELECT id,categoryName FROM ${TRANSACTION_CATEGORY} 
-      WHERE categoryName 
-      IN ('${TRANSACTION_LEND_BORROW_NAME.BORROW}','${TRANSACTION_LEND_BORROW_NAME.LEND}','${TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS}','${TRANSACTION_LEND_BORROW_NAME.REPAYMENT}')
-      AND _status != 'deleted'`;
-    return await database.read(async () => {
-      const res = database
-        .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-        .query(Q.unsafeSqlQuery(query))
-        .unsafeFetchRaw();
-      return res;
-    });
-  } catch (error) {
-    console.log(error, 'fetch getLendBorrowIds err');
-  }
+  const query = `SELECT id,categoryName FROM ${TRANSACTION_CATEGORY} 
+  WHERE categoryName 
+  IN ('${TRANSACTION_LEND_BORROW_NAME.BORROW}','${TRANSACTION_LEND_BORROW_NAME.LEND}','${TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS}','${TRANSACTION_LEND_BORROW_NAME.REPAYMENT}')
+  AND _status != 'deleted'`;
+  return await database.read(async () => {
+    return database
+      .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
+      .query(Q.unsafeSqlQuery(query))
+      .unsafeFetchRaw();
+  });
 };
 
 export const queryTransactionCategoryByParams = async ({
@@ -184,6 +179,15 @@ export const queryMostUsedOrRecentTransactionCategoryUsed = async ({
           Q.where('_status', Q.notEq('deleted')),
           Q.where('categoryType', categoryType),
           Q.where(column, Q.notEq(column === 'lastUseAt' ? null : 0)),
+          Q.where(
+            'categoryName',
+            Q.notIn([
+              TRANSACTION_LEND_BORROW_NAME.BORROW,
+              TRANSACTION_LEND_BORROW_NAME.LEND,
+              TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS,
+              TRANSACTION_LEND_BORROW_NAME.REPAYMENT,
+            ]),
+          ),
         ),
         Q.take(10),
         Q.sortBy(column, Q.desc),

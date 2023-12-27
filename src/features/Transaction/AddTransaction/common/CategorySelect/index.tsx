@@ -15,8 +15,8 @@ function CategorySelect({ onPress }: CategorySelectProps) {
   const {
     control,
     getValues,
-    setValue,
     watch,
+    setValue,
     formState: { errors },
   } = useFormContext<any>();
   const [categorySelected, setCategorySelected] = useState<TTransactionsCategory | undefined>(
@@ -29,7 +29,7 @@ function CategorySelect({ onPress }: CategorySelectProps) {
       return;
     }
     try {
-      getTransactionCategoryByID(getValues('categoryId')).then((res) => {
+      getTransactionCategoryByID(watch('categoryId')).then((res) => {
         // if data no change , don't setState
         if (!isEqual(res, categorySelected)) {
           setCategorySelected(res);

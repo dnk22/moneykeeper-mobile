@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions, TTransactionsCategory } from 'database/types';
@@ -20,6 +20,8 @@ import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constant';
 import { deleteTransactionById, updateTransaction } from 'services/api/transactions';
 import { useFormContext } from 'react-hook-form';
 import { showToast } from 'utils/system';
+import { useAppSelector } from 'store/index';
+import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';
 import CategorySelect from '../common/CategorySelect';
 import DateTimeSelect from '../common/DateTimeSelect';
 import MoreDetail from '../common/MoreDetail';
@@ -28,15 +30,16 @@ import RelatedPersonSelect from '../common/RelatedPersonSelect';
 import Fee from '../common/Fee';
 import InputCalculator from '../common/InputCalculator';
 import { AddTransactionType } from '../type';
-import { TransactionContext, defaultValues } from '../constant';
+import { defaultValues } from '../constant';
 import styles from '../styles.common';
 
 function ExpenseAndIncome({ params }: AddTransactionType) {
   const { colors } = useCustomTheme();
   const navigation =
     useNavigation<TransactionParamListProps<typeof ADD_TRANSACTION>['navigation']>();
-  const { name } = useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
-  const { lendBorrowData } = useContext(TransactionContext);
+  const { name: routerName } =
+    useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
+  const lendBorrowData = useAppSelector((state) => selectLendBorrowData(state));
   const {
     control,
     handleSubmit,
@@ -56,10 +59,10 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
 
   useFocusEffect(
     useCallback(() => {
-      if (isEqual(name, CREATE_TRANSACTION_FROM_ACCOUNT) && !params?.transactionId) {
+      if (isEqual(routerName, CREATE_TRANSACTION_FROM_ACCOUNT) && !params?.transactionId) {
         setValue('dateTimeAt', new Date());
       }
-    }, [name, params?.transactionId]),
+    }, [routerName, params?.transactionId]),
   );
 
   useEffect(() => {
@@ -122,14 +125,10 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
       screen: TRANSACTION_CATEGORY_LIST,
       params: {
         screen: screenTarget,
-        params: { idActive: getValues('categoryId'), returnScreen: name },
+        params: { idActive: getValues('categoryId'), returnScreen: routerName },
         initial: false,
       },
     });
-  };
-
-  const handleOnClearFee = () => {
-    setValue('fee', 0);
   };
 
   const resetAccount = () => {
@@ -156,6 +155,11 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
         if (!success) {
           return;
         }
+        // navigate to previous screen
+        if (navigation.canGoBack() && isEqual(routerName, CREATE_TRANSACTION_FROM_ACCOUNT)) {
+          navigation.goBack();
+          return;
+        }
         // reset form state
         reset({
           ...defaultValues,
@@ -165,10 +169,6 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
         navigation.setParams({
           categoryId: '',
         });
-        if (navigation.canGoBack() && isEqual(name, CREATE_TRANSACTION_FROM_ACCOUNT)) {
-          // navigate to previous screen
-          navigation.goBack();
-        }
       })
       .catch(({ error }) => {
         showToast({
@@ -180,7 +180,11 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
 
   return (
     <View>
-      <InputCalculator name="amount" control={control} inputTextColor={getInputCalculatorColor()} />
+      <InputCalculator
+        name="amount"
+        control={control}
+        inputTextColor={getInputCalculatorColor()}
+      />
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
         <CategorySelect onPress={handleOnCategoryPress} />
         {renderIfLendBorrow() && watch('categoryId') && (
@@ -210,13 +214,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
           </View>
         </View>
         <DateTimeSelect values={watch('dateTimeAt')} onChangeDate={handleOnDateTimePicker} />
-        <AccountSelect
-          value={watch('accountId')}
-          control={control}
-          error={errors.accountId}
-          setValue={setValue}
-          onReset={resetAccount}
-        />
+        <AccountSelect onReset={resetAccount} />
       </View>
       <MoreDetail>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
@@ -260,7 +258,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
             </View>
           </View>
         </View>
-        <Fee onClose={handleOnClearFee}>
+        <Fee onClose={() => setValue('fee', 0)}>
           <InputCalculator name="fee" control={control} />
         </Fee>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>

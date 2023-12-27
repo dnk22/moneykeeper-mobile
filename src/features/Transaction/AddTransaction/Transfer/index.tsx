@@ -4,25 +4,35 @@ import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
 import { InputField, RNText, SvgIcon, SwitchField, FormAction } from 'components/index';
 import { useFormContext } from 'react-hook-form';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { ButtonText } from 'navigation/elements';
-import { deleteTransactionById } from 'services/api/transactions';
+import { deleteTransactionById, updateTransactionTransfer } from 'services/api/transactions';
 import MoreDetail from '../common/MoreDetail';
 import { AddTransactionType } from '../type';
 import AccountSelect from '../common/AccountSelect';
 import Fee from '../common/Fee';
 import DateTimeSelect from '../common/DateTimeSelect';
 import InputCalculator from '../common/InputCalculator';
+import { defaultValues } from '../constant';
 import styles from '../styles.common';
+import { showToast } from 'utils/system';
+import { isEqual } from 'lodash';
+import { TransactionParamListProps } from 'navigation/types';
+import { ADD_TRANSACTION, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
 
 function Transfer({ params }: AddTransactionType) {
   const { colors } = useCustomTheme();
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<TransactionParamListProps<typeof ADD_TRANSACTION>['navigation']>();
+  const { name: routerName } =
+    useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
   const {
     control,
     handleSubmit,
     setValue,
     watch,
+    getValues,
+    reset,
     formState: { errors },
   } = useFormContext<any>();
 
@@ -52,11 +62,36 @@ function Transfer({ params }: AddTransactionType) {
   };
 
   const onSubmit = (data: TTransactions) => {
-    const requestData = {
-      ...data,
-      amount: +data.amount,
-      fee: +data?.fee,
-    };
+    updateTransactionTransfer({
+      id: params?.transactionId,
+      data,
+    })
+      .then(({ success }) => {
+        if (!success) {
+          return;
+        }
+        if (navigation.canGoBack() && isEqual(routerName, CREATE_TRANSACTION_FROM_ACCOUNT)) {
+          // navigate to previous screen
+          navigation.goBack();
+          return;
+        }
+        // reset form state
+        reset({
+          ...defaultValues,
+          toAccountId: '',
+          accountId: data?.accountId,
+          transactionType: data?.transactionType,
+        });
+        navigation.setParams({
+          categoryId: '',
+        });
+      })
+      .catch(({ error }) => {
+        showToast({
+          type: 'error',
+          text2: error,
+        });
+      });
   };
 
   const handleOnClearFee = () => {
@@ -64,28 +99,21 @@ function Transfer({ params }: AddTransactionType) {
   };
 
   return (
-    <View>
+    <>
       <InputCalculator name="amount" control={control} />
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
         <AccountSelect
-          value={watch('accountId')}
-          control={control}
-          error={errors.accountId}
           title="Từ tài khoản"
-          onReset={resetAccount}
-          setValue={setValue}
+          swapId="toAccountId"
           isShowSubTitle
+          onReset={resetAccount}
         />
         <AccountSelect
-          isShowSubTitle
           name="toAccountId"
-          value={watch('toAccountId')}
-          control={control}
-          error={errors.toAccountId}
           title="Tới tài khoản"
+          excludeId="accountId"
+          isShowSubTitle
           onReset={resetToAccount}
-          setValue={setValue}
-          excludeId={watch('accountId')}
         />
         <DateTimeSelect values={watch('dateTimeAt')} onChangeDate={handleOnDateTimePicker} />
       </View>
@@ -134,7 +162,7 @@ function Transfer({ params }: AddTransactionType) {
         onSubmit={handleSubmit(onSubmit)}
       />
       <View style={{ height: 150 }} />
-    </View>
+    </>
   );
 }
 

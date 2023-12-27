@@ -1,5 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { CHILD_LINE_WIDTH, CONTAINER_PADDING, ITEM_HEIGHT, MARGIN_LEFT, MARGIN_TOP } from 'share/dimensions';
+import {
+  CHILD_LINE_WIDTH,
+  CONTAINER_PADDING,
+  ITEM_HEIGHT,
+  MARGIN_LEFT,
+  MARGIN_TOP,
+} from 'share/dimensions';
 import { SCREEN_WIDTH } from 'share/dimensions';
 
 const styles = StyleSheet.create({
@@ -36,15 +42,16 @@ const styles = StyleSheet.create({
     columnGap: 10,
   },
   detailInfo: {
+    flex: 1,
     gap: 5,
   },
   textDescription: {
     fontStyle: 'italic',
   },
   amountInfo: {
-    flex: 1,
-    alignItems: 'flex-end',
+    flex: 0.5,
     rowGap: 5,
+    alignItems: 'flex-end',
   },
 });
 

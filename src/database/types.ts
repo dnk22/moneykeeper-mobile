@@ -16,6 +16,7 @@ export type TUsers = {
 export type TTransactions = {
   id: string;
   amount: number;
+  toAmount: number;
   transactionType: TRANSACTION_TYPE;
   closingAmount: number;
   categoryIcon?: any;
@@ -25,10 +26,13 @@ export type TTransactions = {
   dateTimeAt: number;
   accountId: string;
   toAccountId: string;
+  accountName?: string;
   location?: string;
   eventName?: string;
   payFor?: string;
   relatedPerson?: string;
+  giver?: string;
+  payee?: string;
   fee?: number;
   feeType?: string;
   excludeReport?: boolean;

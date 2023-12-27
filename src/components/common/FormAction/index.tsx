@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from 'react-native';
+import { Alert, TouchableOpacity, View } from 'react-native';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import RNText from 'components/Text';
 import { useCustomTheme } from 'resources/theme';
@@ -15,10 +15,21 @@ type FormActionProps = {
 
 function FormAction({ isShowDelete = false, onDelete, onSubmit, loading }: FormActionProps) {
   const { colors } = useCustomTheme();
+
+  const onConfirmDelete = () => {
+    Alert.alert('Xác nhận xóa', 'Bạn có chắc muốn xóa?', [
+      {
+        text: 'Hủy bỏ',
+        style: 'cancel',
+      },
+      { text: 'Đồng ý', style: 'destructive', onPress: () => onDelete && onDelete() },
+    ]);
+  };
+
   return (
     <View style={styles.action}>
       {isShowDelete && (
-        <TouchableHighlightComponent style={styles.buttonDel} onPress={onDelete}>
+        <TouchableHighlightComponent style={styles.buttonDel} onPress={onConfirmDelete}>
           <>
             {loading ? <Loading color={'red'} /> : <SvgIcon name="trash" color="red" />}
             <RNText color="red">Xóa</RNText>

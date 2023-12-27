@@ -9,8 +9,10 @@ import { TTransactions } from 'database/types';
 import { deleteTransactionById } from 'services/api/transactions';
 import { formatNumber } from 'utils/math';
 import isEqual from 'react-fast-compare';
-import styles from './styles';
 import { showToast } from 'utils/system';
+import { get } from 'lodash';
+import { TRANSACTION_TYPE } from 'utils/constant';
+import styles from './styles';
 
 function TransactionItem({
   data,
@@ -32,7 +34,7 @@ function TransactionItem({
 
   const onOk = () => {
     if (data?.id) {
-      deleteTransactionById(data)
+      deleteTransactionById(data.id)
         .then(({ success }) => {
           if (success) {
             onRefreshTransactionList();
@@ -61,6 +63,17 @@ function TransactionItem({
     tapPosition.current = nativeEvent.locationX;
   };
 
+  const renderCategoryName = () => {
+    switch (data.transactionType) {
+      case TRANSACTION_TYPE.TRANSFER:
+        return `Chuyển khoản ${data.amount >= 0 ? 'từ' : 'tới'} ${data.accountName}`;
+      case TRANSACTION_TYPE.ADJUSTMENT:
+        return 'Cân bằng số dư';
+      default:
+        return data?.categoryName;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <SwipeableComponent containerStyle={styles.swipe} onDelete={onConfirmDelete}>
@@ -77,10 +90,10 @@ function TransactionItem({
             <View style={styles.transactionCategoryInfo}>
               <SvgIcon name={data?.categoryIcon} />
               <View style={styles.detailInfo}>
-                <RNText>{data?.categoryName}</RNText>
+                <RNText>{renderCategoryName()}</RNText>
                 {data?.descriptions && (
                   <RNText color="gray" fontSize={11} style={styles.textDescription}>
-                    {data.descriptions}
+                    {get(data, 'descriptions', '')}
                   </RNText>
                 )}
               </View>

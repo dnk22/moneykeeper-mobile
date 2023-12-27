@@ -1,11 +1,12 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { Alert } from 'react-native';
-import { isEqual } from 'lodash';
+import { get, isEmpty, isEqual } from 'lodash';
 import { InputSelection, BottomSheet } from 'components/index';
+import { useFormContext } from 'react-hook-form';
 import { useFocusEffect } from '@react-navigation/native';
 import { getAccountById } from 'services/api/accounts';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { TAccount } from 'database/types';
+import { showToast } from 'utils/system';
 import AccountList from './AccountList';
 
 type AccountProp = {
@@ -15,66 +16,64 @@ type AccountProp = {
 
 type AccountSelectProps = {
   name?: string;
-  value?: string;
-  control: any;
-  error: any;
   onReset: () => void;
-  setValue: any;
   title?: string;
   isShowSubTitle?: boolean;
   excludeId?: string;
+  swapId?: string;
 };
 
 function AccountSelect({
   name = 'accountId',
-  value,
-  control,
-  error,
-  onReset,
-  setValue,
   title = 'Chọn tài khoản',
+  onReset,
   isShowSubTitle,
-  excludeId,
+  excludeId = '',
+  swapId,
 }: AccountSelectProps) {
+  const {
+    control,
+    setValue,
+    getValues,
+    watch,
+    formState: { errors },
+  } = useFormContext<any>();
+
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const [accountSelected, setAccountSelected] = useState<AccountProp | undefined>(undefined);
 
   useFocusEffect(
     useCallback(() => {
       fetchAccountData();
-    }, [value]),
+    }, [watch(name)]),
   );
 
   useEffect(() => {
     fetchAccountData();
-  }, [value]);
+  }, [watch(name)]);
 
   const handleOnSelectAccount = () => {
     bottomSheetModalRef.current?.present();
   };
 
   const fetchAccountData = async () => {
-    if (!value) {
+    if (!getValues(name)) {
       return false;
     }
     try {
-      const account = await getAccountById(value);
-      if (!account) {
+      const account = await getAccountById(getValues(name));
+      if (isEmpty(account)) {
         resetAccountState();
         return false;
       }
-      const newAccountState = {
-        accountLogo: account.accountLogo,
-        accountName: account.accountName,
-      };
       // if data no change , don't setState
-      if (!isEqual(newAccountState, accountSelected)) {
-        setAccountSelected(newAccountState);
+      if (!isEqual(account, accountSelected)) {
+        setAccountSelected(account);
       }
-      return true;
     } catch (error) {
-      Alert.alert('Oops, Lỗi rồi!', 'Có lỗi trong quá trình chọn tài khoản');
-      return false;
+      showToast({
+        type: 'error',
+      });
     }
   };
 
@@ -84,7 +83,12 @@ function AccountSelect({
   };
 
   const onAccountItemPress = (account: TAccount) => {
-    setValue(name, account.id);
+    if (swapId && account.id === getValues(swapId)) {
+      setValue(swapId, getValues(name));
+      setValue(name, account.id);
+    } else {
+      setValue(name, account.id);
+    }
     bottomSheetModalRef.current?.dismiss();
   };
 
@@ -99,17 +103,17 @@ function AccountSelect({
         subTitle={title}
         name={name}
         control={control}
-        error={error}
+        error={get(errors, name)}
         onSelect={handleOnSelectAccount}
       />
       <BottomSheet ref={bottomSheetModalRef}>
         <AccountList
-          excludeId={excludeId}
-          isItemSelected={value}
+          excludeId={getValues(excludeId)}
+          isItemSelected={getValues(name)}
           onItemPress={onAccountItemPress}
         />
       </BottomSheet>
     </>
   );
 }
-export default memo(AccountSelect);
+export default memo(AccountSelect, isEqual);

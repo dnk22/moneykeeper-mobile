@@ -66,6 +66,7 @@ export default appSchema({
       name: TRANSACTIONS,
       columns: [
         { name: 'amount', type: 'number' },
+        { name: 'toAmount', type: 'number' },
         { name: 'transactionType', type: 'number' },
         { name: 'categoryId', type: 'string' },
         { name: 'descriptions', type: 'string', isOptional: true },

@@ -11,13 +11,13 @@ import {
 } from 'components/index';
 import { TransactionTypeData } from 'utils/data';
 import { TTransactionType } from 'utils/types';
-import { TRANSACTION_LEND_BORROW_NAME } from 'utils/constant';
+import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constant';
 import styles from './styles';
 
 type SelectTransactionTypeProps = {
   lendBorrowData: any;
   currentCategoryId?: string;
-  currentType?: any;
+  currentType: TRANSACTION_TYPE;
   onItemPress: (item: TTransactionType) => void;
 };
 
@@ -36,17 +36,17 @@ function SelectTransactionType({
   };
 
   useEffect(() => {
-    if (currentCategoryId) {
-      if (
+    if (
+      (currentCategoryId &&
         [TRANSACTION_LEND_BORROW_NAME.LEND, TRANSACTION_LEND_BORROW_NAME.BORROW].includes(
           lendBorrowData[currentCategoryId],
-        )
-      ) {
-        setIsActive(currentType + 2);
-      } else {
-        setIsActive(currentType);
-      }
+        )) ||
+      [TRANSACTION_TYPE.TRANSFER, TRANSACTION_TYPE.ADJUSTMENT].includes(currentType)
+    ) {
+      setIsActive(currentType + 2);
+      return;
     }
+    setIsActive(currentType);
   }, [currentCategoryId, currentType]);
 
   function renderItem({ item }: { item: TTransactionType }) {

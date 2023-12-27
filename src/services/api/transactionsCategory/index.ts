@@ -113,10 +113,5 @@ export const getTransactionCategoryChildrenObserve = (
 };
 
 export const getLendBorrowCategory = async () => {
-  try {
-    return await getLendBorrowIds();
-  } catch (error) {
-    console.log(error, 'getLendBorrowCategory err ');
-    return { status: false, errorMessage: 'fail' };
-  }
+  return await getLendBorrowIds();
 };

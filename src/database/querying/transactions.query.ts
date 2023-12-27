@@ -1,5 +1,5 @@
 import { database } from 'database/index';
-import { BALANCE, TRANSACTIONS, TRANSACTION_CATEGORY } from 'database/constants';
+import { ACCOUNTS, BALANCE, TRANSACTIONS, TRANSACTION_CATEGORY } from 'database/constants';
 import { TransactionModel } from 'database/models';
 import { TTransactions } from 'database/types';
 import { Q } from '@nozbe/watermelondb';
@@ -21,7 +21,7 @@ export const queryTransactionLisGroupByDate = async (accountId: string) => {
   const query = `SELECT DISTINCT 
       strftime('%Y-%m-%d', datetime(dateTimeAt/1000, 'unixepoch')) AS date 
       FROM ${TRANSACTIONS}
-      WHERE accountId='${accountId}' AND _status != 'deleted'
+      WHERE _status != 'deleted' AND ((accountId='${accountId}') OR (toAccountId='${accountId}'))
       ORDER BY dateTimeAt DESC 
     `;
   return await database.read(async () => {
@@ -35,11 +35,17 @@ export const queryTransactionLisGroupByDate = async (accountId: string) => {
 export const queryGetTransactionsListByDate = async ({ date, accountId }: GetTransactionByDate) => {
   const startOfDay = new Date(new Date(date).setUTCHours(0, 0, 0, 0)).getTime();
   const endOfDay = new Date(new Date(date).setUTCHours(23, 59, 59, 999)).getTime();
-  const query = `SELECT tran.*, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount, bal._id 
+  const query = `SELECT tran.id, tran.accountId, tran.toAccountId, tran.categoryId,tran.transactionType, tran.descriptions, tran.dateTimeAt, bal._id, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount,bal.movementAMount AS amount,
+      CASE
+        WHEN tran.accountId = '${accountId}' THEN accTo.accountName
+        WHEN tran.toAccountId = '${accountId}' THEN acc.accountName
+      END AS accountName
       FROM ${TRANSACTIONS} tran
       LEFT JOIN ${TRANSACTION_CATEGORY} tCategory ON tCategory.id=tran.categoryId
-      LEFT JOIN ${BALANCE} bal ON bal.transactionId=tran.id
-      WHERE tran.accountId='${accountId}' AND tran._status != 'deleted' AND tran.dateTimeAt BETWEEN ${startOfDay} AND ${endOfDay}
+      LEFT JOIN ${BALANCE} bal ON bal.transactionId=tran.id AND bal.accountId='${accountId}'
+      LEFT JOIN ${ACCOUNTS} acc ON acc.id=tran.accountId
+      LEFT JOIN ${ACCOUNTS} accTo ON accTo.id=tran.toAccountId
+      WHERE tran._status != 'deleted' AND ((tran.accountId='${accountId}') OR (tran.toAccountId='${accountId}')) AND tran.dateTimeAt BETWEEN ${startOfDay} AND ${endOfDay}
       ORDER BY tran.dateTimeAt DESC, bal._id DESC
     `;
   return await database.read(async () => {
@@ -88,16 +94,37 @@ export const queryUpdateTransaction = async ({ id, data }: { id: string; data: T
   try {
     let isUpdateCountCategory = false;
     let isUpdateBalance = false;
+    let isUpdateBalanceAccountId = false;
+    let isUpdateBalanceToAccountId = false;
+    let prevAccountId = '';
+    let prevToAccountId = '';
     return await database.write(async () => {
       const res = await database.get<TransactionModel>(TRANSACTIONS).find(id);
+
+      /** set config for response first */
       isUpdateCountCategory = res.categoryId !== data.categoryId;
       isUpdateBalance =
         !isEqual(res.amount, data.amount) ||
         !isEqual(new Date(res.dateTimeAt).getTime(), data.dateTimeAt);
+      isUpdateBalanceAccountId = !isEqual(res.accountId, data.accountId);
+      isUpdateBalanceToAccountId = !isEqual(res.toAccountId, data.toAccountId);
+      prevAccountId = res.accountId;
+      prevToAccountId = res.toAccountId;
+
+      /** update data */
       await res.update((item) => {
         Object.assign(item, data);
       });
-      return { isUpdateCountCategory, isUpdateBalance };
+
+      return {
+        isUpdateCountCategory,
+        isUpdateBalance,
+        isUpdateBalanceAccountId,
+        isUpdateBalanceToAccountId,
+        prevAccountId,
+        prevToAccountId,
+        transaction: res,
+      };
     });
   } catch (error) {
     return handleError({
@@ -111,7 +138,7 @@ export const queryDeleteTransactionById = async (id: string) => {
     return await database.write(async () => {
       const res = await database.get<TransactionModel>(TRANSACTIONS).find(id);
       await res.markAsDeleted();
-      return id;
+      return res;
     });
   } catch (error) {
     return handleError({

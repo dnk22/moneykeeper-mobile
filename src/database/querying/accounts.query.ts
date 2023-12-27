@@ -11,70 +11,46 @@ export type TGetAllAccounts = {
   excludeId?: string;
 };
 
-/** OBSERVE  */
-export const getAccountCountObserve = (isActive: boolean) =>
-  database.get<AccountModel>(ACCOUNTS).query(Q.where('isActive', isActive)).observeCount();
-
 /** READ */
-export const queryAllAccount = ({ text = '', excludeId = '' }: TGetAllAccounts) =>
-  database
-    .get<AccountModel>(ACCOUNTS)
-    .query(
-      Q.experimentalJoinTables([BALANCE]),
-      Q.unsafeSqlQuery(
-        `SELECT acc.*, bal.closingAmount FROM ${ACCOUNTS} acc
-          LEFT JOIN (
-            SELECT
-              accountId,
-              closingAmount,
-              MAX(bal2.transactionDateAt)
-            FROM
-            ${BALANCE} bal2
-            GROUP BY bal2.accountId
-          ) bal ON bal.accountId = acc.id
-          WHERE acc._status!='deleted' AND acc.id!='${excludeId}' AND acc.accountName LIKE '%${Q.sanitizeLikeString(
-          text,
-        )}%'`,
-      ),
-    )
-    .unsafeFetchRaw();
-
-export const getAccounts = async ({
-  isActive = true,
-  text = '',
-  excludeId = '',
-}: TGetAllAccounts) => {
-  try {
-    return await database.read(async () => {
-      return await database
-        .get<AccountModel>(ACCOUNTS)
-        .query(
-          Q.where('_status', Q.notEq('deleted')),
-          Q.where('isActive', isActive),
-          Q.where('accountName', Q.like(`%${Q.sanitizeLikeString(text)}%`)),
-          Q.where('id', Q.notEq(excludeId || '')),
-        )
-        .fetch();
-    });
-  } catch (error) {
-    console.log(error, 'read accounts err');
-  }
+export const queryAllAccount = async ({ text = '', excludeId = '' }: TGetAllAccounts) => {
+  return await database.read(async () => {
+    var startTime = performance.now();
+    const result = await database
+      .get<AccountModel>(ACCOUNTS)
+      .query(
+        Q.experimentalJoinTables([BALANCE]),
+        Q.unsafeSqlQuery(
+          `SELECT acc.id, acc.accountName, acc.accountLogo, acc._status, acc.isActive, acc.accountTypeId, acc.accountTypeName, bal.closingAmount FROM ${ACCOUNTS} acc
+            LEFT JOIN (
+              SELECT
+                b._id,
+                b.accountId,
+                b.closingAmount,
+                b.transactionDateAt,
+                ROW_NUMBER() OVER (PARTITION BY b.accountId ORDER BY b.transactionDateAt DESC, b._id DESC) AS row_num
+              FROM ${BALANCE} b
+            ) bal ON bal.accountId = acc.id AND bal.row_num = 1
+            WHERE acc._status!='deleted' AND acc.id!='${excludeId}' AND acc.accountName LIKE '${Q.sanitizeLikeString(
+            text,
+          )}%'`,
+        ),
+      )
+      .unsafeFetchRaw();
+    var endTime = performance.now();
+    console.log(`get list account took ${(endTime - startTime)/1000} seconds`);
+    return result;
+  });
 };
 
 export const queryAccountById = async (id: string) => {
-  try {
-    const query = `select * from ${ACCOUNTS} where id='${id}' and _status != 'deleted' `;
-    return await database.read(async () => {
-      const res = await database
-        .get<AccountModel>(ACCOUNTS)
-        .query(Q.unsafeSqlQuery(query))
-        .unsafeFetchRaw();
-      return res[0] || {};
-    });
-  } catch (error) {
-    console.log(error, 'read by id err');
-    return null;
-  }
+  const query = `SELECT accountLogo, accountName  FROM ${ACCOUNTS} WHERE id='${id}' AND _status != 'deleted' `;
+  return await database.read(async () => {
+    const res = await database
+      .get<AccountModel>(ACCOUNTS)
+      .query(Q.unsafeSqlQuery(query))
+      .unsafeFetchRaw();
+    return res[0] || {};
+  });
 };
 
 export const queryGetFirstAccount = async () => {

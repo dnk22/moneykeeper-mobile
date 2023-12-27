@@ -15,7 +15,7 @@ import { TAccount } from 'database/types';
 import { handleError } from 'utils/axios';
 
 export async function getAccountData({ ...rest }: TGetAllAccounts) {
-  return queryAllAccount(rest);
+  return await queryAllAccount(rest);
 }
 
 /**
@@ -52,8 +52,7 @@ export async function updateAccountDB({ id, account }: { id?: string; account: T
 }
 
 export async function getAccountById(id: string) {
-  const res = await queryAccountById(id);
-  return res;
+  return queryAccountById(id);
 }
 export async function getFirstAccount() {
   return await queryGetFirstAccount();
