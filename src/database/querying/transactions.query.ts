@@ -98,18 +98,23 @@ export const queryUpdateTransaction = async ({ id, data }: { id: string; data: T
     let isUpdateBalanceToAccountId = false;
     let prevAccountId = '';
     let prevToAccountId = '';
+    let prevDate = data.dateTimeAt;
+
     return await database.write(async () => {
       const res = await database.get<TransactionModel>(TRANSACTIONS).find(id);
 
       /** set config for response first */
       isUpdateCountCategory = res.categoryId !== data.categoryId;
-      isUpdateBalance =
-        !isEqual(res.amount, data.amount) ||
-        !isEqual(new Date(res.dateTimeAt).getTime(), data.dateTimeAt);
       isUpdateBalanceAccountId = !isEqual(res.accountId, data.accountId);
       isUpdateBalanceToAccountId = !isEqual(res.toAccountId, data.toAccountId);
+      isUpdateBalance =
+        !isEqual(res.amount, data.amount) ||
+        !isEqual(new Date(res.dateTimeAt).getTime(), data.dateTimeAt) ||
+        isUpdateBalanceAccountId ||
+        isUpdateBalanceToAccountId;
       prevAccountId = res.accountId;
       prevToAccountId = res.toAccountId;
+      prevDate = res.dateTimeAt;
 
       /** update data */
       await res.update((item) => {
@@ -119,11 +124,10 @@ export const queryUpdateTransaction = async ({ id, data }: { id: string; data: T
       return {
         isUpdateCountCategory,
         isUpdateBalance,
-        isUpdateBalanceAccountId,
-        isUpdateBalanceToAccountId,
         prevAccountId,
         prevToAccountId,
-        transaction: res,
+        prevDate,
+        transactionUpdated: res,
       };
     });
   } catch (error) {

@@ -109,6 +109,7 @@ export const queryUpdateBalanceTransaction = async (
       return currentBalance[0];
     });
   } catch (error) {
+    console.log(error,'error');
     return handleError({
       error: 'UPD-BAL-TRANS',
     });
