@@ -1,5 +1,5 @@
 import React, { View } from 'react-native';
-import { TAccount } from 'database/types/index';
+import { TAccount } from 'database/types';
 import { PressableHaptic, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
 import { useNavigation } from '@react-navigation/native';
 import { ACCOUNT_DETAIL } from 'navigation/constants';

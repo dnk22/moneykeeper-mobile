@@ -1,5 +1,5 @@
 import React, { View } from 'react-native';
-import { TAccount } from 'database/types/index';
+import { TAccount } from 'database/types';
 import {
   CheckboxComponent,
   PressableHaptic,

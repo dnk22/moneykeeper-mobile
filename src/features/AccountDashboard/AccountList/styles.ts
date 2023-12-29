@@ -32,12 +32,14 @@ const styles = StyleSheet.create({
 
   // card
   wrapper: {
+    flex: 1,
+    marginBottom: 10,
     paddingHorizontal: 10,
     borderRadius: 10,
     // ...BOX_SHADOW,
   },
   header: {
-    height: 44,
+    height: 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -46,11 +48,23 @@ const styles = StyleSheet.create({
     flex: 1,
     fontWeight: '700',
   },
-  iconDropdown: {
-    width: 30,
-    marginRight: 5,
+  iconSwapContainer: {
+    width: 40,
+    height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  iconSwap: {
+    width: 20,
+    height: 20,
+    transform: [{ rotate: '90deg' }],
+  },
+  divider: {
+    width: '100%',
+    height: 0.5,
+    marginBottom: 10,
+    backgroundColor: 'red',
+    alignSelf: 'center',
   },
 });
 

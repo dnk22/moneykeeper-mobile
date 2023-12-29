@@ -8,9 +8,7 @@ import { useAppSelector } from 'store/index';
 import { TAccount } from 'database/types';
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import { getAccountData } from 'services/api/accounts';
-import { groupDataByValue } from 'utils/algorithm';
 import { formatNumber } from 'utils/math';
-import { size } from 'lodash';
 import ItemSettingsModal from './ItemSettingsModal';
 import AccountList from './AccountList';
 import styles from './styles';
@@ -50,16 +48,6 @@ function Accounts() {
     fetchListAccount();
   };
 
-  const getInactiveAccount = useMemo(() => {
-    const inActiveAccount = accountData.filter((item) => !item.isActive);
-    return size(inActiveAccount) ? [{ data: inActiveAccount }] : [];
-  }, [accountData]);
-
-  const getActiveAccount = useMemo(() => {
-    const activeAccount = accountData.filter((item) => item.isActive);
-    return group ? groupDataByValue(activeAccount) : activeAccount;
-  }, [accountData]);
-
   const getTotalMoneyInAllAccount = useMemo(() => {
     return accountData.reduce(
       (accumulator, currentValue) => (accumulator += +currentValue?.closingAmount),
@@ -82,20 +70,11 @@ function Accounts() {
             true,
           )}`}</RNText>
         </View>
-        <View style={{ gap: 10, paddingHorizontal: 5 }}>
-          <AccountList
-            title="Đang sử dụng"
-            isGroup={group}
-            account={getActiveAccount}
-            onActionPress={onActionPress}
-          />
-          <AccountList
-            title="Ngưng sử dụng"
-            isDeactivate
-            account={getInactiveAccount}
-            onActionPress={onActionPress}
-          />
-        </View>
+        <AccountList
+          isGroup={group}
+          account={accountData}
+          onActionPress={onActionPress}
+        />
         <PressableHaptic
           style={[styles.createButton, { backgroundColor: colors.primary }]}
           onPress={handleOnCreateAccount}

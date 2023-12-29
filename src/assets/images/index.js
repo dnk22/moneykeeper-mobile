@@ -81,3 +81,4 @@ export const expenseType = require('./transactionType/expense.png');
 export const incomeType = require('./transactionType/income.png');
 export const lend = require('./transactionType/lend.png');
 export const transfer = require('./transactionType/transfer.png');
+export const swap = require('./common/swap.png');

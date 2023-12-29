@@ -1,7 +1,7 @@
 import { ModalComponent, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
 import { IModalComponentProps } from 'components/Modal';
 import { Alert, View } from 'react-native';
-import { TAccount } from 'database/types/index';
+import { TAccount } from 'database/types';
 import { useNavigation } from '@react-navigation/native';
 import { ADD_ACCOUNT } from 'navigation/constants';
 import { changeAccountStatusById, deleteAccountById } from 'services/api/accounts';

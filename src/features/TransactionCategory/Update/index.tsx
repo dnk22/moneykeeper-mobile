@@ -5,7 +5,7 @@ import { InputField, InputSelection, SvgIcon, PressableHaptic, FormAction } from
 import { TransactionCategoryParamProps } from 'navigation/types';
 import { useForm } from 'react-hook-form';
 import { useCustomTheme } from 'resources/theme';
-import { TTransactionsCategory } from 'database/types/index';
+import { TTransactionsCategory } from 'database/types';
 import { ICON_SELECT, PARENT_LIST, UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
 import {

@@ -1,13 +1,14 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, SectionListData, View } from 'react-native';
+import React, { memo, useCallback, useMemo, useState } from 'react';
+import { Image, SectionListData, View } from 'react-native';
 import isEqual from 'react-fast-compare';
-import { Empty, PressableHaptic, RNText, SectionListComponent, SvgIcon } from 'components/index';
-import { TAccount } from 'database/types/index';
-import { SCREEN_HEIGHT } from 'share/dimensions';
-import Collapsible from 'react-native-collapsible';
+import { Empty, PressableHaptic, RNText, SectionListComponent } from 'components/index';
+import { TAccount } from 'database/types';
 import { useCustomTheme } from 'resources/theme';
+import { groupDataByValue } from 'utils/algorithm';
+import { swap } from 'assets/images';
 import Item from './Item';
 import styles from './styles';
+import { debounce } from 'lodash';
 
 type AccountListProps = {
   title?: string;
@@ -17,39 +18,29 @@ type AccountListProps = {
   account?: any;
 };
 
-const maxHeight = SCREEN_HEIGHT * 0.55;
-
-function AccountList({ title, isGroup = false, onActionPress, account = [] }: AccountListProps) {
+function AccountList({ isGroup = false, onActionPress, account = [] }: AccountListProps) {
   const { colors } = useCustomTheme();
-  const renderKey = useRef(0);
-  const [collapse, setCollapse] = useState(false);
-  const rotateAnim = useRef(new Animated.Value(1)).current;
-  const rotate = rotateAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '90deg'],
-  });
+  const [viewActive, setViewActive] = useState(true);
 
-  useEffect(() => {
-    // change key to force-render collapse view
-    renderKey.current = renderKey.current + 1;
-    if (!Boolean(account.length) !== collapse) {
-      setCollapse(!Boolean(account.length));
-    }
+  const getInactiveAccount = useMemo(() => {
+    const inActiveAccount = account.filter((item) => !item.isActive);
+    return inActiveAccount.length ? [{ data: inActiveAccount }] : [];
   }, [account]);
 
-  useEffect(() => {
-    Animated.timing(rotateAnim, {
-      toValue: collapse ? 0 : 1,
-      duration: 500,
-      useNativeDriver: true,
-    }).start();
-  }, [collapse]);
+  const getActiveAccount = useMemo(() => {
+    const activeAccount = account.filter((item) => item.isActive);
+    return isGroup ? groupDataByValue(activeAccount) : activeAccount;
+  }, [account, isGroup]);
 
   const renderSectionHeader = useCallback(
     ({ section }: { section: SectionListData<TAccount> }) => {
       if (!isGroup) return null;
       const { title } = section;
-      return <RNText color="#747471" fontSize={13}>{title}</RNText>;
+      return (
+        <RNText color="#747471" fontSize={13}>
+          {title}
+        </RNText>
+      );
     },
     [isGroup],
   );
@@ -60,22 +51,23 @@ function AccountList({ title, isGroup = false, onActionPress, account = [] }: Ac
 
   return (
     <View style={[styles.wrapper, { backgroundColor: colors.surface }]}>
-      <PressableHaptic style={styles.header} onPress={() => setCollapse(!collapse)}>
-        <RNText style={styles.title}>{title}</RNText>
-        <Animated.View style={[styles.iconDropdown, { transform: [{ rotate: rotate }] }]}>
-          <SvgIcon name="remote" />
-        </Animated.View>
-      </PressableHaptic>
-      <Collapsible collapsed={collapse} key={renderKey.current}>
-        <SectionListComponent
-          style={{ maxHeight }}
-          sections={account}
-          initialNumToRender={8}
-          renderItem={renderItem}
-          renderSectionHeader={renderSectionHeader}
-          ListEmptyComponent={<Empty text="Không có tài khoản nào!" />}
-        />
-      </Collapsible>
+      <View style={styles.header}>
+        <RNText style={styles.title}>{viewActive ? 'Đang sử dụng' : 'Ngừng sử dụng'}</RNText>
+        <PressableHaptic
+          onPress={debounce(() => setViewActive(!viewActive), 200)}
+          style={styles.iconSwapContainer}
+        >
+          <Image source={swap} style={styles.iconSwap} />
+        </PressableHaptic>
+      </View>
+      <View style={[styles.divider, { backgroundColor: colors.divider }]} />
+      <SectionListComponent
+        sections={viewActive ? getActiveAccount : getInactiveAccount}
+        initialNumToRender={8}
+        renderItem={renderItem}
+        renderSectionHeader={renderSectionHeader}
+        ListEmptyComponent={<Empty text="Không có tài khoản nào!" />}
+      />
     </View>
   );
 }
