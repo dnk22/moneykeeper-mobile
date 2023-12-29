@@ -36,7 +36,6 @@ function TransactionItem({
     if (data?.id) {
       deleteTransactionById(data.id)
         .then(({ success }) => {
-          console.log(success,'success');
           if (success) {
             onRefreshTransactionList();
           }

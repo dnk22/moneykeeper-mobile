@@ -20,9 +20,10 @@ type HeaderItemProps = {
   accountId: string;
   accountObserve?: any;
   onRefreshDate: () => void;
+  reload: number;
 };
 
-function HeaderItem({ date, accountId, onRefreshDate }: HeaderItemProps) {
+function HeaderItem({ date, accountId, onRefreshDate, reload }: HeaderItemProps) {
   const { colors } = useCustomTheme();
   const [transaction, setTransaction] = useState<TTransactions[] | any[]>([]);
   const formatDate = useCallback((format: string) => formatDateStringLocal(date, format), [date]);
@@ -43,7 +44,7 @@ function HeaderItem({ date, accountId, onRefreshDate }: HeaderItemProps) {
   useFocusEffect(
     useCallback(() => {
       fetchTransactionInDay();
-    }, []),
+    }, [reload]),
   );
 
   const formatDayOfTheWeek = () => {
@@ -110,15 +111,11 @@ function HeaderItem({ date, accountId, onRefreshDate }: HeaderItemProps) {
       {isArray(transaction) &&
         transaction.map((item) => {
           return (
-            <TransactionItem
-              data={item}
-              key={item.id}
-              onRefreshTransactionList={fetchTransactionInDay}
-            />
+            <TransactionItem data={item} key={item.id} onRefreshTransactionList={onRefreshDate} />
           );
         })}
     </>
   );
 }
 
-export default memo(HeaderItem, isEqual);
+export default HeaderItem;

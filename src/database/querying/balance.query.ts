@@ -87,14 +87,14 @@ export const queryAddNewBalanceTransaction = async (transaction: TransactionMode
 /** update */
 export const queryUpdateBalanceTransaction = async (
   transaction: TTransactions,
-  prevAccount?: string,
+  accountIdQuery?: string,
 ) => {
   try {
     const query = [Q.where('transactionId', transaction.id)];
-    if (prevAccount) {
-      query.push(Q.where('accountId', prevAccount));
+    if (accountIdQuery) {
+      query.push(Q.where('accountId', accountIdQuery));
     }
-    return await database.write(async () => {
+    const result = await database.write(async () => {
       const currentBalance = await database
         .get<BalanceModel>(BALANCE)
         .query(...query)
@@ -105,11 +105,16 @@ export const queryUpdateBalanceTransaction = async (
           bal.movementAmount = transaction.amount;
           bal.transactionDateAt = new Date(transaction.dateTimeAt);
         });
+        return true;
+      } else {
+        return false;
       }
-      return currentBalance[0];
     });
+    if (!result) {
+      await queryAddNewBalanceTransaction(transaction);
+    }
+    return true;
   } catch (error) {
-    console.log(error,'error');
     return handleError({
       error: 'UPD-BAL-TRANS',
     });
@@ -216,12 +221,16 @@ export const queryDeleteBalanceAfterDeleteAccount = (accountId: string) => {
   });
 };
 
-export const queryDeleteBalanceById = async (id: string) => {
+export const queryDeleteBalanceById = async (id: string, accountId?: string) => {
   try {
+    const query = [Q.where('transactionId', id)];
+    if (accountId) {
+      query.push(Q.where('accountId', accountId));
+    }
     return await database.write(async () => {
       const res = await database
         .get<BalanceModel>(BALANCE)
-        .query(Q.where('transactionId', id))
+        .query(...query)
         .fetch();
       for await (const item of res) {
         await item.destroyPermanently();

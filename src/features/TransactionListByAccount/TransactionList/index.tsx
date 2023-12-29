@@ -14,6 +14,7 @@ type DataProps = {
 
 function TransactionList({ accountId }: TransactionListProps) {
   const [data, setData] = useState<DataProps[]>([]);
+  const [reload, setReload] = useState(0);
 
   useFocusEffect(
     useCallback(() => {
@@ -25,6 +26,7 @@ function TransactionList({ accountId }: TransactionListProps) {
     getTransactionLisGroupByDate(accountId).then((res) => {
       if (isArray(res)) {
         setData(res);
+        setReload(reload + 1);
       }
     });
   };
@@ -32,7 +34,12 @@ function TransactionList({ accountId }: TransactionListProps) {
   const renderItem = ({ item }: { item: DataProps }) => {
     const { date } = item;
     return (
-      <HeaderItem date={date} accountId={accountId} onRefreshDate={fetchTransactionByGroupDate} />
+      <HeaderItem
+        date={date}
+        accountId={accountId}
+        reload={reload}
+        onRefreshDate={fetchTransactionByGroupDate}
+      />
     );
   };
 

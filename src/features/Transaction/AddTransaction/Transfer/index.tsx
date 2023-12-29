@@ -31,7 +31,6 @@ function Transfer({ params }: AddTransactionType) {
     handleSubmit,
     setValue,
     watch,
-    getValues,
     reset,
     formState: { errors },
   } = useFormContext<any>();
