@@ -1,6 +1,8 @@
 export const CREATE_MODE = 'create';
-export const RECENT = 'lastUseAt';
-export const MOST = 'useCount';
+export const VIEW_CATEGORY_FAST_BY_COLUMN = {
+  MOST: 'useCount',
+  RECENT: 'lastUseAt',
+};
 export const FLAT = 'flat';
 export const STICKY = 'sticky';
 export const BASE_URL = '';

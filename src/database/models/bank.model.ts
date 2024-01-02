@@ -11,6 +11,4 @@ export default class BankModel extends Model {
   @field('icon') icon!: string;
   @field('isSystem') isSystem!: boolean;
   @field('type') type!: string;
-  @readonly @date('created_at') createdAt!: Date;
-  @readonly @date('updated_at') updatedAt!: Date;
 }

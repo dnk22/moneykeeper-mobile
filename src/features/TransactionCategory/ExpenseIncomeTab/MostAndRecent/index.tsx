@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import isEqual from 'react-fast-compare';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
@@ -11,27 +11,30 @@ import {
   FlatListComponent,
 } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
-import { MOST, RECENT, TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
+import { TRANSACTION_CATEGORY_TYPE, VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constant';
 import { TTransactionsCategory } from 'database/types';
 import { getMostUsedOrRecentTransaction } from 'services/api/transactionsCategory';
 import { ITEM_WIDTH } from 'features/TransactionCategory/constants.config';
+import { useAppDispatch, useAppSelector } from 'store/index';
+import { selectViewCategoryMostAndRecent } from 'store/app/app.selector';
+import { updateViewCategoryMostAndRecent } from 'store/app/app.slice';
 import styles from './styles';
 
 const ON = 'on';
 const OFF = 'off';
 
 export const mapTitle: { [key: string]: string } = {
-  [RECENT]: 'Sử dụng gần đây',
-  [MOST]: 'Hay sử dụng',
+  [VIEW_CATEGORY_FAST_BY_COLUMN.RECENT]: 'Sử dụng gần đây',
+  [VIEW_CATEGORY_FAST_BY_COLUMN.MOST]: 'Hay sử dụng',
 };
 
 const dropDownDefault: MenuAction[] = [
   {
-    id: RECENT,
+    id: VIEW_CATEGORY_FAST_BY_COLUMN.RECENT,
     title: 'Sử dụng gần đây',
   },
   {
-    id: MOST,
+    id: VIEW_CATEGORY_FAST_BY_COLUMN.MOST,
     title: 'Hay sử dụng',
   },
 ];
@@ -39,16 +42,19 @@ const dropDownDefault: MenuAction[] = [
 function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation<any>();
-  const [fastView, setFastView] = useState<typeof MOST | typeof RECENT>(MOST);
+  const viewCategoryMostAndRecent = useAppSelector((state) =>
+    selectViewCategoryMostAndRecent(state),
+  );
+  const dispatch = useAppDispatch();
   const [data, setData] = useState<TTransactionsCategory[]>([]);
 
   useFocusEffect(
     useCallback(() => {
-      getRecentTransactionCategory(fastView);
-    }, [type, fastView]),
+      getRecentTransactionCategory(viewCategoryMostAndRecent);
+    }, [type, viewCategoryMostAndRecent]),
   );
-  
-  const getRecentTransactionCategory = async (queryColumn: typeof MOST | typeof RECENT) => {
+
+  const getRecentTransactionCategory = async (queryColumn: any) => {
     const res = await getMostUsedOrRecentTransaction({
       categoryType: type,
       column: queryColumn,
@@ -58,13 +64,13 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
 
   const renderActions = useMemo(() => {
     return dropDownDefault.map((x) => {
-      x.state = x.id === fastView ? ON : OFF;
+      x.state = x.id === viewCategoryMostAndRecent ? ON : OFF;
       return x;
     });
-  }, [fastView]);
+  }, [viewCategoryMostAndRecent]);
 
   const onHandlePressAction = ({ nativeEvent: { event } }: NativeActionEvent) => {
-    setFastView(event);
+    dispatch(updateViewCategoryMostAndRecent(event));
   };
 
   const onItemCategoryPress = (category: TTransactionsCategory) => {
@@ -83,7 +89,9 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
         key={item.id}
       >
         <View style={[styles.itemChild, { width: ITEM_WIDTH }]}>
-          <View style={styles.iconView}>{/* <SvgIcon name={item.icon} size={24} /> */}</View>
+          <View style={styles.iconView}>
+            <SvgIcon name={item.icon} size={24} />
+          </View>
           <RNText numberOfLines={1} fontSize={12} style={{ opacity: 0.8 }}>
             {item.categoryName}
           </RNText>
@@ -102,19 +110,13 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
       >
         <View style={styles.menu}>
           <RNText color="#1BA7EF" style={{ opacity: 0.7 }}>
-            {mapTitle[fastView]}
+            {mapTitle[viewCategoryMostAndRecent]}
           </RNText>
           <SvgIcon name="forward" size={14} opacity={0.7} color="#1BA7EF" />
         </View>
       </MenuView>
-      <View style={{ alignItems: 'center' }}>
-        <FlatListComponent
-          data={data}
-          horizontal
-          renderItem={renderItem}
-          ListEmptyComponent={<Empty />}
-        />
-      </View>
+      <FlatListComponent data={data} horizontal renderItem={renderItem} />
+      {!Boolean(data.length) && <Empty />}
     </View>
   );
 }

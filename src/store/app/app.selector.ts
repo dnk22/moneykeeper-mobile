@@ -2,20 +2,27 @@ import { appSlice } from './app.slice';
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from 'store/index';
 
-const accountViewSettingsState = (state: RootState) => state[appSlice.name].accountViewSettings;
-const reportViewSettingsState = (state: RootState) => state[appSlice.name].isReportViewByGrid;
-const transactionListConfigState = (state: RootState) => state[appSlice.name].transactionListConfig;
-const homeBottomBarTypeState = (state: RootState) => state[appSlice.name].homeBottomBarType;
+const appState = (state: RootState) => state[appSlice.name];
 
 // export selectors
 export const selectAccountViewSettings = createSelector(
-  accountViewSettingsState,
-  (settings) => settings,
+  appState,
+  (state) => state.accountViewSettings,
 );
-export const selectReportViewSettings = createSelector(reportViewSettingsState, (state) => state);
-export const selectTransactionListConfig = createSelector(
-  transactionListConfigState,
-  (config) => config,
-);
-export const selectHomeBottomBarType = createSelector(homeBottomBarTypeState, (state) => state);
 
+export const selectReportViewSettings = createSelector(
+  appState,
+  (state) => state.isReportViewByGrid,
+);
+
+export const selectTransactionListConfig = createSelector(
+  appState,
+  (state) => state.transactionListConfig,
+);
+
+export const selectHomeBottomBarType = createSelector(appState, (state) => state.homeBottomBarType);
+
+export const selectViewCategoryMostAndRecent = createSelector(
+  appState,
+  (state) => state.viewCategoryMostAndRecent,
+);

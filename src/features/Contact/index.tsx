@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { debounce, size } from 'lodash';
 import Contacts from 'react-native-contacts';
 import {
+  Empty,
   FlatListComponent,
   InputSearch,
   PressableHaptic,
@@ -31,9 +32,11 @@ function Contact({
   const [isInputFocus, setInputFocus] = useState(false);
   const [contactData, setContactData] = useState([]);
   const [contactDataFromDevice, setContactDataFromDevice] = useState([]);
+  const isHaveDataInit = useRef(false);
 
   const getContacts = (text?: string) => {
     getAllContact(text).then((res) => {
+      isHaveDataInit.current = Boolean(res.length);
       setContactData(res);
     });
   };
@@ -141,6 +144,7 @@ function Contact({
       )}
       <View style={[styles.listContainer, { backgroundColor: colors.surface }]}>
         <FlatListComponent data={data} renderItem={renderContactItem} />
+        {!isHaveDataInit && <Empty text="Chưa có liên hệ nào, thêm mới ngay" />}
       </View>
     </View>
   );

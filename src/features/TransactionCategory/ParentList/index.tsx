@@ -12,7 +12,7 @@ import { TTransactionsCategory } from 'database/types';
 import { useCustomTheme } from 'resources/theme';
 import { PARENT_LIST, UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
 import { TransactionCategoryParamProps } from 'navigation/types';
-import { getGroupList } from 'services/api/transactionsCategory';
+import { getParentList } from 'services/api/transactionsCategory';
 import styles from './styles';
 
 function ParentList() {
@@ -27,7 +27,7 @@ function ParentList() {
   }, [params.type]);
 
   async function fetchGroup() {
-    const res = await getGroupList(params.type);
+    const res = await getParentList(params.type);
     setData(res);
   }
   const onPress = (item: TTransactionsCategory) => {

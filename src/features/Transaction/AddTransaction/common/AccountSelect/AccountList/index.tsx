@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { SectionListData, View } from 'react-native';
-import { RNText } from 'components/index';
+import { Empty, RNText } from 'components/index';
 import { TAccount } from 'database/types';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
 import { AccountModel } from 'database/models';
@@ -70,6 +70,7 @@ function AccountList({ isItemSelected, onItemPress, excludeId }: AccountListProp
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         renderSectionHeader={renderSectionHeader}
+        ListEmptyComponent={<Empty text="Không có tài khoản nào!" />}
       />
     </View>
   );

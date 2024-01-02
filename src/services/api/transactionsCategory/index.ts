@@ -1,17 +1,14 @@
 import {
-  queryGroupTransactionCategory,
+  queryGetParentCategoryList,
   queryMostUsedOrRecentTransactionCategoryUsed,
   queryDeleteTransactionCategoryById,
   queryTransactionCategoryById,
   queryAddTransactionCategory,
   queryUpdateTransactionCategory,
-  queryExpenseIncomeParentObserve,
-  queryLendBorrowParentObserve,
-  queryExpenseIncomeChildrenObserve,
   queryGetLendBorrowData,
   queryGetExpenseIncome,
+  importDefaultTransactionCategory,
 } from 'database/querying';
-import { handleError } from 'utils/axios';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 
 type getMostUsedOrRecentTransactionProps = {
@@ -40,12 +37,12 @@ export const getMostUsedOrRecentTransaction = async (
   }
 };
 
-export const getGroupList = async (type: any) => {
+export const getParentList = async (type: any) => {
   try {
-    const res = await queryGroupTransactionCategory(type);
+    const res = await queryGetParentCategoryList(type);
     return res;
   } catch (error) {
-    console.log(error, 'getGroupList err ');
+    console.log(error, 'getParentList err ');
     return [];
   }
 };
@@ -55,21 +52,17 @@ export const getTransactionCategoryByID = async (id: string) => {
     const res = await queryTransactionCategoryById(id);
     return res;
   } catch (error) {
-    console.log(error, 'getGroupList err ');
+    console.log(error, 'getTransactionCategoryByID err ');
     return [];
   }
 };
 
-export const deleteTransactionCategoryByID = async (id: string) => {
-  try {
-    const res = await queryDeleteTransactionCategoryById(id);
-    return res;
-  } catch (error) {
-    console.log(error, 'deleteTransactionCategoryByID err ');
-    return { status: false, errorMessage: 'fail' };
-  }
-};
+/** create */
+export async function importTransactionCategoryDataLocal() {
+  return await importDefaultTransactionCategory();
+}
 
+/** update */
 export const updateTransactionCategory = async ({ id, data }: { id?: string; data: any }) => {
   try {
     if (id) {
@@ -83,27 +76,13 @@ export const updateTransactionCategory = async ({ id, data }: { id?: string; dat
   }
 };
 
-export const getTransactionCategoryParentObserve = (type?: TRANSACTION_CATEGORY_TYPE) => {
+/** delete */
+export const deleteTransactionCategoryByID = async (id: string) => {
   try {
-    return type !== undefined
-      ? queryExpenseIncomeParentObserve(type)
-      : queryLendBorrowParentObserve();
+    const res = await queryDeleteTransactionCategoryById(id);
+    return res;
   } catch (error) {
-    console.log(error, 'getTransactionCategoryParentObserve err ');
+    console.log(error, 'deleteTransactionCategoryByID err ');
     return { status: false, errorMessage: 'fail' };
-  }
-};
-
-export const getTransactionCategoryChildrenObserve = (
-  type: TRANSACTION_CATEGORY_TYPE,
-  id: string,
-) => {
-  try {
-    return queryExpenseIncomeChildrenObserve(type, id);
-  } catch (error) {
-    console.log(error, 'getTransactionCategoryChildrenObserve err ');
-    return handleError({
-      error: 'R-TRANS-CAT-CHIL',
-    });
   }
 };

@@ -11,10 +11,6 @@ export type GetTransactionByDate = {
   accountId: string;
 };
 
-/** observe */
-export const getTransactionByIdObserve = (id: string) =>
-  database.get<TransactionModel>(TRANSACTIONS).findAndObserve(id);
-
 /** read */
 /** query list transaction group by date  */
 export const queryTransactionLisGroupByDate = async (accountId: string) => {

@@ -1,14 +1,16 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Image, SectionListData, View } from 'react-native';
 import isEqual from 'react-fast-compare';
-import { Empty, PressableHaptic, RNText, SectionListComponent } from 'components/index';
+import { Empty, PressableHaptic, RNText, SectionListComponent, SvgIcon } from 'components/index';
 import { TAccount } from 'database/types';
+import { debounce } from 'lodash';
 import { useCustomTheme } from 'resources/theme';
 import { groupDataByValue } from 'utils/algorithm';
 import { swap } from 'assets/images';
+import { ADD_ACCOUNT } from 'navigation/constants';
+import { useNavigation } from '@react-navigation/native';
 import Item from './Item';
 import styles from './styles';
-import { debounce } from 'lodash';
 
 type AccountListProps = {
   title?: string;
@@ -20,6 +22,7 @@ type AccountListProps = {
 
 function AccountList({ isGroup = false, onActionPress, account = [] }: AccountListProps) {
   const { colors } = useCustomTheme();
+  const navigation = useNavigation<any>();
   const [viewActive, setViewActive] = useState(true);
 
   const getInactiveAccount = useMemo(() => {
@@ -68,6 +71,14 @@ function AccountList({ isGroup = false, onActionPress, account = [] }: AccountLi
         renderSectionHeader={renderSectionHeader}
         ListEmptyComponent={<Empty text="Không có tài khoản nào!" />}
       />
+      {viewActive && (
+        <PressableHaptic
+          style={[styles.createButton, { backgroundColor: colors.primary }]}
+          onPress={() => navigation.navigate(ADD_ACCOUNT)}
+        >
+          <SvgIcon name="add" size={30} color="white" />
+        </PressableHaptic>
+      )}
     </View>
   );
 }

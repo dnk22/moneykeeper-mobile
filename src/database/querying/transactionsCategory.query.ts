@@ -15,55 +15,6 @@ const lendAndBorrowCategory = [
   TRANSACTION_LEND_BORROW_NAME.REPAYMENT,
 ];
 
-/** observe */
-export const queryExpenseIncomeParentObserve = (type: TRANSACTION_CATEGORY_TYPE) =>
-  database
-    .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-    .query(
-      Q.and(
-        Q.where(
-          'categoryName',
-          Q.notIn([
-            TRANSACTION_LEND_BORROW_NAME.BORROW,
-            TRANSACTION_LEND_BORROW_NAME.LEND,
-            TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS,
-            TRANSACTION_LEND_BORROW_NAME.REPAYMENT,
-          ]),
-        ),
-        Q.where('categoryType', type),
-      ),
-      Q.where('parentId', Q.eq('')),
-      Q.where('_status', Q.notEq('deleted')),
-    )
-    .observe();
-
-export const queryExpenseIncomeChildrenObserve = (type: TRANSACTION_CATEGORY_TYPE, id: string) =>
-  database
-    .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-    .query(
-      Q.where('categoryType', type || null),
-      Q.where('parentId', id),
-      Q.where('_status', Q.notEq('deleted')),
-    )
-    .observe();
-
-export const queryLendBorrowParentObserve = () =>
-  database
-    .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-    .query(
-      Q.where(
-        'categoryName',
-        Q.oneOf([
-          TRANSACTION_LEND_BORROW_NAME.BORROW,
-          TRANSACTION_LEND_BORROW_NAME.LEND,
-          TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS,
-          TRANSACTION_LEND_BORROW_NAME.REPAYMENT,
-        ]),
-      ),
-      Q.where('_status', Q.notEq('deleted')),
-    )
-    .observe();
-
 /** read */
 export const queryGetLendBorrowData = async () => {
   try {
@@ -109,7 +60,7 @@ export const queryTransactionCategoryById = async (id: string) => {
   }
 };
 
-export const queryGroupTransactionCategory = async (type: TRANSACTION_CATEGORY_TYPE) => {
+export const queryGetParentCategoryList = async (type: TRANSACTION_CATEGORY_TYPE) => {
   try {
     return await database.read(async () => {
       const res = await database
@@ -134,20 +85,7 @@ export const queryGroupTransactionCategory = async (type: TRANSACTION_CATEGORY_T
       return res;
     });
   } catch (error) {
-    console.log(error, 'queryGroupTransactionCategory err');
-  }
-};
-
-export const getIsTransactionCategoryDataExist = async () => {
-  try {
-    return await database.read(async () => {
-      return await database
-        .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-        .query()
-        .fetchCount();
-    });
-  } catch (error) {
-    console.log(error, 'get transaction category exist err');
+    console.log(error, 'queryGetParentCategoryList err');
   }
 };
 
@@ -183,8 +121,32 @@ export const queryMostUsedOrRecentTransactionCategoryUsed = async ({
   });
 };
 
+export const getIsTransactionCategoryDataExist = async () => {
+  try {
+    return await database.read(async () => {
+      return await database
+        .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
+        .query()
+        .fetchCount();
+    });
+  } catch (error) {
+    console.log(error, 'get transaction category exist err');
+  }
+};
+
+/** create */
+
 export const importDefaultTransactionCategory = async () => {
   try {
+    const isHaveDataInit = await database.read(async () => {
+      return await database
+        .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
+        .query()
+        .fetchCount();
+    });
+    if (Boolean(isHaveDataInit)) {
+      return;
+    }
     const updateStatements: SQLiteQuery[] = TransactionCategoryData.map((record) => {
       const {
         id,
@@ -216,7 +178,6 @@ export const importDefaultTransactionCategory = async () => {
         ],
       ];
     });
-
     return database.write(async () => {
       return await database.adapter.unsafeExecute({
         sqls: updateStatements,
@@ -227,7 +188,6 @@ export const importDefaultTransactionCategory = async () => {
   }
 };
 
-/** create */
 export const queryAddTransactionCategory = async (tCategory: TTransactionsCategory) => {
   try {
     await database.write(async () => {
@@ -281,7 +241,6 @@ export const queryUpdateUseCountTransactionCategory = async (id: string) => {
 };
 
 /** delete */
-
 export const queryDeleteTransactionCategoryById = async (id: string) => {
   try {
     return await database.write(async () => {

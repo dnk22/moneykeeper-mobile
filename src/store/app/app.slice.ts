@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { FLAT, STICKY } from 'utils/constant/index';
+import { FLAT, STICKY, VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constant/index';
 
 type AccountViewSettingsProps = {
   sort: 'name' | 'custom';
@@ -19,6 +19,7 @@ type AppState = {
   isReportViewByGrid: boolean;
   transactionListConfig: TransactionListConfig;
   homeBottomBarType: typeof FLAT | typeof STICKY;
+  viewCategoryMostAndRecent: keyof typeof VIEW_CATEGORY_FAST_BY_COLUMN;
 };
 
 const initialState = {
@@ -34,6 +35,7 @@ const initialState = {
     isShowIncome: true,
   },
   homeBottomBarType: FLAT,
+  viewCategoryMostAndRecent: VIEW_CATEGORY_FAST_BY_COLUMN.MOST,
 } as AppState;
 
 export const appSlice = createSlice({
@@ -64,6 +66,12 @@ export const appSlice = createSlice({
     updateHomeBottomBarType(state, { payload }: PayloadAction<AppState['homeBottomBarType']>) {
       state.homeBottomBarType = payload;
     },
+    updateViewCategoryMostAndRecent(
+      state,
+      { payload }: PayloadAction<AppState['viewCategoryMostAndRecent']>,
+    ) {
+      state.viewCategoryMostAndRecent = payload;
+    },
   },
 });
 
@@ -74,6 +82,7 @@ export const {
   updateReportViewSettings,
   updateTransactionListConfig,
   updateHomeBottomBarType,
+  updateViewCategoryMostAndRecent,
 } = appSlice.actions;
 
 export type TAppSlice = {

@@ -41,6 +41,7 @@ function RelatedPersonSelect({
         control={control}
         error={errors[fieldName]}
         onSelect={handleOnSelectContact}
+        onDelete={() => setValue(fieldName, '')}
         iconOpacity
       />
       <BottomSheet ref={bottomSheetModalRef} index={1}>

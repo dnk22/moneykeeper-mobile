@@ -5,10 +5,10 @@ import { Q } from '@nozbe/watermelondb';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
 
 export const queryGetAllBalance = async () => {
-  const query = `SELECT * FROM ${TRANSACTION_CATEGORY}`;
+  const query = `SELECT * FROM ${BALANCE}`;
   return await database.read(async () => {
     const res = await database
-      .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
+      .get<BalanceModel>(BALANCE)
       .query(Q.unsafeSqlQuery(query))
       .unsafeFetchRaw();
     console.log(res);

@@ -35,6 +35,7 @@ function NormalItem({
       onSubmitUpdateContact();
       return;
     }
+    setContact(item.contactName);
     setIsEditMode(!isEditMode);
   };
 
@@ -47,7 +48,7 @@ function NormalItem({
       setIsFormError(true);
       return;
     }
-    updateContact({ id: item.id, text: contact }).then((res) => {
+    updateContact({ id: item.id, text: contact.trim() }).then((res) => {
       if (res.success) {
         setIsFormError(false);
         setIsEditMode(false);

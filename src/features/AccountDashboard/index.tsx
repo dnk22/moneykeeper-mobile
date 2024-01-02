@@ -1,9 +1,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
-import { PressableHaptic, RNText, SvgIcon } from 'components/index';
-import { useCustomTheme } from 'resources/theme';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { ADD_ACCOUNT } from 'navigation/constants';
+import {  RNText } from 'components/index';
+import { useFocusEffect } from '@react-navigation/native';
 import { useAppSelector } from 'store/index';
 import { TAccount } from 'database/types';
 import { selectAccountViewSettings } from 'store/app/app.selector';
@@ -14,8 +12,6 @@ import AccountList from './AccountList';
 import styles from './styles';
 
 function Accounts() {
-  const { colors } = useCustomTheme();
-  const navigation = useNavigation<any>();
   const { group } = useAppSelector((state) => selectAccountViewSettings(state));
   const currentAccountPressed = useRef<TAccount | any>(null);
   const [isShowItemSettingsModal, setIsShowItemSettingsModal] = useState(false);
@@ -35,18 +31,10 @@ function Accounts() {
     setIsShowItemSettingsModal(!isShowItemSettingsModal);
   };
 
-  const handleOnCreateAccount = () => {
-    navigation.navigate(ADD_ACCOUNT);
-  };
-
   const onActionPress = useCallback((account: TAccount) => {
     currentAccountPressed.current = account;
     onToggleModal();
   }, []);
-
-  const onActionPressDone = () => {
-    fetchListAccount();
-  };
 
   const getTotalMoneyInAllAccount = useMemo(() => {
     return accountData.reduce(
@@ -61,7 +49,7 @@ function Accounts() {
         isVisible={isShowItemSettingsModal}
         onToggleModal={onToggleModal}
         account={currentAccountPressed.current}
-        onActionPressDone={onActionPressDone}
+        onActionPressDone={fetchListAccount}
       />
       <View style={styles.container}>
         <View style={styles.totalBalance}>
@@ -75,12 +63,6 @@ function Accounts() {
           account={accountData}
           onActionPress={onActionPress}
         />
-        <PressableHaptic
-          style={[styles.createButton, { backgroundColor: colors.primary }]}
-          onPress={handleOnCreateAccount}
-        >
-          <SvgIcon name="add" size={30} color="white" />
-        </PressableHaptic>
       </View>
     </>
   );

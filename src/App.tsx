@@ -2,23 +2,19 @@ import React, { useEffect } from 'react';
 import { LogBox, useColorScheme } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
-import { persistor, store } from './store';
 import AppNavigators from 'navigation/index';
 import { MyAppTheme } from 'resources/theme';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Loading, StatusBar } from 'components/index';
 import RnKeyboard from 'rn-keyboard'; // <-- Import here
-import KeyboardCalculator from 'features/Transaction/AddTransaction/common/InputCalculator/KeyboardCalculator';
-import {
-  getIsBankDataExist,
-  getIsTransactionCategoryDataExist,
-  importDefaultBanksData,
-  importDefaultTransactionCategory,
-} from 'database/querying';
-import BlurScreen from 'features/BlurScreen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { importBankDataLocal } from 'services/api/banks';
+import { importTransactionCategoryDataLocal } from 'services/api/transactionsCategory';
+import KeyboardCalculator from 'features/Transaction/AddTransaction/common/InputCalculator/KeyboardCalculator';
+import BlurScreen from 'features/BlurScreen';
 import Toast from 'react-native-toast-message';
+import { persistor, store } from './store';
 
 LogBox.ignoreAllLogs();
 
@@ -31,21 +27,12 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    prepareBankData();
-    prepareTransactionCategoryData();
+    prepareInitData();
   }, []);
 
-  async function prepareBankData() {
-    const isBankExist = await getIsBankDataExist();
-    if (!!!isBankExist) {
-      importDefaultBanksData();
-    }
-  }
-  async function prepareTransactionCategoryData() {
-    const isTransactionCategoryExist = await getIsTransactionCategoryDataExist();
-    if (!!!isTransactionCategoryExist) {
-      importDefaultTransactionCategory();
-    }
+  async function prepareInitData() {
+    importBankDataLocal();
+    importTransactionCategoryDataLocal();
   }
 
   return (

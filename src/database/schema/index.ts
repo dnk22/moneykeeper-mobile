@@ -58,8 +58,6 @@ export default appSchema({
         { name: 'icon', type: 'string' },
         { name: 'isSystem', type: 'boolean' },
         { name: 'type', type: 'string' },
-        { name: 'created_at', type: 'number' },
-        { name: 'updated_at', type: 'number' },
       ],
     }),
     tableSchema({
