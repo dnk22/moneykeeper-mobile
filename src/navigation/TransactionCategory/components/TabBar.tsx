@@ -13,8 +13,9 @@ import { useCustomTheme } from 'resources/theme';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { TransactionCategoryListParams } from 'navigation/types';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
-import CategoryTab from 'features/TransactionCategory';
 import UpdateTransactionCategoryHeader from './Update';
+import LendAndBorrowTab from 'features/TransactionCategory/LendAndBorrowTab';
+import ExpenseIncomeTab from 'features/TransactionCategory/ExpenseIncomeTab';
 import styles from '../styles';
 
 const TabBar = createMaterialTopTabNavigator<TransactionCategoryListParams>();
@@ -24,16 +25,9 @@ const mapTransactionCategoryType = {
   [INCOME_CATEGORY]: TRANSACTION_CATEGORY_TYPE.INCOME,
 };
 
-function TransactionCategoryTapBar({ navigation, route }: any) {
+function TransactionCategoryTaBBar({ navigation, route }: any) {
   const { colors } = useCustomTheme();
   const [isUpdate, setIsUpdate] = useState(false);
-
-  const tabBarOptions = {
-    tabBarPressOpacity: 0.7,
-    lazy: true,
-    lazyPlaceholder: () => <Loading style={{ flex: 1 }} />,
-    tabBarStyle: { backgroundColor: colors.surface },
-  };
 
   useEffect(() => {
     updateTabActive(route);
@@ -99,21 +93,30 @@ function TransactionCategoryTapBar({ navigation, route }: any) {
         <TabBar.Navigator
           initialRouteName={EXPENSE_CATEGORY}
           tabBarPosition="bottom"
-          screenOptions={tabBarOptions}
+          screenOptions={{
+            tabBarPressOpacity: 0.8,
+            lazy: true,
+            lazyPlaceholder: () => <Loading style={{ flex: 1 }} />,
+            tabBarStyle: { backgroundColor: colors.surface },
+            tabBarActiveTintColor: colors.primary,
+            tabBarInactiveTintColor: colors.text,
+          }}
         >
           <TabBar.Screen name={INCOME_CATEGORY} options={{ title: 'Danh mục thu' }}>
-            {(props) => <CategoryTab {...props} type={TRANSACTION_CATEGORY_TYPE.INCOME} />}
+            {() => <ExpenseIncomeTab type={TRANSACTION_CATEGORY_TYPE.INCOME} />}
           </TabBar.Screen>
           <TabBar.Screen name={EXPENSE_CATEGORY} options={{ title: 'Danh mục chi' }}>
-            {(props) => <CategoryTab {...props} type={TRANSACTION_CATEGORY_TYPE.EXPENSE} />}
+            {() => <ExpenseIncomeTab type={TRANSACTION_CATEGORY_TYPE.EXPENSE} />}
           </TabBar.Screen>
-          <TabBar.Screen name={LEND_BORROW} options={{ title: 'Vay mượn' }}>
-            {(props) => <CategoryTab {...props} />}
-          </TabBar.Screen>
+          {!isUpdate && (
+            <TabBar.Screen name={LEND_BORROW} options={{ title: 'Vay mượn' }}>
+              {() => <LendAndBorrowTab />}
+            </TabBar.Screen>
+          )}
         </TabBar.Navigator>
       </SafeAreaView>
     </TransactionCategoryContext.Provider>
   );
 }
 
-export default TransactionCategoryTapBar;
+export default TransactionCategoryTaBBar;

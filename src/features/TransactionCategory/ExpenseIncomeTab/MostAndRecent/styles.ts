@@ -14,6 +14,19 @@ const styles = StyleSheet.create({
   selectAs: {
     width: '40%',
   },
+  itemChild: {
+    height: 70,
+    justifyContent: 'center',
+    alignItems: 'center',
+    rowGap: 4,
+  },
+  iconView: {
+    padding: 8,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F6F7F8',
+  },
 });
 
 export default styles;

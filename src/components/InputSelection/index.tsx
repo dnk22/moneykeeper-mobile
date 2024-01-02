@@ -5,6 +5,7 @@ import RNText from 'components/Text';
 import { Control } from 'react-hook-form';
 import SvgIcon from 'components/SvgIcon';
 import PressableHaptic from 'components/PressableHaptic';
+import { useCustomTheme } from 'resources/theme';
 import Form from './FORM';
 import styles from './styles';
 
@@ -37,6 +38,7 @@ function Selected({
   error,
   iconOpacity = false,
 }: SelectedProps) {
+  const { colors } = useCustomTheme();
   const isError = error && !Boolean(value);
   return (
     <>
@@ -51,7 +53,7 @@ function Selected({
               </RNText>
             )}
             {value && !required ? (
-              <View style={styles.value}>
+              <View style={[styles.value, { backgroundColor: colors.background }]}>
                 <RNText numberOfLines={1} style={{ maxWidth: '90%' }}>
                   {value}
                 </RNText>

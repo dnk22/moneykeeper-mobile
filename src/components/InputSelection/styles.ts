@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   value: {
-    maxWidth: '80%',
-    backgroundColor: '#e8ebea',
+    height: '80%',
+    maxWidth: '85%',
     padding: 5,
     paddingHorizontal: 10,
     borderRadius: 10,

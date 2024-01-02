@@ -5,33 +5,27 @@ import {
   queryTransactionCategoryById,
   queryAddTransactionCategory,
   queryUpdateTransactionCategory,
-  queryTransactionCategoryByParams,
   queryExpenseIncomeParentObserve,
   queryLendBorrowParentObserve,
   queryExpenseIncomeChildrenObserve,
-  getLendBorrowIds,
+  queryGetLendBorrowData,
+  queryGetExpenseIncome,
 } from 'database/querying';
+import { handleError } from 'utils/axios';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 
 type getMostUsedOrRecentTransactionProps = {
   categoryType: TRANSACTION_CATEGORY_TYPE;
   column: 'lastUseAt' | 'useCount';
 };
-type getTransactionCategoryByParamsProps = {
-  column: any;
-  value: any;
+
+/** read */
+export const getLendBorrowCategory = async () => {
+  return await queryGetLendBorrowData();
 };
 
-export const getTransactionCategoryByParams = async (
-  params: getTransactionCategoryByParamsProps,
-) => {
-  try {
-    const res = await queryTransactionCategoryByParams(params);
-    return res;
-  } catch (error) {
-    console.log(error, 'getTransactionCategoryByParams err ');
-    return [];
-  }
+export const getExpenseAndIncome = async ({ type }: { type: TRANSACTION_CATEGORY_TYPE }) => {
+  return await queryGetExpenseIncome({ type });
 };
 
 export const getMostUsedOrRecentTransaction = async (
@@ -108,10 +102,8 @@ export const getTransactionCategoryChildrenObserve = (
     return queryExpenseIncomeChildrenObserve(type, id);
   } catch (error) {
     console.log(error, 'getTransactionCategoryChildrenObserve err ');
-    return { status: false, errorMessage: 'fail' };
+    return handleError({
+      error: 'R-TRANS-CAT-CHIL',
+    });
   }
-};
-
-export const getLendBorrowCategory = async () => {
-  return await getLendBorrowIds();
 };

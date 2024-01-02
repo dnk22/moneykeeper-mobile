@@ -2,10 +2,18 @@ import { database } from 'database/index';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
 import { TRANSACTION_CATEGORY } from 'database/constants';
 import { TTransactionsCategory } from 'database/types';
-import { TransactionCategoryData } from 'utils/data';
 import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constant';
 import { Q } from '@nozbe/watermelondb';
 import { handleError } from 'utils/axios';
+import { TransactionCategoryData } from 'utils/data/transactionCategory.default';
+import { SQLiteQuery } from '@nozbe/watermelondb/adapters/sqlite';
+
+const lendAndBorrowCategory = [
+  TRANSACTION_LEND_BORROW_NAME.BORROW,
+  TRANSACTION_LEND_BORROW_NAME.LEND,
+  TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS,
+  TRANSACTION_LEND_BORROW_NAME.REPAYMENT,
+];
 
 /** observe */
 export const queryExpenseIncomeParentObserve = (type: TRANSACTION_CATEGORY_TYPE) =>
@@ -29,6 +37,16 @@ export const queryExpenseIncomeParentObserve = (type: TRANSACTION_CATEGORY_TYPE)
     )
     .observe();
 
+export const queryExpenseIncomeChildrenObserve = (type: TRANSACTION_CATEGORY_TYPE, id: string) =>
+  database
+    .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
+    .query(
+      Q.where('categoryType', type || null),
+      Q.where('parentId', id),
+      Q.where('_status', Q.notEq('deleted')),
+    )
+    .observe();
+
 export const queryLendBorrowParentObserve = () =>
   database
     .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
@@ -46,64 +64,33 @@ export const queryLendBorrowParentObserve = () =>
     )
     .observe();
 
-export const queryExpenseIncomeChildrenObserve = (type: TRANSACTION_CATEGORY_TYPE, id: string) =>
-  database
-    .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-    .query(
-      Q.where('categoryType', type || null),
-      Q.where('parentId', id),
-      Q.where('_status', Q.notEq('deleted')),
-    )
-    .observe();
-
 /** read */
-export const getAllTransactionGroupIds = async (type: TRANSACTION_CATEGORY_TYPE) => {
+export const queryGetLendBorrowData = async () => {
   try {
-    const query = `SELECT * FROM ${TRANSACTION_CATEGORY} WHERE categoryType='${type}' AND _status != 'deleted' AND parentId=''`;
     return await database.read(async () => {
-      const res = database
+      return database
         .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-        .query(Q.unsafeSqlQuery(query))
+        .query(
+          Q.where('categoryName', Q.oneOf(lendAndBorrowCategory)),
+          Q.where('_status', Q.notEq('deleted')),
+        )
         .unsafeFetchRaw();
-      return res;
     });
-  } catch (error) {
-    console.log(error, 'fetch getAllTransactionGroupIds err');
-  }
+  } catch (error) {}
 };
-export const getLendBorrowIds = async () => {
-  const query = `SELECT id,categoryName FROM ${TRANSACTION_CATEGORY} 
-  WHERE categoryName 
-  IN ('${TRANSACTION_LEND_BORROW_NAME.BORROW}','${TRANSACTION_LEND_BORROW_NAME.LEND}','${TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS}','${TRANSACTION_LEND_BORROW_NAME.REPAYMENT}')
-  AND _status != 'deleted'`;
+
+export const queryGetExpenseIncome = async ({ type }: { type: TRANSACTION_CATEGORY_TYPE }) => {
   return await database.read(async () => {
-    return database
+    const query = `SELECT id, categoryName, categoryType, parentId, dictionaryKey, icon, isSystem, sortOrder FROM ${TRANSACTION_CATEGORY}
+    WHERE _status!='deleted' AND categoryType=${type} AND categoryName NOT IN (${lendAndBorrowCategory
+      .map((item) => `"${item}"`)
+      .toString()})`;
+    const result = await database
       .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
       .query(Q.unsafeSqlQuery(query))
       .unsafeFetchRaw();
+    return result;
   });
-};
-
-export const queryTransactionCategoryByParams = async ({
-  column,
-  value,
-}: {
-  column: any;
-  value: any;
-}) => {
-  try {
-    const query = `SELECT * FROM ${TRANSACTION_CATEGORY} WHERE ${column}='${value}' AND _status != 'deleted'`;
-    return await database.read(async () => {
-      const res = await database
-        .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-        .query(Q.unsafeSqlQuery(query))
-        .unsafeFetchRaw();
-      return res[0] || {};
-    });
-  } catch (error) {
-    console.log(error, 'fetch queryTransactionCategoryById err');
-    return null;
-  }
 };
 
 export const queryTransactionCategoryById = async (id: string) => {
@@ -198,20 +185,43 @@ export const queryMostUsedOrRecentTransactionCategoryUsed = async ({
 
 export const importDefaultTransactionCategory = async () => {
   try {
-    await database.write(async () => {
-      for (const record of TransactionCategoryData) {
-        await database.get<TransactionCategoryModel>(TRANSACTION_CATEGORY).create((tCategory) => {
-          tCategory.categoryName = record.categoryName;
-          tCategory.categoryType = record.categoryType;
-          tCategory.parentId = record.parentId;
-          tCategory.description = record.description;
-          tCategory.isSystem = record.isSystem;
-          tCategory.useCount = record.useCount;
-          tCategory.icon = record.icon;
-        });
-      }
+    const updateStatements: SQLiteQuery[] = TransactionCategoryData.map((record) => {
+      const {
+        id,
+        categoryName,
+        categoryType,
+        parentId,
+        description,
+        isSystem,
+        useCount,
+        icon,
+        sortOrder,
+        dictionaryKey,
+      } = record;
+      return [
+        `INSERT INTO ${TRANSACTION_CATEGORY} (id, categoryName, categoryType, parentId, description, isSystem, useCount, icon, sortOrder, dictionaryKey, _changed, _status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          id,
+          categoryName,
+          categoryType,
+          parentId,
+          description,
+          isSystem,
+          useCount,
+          icon,
+          sortOrder,
+          dictionaryKey,
+          '',
+          'created',
+        ],
+      ];
     });
-    console.log('Import transaction category completed!');
+
+    return database.write(async () => {
+      return await database.adapter.unsafeExecute({
+        sqls: updateStatements,
+      });
+    });
   } catch (error) {
     console.log('Import transaction category failed: ', error);
   }

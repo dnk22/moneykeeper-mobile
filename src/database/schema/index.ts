@@ -94,14 +94,14 @@ export default appSchema({
       columns: [
         { name: 'categoryName', type: 'string' },
         { name: 'categoryType', type: 'number' },
-        { name: 'value', type: 'string', isOptional: true },
+        { name: 'dictionaryKey', type: 'number' },
         { name: 'parentId', type: 'string', isOptional: true },
         { name: 'description', type: 'string', isOptional: true },
         { name: 'icon', type: 'string', isOptional: true },
         { name: 'isSystem', type: 'boolean', isOptional: true },
         { name: 'useCount', type: 'number', isOptional: true },
+        { name: 'sortOrder', type: 'number', isOptional: true },
         { name: 'lastUseAt', type: 'number', isOptional: true },
-        { name: 'create_at', type: 'number' },
       ],
     }),
     tableSchema({

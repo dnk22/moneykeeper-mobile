@@ -43,7 +43,7 @@ export type TTransactions = {
 };
 
 export type TTransactionsCategory = {
-  id?: string;
+  id: string;
   categoryName: string;
   categoryType: TRANSACTION_CATEGORY_TYPE;
   parentId: string;
@@ -51,6 +51,10 @@ export type TTransactionsCategory = {
   isSystem: boolean;
   icon: string;
   useCount: number;
+  sortOrder: number;
+  lastUseAt?: Date | null;
+  dictionaryKey: number;
+  children?: TTransactionsCategory[];
 };
 
 // account

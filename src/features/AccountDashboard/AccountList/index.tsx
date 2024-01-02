@@ -57,7 +57,7 @@ function AccountList({ isGroup = false, onActionPress, account = [] }: AccountLi
           onPress={debounce(() => setViewActive(!viewActive), 200)}
           style={styles.iconSwapContainer}
         >
-          <Image source={swap} style={styles.iconSwap} />
+          <Image source={swap} style={[styles.iconSwap, { tintColor: colors.text }]} />
         </PressableHaptic>
       </View>
       <View style={[styles.divider, { backgroundColor: colors.divider }]} />
