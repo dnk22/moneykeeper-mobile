@@ -56,7 +56,6 @@ export const VPB = require("./VPB.png");
 export const VRB = require("./VRB.png");
 export const WOO = require("./WOO.png");
 export const bankDefault = require("./bankDefault.png");
-export const index = require("./index.ts");
 export const mbs = require("./mbs.png");
 export const momo = require("./momo.png");
 export const shopeepay = require("./shopeepay.png");

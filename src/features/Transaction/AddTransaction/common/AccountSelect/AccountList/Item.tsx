@@ -40,7 +40,7 @@ function Item({ account, isItemSelected, onItemPress }: ItemProps) {
         onPress={handleOnItemPress}
       >
         <View style={styles.itemContent}>
-          <IconComponent name={account.accountLogo} size={40} />
+          <IconComponent name={account.accountLogo} size={30} />
           <View style={styles.itemCenter}>
             <RNText numberOfLines={1} style={styles.itemTitle}>
               {account.accountName}

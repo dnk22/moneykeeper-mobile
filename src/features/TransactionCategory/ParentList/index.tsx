@@ -42,7 +42,7 @@ function ParentList() {
     return (
       <TouchableHighlightComponent onPress={() => onPress(item)}>
         <View style={[styles.item, { backgroundColor: colors.surface }]}>
-          <SvgIcon name={item.icon} size={32} preset="transactionType" />
+          <SvgIcon name={item.icon} size={30} />
           <RNText>{item.categoryName}</RNText>
         </View>
       </TouchableHighlightComponent>

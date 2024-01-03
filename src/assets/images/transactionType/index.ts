@@ -6,7 +6,6 @@ export const creditCard = require("./creditCard.png");
 export const eWallet = require("./eWallet.png");
 export const expenseType = require("./expenseType.png");
 export const incomeType = require("./incomeType.png");
-export const index = require("./index.ts");
 export const investment = require("./investment.png");
 export const lend = require("./lend.png");
 export const otherMoney = require("./otherMoney.png");

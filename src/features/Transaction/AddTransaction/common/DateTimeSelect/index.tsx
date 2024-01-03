@@ -33,7 +33,7 @@ function DateTimeSelect({ values = new Date(), onChangeDate }: DateTimeSelectPro
         onDateTimePicker={onChangeDate}
       />
       <View style={styles.itemGroup}>
-        <SvgIcon name="calendarHoliday" color='#adb5bd' />
+        <SvgIcon name="calendarHoliday" color="#adb5bd" />
         <View style={styles.groupContent}>
           <PressableHaptic onPress={() => onToggleDateTimeModal('date')}>
             <RNText>{formatDateLocal(values, 'EEEE, dd/MM/yyyy')}</RNText>

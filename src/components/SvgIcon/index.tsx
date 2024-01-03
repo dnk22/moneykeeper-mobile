@@ -13,14 +13,24 @@ interface SvgIconProps extends SvgProps {
   size?: number;
 }
 
-function SvgIcon({ name, color, size = 24, preset = 'default', ...rest }: SvgIconProps) {
+function SvgIcon({ name, color, size, preset = 'default', ...rest }: SvgIconProps) {
   const { colors } = useCustomTheme();
 
   // import svg icon by name
   const Icon: React.FC<SvgProps> = (name && SVG[name]) || SVG.questionCircle;
+  const presetStyle = IconSize[preset];
 
+  const dimension = {
+    width: size ? normalize(size) : presetStyle,
+    height: size ? normalize(size) : presetStyle,
+  };
   return (
-    <Icon width={normalize(size)} height={normalize(size)} color={color || colors.text} {...rest} />
+    <Icon
+      width={dimension.width}
+      height={dimension.height}
+      color={color || colors.text}
+      {...rest}
+    />
   );
 }
 

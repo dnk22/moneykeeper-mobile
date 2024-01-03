@@ -41,6 +41,7 @@ function Selected({
 }: SelectedProps) {
   const { colors } = useCustomTheme();
   const isError = error && !Boolean(value);
+
   return (
     <>
       {name && <Form name={name} control={control} rules={{ required: required }} />}

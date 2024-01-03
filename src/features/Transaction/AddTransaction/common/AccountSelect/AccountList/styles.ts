@@ -8,8 +8,8 @@ const styles = StyleSheet.create({
     height: 60,
     flexDirection: 'row',
     alignItems: 'center',
-    columnGap: 10,
-    paddingHorizontal: 5,
+    columnGap: 15,
+    paddingHorizontal: 10,
   },
   itemCenter: {
     flex: 1,
