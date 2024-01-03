@@ -34,7 +34,7 @@ function RelatedPersonSelect({
     <>
       <InputSelection
         required={required}
-        icon="people"
+        defaultIcon={'user'}
         name={fieldName}
         value={watch(fieldName)}
         title={title}
@@ -42,7 +42,6 @@ function RelatedPersonSelect({
         error={errors[fieldName]}
         onSelect={handleOnSelectContact}
         onDelete={() => setValue(fieldName, '')}
-        iconOpacity
       />
       <BottomSheet ref={bottomSheetModalRef} index={1}>
         <Contact onItemPress={onSelectContact} readOnly />

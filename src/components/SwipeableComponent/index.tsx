@@ -1,9 +1,9 @@
 import { useRef } from 'react';
 import { Animated, View } from 'react-native';
 import { RectButton, Swipeable } from 'react-native-gesture-handler';
-import TrashIcon from 'assets/svg/icon-trash.svg';
-import styles from './styles';
+import TrashIcon from 'assets/svg/trash.svg';
 import { SwipeableProps } from 'react-native-gesture-handler/lib/typescript/components/Swipeable';
+import styles from './styles';
 
 interface ISwipeableComponentProps extends SwipeableProps {
   children: React.ReactNode;

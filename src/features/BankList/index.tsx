@@ -4,7 +4,6 @@ import {
   InputSearch,
   FlatListComponent,
   TouchableHighlightComponent,
-  SvgIcon,
   RNText,
 } from 'components/index';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -13,7 +12,10 @@ import { BANK_TYPE } from 'utils/constant';
 import { ADD_ACCOUNT, BANK_HOME_LIST } from 'navigation/constants';
 import { fetchBankData } from 'services/api/banks';
 import { BankParamsProps } from 'navigation/types';
+import FastImage from 'react-native-fast-image';
+import * as BankIcon from 'assets/images/banks';
 import styles from './styles';
+import IconComponent from 'components/IconComponent';
 
 function BankList() {
   const { params } = useRoute<BankParamsProps<typeof BANK_HOME_LIST>['route']>();
@@ -45,12 +47,7 @@ function BankList() {
       <TouchableHighlightComponent onPress={() => onItemPress(item)}>
         <View style={styles.item}>
           <View style={styles.itemContent}>
-            <SvgIcon
-              name={item.icon}
-              size={34}
-              preset="transactionType"
-              style={{ borderRadius: 20 }}
-            />
+            <IconComponent name={item.icon} size={40} />
             <View>
               <RNText fontSize={16}>{item.shortName || item.bankName}</RNText>
               {params?.type === BANK_TYPE.BANK && (

@@ -1,28 +1,22 @@
 const fs = require('fs');
-const IMAGE_PATH = './src/assets/images';
-let result = [];
-const imagesPath = getDirectories(IMAGE_PATH);
+const path = require('path');
+const args = require('minimist')(process.argv.slice(2));
 
-function getDirectories(path) {
-  return fs.readdirSync(path).filter(function (file) {
-    return fs.statSync(path + '/' + file).isDirectory();
-  });
-}
+const imageDir = `./src/assets/images/${args.path}/`; // Default path or use the provided path
 
-for (const item of imagesPath) {
-  const files = fs.readdirSync(`${IMAGE_PATH}/${item}`);
-  const ex =
-    '\n' +
-    files
-      .map((x, index) => {
-        const decimal = files.length - 1 === index ? '' : ';';
-        return `export const ${x.split('.png')[0]}= require("./${item}/${x}")${decimal}`;
-      })
-      .join('\n');
-  result.push(ex);
-}
-const formatResult = result.flat((item) => item);
-const res = `export const imagesPath = {
-    ${formatResult}
-}`;
-fs.writeFileSync(`${IMAGE_PATH}/index.js`, `${formatResult}`);
+const images = fs
+  .readdirSync(imageDir)
+  .filter((fileName) => !fileName.startsWith('.'))
+  .reduce((acc, fileName) => {
+    const imageName = path.parse(fileName).name;
+    // acc[imageName] = `require("${path.join(imageDir, fileName)}")`;
+    acc[imageName] = `require("./${fileName}")`;
+    return acc;
+  }, {});
+
+const content = Object.keys(images)
+  .map((imageName) => `export const ${imageName} = ${images[imageName]};`)
+  .join('\n');
+
+fs.writeFileSync(`${imageDir}/index.ts`, content);
+

@@ -6,8 +6,8 @@ import {
   ModalComponent,
   FlatListComponent,
   TouchableHighlightComponent,
-  SvgIcon,
   CheckboxComponent,
+  IconComponent,
 } from 'components/index';
 import { TransactionTypeData } from 'utils/data';
 import { TTransactionType } from 'utils/types';
@@ -64,7 +64,7 @@ function SelectTransactionType({
         <View style={styles.item}>
           <View style={styles.itemContent}>
             <View style={styles.itemIcon}>
-              <SvgIcon name={item.icon} size={24} />
+              <IconComponent name={item.icon}/>
             </View>
             <RNText>{item.name}</RNText>
           </View>

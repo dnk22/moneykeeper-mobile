@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef, useState } from 'react';
+import { memo, useCallback, useRef } from 'react';
 import { RNText, SvgIcon, PressableHaptic } from 'components/index';
 import { LayoutChangeEvent, View } from 'react-native';
 import isEqual from 'react-fast-compare';

@@ -12,7 +12,8 @@
     "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
     "list-devices": "xcrun xctrace list devices",
     "npm-check": "npx npm-check -u",
-    "gen-images": "node updateImagesPath.js"
+    "gen-images": "node updateImagesPath.js",
+    "gen-svg": "node updateSvgPath.js"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.5.1",

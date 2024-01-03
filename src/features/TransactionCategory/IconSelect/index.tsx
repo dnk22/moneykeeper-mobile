@@ -1,6 +1,6 @@
 import { Image, ScrollView, View } from 'react-native';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
-import { transactionCategoryIcon } from 'assets/images/transactionCategory';
+import * as transactionCategoryIcon from 'assets/images/transactionCategory';
 import { useNavigation } from '@react-navigation/native';
 import { UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
 import { TransactionCategoryParamProps } from 'navigation/types';

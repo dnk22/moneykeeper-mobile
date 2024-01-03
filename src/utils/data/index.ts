@@ -1,8 +1,6 @@
-import { TTransactionsCategory } from 'database/types';
 import { TAccountType } from 'database/types';
 import {
   ACCOUNT_CATEGORY_ID,
-  TRANSACTION_CATEGORY_TYPE,
   TRANSACTION_LEND_BORROW_NAME,
   TRANSACTION_TYPE,
 } from 'utils/constant';
@@ -60,13 +58,13 @@ export const AccountType: TAccountType[] = [
     id: ACCOUNT_CATEGORY_ID.BANK,
     name: 'Tài khoản ngân hàng',
     value: 'bank',
-    icon: 'bank',
+    icon: 'bankAccountType',
   },
   {
     id: ACCOUNT_CATEGORY_ID.CREDITCARD,
     name: 'Thẻ tín dụng',
     value: 'credit',
-    icon: 'credit',
+    icon: 'creditCard',
   },
   {
     id: ACCOUNT_CATEGORY_ID.INVESTMENT,
@@ -84,6 +82,6 @@ export const AccountType: TAccountType[] = [
     id: ACCOUNT_CATEGORY_ID.OTHER,
     name: 'Khác',
     value: 'other',
-    icon: 'money',
+    icon: 'otherMoney',
   },
 ];

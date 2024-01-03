@@ -2,9 +2,8 @@ import React, { View } from 'react-native';
 import { TAccount } from 'database/types';
 import {
   CheckboxComponent,
-  PressableHaptic,
   RNText,
-  SvgIcon,
+  IconComponent,
   TouchableHighlightComponent,
 } from 'components/index';
 import { useNavigation } from '@react-navigation/native';
@@ -41,7 +40,7 @@ function Item({ account, isItemSelected, onItemPress }: ItemProps) {
         onPress={handleOnItemPress}
       >
         <View style={styles.itemContent}>
-          <SvgIcon name={account.accountLogo} size={34} />
+          <IconComponent name={account.accountLogo} size={40} />
           <View style={styles.itemCenter}>
             <RNText numberOfLines={1} style={styles.itemTitle}>
               {account.accountName}

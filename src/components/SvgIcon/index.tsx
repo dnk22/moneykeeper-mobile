@@ -1,53 +1,26 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
 import isEqual from 'react-fast-compare';
-import FastImage from 'react-native-fast-image';
-import { NumberProp, SvgProps } from 'react-native-svg';
-import { Image } from 'react-native';
+import { SvgProps } from 'react-native-svg';
 import { useCustomTheme } from 'resources/theme';
 import { normalize } from 'share/dimensions';
-import icon, { IconProps } from './const';
+import * as SVG from 'assets/svg';
 import { IconSize } from './preset';
-import * as imagesPath from 'assets/images';
-import { transactionCategoryIcon } from 'assets/images/transactionCategory';
-
-const imgSrc = { ...imagesPath, ...transactionCategoryIcon };
 
 interface SvgIconProps extends SvgProps {
-  name?: IconProps;
+  name?: keyof typeof SVG;
   color?: string;
   preset?: keyof typeof IconSize;
-  size?: NumberProp;
+  size?: number;
 }
 
-function SvgIcon({ name, color, size, preset = 'default', ...rest }: SvgIconProps) {
+function SvgIcon({ name, color, size = 24, preset = 'default', ...rest }: SvgIconProps) {
   const { colors } = useCustomTheme();
-  const isImage = useMemo(() => name && !icon.hasOwnProperty(name), [name]);
 
   // import svg icon by name
-  const Icon: React.FC<SvgProps> = (name && icon[name]) || icon.questionCircle;
-  const presetStyle = IconSize[preset];
-  const dimension = {
-    width: normalize(size) || presetStyle,
-    height: normalize(size) || presetStyle,
-  };
+  const Icon: React.FC<SvgProps> = (name && SVG[name]) || SVG.questionCircle;
+
   return (
-    <>
-      {isImage && (
-        <Image
-          style={{ width: dimension.width, height: dimension.height }}
-          resizeMode={FastImage.resizeMode.contain}
-          source={imgSrc[name] && imgSrc[name]}
-        />
-      )}
-      {!isImage && (
-        <Icon
-          width={dimension.width}
-          height={dimension.height}
-          color={color || colors.text}
-          {...rest}
-        />
-      )}
-    </>
+    <Icon width={normalize(size)} height={normalize(size)} color={color || colors.text} {...rest} />
   );
 }
 

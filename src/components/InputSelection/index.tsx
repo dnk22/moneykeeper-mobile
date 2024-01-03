@@ -6,6 +6,7 @@ import { Control } from 'react-hook-form';
 import SvgIcon from 'components/SvgIcon';
 import PressableHaptic from 'components/PressableHaptic';
 import { useCustomTheme } from 'resources/theme';
+import IconComponent from 'components/IconComponent';
 import Form from './FORM';
 import styles from './styles';
 
@@ -14,6 +15,7 @@ type SelectedProps = {
   subTitle?: string;
   isShowSubTitle?: boolean;
   icon?: any;
+  defaultIcon?: any;
   onSelect?: () => void;
   value?: string;
   onDelete?: () => void;
@@ -21,14 +23,14 @@ type SelectedProps = {
   name?: string;
   control?: Control<any, any>;
   error?: any;
-  iconOpacity?: boolean;
 };
 
 function Selected({
   title,
   subTitle,
   isShowSubTitle = false,
-  icon = 'questionCircle',
+  icon,
+  defaultIcon = 'unknown',
   onSelect,
   value,
   onDelete,
@@ -36,7 +38,6 @@ function Selected({
   name,
   control,
   error,
-  iconOpacity = false,
 }: SelectedProps) {
   const { colors } = useCustomTheme();
   const isError = error && !Boolean(value);
@@ -44,7 +45,11 @@ function Selected({
     <>
       {name && <Form name={name} control={control} rules={{ required: required }} />}
       <PressableHaptic style={[styles.itemGroup]} onPress={onSelect}>
-        <SvgIcon name={icon} style={[iconOpacity ? { color: '#adb5bd' } : {}]} />
+        <IconComponent
+          name={icon || defaultIcon}
+          style={{ opacity: !icon ? 0.6 : 1 }}
+          useTheme={!icon}
+        />
         <View style={styles.groupContent}>
           <View style={styles.title}>
             {value && isShowSubTitle && (

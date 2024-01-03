@@ -50,10 +50,11 @@ function AccountBankSelect({
 
   const getInputBankPlaceHolder = () => {
     switch (accountType) {
-      case ACCOUNT_CATEGORY_ID.EWALLET:
-        return 'Chọn nhà cung cấp';
-      default:
+      case ACCOUNT_CATEGORY_ID.BANK:
+      case ACCOUNT_CATEGORY_ID.CREDITCARD:
         return 'Chọn ngân hàng';
+      default:
+        return 'Chọn nhà cung cấp';
     }
   };
 
@@ -75,6 +76,7 @@ function AccountBankSelect({
   return (
     <InputSelection
       icon={bankSelectedState?.icon}
+      defaultIcon="bankDefault"
       value={bankSelectedState?.bankName}
       title={getInputBankPlaceHolder()}
       onSelect={onSelectBank}

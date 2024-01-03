@@ -1,12 +1,11 @@
-export const transactionCategoryIcon = {
-  breakfast: require('./breakfast.png'),
-  coffeeCup: require('./coffeeCup.png'),
-  dinner: require('./dinner.png'),
-  drinkJuice: require('./drinkJuice.png'),
-  food: require('./food.png'),
-  lunch: require('./lunch.png'),
-  liquor: require('./liquor.png'),
-  restaurant: require('./restaurant.png'),
-  shopping: require('./shopping.png'),
-  tea: require('./tea.png'),
-};
+export const breakfast = require("./breakfast.png");
+export const bubbleTea = require("./bubbleTea.png");
+export const coffeeCup = require("./coffeeCup.png");
+export const dinner = require("./dinner.png");
+export const drinkJuice = require("./drinkJuice.png");
+export const food = require("./food.png");
+export const liquor = require("./liquor.png");
+export const lunch = require("./lunch.png");
+export const restaurant = require("./restaurant.png");
+export const shopping = require("./shopping.png");
+export const tea = require("./tea.png");

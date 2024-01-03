@@ -1,12 +1,18 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Image, SectionListData, View } from 'react-native';
 import isEqual from 'react-fast-compare';
-import { Empty, PressableHaptic, RNText, SectionListComponent, SvgIcon } from 'components/index';
+import {
+  Empty,
+  IconComponent,
+  PressableHaptic,
+  RNText,
+  SectionListComponent,
+  SvgIcon,
+} from 'components/index';
 import { TAccount } from 'database/types';
 import { debounce } from 'lodash';
 import { useCustomTheme } from 'resources/theme';
 import { groupDataByValue } from 'utils/algorithm';
-import { swap } from 'assets/images';
 import { ADD_ACCOUNT } from 'navigation/constants';
 import { useNavigation } from '@react-navigation/native';
 import Item from './Item';
@@ -60,7 +66,7 @@ function AccountList({ isGroup = false, onActionPress, account = [] }: AccountLi
           onPress={debounce(() => setViewActive(!viewActive), 200)}
           style={styles.iconSwapContainer}
         >
-          <Image source={swap} style={[styles.iconSwap, { tintColor: colors.text }]} />
+          <IconComponent name="swap" size={20} useTheme style={styles.iconSwap} />
         </PressableHaptic>
       </View>
       <View style={[styles.divider, { backgroundColor: colors.divider }]} />

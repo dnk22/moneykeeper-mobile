@@ -55,8 +55,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconSwap: {
-    width: 20,
-    height: 20,
     transform: [{ rotate: '90deg' }],
   },
   divider: {

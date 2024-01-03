@@ -29,7 +29,7 @@ function MoreDetail({ children }: { children: React.ReactNode }) {
         onPress={handleOnShowDetail}
       >
         <RNText>{isShowDetails ? 'Ẩn chi tiết' : 'Hiển thị chi tiết'}</RNText>
-        <SvgIcon name={isShowDetails ? 'arrowUp' : 'arrowDown'} size={16} />
+        <SvgIcon name={isShowDetails ? 'up' : 'down'} size={16} />
       </PressableHaptic>
     </View>
   );

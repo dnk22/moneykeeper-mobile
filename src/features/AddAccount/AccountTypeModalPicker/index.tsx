@@ -6,8 +6,8 @@ import {
   CheckboxComponent,
   FlatListComponent,
   RNText,
-  SvgIcon,
   TouchableHighlightComponent,
+  IconComponent,
 } from 'components/index';
 import { IModalComponentProps } from 'components/Modal';
 import { TAccountType } from 'database/types';
@@ -42,7 +42,7 @@ function AccountTypeModalPicker({
       <TouchableHighlightComponent onPress={onPress}>
         <View style={styles.item}>
           <View style={styles.itemContent}>
-            <SvgIcon name={item.icon} size={32} preset="transactionType" />
+            <IconComponent name={item.icon} />
             <RNText>{item.name}</RNText>
           </View>
           {currentSelected(item.id) && <CheckboxComponent check disabled />}

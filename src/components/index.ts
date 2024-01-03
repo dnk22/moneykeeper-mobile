@@ -22,10 +22,12 @@ import InputSearch from 'components/InputSearch';
 import VirtualizedListComponent from 'components/VirtualizedList';
 import Empty from 'components/Empty';
 import BottomSheet from 'components/BottomSheetModal';
+import IconComponent from 'components/IconComponent';
 
 import FormAction from 'components/common/FormAction';
 
 export {
+  IconComponent,
   DateTimePicker,
   InputField,
   RNText,
