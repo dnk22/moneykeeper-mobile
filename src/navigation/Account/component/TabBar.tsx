@@ -2,9 +2,9 @@ import React, { memo, useEffect, useMemo, useState } from 'react';
 import { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
 import isEqual from 'react-fast-compare';
 import { View } from 'react-native';
-import styles from '../styles';
 import SegmentedControl from 'components/SegmentedControl';
 import { SAVINGS, WALLET } from 'navigation/constants';
+import styles from '../styles';
 
 function TabBar({ state, descriptors, navigation }: MaterialTopTabBarProps) {
   const [isActive, setIsActive] = useState(state.index);

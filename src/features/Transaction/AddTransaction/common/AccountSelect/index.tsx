@@ -61,7 +61,7 @@ function AccountSelect({
       return false;
     }
     try {
-      const account = await getAccountById(getValues(name));
+      const account = await getAccountById(getValues(name), false);
       if (isEmpty(account)) {
         resetAccountState();
         return false;

@@ -3,6 +3,10 @@ export const VIEW_CATEGORY_FAST_BY_COLUMN = {
   MOST: 'useCount',
   RECENT: 'lastUseAt',
 };
+export const SORT_ACCOUNT_BY_KEY = {
+  accountName: 'accountName',
+  sortOrder: 'sortOrder',
+};
 export const FLAT = 'flat';
 export const STICKY = 'sticky';
 export const BASE_URL = '';

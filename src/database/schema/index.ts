@@ -8,6 +8,7 @@ import {
   TRANSACTIONS,
   TRANSACTION_CATEGORY,
 } from 'database/constants';
+import { SORT_ACCOUNT_BY_KEY } from 'utils/constant';
 
 export default appSchema({
   version: 1,
@@ -15,7 +16,7 @@ export default appSchema({
     tableSchema({
       name: ACCOUNTS,
       columns: [
-        { name: 'accountName', type: 'string' },
+        { name: SORT_ACCOUNT_BY_KEY.accountName, type: 'string' },
         { name: 'accountLogo', type: 'string' },
         { name: 'initialAmount', type: 'number' },
         { name: 'accountTypeId', type: 'number' },
@@ -26,9 +27,7 @@ export default appSchema({
         { name: 'isActive', type: 'boolean' },
         { name: 'excludeReport', type: 'boolean', isOptional: true },
         { name: 'userId', type: 'string', isOptional: true },
-        { name: 'sortOrder', type: 'number', isOptional: true },
-        { name: 'created_at', type: 'number' },
-        { name: 'updated_at', type: 'number' },
+        { name: SORT_ACCOUNT_BY_KEY.sortOrder, type: 'number', isOptional: true },
         // fields for savings account
         { name: 'termType', type: 'number', isOptional: true },
         { name: 'termMonth', type: 'number', isOptional: true },

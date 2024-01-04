@@ -4,7 +4,7 @@ import { Empty, RNText } from 'components/index';
 import { TAccount } from 'database/types';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
 import { AccountModel } from 'database/models';
-import { groupDataByValue } from 'utils/algorithm';
+import { groupAccountDataByValue } from 'utils/algorithm';
 import { getAccountData } from 'services/api/accounts';
 import { TGetAllAccounts } from 'database/querying';
 import { BottomSheetSectionList, BottomSheetTextInput } from '@gorhom/bottom-sheet';
@@ -30,7 +30,7 @@ function AccountList({ isItemSelected, onItemPress, excludeId }: AccountListProp
 
   const getListAccount = ({ text = '', excludeId }: TGetAllAccounts) => {
     getAccountData({ text, excludeId }).then((res) => {
-      const dataGroup: any[] = groupDataByValue(res);
+      const dataGroup: any[] = groupAccountDataByValue(res);
       setAccounts(dataGroup);
     });
   };

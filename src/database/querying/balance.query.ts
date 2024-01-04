@@ -180,16 +180,6 @@ export const queryCalculateAllBalanceAfterDate = async ({
     });
 
     return database.write(async () => {
-      // for (const balance of newDataUpdate) {
-      //   const res = await database.get<BalanceModel>(BALANCE).find(balance.id);
-      //   // delete balance.id;
-      //   // delete balance._id;
-      //   await res.update((item) => {
-      //     // Object.assign(item, balance);
-      //     item.openAmount = balance.openAmount;
-      //     item.closingAmount = balance.closingAmount;
-      //   });
-      // }
       await database.adapter.unsafeExecute({
         sqls: updateStatements,
       });

@@ -59,7 +59,7 @@ function SectionListComponent({
       ItemSeparatorComponent={({ highlighted }) => (
         <View
           style={[
-            { height: 0.4, width: '90%', backgroundColor: colors.divider, alignSelf: 'center' },
+            { height: 0.8, width: '90%', backgroundColor: colors.divider, alignSelf: 'center' },
             highlighted,
           ]}
         />

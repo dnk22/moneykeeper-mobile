@@ -1,10 +1,8 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
-import {  RNText } from 'components/index';
+import { RNText } from 'components/index';
 import { useFocusEffect } from '@react-navigation/native';
-import { useAppSelector } from 'store/index';
 import { TAccount } from 'database/types';
-import { selectAccountViewSettings } from 'store/app/app.selector';
 import { getAccountData } from 'services/api/accounts';
 import { formatNumber } from 'utils/math';
 import ItemSettingsModal from './ItemSettingsModal';
@@ -12,7 +10,6 @@ import AccountList from './AccountList';
 import styles from './styles';
 
 function Accounts() {
-  const { group } = useAppSelector((state) => selectAccountViewSettings(state));
   const currentAccountPressed = useRef<TAccount | any>(null);
   const [isShowItemSettingsModal, setIsShowItemSettingsModal] = useState(false);
   const [accountData, setAccountData] = useState<TAccount[]>([]);
@@ -58,11 +55,7 @@ function Accounts() {
             true,
           )}`}</RNText>
         </View>
-        <AccountList
-          isGroup={group}
-          account={accountData}
-          onActionPress={onActionPress}
-        />
+        <AccountList account={accountData} onActionPress={onActionPress} />
       </View>
     </>
   );

@@ -37,13 +37,15 @@ export const queryAllAccount = async ({ text = '', excludeId = '' }: TGetAllAcco
       )
       .unsafeFetchRaw();
     var endTime = performance.now();
-    console.log(`get list account: ${(endTime - startTime)/1000} s`);
+    console.log(`get list account: ${(endTime - startTime) / 1000} s`);
     return result;
   });
 };
 
-export const queryAccountById = async (id: string) => {
-  const query = `SELECT accountLogo, accountName  FROM ${ACCOUNTS} WHERE id='${id}' AND _status != 'deleted' `;
+export const queryAccountById = async (id: string, getAll = true) => {
+  const query = `SELECT ${
+    getAll ? '*' : 'accountLogo, accountName'
+  }  FROM ${ACCOUNTS} WHERE id='${id}' AND _status != 'deleted' `;
   return await database.read(async () => {
     const res = await database
       .get<AccountModel>(ACCOUNTS)
@@ -65,9 +67,14 @@ export const queryGetFirstAccount = async () => {
 /** CREATE */
 export const queryAddAccount = async (account: TAccount) => {
   try {
+    const queryGetMaxSortOrder = `SELECT MAX(sortOrder) AS currentSortOrder from ${ACCOUNTS} WHERE _status!='deleted'`;
     return await database.write(async () => {
+      const result = await database
+        .get<AccountModel>(ACCOUNTS)
+        .query(Q.unsafeSqlQuery(queryGetMaxSortOrder))
+        .unsafeFetchRaw();
       const accountDB = await database.get<AccountModel>(ACCOUNTS).create((item) => {
-        Object.assign(item, account);
+        Object.assign(item, { ...account, sortOrder: result[0].currentSortOrder + 1 });
       });
       return {
         accountId: accountDB.id,

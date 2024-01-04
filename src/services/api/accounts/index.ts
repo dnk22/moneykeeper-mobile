@@ -51,8 +51,8 @@ export async function updateAccountDB({ id, account }: { id?: string; account: T
   }
 }
 
-export async function getAccountById(id: string) {
-  return queryAccountById(id);
+export async function getAccountById(id: string, getAll?: boolean) {
+  return queryAccountById(id, getAll);
 }
 export async function getFirstAccount() {
   return await queryGetFirstAccount();

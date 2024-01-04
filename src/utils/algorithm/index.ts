@@ -15,31 +15,17 @@ export function findObjectInArrayById(array: any, id: string) {
   };
 }
 
-/**
- * merge deep object with @target and @source
- * Return new object
- */
-
-export const deepMerge = (target: any, source: any): any => {
-  for (const key in source) {
-    if (source.hasOwnProperty(key)) {
-      if (typeof source[key] === 'object' && source[key] !== null) {
-        if (Array.isArray(source[key])) {
-          target[key] = [...(target[key] || []), ...source[key]];
-        } else {
-          target[key] = deepMerge(target[key] || {}, source[key]);
-        }
-      } else {
-        target[key] = source[key];
-      }
-    }
-  }
-  return target;
-};
-
-export const groupDataByValue = (data: any) => {
+export const groupAccountDataByValue = (
+  data: TAccount[],
+  sortKey?: 'accountName' | 'sortOrder',
+) => {
   if (!data.length) return [];
-  const groupedData: any = {};
+  const groupedData: {
+    [key: string]: {
+      title: string;
+      data: TAccount[];
+    };
+  } = {};
   data.forEach((item: TAccount) => {
     if (!groupedData[item.accountTypeId]) {
       groupedData[item.accountTypeId] = { title: '', data: [] };
@@ -47,6 +33,16 @@ export const groupDataByValue = (data: any) => {
     groupedData[item.accountTypeId].title = item.accountTypeName;
     groupedData[item.accountTypeId].data.push(item);
   });
+
+  // Sort data within each group by categoryName or sortOrder
+  if (sortKey) {
+    Object.values(groupedData).forEach(({ data }: { data: TAccount[] }) => {
+      if (data && data.length > 1) {
+        return data.sort(sortDataByKey(sortKey));
+      }
+    });
+  }
+
   return Object.values(groupedData);
 };
 
@@ -60,28 +56,13 @@ export function getKeyByValue(obj: Record<string, string>, value?: string): stri
   return '';
 }
 
-function convertDataToQuery(data: TTransactions[]) {
-  // Extract unique id values from the data array
-  const uniqueIds = data.map((record) => `'${record.id}'`);
-  // Define the common conditions for the WHERE clause
-  const commonConditions = `id IN (${uniqueIds.join(', ')})`;
-  // Start building the SQL query
-  let updateQuery = `UPDATE ${BALANCE} SET `;
+export const sortDataByKey = (property: string) => (a: any, b: any) => {
+  const valueA = typeof a[property] === 'string' ? a[property].toLowerCase() : a[property];
+  const valueB = typeof b[property] === 'string' ? b[property].toLowerCase() : b[property];
 
-  data.forEach((record, index) => {
-    const { id, closingAmount, transactionDateAt } = record;
-    // Construct the CASE statement for each record
-    const caseStatement = `CASE WHEN id = ${id} THEN ${closingAmount} END`;
-    // Add a comma and space after the SET if not the first record
-    if (index !== 0) {
-      updateQuery += ', ';
-    }
-    // Add the cod_user field with the CASE statement
-    updateQuery += `cod_user = COALESCE(${caseStatement}, cod_user)`;
-  });
+  if (typeof valueA === 'number' && typeof valueB === 'number') {
+    return valueA - valueB;
+  }
 
-  // Add the common conditions to the WHERE clause
-  updateQuery += ` WHERE ${commonConditions};`;
-
-  console.log(updateQuery);
-}
+  return valueA.localeCompare(valueB);
+};

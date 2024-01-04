@@ -72,7 +72,7 @@ export type TAccount = {
   excludeReport?: boolean;
   userId: string;
   accountLogo: string;
-  sortOrder?: number;
+  sortOrder: number;
   termType?: number;
   termMonth?: number;
   interestRate?: number;

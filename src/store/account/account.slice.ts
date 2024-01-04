@@ -3,21 +3,17 @@ import { TAccount } from 'database/types';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 type AccountProps = {
-  accountData: TAccount[];
 };
 
 //set default data
 const initialState: AccountProps = {
-  accountData: [],
 };
 
 export const accountSlice = createSlice({
   name: 'account',
   initialState,
   reducers: {
-    setAllAccountData(state, { payload }: PayloadAction<TAccount[]>) {
-      state.accountData = payload;
-    },
+    
   },
 });
 

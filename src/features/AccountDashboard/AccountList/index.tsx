@@ -1,5 +1,5 @@
-import React, { memo, useCallback, useMemo, useState } from 'react';
-import { Image, SectionListData, View } from 'react-native';
+import React, { memo, useCallback, useMemo } from 'react';
+import { SectionListData, View } from 'react-native';
 import isEqual from 'react-fast-compare';
 import {
   Empty,
@@ -12,34 +12,43 @@ import {
 import { TAccount } from 'database/types';
 import { debounce } from 'lodash';
 import { useCustomTheme } from 'resources/theme';
-import { groupDataByValue } from 'utils/algorithm';
+import { groupAccountDataByValue, sortDataByKey } from 'utils/algorithm';
 import { ADD_ACCOUNT } from 'navigation/constants';
 import { useNavigation } from '@react-navigation/native';
+import { useAppDispatch, useAppSelector } from 'store/index';
+import { selectAccountViewSettings } from 'store/app/app.selector';
+import { updateAccountViewSettings } from 'store/app/app.slice';
 import Item from './Item';
 import styles from './styles';
 
 type AccountListProps = {
   title?: string;
   isDeactivate?: boolean;
-  isGroup?: boolean;
   onActionPress?: (account: TAccount) => void;
-  account?: any;
+  account?: TAccount[];
 };
 
-function AccountList({ isGroup = false, onActionPress, account = [] }: AccountListProps) {
+function AccountList({ onActionPress, account = [] }: AccountListProps) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation<any>();
-  const [viewActive, setViewActive] = useState(true);
+  const dispatch = useAppDispatch();
+  const {
+    group: isGroup,
+    sort,
+    isViewActive,
+  } = useAppSelector((state) => selectAccountViewSettings(state));
 
   const getInactiveAccount = useMemo(() => {
-    const inActiveAccount = account.filter((item) => !item.isActive);
-    return inActiveAccount.length ? [{ data: inActiveAccount }] : [];
+    const inActiveAccount = account.filter((item) => !item.isActive) || [];
+    return [{ data: inActiveAccount }];
   }, [account]);
 
   const getActiveAccount = useMemo(() => {
     const activeAccount = account.filter((item) => item.isActive);
-    return isGroup ? groupDataByValue(activeAccount) : activeAccount;
-  }, [account, isGroup]);
+    return isGroup
+      ? groupAccountDataByValue(activeAccount, sort)
+      : [{ data: activeAccount.sort(sortDataByKey(sort)) }];
+  }, [account, isGroup, sort]);
 
   const renderSectionHeader = useCallback(
     ({ section }: { section: SectionListData<TAccount> }) => {
@@ -61,9 +70,14 @@ function AccountList({ isGroup = false, onActionPress, account = [] }: AccountLi
   return (
     <View style={[styles.wrapper, { backgroundColor: colors.surface }]}>
       <View style={styles.header}>
-        <RNText style={styles.title}>{viewActive ? 'Đang sử dụng' : 'Ngừng sử dụng'}</RNText>
+        <RNText style={styles.title} fontSize={18}>
+          {isViewActive ? 'Đang sử dụng' : 'Ngừng sử dụng'}
+        </RNText>
         <PressableHaptic
-          onPress={debounce(() => setViewActive(!viewActive), 200)}
+          onPress={debounce(
+            () => dispatch(updateAccountViewSettings({ isViewActive: !isViewActive })),
+            200,
+          )}
           style={styles.iconSwapContainer}
         >
           <IconComponent name="swap" size={20} useTheme style={styles.iconSwap} />
@@ -71,13 +85,13 @@ function AccountList({ isGroup = false, onActionPress, account = [] }: AccountLi
       </View>
       <View style={[styles.divider, { backgroundColor: colors.divider }]} />
       <SectionListComponent
-        sections={viewActive ? getActiveAccount : getInactiveAccount}
+        sections={isViewActive ? getActiveAccount : getInactiveAccount}
         initialNumToRender={8}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
         ListEmptyComponent={<Empty text="Không có tài khoản nào!" />}
       />
-      {viewActive && (
+      {isViewActive && (
         <PressableHaptic
           style={[styles.createButton, { backgroundColor: colors.primary }]}
           onPress={() => navigation.navigate(ADD_ACCOUNT)}

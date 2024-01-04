@@ -1,31 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { FLAT, STICKY, VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constant/index';
-
-type AccountViewSettingsProps = {
-  sort: 'name' | 'custom';
-  group: boolean;
-};
-
-type TransactionListConfig = {
-  isShowDescription: boolean;
-  isShowAmountAfterTransaction: boolean;
-  isShowExpense: boolean;
-  isShowIncome: boolean;
-};
-
-type AppState = {
-  accountViewSettings: AccountViewSettingsProps;
-  isReportViewByGrid: boolean;
-  transactionListConfig: TransactionListConfig;
-  homeBottomBarType: typeof FLAT | typeof STICKY;
-  viewCategoryMostAndRecent: keyof typeof VIEW_CATEGORY_FAST_BY_COLUMN;
-};
+import { FLAT, VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constant/index';
+import { AccountViewSettingsProps, AppStateProps, TransactionListConfigProps } from 'utils/types';
 
 const initialState = {
   accountViewSettings: {
-    sort: 'name',
+    sort: 'accountName',
     group: true,
+    isViewActive: true,
   },
   isReportViewByGrid: false,
   transactionListConfig: {
@@ -36,13 +18,13 @@ const initialState = {
   },
   homeBottomBarType: FLAT,
   viewCategoryMostAndRecent: VIEW_CATEGORY_FAST_BY_COLUMN.MOST,
-} as AppState;
+} as AppStateProps;
 
 export const appSlice = createSlice({
   name: 'appConfig',
   initialState: initialState,
   reducers: {
-    updateAppConfig(state, { payload }: PayloadAction<AppState>) {
+    updateAppConfig(state, { payload }: PayloadAction<AppStateProps>) {
       state = {
         ...state,
         ...payload,
@@ -57,18 +39,18 @@ export const appSlice = createSlice({
     updateReportViewSettings(state) {
       state.isReportViewByGrid = !state.isReportViewByGrid;
     },
-    updateTransactionListConfig(state, { payload }: PayloadAction<TransactionListConfig>) {
+    updateTransactionListConfig(state, { payload }: PayloadAction<TransactionListConfigProps>) {
       state.transactionListConfig = {
         ...state.transactionListConfig,
         ...payload,
       };
     },
-    updateHomeBottomBarType(state, { payload }: PayloadAction<AppState['homeBottomBarType']>) {
+    updateHomeBottomBarType(state, { payload }: PayloadAction<AppStateProps['homeBottomBarType']>) {
       state.homeBottomBarType = payload;
     },
     updateViewCategoryMostAndRecent(
       state,
-      { payload }: PayloadAction<AppState['viewCategoryMostAndRecent']>,
+      { payload }: PayloadAction<AppStateProps['viewCategoryMostAndRecent']>,
     ) {
       state.viewCategoryMostAndRecent = payload;
     },

@@ -1,6 +1,12 @@
 import React, { View } from 'react-native';
 import { TAccount } from 'database/types';
-import { IconComponent, PressableHaptic, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
+import {
+  IconComponent,
+  PressableHaptic,
+  RNText,
+  SvgIcon,
+  TouchableHighlightComponent,
+} from 'components/index';
 import { useNavigation } from '@react-navigation/native';
 import { ACCOUNT_DETAIL } from 'navigation/constants';
 import { useCustomTheme } from 'resources/theme';
@@ -30,12 +36,12 @@ function Item({ account, onActionPress }: ItemProps) {
         onPress={handleOnItemPress}
       >
         <View style={styles.itemContent}>
-          <IconComponent name={account.accountLogo} size={30} />
+          <IconComponent name={account.accountLogo} />
           <View style={styles.itemCenter}>
-            <RNText numberOfLines={1} style={styles.itemTitle}>
+            <RNText numberOfLines={1} fontSize={16} style={styles.itemTitle}>
               {account.accountName}
             </RNText>
-            <RNText numberOfLines={1} style={styles.itemSubTitle}>
+            <RNText numberOfLines={1} fontSize={13} style={styles.itemSubTitle}>
               {formatNumber(account.closingAmount, true)}
             </RNText>
           </View>

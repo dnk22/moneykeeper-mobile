@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    rowGap: 20,
+    rowGap: 10,
   },
   group: {
     paddingTop: 10,
@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
   },
   groupContent: {
     height: 50,
+    paddingLeft: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

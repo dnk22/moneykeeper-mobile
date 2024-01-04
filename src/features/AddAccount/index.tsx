@@ -46,7 +46,6 @@ function AddAccount() {
   // state local
   const inputNameRef = useRef<any>(null);
   const bankLogo = useRef<any>(null);
-  const accountTypeLogo = useRef<any>(null);
   const isModalType = useRef<'dayAfter' | 'statementDay'>('statementDay');
 
   // state from store
@@ -108,7 +107,6 @@ function AddAccount() {
       accountTypeId: item.id,
       accountTypeName: item.name,
     });
-    accountTypeLogo.current = item.icon;
   };
 
   const onBankChange = (bank: BankModel) => {
@@ -158,7 +156,7 @@ function AddAccount() {
       initialAmount:
         data.accountTypeId !== ACCOUNT_CATEGORY_ID.CREDITCARD ? +get(data, 'initialAmount', 0) : 0,
       creditCardLimit: +get(data, 'creditCardLimit', 0),
-      accountLogo: bankLogo.current || accountTypeLogo.current || AccountType[0].icon,
+      accountLogo: bankLogo.current || AccountType[getValues('accountTypeId')].icon,
     };
     updateAccountDB({ id: params?.accountId, account: requestData })
       .then(() => {

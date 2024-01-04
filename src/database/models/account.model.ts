@@ -33,8 +33,6 @@ export default class AccountModel extends Model {
   @field('interestPaymentToAccount') interestPaymentToAccount!: string;
   @field('savingFromAccountId') savingFromAccountId!: string;
   @field('numberDayOfYear') numberDayOfYear!: number;
-  @readonly @date('created_at') createdAt!: Date;
-  @readonly @date('updated_at') updatedAt!: Date;
 
   //credit card
   @field('creditCardLimit') creditCardLimit!: number;
