@@ -57,13 +57,13 @@ function AddTransactions() {
 
   useEffect(() => {
     // if (isEmpty(lendBorrowData)) {
-      getLendBorrowCategory().then((res: any[]) => {
-        const data = res.reduce((accumulator, currentValue) => {
-          accumulator[currentValue.id] = currentValue.categoryName;
-          return accumulator;
-        }, {});
-        useDispatch(setLendBorrowData(data));
-      });
+    getLendBorrowCategory().then((res: any[]) => {
+      const data = res.reduce((accumulator, currentValue) => {
+        accumulator[currentValue.id] = currentValue.categoryName;
+        return accumulator;
+      }, {});
+      useDispatch(setLendBorrowData(data));
+    });
     // }
   }, []);
 
@@ -75,6 +75,12 @@ function AddTransactions() {
       }
     }, [params?.transactionId, watch('accountId'), params?.accountId]),
   );
+
+  useEffect(() => {
+    if (params?.transactionType) {
+      setValue('transactionType', params.transactionType);
+    }
+  }, [params?.transactionType]);
 
   useEffect(() => {
     if (params?.transactionId) {
@@ -141,7 +147,7 @@ function AddTransactions() {
   };
 
   const transactionTypeSelected = (values: any[]) => {
-    return values.includes(getValues('transactionType'));
+    return values.includes(watch('transactionType'));
   };
 
   return (

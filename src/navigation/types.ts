@@ -27,7 +27,8 @@ import {
   LEND_BORROW,
   APPEARANCE,
 } from './constants';
-import { BANK_TYPE, TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
+import { BANK_TYPE, TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
+import { TTransactionType } from 'utils/types';
 
 /** root stack navigation */
 export type RootStackParamList = {
@@ -63,6 +64,7 @@ export type AccountStackParamList = {
     transactionId?: string;
     categoryId?: string;
     accountId?: string;
+    transactionType?: TTransactionType
   };
 };
 export type AccountStackParamListProps<T extends keyof AccountStackParamList> =
@@ -74,6 +76,7 @@ export type TransactionParamList = {
     transactionId?: string;
     categoryId?: string;
     accountId?: string;
+    transactionType?: TTransactionType
   };
 };
 export type TransactionParamListProps<T extends keyof TransactionParamList> =
