@@ -142,6 +142,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
   const onSubmit = (data: TTransactions) => {
     const requestData = {
       ...data,
+      excludeReport: +data.excludeReport,
       amount:
         data.transactionType === TRANSACTION_TYPE.INCOME
           ? Math.abs(+data.amount)
@@ -180,11 +181,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
 
   return (
     <View>
-      <InputCalculator
-        name="amount"
-        control={control}
-        inputTextColor={getInputCalculatorColor()}
-      />
+      <InputCalculator name="amount" control={control} inputTextColor={getInputCalculatorColor()} />
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
         <CategorySelect onPress={handleOnCategoryPress} />
         {renderIfLendBorrow() && watch('categoryId') && (

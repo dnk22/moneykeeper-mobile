@@ -26,7 +26,7 @@ function SwitchField({
       trackColor={trackColor || { true: colors.primary }}
       onValueChange={onChange}
       style={[style]}
-      value={value}
+      value={Boolean(value)}
       {...rest}
     />
   );

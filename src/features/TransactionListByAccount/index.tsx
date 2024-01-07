@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { PressableHaptic, SvgIcon } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
-import { CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
+import { ACCOUNT_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
 import { AccountStackParamListProps } from 'navigation/types';
 import { ButtonText, TransactionListByAccountConfig } from 'navigation/elements';
 import Summary from './Summary';
@@ -13,11 +13,8 @@ import styles from './styles';
 function TransactionListByAccount() {
   const { colors } = useCustomTheme();
   const navigation =
-    useNavigation<
-      AccountStackParamListProps<typeof CREATE_TRANSACTION_FROM_ACCOUNT>['navigation']
-    >();
-  const { params } =
-    useRoute<AccountStackParamListProps<typeof CREATE_TRANSACTION_FROM_ACCOUNT>['route']>();
+    useNavigation<AccountStackParamListProps<typeof ACCOUNT_DETAIL>['navigation']>();
+  const { params } = useRoute<AccountStackParamListProps<typeof ACCOUNT_DETAIL>['route']>();
   const [isSelectMode, setIsSelectMode] = useState(false);
 
   // Use `setOptions` to update the button that submit form
@@ -49,7 +46,7 @@ function TransactionListByAccount() {
       >
         <SvgIcon name="add" size={30} color="white" />
       </PressableHaptic>
-      <Summary />
+      <Summary accountId={params.accountId} />
       <TransactionList accountId={params.accountId} />
     </View>
   );

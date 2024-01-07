@@ -20,7 +20,7 @@ export default class TransactionModel extends Model {
   @field('giver') giver!: string;
   @field('payee') payee!: string;
   @field('relatedPerson') relatedPerson!: string;
-  @field('excludeReport') excludeReport!: boolean;
+  @field('excludeReport') excludeReport!: number;
   @field('attachment') attachment!: string;
   @field('userId') userId!: string;
   @readonly @date('created_at') createdAt!: Date;

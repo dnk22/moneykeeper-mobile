@@ -7,18 +7,18 @@ import { useFormContext } from 'react-hook-form';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { ButtonText } from 'navigation/elements';
 import { deleteTransactionById, updateTransactionTransfer } from 'services/api/transactions';
+import { showToast } from 'utils/system';
+import { isEqual } from 'lodash';
+import { TransactionParamListProps } from 'navigation/types';
+import { ADD_TRANSACTION, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
 import MoreDetail from '../common/MoreDetail';
-import { AddTransactionType } from '../type';
 import AccountSelect from '../common/AccountSelect';
 import Fee from '../common/Fee';
 import DateTimeSelect from '../common/DateTimeSelect';
 import InputCalculator from '../common/InputCalculator';
 import { defaultValues } from '../constant';
+import { AddTransactionType } from '../type';
 import styles from '../styles.common';
-import { showToast } from 'utils/system';
-import { isEqual } from 'lodash';
-import { TransactionParamListProps } from 'navigation/types';
-import { ADD_TRANSACTION, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
 
 function Transfer({ params }: AddTransactionType) {
   const { colors } = useCustomTheme();
@@ -32,7 +32,6 @@ function Transfer({ params }: AddTransactionType) {
     setValue,
     watch,
     reset,
-    formState: { errors },
   } = useFormContext<any>();
 
   // Use `setOptions` to update the button that submit form

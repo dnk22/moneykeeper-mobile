@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { InputField, InputSelection, SvgIcon, PressableHaptic, FormAction } from 'components/index';
+import { InputField, InputSelection, SvgIcon, PressableHaptic, FormAction, IconComponent } from 'components/index';
 import { TransactionCategoryParamProps } from 'navigation/types';
 import { useForm } from 'react-hook-form';
 import { useCustomTheme } from 'resources/theme';
@@ -120,7 +120,7 @@ function UpdateTransactionCategory() {
           ]}
           onPress={navigateToSelectIcon}
         >
-          <SvgIcon size={30} name={watch('icon')} />
+          <IconComponent size={38} name={getValues('icon')} />
           {watch('icon') && (
             <PressableHaptic onPress={handleOnDeleteIcon} style={styles.clearIcon}>
               <SvgIcon size={18} name="closeCircle" color="red" />

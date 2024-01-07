@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { RNText } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
@@ -7,7 +7,6 @@ import { isToday, isYesterday, parseISO } from 'date-fns';
 import { isArray, isEmpty, isEqual as isEqualLodash, size } from 'lodash';
 import { getTransactionByDate } from 'services/api/transactions';
 import { useFocusEffect } from '@react-navigation/native';
-import isEqual from 'react-fast-compare';
 import { formatNumber } from 'utils/math';
 import { TTransactions } from 'database/types';
 import { TRANSACTION_TYPE } from 'utils/constant';
@@ -60,14 +59,26 @@ function HeaderItem({ date, accountId, onRefreshDate, reload }: HeaderItemProps)
     return ITEM_HEIGHT * (transactionLength - 1) + MARGIN_TOP * transactionLength + ITEM_HEIGHT / 2;
   }, [transactionLength]);
 
-  const getTotalMoneyInDay = (itemKey: TRANSACTION_TYPE[]) => {
-    return transaction.reduce((prevItem, currentItem) => {
-      if (itemKey.includes(currentItem.transactionType)) {
-        return (prevItem += currentItem.amount || 0);
+  const getTotalMoneyInDay = useMemo(() => {
+    let totalIncome = 0;
+    let totalExpense = 0;
+    transaction.forEach((item) => {
+      if (item.transactionType === TRANSACTION_TYPE.INCOME) {
+        totalIncome += item.amount;
       }
-      return prevItem;
-    }, 0);
-  };
+      if (item.transactionType === TRANSACTION_TYPE.EXPENSE) {
+        totalExpense += -item.amount;
+      }
+      if (item.transactionType === TRANSACTION_TYPE.TRANSFER) {
+        if (item.toAccountId === accountId) {
+          totalIncome += item.amount;
+        } else {
+          totalExpense += -item.amount;
+        }
+      }
+    });
+    return { totalIncome, totalExpense };
+  }, [transaction]);
 
   return (
     <>
@@ -95,14 +106,20 @@ function HeaderItem({ date, accountId, onRefreshDate, reload }: HeaderItemProps)
             </RNText>
           </View>
           <View style={styles.dayExpense}>
-            {!!getTotalMoneyInDay([TRANSACTION_TYPE.INCOME]) && (
+            {!!getTotalMoneyInDay.totalIncome && (
               <RNText color="green">
-                {formatNumber(getTotalMoneyInDay([TRANSACTION_TYPE.INCOME]), true)}
+                {formatNumber(
+                  getTotalMoneyInDay.totalIncome,
+                  true,
+                )}
               </RNText>
             )}
-            {!!getTotalMoneyInDay([TRANSACTION_TYPE.EXPENSE]) && (
+            {!!getTotalMoneyInDay.totalExpense && (
               <RNText color="red">
-                {formatNumber(getTotalMoneyInDay([TRANSACTION_TYPE.EXPENSE]), true)}
+                {formatNumber(
+                  getTotalMoneyInDay.totalExpense,
+                  true,
+                )}
               </RNText>
             )}
           </View>

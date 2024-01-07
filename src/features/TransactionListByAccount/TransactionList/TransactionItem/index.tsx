@@ -1,6 +1,11 @@
 import { memo, useRef } from 'react';
 import { Alert, View } from 'react-native';
-import { RNText, SvgIcon, SwipeableComponent, TouchableHighlightComponent } from 'components/index';
+import {
+  RNText,
+  SwipeableComponent,
+  TouchableHighlightComponent,
+  IconComponent,
+} from 'components/index';
 import { useNavigation } from '@react-navigation/native';
 import { AccountStackParamListProps } from 'navigation/types';
 import { ACCOUNT_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
@@ -73,6 +78,14 @@ function TransactionItem({
         return data?.categoryName;
     }
   };
+  const renderCategoryIcon = () => {
+    switch (data.transactionType) {
+      case TRANSACTION_TYPE.TRANSFER:
+        return data.amount >= 0 ? 'transferDown' : 'transferUp';
+      default:
+        return data?.categoryIcon;
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -88,7 +101,7 @@ function TransactionItem({
         >
           <View style={[styles.record, { backgroundColor: colors.surface }]}>
             <View style={styles.transactionCategoryInfo}>
-              <SvgIcon name={data?.categoryIcon} />
+              <IconComponent name={renderCategoryIcon()} />
               <View style={styles.detailInfo}>
                 <RNText>{renderCategoryName()}</RNText>
                 {data?.descriptions && (

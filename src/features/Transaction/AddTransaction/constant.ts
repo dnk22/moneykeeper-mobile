@@ -13,7 +13,7 @@ export let defaultValues = {
   giver: '',
   fee: 0,
   feeType: '',
-  excludeReport: false,
+  excludeReport: 0,
   attachment: '',
   userId: '',
 };

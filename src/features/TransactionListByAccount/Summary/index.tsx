@@ -1,10 +1,27 @@
+import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { RNText, SvgIcon } from 'components/index';
-import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
+import { useFocusEffect } from '@react-navigation/native';
+import { queryGetSummaryAccountById } from 'database/querying';
+import { formatNumber } from 'utils/math';
+import styles from './styles';
 
-function Summary() {
+function Summary({ accountId }: { accountId: string }) {
   const { colors } = useCustomTheme();
+  const [summary, setSummary] = useState<Record<string, number>>({
+    totalIncome: 0,
+    totalExpense: 0,
+  });
+
+  useFocusEffect(
+    useCallback(() => {
+      queryGetSummaryAccountById({ accountId }).then((res) => {
+        setSummary(res);
+      });
+    }, [accountId]),
+  );
+
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
       <View style={styles.item}>
@@ -13,7 +30,9 @@ function Summary() {
           <RNText fontSize={14}>Tổng Thu</RNText>
         </View>
         <View>
-          <RNText fontSize={16}>20000000</RNText>
+          <RNText fontSize={16} color="green">
+            {formatNumber(summary.totalIncome, true)}
+          </RNText>
         </View>
       </View>
       <View style={styles.divider} />
@@ -23,7 +42,9 @@ function Summary() {
           <RNText fontSize={14}>Tổng Chi</RNText>
         </View>
         <View>
-          <RNText fontSize={16}>20000000</RNText>
+          <RNText fontSize={16} color="red">
+            {formatNumber(summary.totalExpense, true)}
+          </RNText>
         </View>
       </View>
     </View>
