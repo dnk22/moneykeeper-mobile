@@ -6,7 +6,6 @@ import {
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import { useCustomTheme } from 'resources/theme';
-import { SafeAreaView } from 'react-native';
 
 type BottomSheetProps = {
   ref: any;

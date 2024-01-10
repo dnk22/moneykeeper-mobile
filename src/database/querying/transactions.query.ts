@@ -28,6 +28,42 @@ export const queryTransactionLisGroupByDate = async (accountId: string) => {
   });
 };
 
+/** query list transaction group by month  */
+export const queryGetTransactionsListByMonth = async ({
+  accountId,
+  startDate,
+  endDate,
+  getAll,
+}: {
+  accountId: string;
+  startDate: Date;
+  endDate: Date;
+  getAll: boolean | string;
+}) => {
+  const startOfDay = new Date(new Date(startDate).setUTCHours(0, 0, 0, 0)).getTime();
+  const endOfDay = new Date(new Date(endDate).setUTCHours(23, 59, 59, 999)).getTime();
+  const dateQuery = getAll ? `AND tran.dateTimeAt BETWEEN ${startOfDay} AND ${endOfDay}` : '';
+  const query = `SELECT tran.id, tran.accountId, tran.toAccountId, tran.categoryId,tran.transactionType, tran.descriptions, tran.dateTimeAt, bal._id, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount,bal.movementAMount AS amount,
+      CASE
+        WHEN tran.accountId = '${accountId}' THEN accTo.accountName
+        WHEN tran.toAccountId = '${accountId}' THEN acc.accountName
+      END AS accountName
+      FROM ${TRANSACTIONS} tran
+      LEFT JOIN ${TRANSACTION_CATEGORY} tCategory ON tCategory.id=tran.categoryId
+      LEFT JOIN ${BALANCE} bal ON bal.transactionId=tran.id AND bal.accountId='${accountId}'
+      LEFT JOIN ${ACCOUNTS} acc ON acc.id=tran.accountId
+      LEFT JOIN ${ACCOUNTS} accTo ON accTo.id=tran.toAccountId
+      WHERE tran._status != 'deleted' AND ((tran.accountId='${accountId}') OR (tran.toAccountId='${accountId}')) ${dateQuery}
+      ORDER BY tran.dateTimeAt DESC, bal._id DESC
+    `;
+  return await database.read(async () => {
+    return await database
+      .get<TransactionModel>(TRANSACTIONS)
+      .query(Q.unsafeSqlQuery(query))
+      .unsafeFetchRaw();
+  });
+};
+
 export const queryGetTransactionsListByDate = async ({ date, accountId }: GetTransactionByDate) => {
   const startOfDay = new Date(new Date(date).setUTCHours(0, 0, 0, 0)).getTime();
   const endOfDay = new Date(new Date(date).setUTCHours(23, 59, 59, 999)).getTime();

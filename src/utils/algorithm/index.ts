@@ -1,4 +1,5 @@
-import { TAccount } from 'database/types';
+import { TAccount, TTransactions } from 'database/types';
+import { GroupedTransactionProps } from 'utils/types';
 
 /**
  * Find object in array with @param
@@ -66,3 +67,34 @@ export const sortDataByKey = (property: string) => (a: any, b: any) => {
 
   return valueA.localeCompare(valueB);
 };
+
+export function addStatementDates(data, statementDay: number) {
+  return data.map((item) => {
+    const endDate = new Date(new Date(item.month).setDate(statementDay));
+    const startDate = new Date(endDate);
+    startDate.setMonth(endDate.getMonth() - 1);
+    return { ...item, startDate, endDate };
+  });
+}
+
+export function groupTransactionsByDay(data: TTransactions[]): GroupedTransactionProps[] {
+  const groupedData: GroupedTransactionProps[] = [];
+
+  data.forEach((item) => {
+    const date = new Date(item.dateTimeAt);
+    const day = date.toISOString().split('T')[0];
+
+    // Find the index of the existing date in the result array
+    const index = groupedData.findIndex((group) => group.date === day);
+
+    // If the date is not found, add a new object with the date and an empty data array
+    if (index === -1) {
+      groupedData.push({ date: day, data: [] });
+    }
+
+    // Push the item to the corresponding data array
+    groupedData.find((group) => group.date === day)?.data.push(item);
+  });
+
+  return groupedData;
+}

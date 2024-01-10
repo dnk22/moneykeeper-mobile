@@ -3,18 +3,18 @@ import { View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { PressableHaptic, SvgIcon } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
-import { ACCOUNT_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
+import { ACCOUNT_NORMAL_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
 import { AccountStackParamListProps } from 'navigation/types';
 import { ButtonText, TransactionListByAccountConfig } from 'navigation/elements';
 import Summary from './Summary';
 import TransactionList from './TransactionList';
 import styles from './styles';
 
-function TransactionListByAccount() {
+function NormalAccount() {
   const { colors } = useCustomTheme();
   const navigation =
-    useNavigation<AccountStackParamListProps<typeof ACCOUNT_DETAIL>['navigation']>();
-  const { params } = useRoute<AccountStackParamListProps<typeof ACCOUNT_DETAIL>['route']>();
+    useNavigation<AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['navigation']>();
+  const { params } = useRoute<AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['route']>();
   const [isSelectMode, setIsSelectMode] = useState(false);
 
   // Use `setOptions` to update the button that submit form
@@ -51,4 +51,4 @@ function TransactionListByAccount() {
     </View>
   );
 }
-export default TransactionListByAccount;
+export default NormalAccount;

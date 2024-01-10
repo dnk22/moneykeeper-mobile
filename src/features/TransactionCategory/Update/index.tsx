@@ -120,7 +120,7 @@ function UpdateTransactionCategory() {
           ]}
           onPress={navigateToSelectIcon}
         >
-          <IconComponent size={38} name={getValues('icon')} />
+          <IconComponent size={38} name={getValues('icon') || 'unknown'}  />
           {watch('icon') && (
             <PressableHaptic onPress={handleOnDeleteIcon} style={styles.clearIcon}>
               <SvgIcon size={18} name="closeCircle" color="red" />

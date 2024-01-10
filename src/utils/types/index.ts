@@ -1,3 +1,4 @@
+import { TTransactions } from 'database/types';
 import {
   BANK_TYPE,
   FLAT,
@@ -46,4 +47,9 @@ export type AppStateProps = {
   transactionListConfig: TransactionListConfig;
   homeBottomBarType: typeof FLAT | typeof STICKY;
   viewCategoryMostAndRecent: keyof typeof VIEW_CATEGORY_FAST_BY_COLUMN;
+};
+
+export type GroupedTransactionProps = {
+  date: string;
+  data: TTransactions[];
 };

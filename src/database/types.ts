@@ -88,7 +88,6 @@ export type TAccount = {
   creditCardLimit: number;
   creditCardIsReminder: boolean;
   creditCardReminderList?: string;
-  creditCardPaymentDay: number;
   creditCardStatementDay: number;
   creditCardDayAfterStatement: number;
 

@@ -38,10 +38,12 @@ export async function updateAccountDB({ id, account }: { id?: string; account: T
             openAmount: data.creditCardLimit || data.initialAmount,
           });
         }
+        return id;
       });
     } else {
       return queryAddAccount(account).then(async (res) => {
         await queryAddBalanceFromAccount(res);
+        return res.accountId;
       });
     }
   } catch (error) {

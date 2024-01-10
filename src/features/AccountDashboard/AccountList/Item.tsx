@@ -8,11 +8,12 @@ import {
   TouchableHighlightComponent,
 } from 'components/index';
 import { useNavigation } from '@react-navigation/native';
-import { ACCOUNT_DETAIL } from 'navigation/constants';
+import { ACCOUNT_NORMAL_DETAIL, ACCOUNT_CREDIT_CARD_DETAIL } from 'navigation/constants';
 import { useCustomTheme } from 'resources/theme';
 import { AccountStackParamListProps } from 'navigation/types';
 import { formatNumber } from 'utils/math';
 import styles from './styles';
+import { ACCOUNT_CATEGORY_ID } from 'utils/constant';
 
 type ItemProps = {
   account: TAccount;
@@ -22,11 +23,22 @@ type ItemProps = {
 function Item({ account, onActionPress }: ItemProps) {
   const { colors } = useCustomTheme();
   const navigation =
-    useNavigation<AccountStackParamListProps<typeof ACCOUNT_DETAIL>['navigation']>();
+    useNavigation<AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['navigation']>();
 
   const handleOnItemPress = () => {
-    const { id, accountName } = account;
-    navigation.navigate(ACCOUNT_DETAIL, { accountId: id, accountName });
+    const { id, accountName, accountTypeId, creditCardLimit } = account;
+    switch (accountTypeId) {
+      case ACCOUNT_CATEGORY_ID.CREDITCARD:
+        navigation.navigate(ACCOUNT_CREDIT_CARD_DETAIL, {
+          accountId: id,
+          accountName,
+          creditCardLimit,
+        });
+        break;
+      default:
+        navigation.navigate(ACCOUNT_NORMAL_DETAIL, { accountId: id, accountName });
+        break;
+    }
   };
 
   return (
@@ -41,8 +53,13 @@ function Item({ account, onActionPress }: ItemProps) {
             <RNText numberOfLines={1} fontSize={16} style={styles.itemTitle}>
               {account.accountName}
             </RNText>
-            <RNText numberOfLines={1} fontSize={13} style={styles.itemSubTitle}>
-              {formatNumber(account.closingAmount, true)}
+            <RNText
+              numberOfLines={1}
+              fontSize={13}
+              style={styles.itemSubTitle}
+              color={account?.closingAmount < 0 ? 'red' : colors.text}
+            >
+              {formatNumber(account?.closingAmount, true)}
             </RNText>
           </View>
           <PressableHaptic

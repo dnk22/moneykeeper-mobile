@@ -20,7 +20,7 @@ export const queryAllAccount = async ({ text = '', excludeId = '' }: TGetAllAcco
       .query(
         Q.experimentalJoinTables([BALANCE]),
         Q.unsafeSqlQuery(
-          `SELECT acc.id, acc.accountName, acc.accountLogo, acc._status, acc.isActive, acc.accountTypeId, acc.accountTypeName, acc.sortOrder, bal.closingAmount FROM ${ACCOUNTS} acc
+          `SELECT acc.id, acc.accountName, acc.accountLogo, acc._status, acc.isActive, acc.accountTypeId, acc.accountTypeName, acc.sortOrder, acc.creditCardLimit, bal.closingAmount FROM ${ACCOUNTS} acc
             LEFT JOIN (
               SELECT
                 b._id,

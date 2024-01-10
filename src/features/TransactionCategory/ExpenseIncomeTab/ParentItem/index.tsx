@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import { View } from 'react-native';
-import { RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
+import { IconComponent, RNText, TouchableHighlightComponent } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { useNavigation } from '@react-navigation/native';
 import { TTransactionsCategory } from 'database/types';
 import { TransactionCategoryContext, UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
 import { get, size } from 'lodash';
 import ShakeAnimation from 'resources/animations/Shake';
-import styles from './styles';
 import { ITEM_WIDTH } from '../../constants.config';
+import styles from './styles';
 
 type ParentItemProps = {
   disabled?: boolean;
@@ -38,7 +38,7 @@ function ParentItem({ data, disabled }: ParentItemProps) {
         <View style={styles.itemHeader}>
           <ShakeAnimation isActiveAnim={isUpdate && !disabled}>
             <View style={styles.iconView}>
-              <SvgIcon name={data.icon} size={24} />
+              <IconComponent name={data.icon} size={24} />
             </View>
           </ShakeAnimation>
           <RNText numberOfLines={1} style={styles.headerTitle} fontSize={18}>
@@ -59,7 +59,7 @@ function ParentItem({ data, disabled }: ParentItemProps) {
             <View style={[styles.itemChild, { width: ITEM_WIDTH }]}>
               <ShakeAnimation isActiveAnim={isUpdate && !disabled}>
                 <View style={styles.iconView}>
-                  <SvgIcon name={children.icon} size={24} />
+                  <IconComponent name={children.icon} size={24} />
                 </View>
               </ShakeAnimation>
               <RNText numberOfLines={1} fontSize={12} style={{ opacity: 0.8 }}>

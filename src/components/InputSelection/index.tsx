@@ -49,7 +49,7 @@ function Selected({
         <IconComponent
           name={icon || defaultIcon}
           style={{ opacity: !icon ? 0.6 : 1 }}
-          useTheme={!icon}
+          // useTheme={!icon}
         />
         <View style={styles.groupContent}>
           <View style={styles.title}>

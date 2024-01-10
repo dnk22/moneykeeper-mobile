@@ -22,6 +22,8 @@ import AccountBankSelect from './AccountBankSelect';
 import styles from './styles';
 import { get } from 'lodash';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constant';
+import { useAppDispatch } from 'store/index';
+import { removeAccountStatement, updateAccountStatement } from 'store/account/account.slice';
 
 const defaultValues = {
   accountName: '',
@@ -42,6 +44,7 @@ function AddAccount() {
   const navigation = useNavigation();
   const { params } = useRoute<AccountStackParamListProps<typeof ADD_ACCOUNT>['route']>();
   const [isShowModalStatement, setIsShowModalStatement] = useState(false);
+  const dispatch = useAppDispatch();
 
   // state local
   const inputNameRef = useRef<any>(null);
@@ -159,7 +162,8 @@ function AddAccount() {
       accountLogo: bankLogo.current || AccountType[getValues('accountTypeId')].icon,
     };
     updateAccountDB({ id: params?.accountId, account: requestData })
-      .then(() => {
+      .then((res) => {
+        dispatch(updateAccountStatement({ [res]: requestData.creditCardStatementDay }));
         navigation.goBack();
       })
       .catch(({ error }) => {
@@ -173,6 +177,7 @@ function AddAccount() {
   const onOkDelete = () => {
     params?.accountId &&
       deleteAccountById(params.accountId).then(() => {
+        dispatch(removeAccountStatement(params.accountId));
         navigation.goBack();
       });
   };

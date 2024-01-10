@@ -2,15 +2,17 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   ACCOUNTTAB,
   ADD_ACCOUNT,
-  ACCOUNT_DETAIL,
+  ACCOUNT_NORMAL_DETAIL,
   CREATE_TRANSACTION_FROM_ACCOUNT,
+  ACCOUNT_CREDIT_CARD_DETAIL,
 } from 'navigation/constants';
 import { AccountStackParamList } from 'navigation/types';
 import { useCustomTheme } from 'resources/theme';
 
 import AccountTab from './tab';
 import AddAccount from 'features/AddAccount';
-import TransactionListByAccount from 'features/TransactionListByAccount';
+import TransactionHistoryNormal from 'features/TransactionHistory/NormalAccount';
+import TransactionHistoryCreditCard from 'features/TransactionHistory/CreditCardAccount';
 
 // header custom icon
 import Search from 'navigation/elements/Search';
@@ -55,17 +57,22 @@ function AccountNavigation() {
         name={ADD_ACCOUNT}
         options={({ route }) => ({
           title: route.params?.accountId ? 'Sửa tài khoản' : 'Thêm tài khoản',
-          headerBackTitleVisible: false,
         })}
         component={AddAccount}
       />
       <AccountStack.Screen
-        name={ACCOUNT_DETAIL}
+        name={ACCOUNT_NORMAL_DETAIL}
         options={({ route }) => ({
           title: route.params?.accountName,
-          headerBackTitleVisible: false,
         })}
-        component={TransactionListByAccount}
+        component={TransactionHistoryNormal}
+      />
+      <AccountStack.Screen
+        name={ACCOUNT_CREDIT_CARD_DETAIL}
+        options={({ route }) => ({
+          title: route.params?.accountName,
+        })}
+        component={TransactionHistoryCreditCard}
       />
       <AccountStack.Screen name={CREATE_TRANSACTION_FROM_ACCOUNT} component={AddTransactions} />
     </AccountStack.Navigator>

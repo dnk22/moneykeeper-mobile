@@ -6,7 +6,7 @@ import { MenuAction, MenuView, NativeActionEvent } from '@react-native-menu/menu
 import {
   Empty,
   RNText,
-  SvgIcon,
+  IconComponent,
   TouchableHighlightComponent,
   FlatListComponent,
 } from 'components/index';
@@ -90,7 +90,7 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
       >
         <View style={[styles.itemChild, { width: ITEM_WIDTH }]}>
           <View style={styles.iconView}>
-            <SvgIcon name={item.icon} size={24} />
+            <IconComponent name={item.icon} size={24} />
           </View>
           <RNText numberOfLines={1} fontSize={12} style={{ opacity: 0.8 }}>
             {item.categoryName}
@@ -112,7 +112,7 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
           <RNText color="#1BA7EF" style={{ opacity: 0.7 }}>
             {mapTitle[viewCategoryMostAndRecent]}
           </RNText>
-          <SvgIcon name="forward" size={14} opacity={0.7} color="#1BA7EF" />
+          <IconComponent name="forward" size={14} opacity={0.7} color="#1BA7EF" />
         </View>
       </MenuView>
       <FlatListComponent data={data} horizontal renderItem={renderItem} />

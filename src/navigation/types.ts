@@ -11,7 +11,7 @@ import {
   REPORT,
   TRANSACTIONS,
   SETTINGS,
-  ACCOUNT_DETAIL,
+  ACCOUNT_NORMAL_DETAIL,
   ADD_TRANSACTION,
   TRANSACTION_CATEGORY,
   TRANSACTION_CATEGORY_LIST,
@@ -26,6 +26,7 @@ import {
   INCOME_CATEGORY,
   LEND_BORROW,
   APPEARANCE,
+  ACCOUNT_CREDIT_CARD_DETAIL,
 } from './constants';
 import { BANK_TYPE, TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 import { TTransactionType } from 'utils/types';
@@ -59,12 +60,13 @@ export type HomeStackParamListProps<T extends keyof HomeStackParamList> = Bottom
 export type AccountStackParamList = {
   [ACCOUNTTAB]: undefined;
   [ADD_ACCOUNT]: { accountId?: string; bankId?: string; toAccountId?: string };
-  [ACCOUNT_DETAIL]: { accountId: string; accountName: string };
+  [ACCOUNT_NORMAL_DETAIL]: { accountId: string; accountName: string };
+  [ACCOUNT_CREDIT_CARD_DETAIL]: { accountId: string; accountName: string; creditCardLimit: number };
   [CREATE_TRANSACTION_FROM_ACCOUNT]: {
     transactionId?: string;
     categoryId?: string;
     accountId?: string;
-    transactionType?: TTransactionType
+    transactionType?: TTransactionType;
   };
 };
 export type AccountStackParamListProps<T extends keyof AccountStackParamList> =
@@ -76,7 +78,7 @@ export type TransactionParamList = {
     transactionId?: string;
     categoryId?: string;
     accountId?: string;
-    transactionType?: TTransactionType
+    transactionType?: TTransactionType;
   };
 };
 export type TransactionParamListProps<T extends keyof TransactionParamList> =

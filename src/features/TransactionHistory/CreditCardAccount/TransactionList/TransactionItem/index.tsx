@@ -8,7 +8,7 @@ import {
 } from 'components/index';
 import { useNavigation } from '@react-navigation/native';
 import { AccountStackParamListProps } from 'navigation/types';
-import { ACCOUNT_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
+import { ACCOUNT_NORMAL_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
 import { deleteTransactionById } from 'services/api/transactions';
@@ -29,7 +29,7 @@ function TransactionItem({
   const { colors } = useCustomTheme();
   const tapPosition = useRef<number>(0);
   const navigation =
-    useNavigation<AccountStackParamListProps<typeof ACCOUNT_DETAIL>['navigation']>();
+    useNavigation<AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['navigation']>();
 
   const onTransactionItemPress = (e: any) => {
     if (e.nativeEvent.locationX === tapPosition.current) {

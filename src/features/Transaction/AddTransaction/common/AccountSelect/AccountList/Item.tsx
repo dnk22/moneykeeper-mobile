@@ -7,7 +7,7 @@ import {
   TouchableHighlightComponent,
 } from 'components/index';
 import { useNavigation } from '@react-navigation/native';
-import { ACCOUNT_DETAIL } from 'navigation/constants';
+import { ACCOUNT_NORMAL_DETAIL } from 'navigation/constants';
 import { useCustomTheme } from 'resources/theme';
 import { AccountStackParamListProps } from 'navigation/types';
 import { formatNumber } from 'utils/math';
@@ -22,14 +22,14 @@ type ItemProps = {
 function Item({ account, isItemSelected, onItemPress }: ItemProps) {
   const { colors } = useCustomTheme();
   const navigation =
-    useNavigation<AccountStackParamListProps<typeof ACCOUNT_DETAIL>['navigation']>();
+    useNavigation<AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['navigation']>();
 
   const handleOnItemPress = () => {
     if (onItemPress) {
       onItemPress(account);
     } else {
       const { id, accountName } = account;
-      navigation.navigate(ACCOUNT_DETAIL, { accountId: id, accountName });
+      navigation.navigate(ACCOUNT_NORMAL_DETAIL, { accountId: id, accountName });
     }
   };
 

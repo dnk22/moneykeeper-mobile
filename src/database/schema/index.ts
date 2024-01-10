@@ -43,7 +43,6 @@ export default appSchema({
         { name: 'creditCardLimit', type: 'number' },
         { name: 'creditCardIsReminder', type: 'boolean' },
         { name: 'creditCardReminderList', type: 'string' },
-        { name: 'creditCardPaymentDay', type: 'number' },
         { name: 'creditCardStatementDay', type: 'number' },
         { name: 'creditCardDayAfterStatement', type: 'number' },
       ],

@@ -18,7 +18,12 @@ const TransactionCategoryStack = createNativeStackNavigator<TransactionCategoryP
 
 function TransactionCategoryNavigation() {
   return (
-    <TransactionCategoryStack.Navigator initialRouteName={TRANSACTION_CATEGORY_LIST}>
+    <TransactionCategoryStack.Navigator
+      initialRouteName={TRANSACTION_CATEGORY_LIST}
+      screenOptions={{
+        headerBackTitleVisible: false,
+      }}
+    >
       <TransactionCategoryStack.Screen
         name={TRANSACTION_CATEGORY_LIST}
         component={TransactionCategoryTapBar}
@@ -26,7 +31,6 @@ function TransactionCategoryNavigation() {
           headerTitleStyle: {
             fontSize: HEADER_TITLE_FONT_SIZE,
           },
-          headerBackTitleVisible: false,
         }}
       />
       <TransactionCategoryStack.Screen
