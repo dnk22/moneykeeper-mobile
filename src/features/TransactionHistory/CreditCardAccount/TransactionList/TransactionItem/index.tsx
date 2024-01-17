@@ -1,4 +1,4 @@
-import { memo, useRef } from 'react';
+import { memo, useContext, useRef } from 'react';
 import { Alert, View } from 'react-native';
 import {
   RNText,
@@ -6,6 +6,7 @@ import {
   TouchableHighlightComponent,
   IconComponent,
 } from 'components/index';
+import isEqual from 'react-fast-compare';
 import { useNavigation } from '@react-navigation/native';
 import { AccountStackParamListProps } from 'navigation/types';
 import { ACCOUNT_NORMAL_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
@@ -13,23 +14,17 @@ import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
 import { deleteTransactionById } from 'services/api/transactions';
 import { formatNumber } from 'utils/math';
-import isEqual from 'react-fast-compare';
 import { showToast } from 'utils/system';
-import { get } from 'lodash';
 import { TRANSACTION_TYPE } from 'utils/constant';
+import { TransactionHistoryContext } from '../../context';
 import styles from './styles';
 
-function TransactionItem({
-  data,
-  onRefreshTransactionList,
-}: {
-  data: TTransactions;
-  onRefreshTransactionList: () => void;
-}) {
+function TransactionItem({ data }: { data: TTransactions }) {
   const { colors } = useCustomTheme();
   const tapPosition = useRef<number>(0);
   const navigation =
     useNavigation<AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['navigation']>();
+  const { onRefreshData } = useContext(TransactionHistoryContext);
 
   const onTransactionItemPress = (e: any) => {
     if (e.nativeEvent.locationX === tapPosition.current) {
@@ -42,7 +37,7 @@ function TransactionItem({
       deleteTransactionById(data.id)
         .then(({ success }) => {
           if (success) {
-            onRefreshTransactionList();
+            onRefreshData();
           }
         })
         .catch(({ error }) => {
@@ -106,7 +101,7 @@ function TransactionItem({
                 <RNText>{renderCategoryName()}</RNText>
                 {data?.descriptions && (
                   <RNText color="gray" fontSize={11} style={styles.textDescription}>
-                    {get(data, 'descriptions', '')}
+                    {data?.descriptions}
                   </RNText>
                 )}
               </View>

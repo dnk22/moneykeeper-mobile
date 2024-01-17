@@ -28,8 +28,7 @@ import {
   APPEARANCE,
   ACCOUNT_CREDIT_CARD_DETAIL,
 } from './constants';
-import { BANK_TYPE, TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
-import { TTransactionType } from 'utils/types';
+import { BANK_TYPE, TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
 
 /** root stack navigation */
 export type RootStackParamList = {
@@ -66,7 +65,7 @@ export type AccountStackParamList = {
     transactionId?: string;
     categoryId?: string;
     accountId?: string;
-    transactionType?: TTransactionType;
+    transactionType?: TRANSACTION_TYPE;
   };
 };
 export type AccountStackParamListProps<T extends keyof AccountStackParamList> =
@@ -78,7 +77,7 @@ export type TransactionParamList = {
     transactionId?: string;
     categoryId?: string;
     accountId?: string;
-    transactionType?: TTransactionType;
+    transactionType?: TRANSACTION_TYPE;
   };
 };
 export type TransactionParamListProps<T extends keyof TransactionParamList> =

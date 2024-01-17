@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { Alert, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
-import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constant';
 import ExpenseAndIncome from './ExpenseAndIncome';
@@ -16,18 +16,19 @@ import { getFirstAccount } from 'services/api/accounts';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { setLendBorrowData } from 'store/transactionCategory/transactionCategory.slice';
 import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';
-import { isEmpty } from 'lodash';
 import { getKeyByValue } from 'utils/algorithm';
 import { defaultValues } from './constant';
 import SelectTransactionType from './common/SelectTransactionType';
 import Transfer from './Transfer';
 import styles from './styles';
 
-function AddTransactions() {
+type AddTransactionsProps = {
+  navigation: TransactionParamListProps<typeof ADD_TRANSACTION>['navigation'];
+  route: TransactionParamListProps<typeof ADD_TRANSACTION>['route'];
+};
+function AddTransactions({ navigation, route }: AddTransactionsProps) {
+  const { params } = route;
   const { colors } = useCustomTheme();
-  const navigation =
-    useNavigation<TransactionParamListProps<typeof ADD_TRANSACTION>['navigation']>();
-  const { params } = useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
   const lendBorrowData = useAppSelector((state) => selectLendBorrowData(state));
   const useDispatch = useAppDispatch();
 
@@ -56,7 +57,6 @@ function AddTransactions() {
   }, [watch('categoryId'), watch('transactionType'), lendBorrowData]);
 
   useEffect(() => {
-    // if (isEmpty(lendBorrowData)) {
     getLendBorrowCategory().then((res: any[]) => {
       const data = res.reduce((accumulator, currentValue) => {
         accumulator[currentValue.id] = currentValue.categoryName;
@@ -64,7 +64,6 @@ function AddTransactions() {
       }, {});
       useDispatch(setLendBorrowData(data));
     });
-    // }
   }, []);
 
   // set default account when mode = add & accountId = null

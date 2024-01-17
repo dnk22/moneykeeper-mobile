@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 type AccountProps = {
-  accountStatementList: Record<string, number>;
+  accountStatementList: Record<string, Record<string, number>>;
 };
 
 //set default data

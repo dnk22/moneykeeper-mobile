@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { VirtualizedListComponent } from 'components/index';
 import { useFocusEffect } from '@react-navigation/native';
 import { isArray, size } from 'lodash';
@@ -6,18 +6,16 @@ import { queryGetTransactionsListByMonth } from 'database/querying';
 import { groupTransactionsByDay } from 'utils/algorithm';
 import { GroupedTransactionProps } from 'utils/types';
 import HeaderItem from './HeaderItem';
+import { TransactionHistoryContext } from '../context';
 
-type TransactionListProps = {
-  accountId: string;
-  monthData: { month: string | boolean; startDate: Date; endDate: Date };
-};
-function TransactionList({ accountId, monthData }: TransactionListProps) {
+function TransactionList() {
+  const { accountId, refreshData, currentStatement: monthData } = useContext(TransactionHistoryContext);
   const [data, setData] = useState<GroupedTransactionProps[]>([]);
 
   useFocusEffect(
     useCallback(() => {
       fetchTransactionByGroupDate();
-    }, [accountId, monthData]),
+    }, [accountId, monthData, refreshData]),
   );
 
   const fetchTransactionByGroupDate = () => {
@@ -37,7 +35,7 @@ function TransactionList({ accountId, monthData }: TransactionListProps) {
   };
 
   const renderItem = ({ item }: { item: GroupedTransactionProps }) => {
-    return <HeaderItem transaction={item} accountId={accountId} onRefreshDate={fetchTransactionByGroupDate} />;
+    return <HeaderItem transaction={item} accountId={accountId} />;
   };
 
   return <VirtualizedListComponent data={data} renderItem={renderItem} id="date" />;

@@ -35,7 +35,6 @@ export async function updateAccountDB({ id, account }: { id?: string; account: T
           await queryCalculateAllBalanceAfterDate({
             accountId: data.id,
             date: 0,
-            openAmount: data.creditCardLimit || data.initialAmount,
           });
         }
         return id;

@@ -44,7 +44,7 @@ export type TransactionListConfigProps = {
 export type AppStateProps = {
   accountViewSettings: AccountViewSettingsProps;
   isReportViewByGrid: boolean;
-  transactionListConfig: TransactionListConfig;
+  transactionListConfig: TransactionListConfigProps;
   homeBottomBarType: typeof FLAT | typeof STICKY;
   viewCategoryMostAndRecent: keyof typeof VIEW_CATEGORY_FAST_BY_COLUMN;
 };
@@ -52,4 +52,18 @@ export type AppStateProps = {
 export type GroupedTransactionProps = {
   date: string;
   data: TTransactions[];
+};
+
+export enum STATEMENT_TYPE {
+  ALL,
+  FUTURE,
+  NOW,
+  PREVIOUS,
+}
+
+export type StatementViewProps = {
+  month?: Date;
+  startDate?: Date;
+  endDate?: Date;
+  type?: STATEMENT_TYPE;
 };

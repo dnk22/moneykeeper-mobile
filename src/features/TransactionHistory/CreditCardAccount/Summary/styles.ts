@@ -3,23 +3,33 @@ import { BOX_SHADOW } from 'resources/theme/constants';
 
 const styles = StyleSheet.create({
   container: {
+    width: '95%',
+    alignSelf: 'center',
     padding: 5,
     paddingHorizontal: 10,
     borderRadius: 10,
     ...BOX_SHADOW,
   },
   bottom: {
+    marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
   },
   divider: {
-    height: '70%',
-    borderWidth: 0.4,
-    borderColor: 'gray',
+    height: '80%',
+    width: 0.8,
+    backgroundColor: 'gray',
+  },
+  dividerHorizontal: {
+    width: '100%',
+    height: 0.8,
+    backgroundColor: 'gray',
+    alignSelf: 'center',
+    marginVertical: 10,
   },
   item: {
     flex: 1,
-    rowGap: 5,
+    rowGap: 4,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -30,9 +40,9 @@ const styles = StyleSheet.create({
   },
   bar: {
     flexDirection: 'row',
-    marginVertical: 10,
+    marginTop: 10,
     width: '100%',
-    height: 15,
+    height: 10,
     borderRadius: 4,
     overflow: 'hidden',
   },
@@ -45,8 +55,8 @@ const styles = StyleSheet.create({
     height: 20,
   },
   boxIcon: {
-    width: 14,
-    height: 14,
+    width: 12,
+    height: 12,
     borderRadius: 3,
     marginRight: 4,
   },

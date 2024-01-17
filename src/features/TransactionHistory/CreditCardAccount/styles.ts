@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   itemStatement: {
     padding: 10,
@@ -29,6 +30,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  itemStatementMonth: {
+    flexDirection: 'row',
+    gap: 10,
+    alignItems: 'center',
   },
 });
 

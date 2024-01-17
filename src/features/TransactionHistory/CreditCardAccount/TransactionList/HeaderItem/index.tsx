@@ -8,21 +8,20 @@ import { isArray, size } from 'lodash';
 import { formatNumber } from 'utils/math';
 import { TRANSACTION_TYPE } from 'utils/constant';
 import { ITEM_HEIGHT, MARGIN_TOP } from 'share/dimensions';
+import { GroupedTransactionProps } from 'utils/types';
 import TransactionItem from '../TransactionItem';
 import styles from './styles';
-import { GroupedTransactionProps } from 'utils/types';
 
 type HeaderItemProps = {
   transaction: GroupedTransactionProps;
-  onRefreshDate: () => void;
   accountId: string;
 };
 
-function HeaderItem({ transaction, onRefreshDate, accountId }: HeaderItemProps) {
+function HeaderItem({ transaction, accountId }: HeaderItemProps) {
   const { colors } = useCustomTheme();
   const { date, data = [] } = transaction;
   const formatDate = useCallback((format: string) => formatDateStringLocal(date, format), [date]);
-  const transactionLength = size(transaction);
+  const transactionLength = size(data);
 
   const formatDayOfTheWeek = () => {
     if (isToday(parseISO(date))) {
@@ -95,9 +94,7 @@ function HeaderItem({ transaction, onRefreshDate, accountId }: HeaderItemProps) 
       </View>
       {isArray(data) &&
         data.map((item) => {
-          return (
-            <TransactionItem data={item} key={item.id} onRefreshTransactionList={onRefreshDate} />
-          );
+          return <TransactionItem data={item} key={item.id} />;
         })}
     </>
   );

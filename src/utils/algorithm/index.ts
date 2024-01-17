@@ -1,5 +1,5 @@
 import { TAccount, TTransactions } from 'database/types';
-import { GroupedTransactionProps } from 'utils/types';
+import { GroupedTransactionProps, STATEMENT_TYPE, StatementViewProps } from 'utils/types';
 
 /**
  * Find object in array with @param
@@ -68,12 +68,58 @@ export const sortDataByKey = (property: string) => (a: any, b: any) => {
   return valueA.localeCompare(valueB);
 };
 
-export function addStatementDates(data, statementDay: number) {
+export function addStatementDates(data: { month: Date | string }[], statementDay: number) {
   return data.map((item) => {
     const endDate = new Date(new Date(item.month).setDate(statementDay));
     const startDate = new Date(endDate);
     startDate.setMonth(endDate.getMonth() - 1);
     return { ...item, startDate, endDate };
+  });
+}
+
+export function generateMonthlyStatements(
+  referenceDates: { date: string }[],
+  statementDay: number,
+): StatementViewProps[] {
+  const months: number[] = [];
+  /** get all month available */
+  referenceDates.forEach((item) => {
+    let statementDayOfMonth = new Date(item.date).setDate(statementDay);
+    statementDayOfMonth = new Date(statementDayOfMonth).setHours(23, 59, 59, 999);
+    if (new Date(item.date).getTime() <= new Date(statementDayOfMonth).getTime()) {
+      months.push(new Date(statementDayOfMonth).setHours(23, 59, 59, 999));
+    } else {
+      const newDate = new Date(item.date);
+      newDate.setMonth(newDate.getMonth() + 1);
+      newDate.setDate(statementDay);
+      newDate.setHours(23, 59, 59, 999);
+      months.push(newDate.getTime());
+    }
+  });
+  /** remove duplicate */
+  const uniqueMonths = Array.from(new Set(months));
+  return uniqueMonths.map((month) => {
+    /** get start Date */
+    const startDate = new Date(month);
+    startDate.setMonth(new Date(month).getMonth() - 1);
+    startDate.setDate(new Date(startDate).getDate() + 1);
+    /** get current date */
+    const currentStatement =
+      new Date(startDate).getTime() <= new Date().getTime() &&
+      new Date().getTime() <= new Date(month).getTime();
+    let type = STATEMENT_TYPE.NOW;
+    if (!currentStatement && new Date().getTime() > new Date(month).getTime()) {
+      type = STATEMENT_TYPE.PREVIOUS;
+    }
+    if (!currentStatement && new Date().getTime() < new Date(month).getTime()) {
+      type = STATEMENT_TYPE.FUTURE;
+    }
+    return {
+      startDate: new Date(startDate),
+      month: new Date(month),
+      endDate: new Date(month),
+      type: type,
+    };
   });
 }
 

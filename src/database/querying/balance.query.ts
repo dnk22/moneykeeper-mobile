@@ -157,7 +157,7 @@ export const queryCalculateAllBalanceAfterDate = async ({
   try {
     const { closingAmount, transactionDateAt: prevDate } = await queryGetLatestBalanceByDate(
       accountId,
-      date,
+      new Date(date).getTime(),
     );
     const recordUpdate = await queryGetAllBalanceAfterDate(accountId, prevDate || 0);
     if (isEmpty(recordUpdate)) {
@@ -186,6 +186,7 @@ export const queryCalculateAllBalanceAfterDate = async ({
       return true;
     });
   } catch (error) {
+    console.log(error);
     return handleError({
       error: 'UPD-BAL-ONE',
     });

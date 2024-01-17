@@ -1,6 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { View } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
 import { PressableHaptic, SvgIcon } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { ACCOUNT_NORMAL_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
@@ -10,11 +9,14 @@ import Summary from './Summary';
 import TransactionList from './TransactionList';
 import styles from './styles';
 
-function NormalAccount() {
+type NormalAccountProps = {
+  navigation: AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['navigation'];
+  route: AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['route'];
+};
+
+function NormalAccount({ navigation, route }: NormalAccountProps) {
+  const { params } = route;
   const { colors } = useCustomTheme();
-  const navigation =
-    useNavigation<AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['navigation']>();
-  const { params } = useRoute<AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['route']>();
   const [isSelectMode, setIsSelectMode] = useState(false);
 
   // Use `setOptions` to update the button that submit form

@@ -163,7 +163,14 @@ function AddAccount() {
     };
     updateAccountDB({ id: params?.accountId, account: requestData })
       .then((res) => {
-        dispatch(updateAccountStatement({ [res]: requestData.creditCardStatementDay }));
+        dispatch(
+          updateAccountStatement({
+            [res]: {
+              statementDate: requestData.creditCardStatementDay,
+              paymentDate: requestData.creditCardDayAfterStatement,
+            },
+          }),
+        );
         navigation.goBack();
       })
       .catch(({ error }) => {
