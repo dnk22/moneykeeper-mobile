@@ -49,7 +49,7 @@ function AddAccount() {
   // state local
   const inputNameRef = useRef<any>(null);
   const bankLogo = useRef<any>(null);
-  const isModalType = useRef<'dayAfter' | 'statementDay'>('statementDay');
+  const isModalType = useRef<'paymentDate' | 'statementDay'>('statementDay');
 
   // state from store
   const ACCOUNT_NOT_SHOW_BANK = [AccountType[0].id, AccountType[5].id];
@@ -132,7 +132,7 @@ function AddAccount() {
     onToggleModalStatement();
   };
   const handleOnOpenDayAfterPicker = () => {
-    isModalType.current = 'dayAfter';
+    isModalType.current = 'paymentDate';
     onToggleModalStatement();
   };
 
@@ -296,23 +296,22 @@ function AddAccount() {
                 </Pressable>
               </View>
             </View>
+
+            <View style={[styles.group, { backgroundColor: colors.surface }]}>
+              <View style={[styles.itemGroup, styles.itemGroupBetween]}>
+                <RNText preset="title">Bật Thông báo ?</RNText>
+                <SwitchField name="creditCardIsReminder" control={control} />
+              </View>
+              <Collapsible collapsed={!watch('creditCardIsReminder')}>
+                <Notifications
+                  value={watch('creditCardReminderList')}
+                  onValueChange={onNotificationListChange}
+                />
+              </Collapsible>
+            </View>
           </>
         )}
 
-        {isCreditCard && (
-          <View style={[styles.group, { backgroundColor: colors.surface }]}>
-            <View style={[styles.itemGroup, styles.itemGroupBetween]}>
-              <RNText preset="title">Bật Thông báo ?</RNText>
-              <SwitchField name="creditCardIsReminder" control={control} />
-            </View>
-            <Collapsible collapsed={!watch('creditCardIsReminder')}>
-              <Notifications
-                value={watch('creditCardReminderList')}
-                onValueChange={onNotificationListChange}
-              />
-            </Collapsible>
-          </View>
-        )}
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={[styles.itemGroup, styles.itemGroupBetween]}>
             <RNText preset="title">Không tính vào báo cáo</RNText>

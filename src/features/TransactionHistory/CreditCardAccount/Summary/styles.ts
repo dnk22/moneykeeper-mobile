@@ -3,7 +3,7 @@ import { BOX_SHADOW } from 'resources/theme/constants';
 
 const styles = StyleSheet.create({
   container: {
-    width: '95%',
+    width: '100%',
     alignSelf: 'center',
     padding: 5,
     paddingHorizontal: 10,
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     height: 0.8,
     backgroundColor: 'gray',
     alignSelf: 'center',
-    marginVertical: 10,
+    marginVertical: 5,
   },
   item: {
     flex: 1,
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   bar: {
     flexDirection: 'row',
-    marginTop: 10,
+    marginTop: 15,
     width: '100%',
     height: 10,
     borderRadius: 4,
@@ -59,6 +59,10 @@ const styles = StyleSheet.create({
     height: 12,
     borderRadius: 3,
     marginRight: 4,
+  },
+  expectPayment: {
+    gap: 5,
+    marginBottom: 5,
   },
 });
 

@@ -48,28 +48,23 @@ export const queryGetSummaryAccountById = async ({ accountId }: { accountId: str
 
 export const queryGetCurrentBalanceCreditCardByAccountId = async ({
   accountId,
-  endDate,
-  getAll,
-}: {
+}: // endDate,
+{
   accountId: string;
-  endDate?: Date | number;
-  getAll: boolean;
+  // endDate: Date | number;
 }) => {
-  if (!endDate) {
-    return 0;
-  }
-  const queryDate = !getAll
-    ? `AND transactionDateAt < ${new Date(
-        new Date(endDate).setUTCHours(23, 59, 59, 999),
-      ).getTime()}`
-    : '';
+  // const queryDate = endDate
+  //   ? `AND transactionDateAt < ${new Date(
+  //       new Date(endDate).setUTCHours(23, 59, 59, 999),
+  //     ).getTime()}`
+  //   : '';
   return await database.read(async () => {
     const result = await database
       .get<BalanceModel>(BALANCE)
       .query(
         Q.unsafeSqlQuery(
           `SELECT closingAmount, MAX(transactionDateAt) FROM ${BALANCE}
-            WHERE accountId='${accountId}' ${queryDate}`,
+            WHERE accountId='${accountId}'`,
         ),
       )
       .unsafeFetchRaw();

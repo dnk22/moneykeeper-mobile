@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import isEqual from 'react-fast-compare';
 import { RNText } from 'components/index';
 import { formatNumber } from 'utils/math';
-import { STATEMENT_TYPE } from 'utils/types';
 import { TransactionHistoryContext } from '../context';
 import CurrentBalance from './CurrentBalance';
 import PaymentDue from './PaymentDue';
@@ -17,7 +16,7 @@ function Summary() {
       <RNText style={{ fontWeight: '500' }}>
         Hạn mức tín dụng: {formatNumber(creditCardLimit, true)}
       </RNText>
-      {currentStatement.type === STATEMENT_TYPE.PREVIOUS ? <PaymentDue /> : <CurrentBalance />}
+      {currentStatement.month ? <PaymentDue /> : <CurrentBalance />}
     </View>
   );
 }

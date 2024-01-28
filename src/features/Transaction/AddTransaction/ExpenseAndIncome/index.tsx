@@ -131,10 +131,6 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
     });
   };
 
-  const resetAccount = () => {
-    setValue('accountId', '');
-  };
-
   const getInputCalculatorColor = () => {
     return getValues('transactionType') === TRANSACTION_TYPE.INCOME ? 'green' : 'red';
   };
@@ -142,7 +138,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
   const onSubmit = (data: TTransactions) => {
     const requestData = {
       ...data,
-      excludeReport: +data.excludeReport,
+      excludeReport: +data?.excludeReport,
       amount:
         data.transactionType === TRANSACTION_TYPE.INCOME
           ? Math.abs(+data.amount)
@@ -211,7 +207,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
           </View>
         </View>
         <DateTimeSelect values={watch('dateTimeAt')} onChangeDate={handleOnDateTimePicker} />
-        <AccountSelect onReset={resetAccount} />
+        <AccountSelect />
       </View>
       <MoreDetail>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>

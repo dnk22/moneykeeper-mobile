@@ -35,7 +35,7 @@ export type TTransactions = {
   payee?: string;
   fee?: number;
   feeType?: string;
-  excludeReport?: boolean;
+  excludeReport?: number;
   attachment?: any;
   userId?: string;
   createdAt?: Date;

@@ -3,9 +3,7 @@ import { ITEM_HEIGHT, MARGIN_LEFT } from 'share/dimensions';
 
 const styles = StyleSheet.create({
   item: {
-    borderRadius: 10,
-    marginTop: 10,
-    alignItems: 'center',
+    marginBottom: 10,
   },
   header: {
     zIndex: 3,

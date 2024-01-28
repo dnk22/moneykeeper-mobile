@@ -11,48 +11,36 @@ import {
 } from 'components/index';
 import { formatDateLocal } from 'utils/date';
 import { BottomSheetFlatList, BottomSheetModal } from '@gorhom/bottom-sheet';
-import { queryTransactionLisGroupByDate } from 'database/querying';
+import { queryTransactionListGroupByDate } from 'database/querying';
 import { generateMonthlyStatements } from 'utils/algorithm';
-import { STATEMENT_TYPE, StatementViewProps } from 'utils/types';
-import { isEmpty } from 'lodash';
+import { StatementViewProps } from 'utils/types';
 import { TransactionHistoryContext } from '../context';
 import styles from '../styles';
-
-const defaultStatement = { type: STATEMENT_TYPE.ALL };
 
 type StatementPickerProps = {
   onChange: (statement: StatementViewProps) => void;
 };
+const defaultStatement = {
+  month: undefined,
+};
 
 function StatementPicker({ onChange }: StatementPickerProps) {
   const bottomSheetModalRef = useRef<BottomSheetModal>();
-  const { colors, accountId, statementList, refreshData } = useContext(TransactionHistoryContext);
+  const { colors, accountId, statementInfo, refreshData } = useContext(TransactionHistoryContext);
   const [viewStatementList, setViewStatementList] = useState<StatementViewProps[]>([
     defaultStatement,
   ]);
-  const [viewMonth, setViewMonth] = useState<StatementViewProps>({});
+  const [viewMonth, setViewMonth] = useState<StatementViewProps>(defaultStatement);
 
   const getAllStatements = () => {
-    queryTransactionLisGroupByDate(accountId).then((res) => {
+    queryTransactionListGroupByDate(accountId).then((res) => {
       if (res.length) {
         const convertDataToRangeDate = generateMonthlyStatements(
           res,
-          statementList[accountId].statementDate,
+          statementInfo.statementDate,
         );
-
         setViewStatementList([defaultStatement, ...convertDataToRangeDate]);
-        const currentStatementIndex = convertDataToRangeDate.findIndex(
-          (item) => item.type === STATEMENT_TYPE.NOW,
-        );
-        if (currentStatementIndex !== -1) {
-          setViewMonth(convertDataToRangeDate[currentStatementIndex]);
-        } else {
-          setViewMonth(viewStatementList[0]);
-        }
-        return;
       }
-      setViewStatementList([defaultStatement]);
-      setViewMonth(viewStatementList[0]);
     });
   };
 
@@ -73,7 +61,7 @@ function StatementPicker({ onChange }: StatementPickerProps) {
   const keyExtractor = useCallback((item: StatementViewProps, index: number) => index, []);
 
   const renderItemStatement = ({ item }: { item: StatementViewProps }) => {
-    const isItemAll = item.type === STATEMENT_TYPE.ALL;
+    const isItemAll = !item.month;
     return (
       <TouchableHighlightComponent
         onPress={() => {
@@ -89,15 +77,10 @@ function StatementPicker({ onChange }: StatementPickerProps) {
                 textTransform: 'capitalize',
                 fontWeight: isItemAll ? '500' : 'normal',
               }}
-              color={item.type === viewMonth.type ? colors.primary : colors.text}
+              color={item.month === viewMonth.month ? colors.primary : colors.text}
             >
-              {item.type !== STATEMENT_TYPE.NOW && !isItemAll
-                ? formatDateLocal(item.month, 'MMMM, yyyy')
-                : item.type === STATEMENT_TYPE.NOW
-                ? 'Kỳ hiện tại'
-                : 'Xem tất cả lịch sử'}
+              {!isItemAll ? formatDateLocal(item.month, 'MMMM, yyyy') : 'Xem tất cả lịch sử'}
             </RNText>
-            {item.type === STATEMENT_TYPE.FUTURE && <RNText fontSize={11}>(Tương lai)</RNText>}
           </View>
           <SvgIcon name="forward" preset="forwardLink" />
         </View>
@@ -108,16 +91,14 @@ function StatementPicker({ onChange }: StatementPickerProps) {
   return (
     <>
       <View style={styles.viewByMonth}>
-        {!isEmpty(viewMonth) && (
+        {Object.keys(viewMonth).length > 0 && (
           <View>
             <RNText fontSize={17} style={{ textTransform: 'capitalize', fontWeight: '500' }}>
-              {![STATEMENT_TYPE.NOW, STATEMENT_TYPE.ALL].includes(viewMonth.type)
+              {viewMonth.month
                 ? formatDateLocal(viewMonth.month, 'MMMM, yyyy')
-                : viewMonth.type === STATEMENT_TYPE.NOW
-                ? 'Kỳ hiện tại'
-                : 'Xem tất cả lịch sử'}
+                : 'Tất cả lịch sử'}
             </RNText>
-            {![STATEMENT_TYPE.ALL].includes(viewMonth.type) && (
+            {viewMonth.month && (
               <RNText fontSize={10} style={{ fontStyle: 'italic' }} color="gray">
                 {`(${formatDateLocal(viewMonth.startDate, 'dd/MM/yyyy')} - ${formatDateLocal(
                   viewMonth.endDate,
@@ -127,8 +108,11 @@ function StatementPicker({ onChange }: StatementPickerProps) {
             )}
           </View>
         )}
-        <PressableHaptic onPress={() => bottomSheetModalRef?.current.present()}>
-          <RNText color={colors.primary}>Sao kê khác</RNText>
+        <PressableHaptic
+          style={[styles.otherStatement, { backgroundColor: colors.primary }]}
+          onPress={() => bottomSheetModalRef?.current.present()}
+        >
+          <RNText color="white">Xem sao kê</RNText>
         </PressableHaptic>
       </View>
       <BottomSheet ref={bottomSheetModalRef}>

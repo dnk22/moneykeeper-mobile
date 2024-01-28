@@ -4,7 +4,7 @@ import {
   queryDeleteBalanceById,
   queryDeleteTransactionById,
   queryTransactionById,
-  queryTransactionLisGroupByDate,
+  queryTransactionListGroupByDate,
   queryGetTransactionsListByDate,
   queryCalculateAllBalanceAfterDate,
   queryUpdateTransaction,
@@ -32,7 +32,7 @@ export const getTransactionById = async (id: string) => {
 
 export const getTransactionLisGroupByDate = async (accountId: string) => {
   try {
-    return await queryTransactionLisGroupByDate(accountId);
+    return await queryTransactionListGroupByDate(accountId);
   } catch (error) {
     return {
       success: false,

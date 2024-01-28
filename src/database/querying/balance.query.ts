@@ -3,7 +3,7 @@ import { database } from 'database/index';
 import { BalanceModel, TransactionModel } from 'database/models';
 import { BALANCE } from 'database/constants';
 import { Q } from '@nozbe/watermelondb';
-import { isEmpty, size } from 'lodash';
+import { isEmpty } from 'lodash';
 import { SQLiteQuery } from '@nozbe/watermelondb/adapters/sqlite';
 import { handleError } from 'utils/axios';
 
@@ -25,6 +25,21 @@ export const queryGetLatestBalanceByDate = async (accountId: string, date: numbe
     return result[0];
   });
 };
+
+export const queryGetCurrentBalance = async (accountId: string) => {
+  const query = `SELECT closingAmount, transactionDateAt FROM ${BALANCE}
+                WHERE accountId='${accountId}'
+                ORDER BY transactionDateAt DESC, _id DESC
+                LIMIT 1`;
+  return await database.read(async () => {
+    const result = await database
+      .get<BalanceModel>(BALANCE)
+      .query(Q.unsafeSqlQuery(query))
+      .unsafeFetchRaw();
+    return result[0];
+  });
+};
+
 export const queryGetAllBalanceAfterDate = async (accountId: string, date: number) => {
   try {
     const query = `SELECT * FROM ${BALANCE}

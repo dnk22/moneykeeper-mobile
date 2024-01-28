@@ -2,6 +2,7 @@ export let defaultValues = {
   amount: 0,
   toAmount: 0,
   dateTimeAt: new Date(),
+  closingAmount: 0,
   categoryId: '',
   accountId: '',
   descriptions: '',

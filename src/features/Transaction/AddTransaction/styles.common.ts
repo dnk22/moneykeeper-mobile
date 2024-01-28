@@ -43,6 +43,12 @@ const styles = StyleSheet.create({
     height: 50,
     width: '100%',
   },
+  currentBalance: {
+    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
 });
 
 export default styles;

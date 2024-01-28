@@ -11,7 +11,7 @@ type StatementModalPickerProps = {
   value: number;
   onValueChange: (value: number) => void;
   onToggleModal: any;
-  type: 'dayAfter' | 'statementDay';
+  type: 'paymentDate' | 'statementDay';
 };
 
 export default function StatementModalPicker({
@@ -23,7 +23,7 @@ export default function StatementModalPicker({
 }: StatementModalPickerProps) {
   const { colors } = useCustomTheme();
   const [day, setDay] = useState<number>(value);
-  const data = type === 'dayAfter' ? [15, 25] : DAY_IN_MONTH;
+  const data = type === 'paymentDate' ? [15, 25] : DAY_IN_MONTH;
 
   useEffect(() => {
     setDay(value);
@@ -37,7 +37,7 @@ export default function StatementModalPicker({
     <ModalComponent isVisible={isVisible} onToggleModal={onToggleModal} isBackdropClose={false}>
       <View style={[styles.header, { borderBottomColor: colors.divider }]}>
         <RNText preset="linkMedium">
-          {type === 'dayAfter' ? 'Hạn thanh toán sau sao kê' : 'Ngày sao kê'}
+          {type === 'paymentDate' ? 'Hạn thanh toán sau sao kê' : 'Ngày sao kê'}
         </RNText>
         <Pressable onPress={handleOnDone}>
           <RNText color={colors.primary} style={{ fontWeight: '700' }}>

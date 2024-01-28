@@ -21,6 +21,7 @@ import { defaultValues } from './constant';
 import SelectTransactionType from './common/SelectTransactionType';
 import Transfer from './Transfer';
 import styles from './styles';
+import Adjustment from './Adjustment';
 
 type AddTransactionsProps = {
   navigation: TransactionParamListProps<typeof ADD_TRANSACTION>['navigation'];
@@ -161,6 +162,7 @@ function AddTransactions({ navigation, route }: AddTransactionsProps) {
             <ExpenseAndIncome params={params} />
           )}
           {transactionTypeSelected([TRANSACTION_TYPE.TRANSFER]) && <Transfer params={params} />}
+          {transactionTypeSelected([TRANSACTION_TYPE.ADJUSTMENT]) && <Adjustment params={params} />}
         </KeyboardAwareScrollView>
       </FormProvider>
     </View>

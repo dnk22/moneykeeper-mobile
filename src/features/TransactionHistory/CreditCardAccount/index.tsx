@@ -67,7 +67,7 @@ function CreditCardAccount({ navigation, route }: CreditCardAccountProps) {
           accountId: params.accountId,
           creditCardLimit: params.creditCardLimit,
           currentStatement: statement,
-          statementList,
+          statementInfo: statementList[params.accountId],
           onRefreshData,
         }}
       >
@@ -78,11 +78,7 @@ function CreditCardAccount({ navigation, route }: CreditCardAccountProps) {
           <SvgIcon name="add" size={30} color="white" />
         </PressableHaptic>
         <Summary />
-        <StatementPicker
-          accountId={params.accountId}
-          statementList={statementList}
-          onChange={onSelectStatement}
-        />
+        <StatementPicker onChange={onSelectStatement} />
         <TransactionList />
       </TransactionHistoryContext.Provider>
     </View>

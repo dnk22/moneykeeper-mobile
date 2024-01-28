@@ -77,6 +77,7 @@ export default appSchema({
         { name: 'userId', type: 'string', isOptional: true },
         { name: 'giver', type: 'string', isOptional: true },
         { name: 'payee', type: 'string', isOptional: true },
+        { name: 'closingAmount', type: 'number' },
         // lend and borrow
         { name: 'relatedPerson', type: 'string', isOptional: true },
         // transfer

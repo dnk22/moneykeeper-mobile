@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { BOX_SHADOW } from 'resources/theme/constants';
 import { CONTAINER_PADDING } from 'share/dimensions';
 
 const styles = StyleSheet.create({
@@ -18,8 +19,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   viewByMonth: {
+    marginVertical: 10,
     paddingHorizontal: 13,
-    paddingTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -35,6 +36,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     alignItems: 'center',
+  },
+  otherStatement: {
+    padding: 4,
+    paddingHorizontal: 15,
+    borderRadius: 30,
+    ...BOX_SHADOW,
   },
 });
 

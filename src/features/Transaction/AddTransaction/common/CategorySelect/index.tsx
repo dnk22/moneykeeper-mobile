@@ -6,12 +6,14 @@ import { debounce, isEqual } from 'lodash';
 import InputSelection from 'components/InputSelection';
 import { getTransactionCategoryByID } from 'services/api/transactionsCategory';
 import { TTransactionsCategory } from 'database/types';
+import { TRANSACTION_TYPE } from 'utils/constant';
 
 type CategorySelectProps = {
   onPress: (item?: TTransactionsCategory) => void;
+  onChange?: (item?: TTransactionsCategory) => void;
 };
 
-function CategorySelect({ onPress }: CategorySelectProps) {
+function CategorySelect({ onPress, onChange }: CategorySelectProps) {
   const {
     control,
     getValues,
@@ -33,7 +35,9 @@ function CategorySelect({ onPress }: CategorySelectProps) {
         // if data no change , don't setState
         if (!isEqual(res, categorySelected)) {
           setCategorySelected(res);
-          setValue('transactionType', res.categoryType);
+          if (getValues('transactionType') !== TRANSACTION_TYPE.ADJUSTMENT) {
+            setValue('transactionType', res.categoryType);
+          }
         }
       });
     } catch (error) {
@@ -54,6 +58,10 @@ function CategorySelect({ onPress }: CategorySelectProps) {
   useEffect(() => {
     fetchCategoryData();
   }, [watch('categoryId')]);
+
+  useEffect(() => {
+    onChange && onChange(categorySelected);
+  }, [categorySelected]);
 
   return (
     <InputSelection

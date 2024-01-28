@@ -5,6 +5,8 @@ import { queryGetPaymentDueCreditCardByAccountId } from 'database/querying';
 import { RNText } from 'components/index';
 import { formatNumber } from 'utils/math';
 import { TransactionHistoryContext } from '../context';
+import { addDays } from 'date-fns';
+import { formatDateLocal } from 'utils/date';
 import styles from './styles';
 
 function PaymentDue() {
@@ -13,6 +15,7 @@ function PaymentDue() {
     accountId,
     currentStatement: statement,
     creditCardLimit,
+    statementInfo,
   } = useContext(TransactionHistoryContext);
   const [totalExpense, setTotalExpense] = useState<number>(0);
 
@@ -28,44 +31,34 @@ function PaymentDue() {
     }, [accountId, statement]),
   );
 
+  const paymentDate = () => {
+    const date = addDays(new Date(statement.endDate), statementInfo.paymentDate);
+    return formatDateLocal(date, 'dd/MM/yyyy - 17:00');
+  };
+
   return (
-    <>
-      <View style={styles.bottom}>
-        <View style={[styles.item, { alignItems: 'flex-start' }]}>
-          <View style={styles.title}>
-            <RNText fontSize={14}>Tổng nợ kỳ này</RNText>
-          </View>
-          <View>
-            <RNText fontSize={16} color="#FF3232">
-              {formatNumber(totalExpense, true)}
-            </RNText>
-          </View>
+    <View style={styles.bottom}>
+      <View style={[styles.item, { alignItems: 'flex-start' }]}>
+        <View style={styles.title}>
+          <RNText fontSize={14}>Tổng nợ kỳ này</RNText>
         </View>
-        <View style={[styles.divider, { backgroundColor: colors.divider }]} />
-        <View style={[styles.item, { alignItems: 'flex-start', paddingLeft: 20 }]}>
-          <View style={styles.title}>
-            <RNText fontSize={14}>Dư nợ còn lại</RNText>
-          </View>
-          <View>
-            <RNText fontSize={16} color="#45f248">
-              {formatNumber(creditCardLimit - Math.abs(totalExpense), true)}
-            </RNText>
-          </View>
+        <View>
+          <RNText color="#FF3232">{formatNumber(totalExpense, true)}</RNText>
         </View>
       </View>
-      <View style={[styles.dividerHorizontal, { backgroundColor: colors.divider }]} />
-      <View>
+      <View style={[styles.divider, { backgroundColor: colors.divider }]} />
+      <View style={[styles.item, { alignItems: 'flex-start', paddingLeft: 15 }]}>
         <View style={styles.title}>
-          <RNText fontSize={14}>Hạn thanh toán </RNText>
+          <RNText fontSize={14}>Hạn thanh toán</RNText>
           <RNText fontSize={10} color="gray">
             (dự kiến)
           </RNText>
         </View>
         <View>
-          <RNText fontSize={16} color="#45f248"></RNText>
+          <RNText>{paymentDate()}</RNText>
         </View>
       </View>
-    </>
+    </View>
   );
 }
 export default PaymentDue;

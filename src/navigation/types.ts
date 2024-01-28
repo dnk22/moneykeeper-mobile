@@ -85,7 +85,7 @@ export type TransactionParamListProps<T extends keyof TransactionParamList> =
 
 /** transaction category stack navigation */
 export type TransactionCategoryParams = {
-  [TRANSACTION_CATEGORY_LIST]: MaterialTopTabScreenProps<TransactionCategoryListParams>;
+  [TRANSACTION_CATEGORY_LIST]: { tabHide: string };
   [UPDATE_TRANSACTION_CATEGORY]: {
     icon?: string;
     transactionCategoryId?: string;

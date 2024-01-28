@@ -13,7 +13,7 @@ export type GetTransactionByDate = {
 
 /** read */
 /** query list transaction group by date  */
-export const queryTransactionLisGroupByDate = async (accountId: string) => {
+export const queryTransactionListGroupByDate = async (accountId: string) => {
   const query = `SELECT DISTINCT 
       strftime('%Y-%m-%d', datetime(dateTimeAt/1000, 'unixepoch')) AS date 
       FROM ${TRANSACTIONS}
@@ -106,11 +106,18 @@ export const queryTransactionById = async (id: string) => {
  * add new transaction , if success then update useCount in transaction category
  */
 export const queryAddNewTransaction = async (transaction: TTransactions) => {
-  return await database.write(async () => {
-    return await database.get<TransactionModel>(TRANSACTIONS).create((item) => {
-      Object.assign(item, transaction);
+  try {
+    return await database.write(async () => {
+      return await database.get<TransactionModel>(TRANSACTIONS).create((item) => {
+        Object.assign(item, transaction);
+      });
     });
-  });
+  } catch (error) {
+    console.log(error,'error');
+    return handleError({
+      error: 'ADD-TRANS',
+    });
+  }
 };
 /** update */
 /**

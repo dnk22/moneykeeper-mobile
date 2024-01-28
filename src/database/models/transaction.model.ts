@@ -15,6 +15,7 @@ export default class TransactionModel extends Model {
   @date('dateTimeAt') dateTimeAt!: Date;
   @field('location') location!: string;
   @text('eventName') eventName!: string;
+  @field('closingAmount') closingAmount!: number;
   @field('fee') fee!: number;
   @field('feeType') feeType!: string;
   @field('giver') giver!: string;

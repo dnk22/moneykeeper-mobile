@@ -6,7 +6,6 @@ import { RNText } from 'components/index';
 import { formatNumber } from 'utils/math';
 import { TransactionHistoryContext } from '../context';
 import styles from './styles';
-import { STATEMENT_TYPE } from 'utils/types';
 
 function CurrentBalance() {
   const {
@@ -23,8 +22,6 @@ function CurrentBalance() {
     useCallback(() => {
       queryGetCurrentBalanceCreditCardByAccountId({
         accountId,
-        endDate: statement.endDate,
-        getAll: statement.type === STATEMENT_TYPE.ALL,
       }).then((res) => {
         setTotalExpense(res);
       });

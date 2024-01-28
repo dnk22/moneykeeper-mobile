@@ -1,10 +1,10 @@
 import SvgIcon from 'components/SvgIcon';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
-import { Button } from 'react-native';
+import { Button, View } from 'react-native';
 
-function UpdateTransactionCategoryHeader({ onPress, isUpdateMode }: any) {
+function UpdateTransactionCategoryHeader({ onPress, isUpdateMode, show }: any) {
   return (
-    <>
+    <View style={{ display: show ? 'flex' : 'none' }}>
       {isUpdateMode ? (
         <Button title="Hủy" onPress={onPress} />
       ) : (
@@ -12,7 +12,7 @@ function UpdateTransactionCategoryHeader({ onPress, isUpdateMode }: any) {
           <SvgIcon name="pen" />
         </TouchableHighlightComponent>
       )}
-    </>
+    </View>
   );
 }
 export default UpdateTransactionCategoryHeader;

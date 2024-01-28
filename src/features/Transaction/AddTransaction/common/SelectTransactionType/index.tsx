@@ -64,7 +64,7 @@ function SelectTransactionType({
         <View style={styles.item}>
           <View style={styles.itemContent}>
             <View style={styles.itemIcon}>
-              <IconComponent name={item.icon}/>
+              <IconComponent name={item.icon} />
             </View>
             <RNText>{item.name}</RNText>
           </View>

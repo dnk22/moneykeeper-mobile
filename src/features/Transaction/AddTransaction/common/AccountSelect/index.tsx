@@ -16,7 +16,6 @@ type AccountProp = {
 
 type AccountSelectProps = {
   name?: string;
-  onReset: () => void;
   title?: string;
   isShowSubTitle?: boolean;
   excludeId?: string;
@@ -26,7 +25,6 @@ type AccountSelectProps = {
 function AccountSelect({
   name = 'accountId',
   title = 'Chọn tài khoản',
-  onReset,
   isShowSubTitle,
   excludeId = '',
   swapId,
@@ -79,7 +77,7 @@ function AccountSelect({
 
   const resetAccountState = () => {
     setAccountSelected(undefined);
-    onReset();
+    setValue(name, '');
   };
 
   const onAccountItemPress = (account: TAccount) => {

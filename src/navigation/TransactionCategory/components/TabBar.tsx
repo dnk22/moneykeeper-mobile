@@ -28,41 +28,26 @@ const mapTransactionCategoryType = {
 function TransactionCategoryTaBBar({ navigation, route }: any) {
   const { colors } = useCustomTheme();
   const [isUpdate, setIsUpdate] = useState(false);
+  const { params } = route;
 
   useEffect(() => {
-    updateTabActive(route);
-  }, [navigation, route, isUpdate]);
-
-  function updateTabActive(route: any) {
     const routeName = focusedRoute(route);
-    switch (routeName) {
-      case INCOME_CATEGORY:
-        navigation.setOptions({
-          headerTitle: 'Danh Mục Thu',
-          headerRight: () => (
-            <UpdateTransactionCategoryHeader
-              isUpdateMode={isUpdate}
-              onPress={onHeaderButtonPress}
-            />
-          ),
-        });
-        break;
-      case EXPENSE_CATEGORY:
-        navigation.setOptions({
-          headerTitle: 'Danh Mục Chi',
-          headerRight: () => (
-            <UpdateTransactionCategoryHeader
-              isUpdateMode={isUpdate}
-              onPress={onHeaderButtonPress}
-            />
-          ),
-        });
-        break;
-      default:
-        navigation.setOptions({ headerTitle: 'Danh Mục Vay Mượn', headerRight: () => <></> });
-        break;
-    }
-  }
+    const mapTitle: Record<string, string> = {
+      [INCOME_CATEGORY]: 'Danh Mục Thu',
+      [EXPENSE_CATEGORY]: 'Danh Mục Chi',
+      [LEND_BORROW]: 'Danh Mục Vay Mượn',
+    };
+    navigation.setOptions({
+      headerTitle: mapTitle[routeName],
+      headerRight: () => (
+        <UpdateTransactionCategoryHeader
+          isUpdateMode={isUpdate}
+          onPress={onHeaderButtonPress}
+          show={routeName !== LEND_BORROW}
+        />
+      ),
+    });
+  }, [navigation, route]);
 
   const onHeaderButtonPress = () => {
     setIsUpdate(!isUpdate);
@@ -102,13 +87,17 @@ function TransactionCategoryTaBBar({ navigation, route }: any) {
             tabBarInactiveTintColor: colors.text,
           }}
         >
-          <TabBar.Screen name={INCOME_CATEGORY} options={{ title: 'Danh mục thu' }}>
-            {() => <ExpenseIncomeTab type={TRANSACTION_CATEGORY_TYPE.INCOME} />}
-          </TabBar.Screen>
-          <TabBar.Screen name={EXPENSE_CATEGORY} options={{ title: 'Danh mục chi' }}>
-            {() => <ExpenseIncomeTab type={TRANSACTION_CATEGORY_TYPE.EXPENSE} />}
-          </TabBar.Screen>
-          {!isUpdate && (
+          {(!params.tabHide || params.tabHide !== INCOME_CATEGORY) && (
+            <TabBar.Screen name={INCOME_CATEGORY} options={{ title: 'Danh mục thu' }}>
+              {() => <ExpenseIncomeTab type={TRANSACTION_CATEGORY_TYPE.INCOME} />}
+            </TabBar.Screen>
+          )}
+          {(!params.tabHide || params.tabHide !== EXPENSE_CATEGORY) && (
+            <TabBar.Screen name={EXPENSE_CATEGORY} options={{ title: 'Danh mục chi' }}>
+              {() => <ExpenseIncomeTab type={TRANSACTION_CATEGORY_TYPE.EXPENSE} />}
+            </TabBar.Screen>
+          )}
+          {!isUpdate && !params.tabHide && (
             <TabBar.Screen name={LEND_BORROW} options={{ title: 'Vay mượn' }}>
               {() => <LendAndBorrowTab />}
             </TabBar.Screen>
