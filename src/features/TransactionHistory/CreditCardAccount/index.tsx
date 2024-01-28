@@ -4,7 +4,7 @@ import { PressableHaptic, SvgIcon } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { ACCOUNT_CREDIT_CARD_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
 import { AccountStackParamListProps } from 'navigation/types';
-import { ButtonText, TransactionListByAccountConfig } from 'navigation/elements';
+import { ButtonText } from 'navigation/elements';
 import { useAppSelector } from 'store/index';
 import { selectAccountStatementList } from 'store/account/account.selector';
 import { StatementViewProps } from 'utils/types';
@@ -13,6 +13,7 @@ import Summary from './Summary';
 import StatementPicker from './StatementPicker';
 import TransactionList from './TransactionList';
 import styles from './styles';
+import HeaderBarConfig from '../HeaderBarConfig';
 
 type CreditCardAccountProps = {
   navigation: AccountStackParamListProps<typeof ACCOUNT_CREDIT_CARD_DETAIL>['navigation'];
@@ -35,7 +36,7 @@ function CreditCardAccount({ navigation, route }: CreditCardAccountProps) {
         isSelectMode ? (
           <ButtonText title="Xóa" onPress={onHandleDeleteMultiTransaction} />
         ) : (
-          <TransactionListByAccountConfig onPressSelectMode={onHandleSelectMode} />
+         <HeaderBarConfig onPressSelectMode={onHandleSelectMode} />
         ),
     });
   }, [isSelectMode]);

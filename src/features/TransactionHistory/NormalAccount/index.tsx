@@ -4,9 +4,10 @@ import { PressableHaptic, SvgIcon } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { ACCOUNT_NORMAL_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
 import { AccountStackParamListProps } from 'navigation/types';
-import { ButtonText, TransactionListByAccountConfig } from 'navigation/elements';
+import { ButtonText } from 'navigation/elements';
 import Summary from './Summary';
 import TransactionList from './TransactionList';
+import HeaderBarConfig from '../HeaderBarConfig';
 import styles from './styles';
 
 type NormalAccountProps = {
@@ -26,7 +27,7 @@ function NormalAccount({ navigation, route }: NormalAccountProps) {
         isSelectMode ? (
           <ButtonText title="Xóa" onPress={onHandleDeleteMultiTransaction} />
         ) : (
-          <TransactionListByAccountConfig onPressSelectMode={onHandleSelectMode} />
+          <HeaderBarConfig onPressSelectMode={onHandleSelectMode} />
         ),
     });
   }, [isSelectMode]);

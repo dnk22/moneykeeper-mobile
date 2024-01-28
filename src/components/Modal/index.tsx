@@ -1,19 +1,11 @@
 import React, { memo } from 'react';
 import { StyleProp, TouchableOpacity, View } from 'react-native';
 import Modal, { ModalProps } from 'react-native-modal';
-import { styles } from './styles';
-import isEqual from 'react-fast-compare';
-import SvgIcon from 'components/SvgIcon';
-import RNText from 'components/Text';
 import { useCustomTheme } from 'resources/theme';
-
-const defaultProps = {
-  isVisible: false,
-  isShowClose: true,
-  backdropColor: '#6e768142',
-  animationIn: 'slideInUp',
-  animationOut: 'slideOutDown',
-};
+import isEqual from 'react-fast-compare';
+import SvgIcon from '../SvgIcon';
+import RNText from '../Text';
+import { styles } from './styles';
 
 type NewModalProps = Partial<ModalProps>;
 
@@ -30,11 +22,11 @@ const ModalComponent = ({
   isVisible,
   style,
   children,
-  backdropColor,
+  backdropColor = '#6e768142',
   animationInTiming = 400,
   animationOutTiming = 400,
-  animationIn,
-  animationOut,
+  animationIn = 'slideInUp',
+  animationOut = 'slideOutDown',
   isShowClose,
   height,
   styleDefaultContent,
@@ -82,7 +74,5 @@ const ModalComponent = ({
     </Modal>
   );
 };
-
-ModalComponent.defaultProps = defaultProps;
 
 export default memo(ModalComponent, isEqual);

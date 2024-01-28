@@ -17,7 +17,7 @@ export const selectReportViewSettings = createSelector(
 
 export const selectTransactionListConfig = createSelector(
   appState,
-  (state) => state.transactionListConfig,
+  (state) => state.transactionListDisplayConfig,
 );
 
 export const selectHomeBottomBarType = createSelector(appState, (state) => state.homeBottomBarType);

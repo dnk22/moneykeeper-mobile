@@ -12,12 +12,7 @@ import { GroupedTransactionProps } from 'utils/types';
 import TransactionItem from '../TransactionItem';
 import styles from './styles';
 
-type HeaderItemProps = {
-  transaction: GroupedTransactionProps;
-  accountId: string;
-};
-
-function HeaderItem({ transaction, accountId }: HeaderItemProps) {
+function HeaderItem({ transaction }: { transaction: GroupedTransactionProps }) {
   const { colors } = useCustomTheme();
   const { date, data = [] } = transaction;
   const formatDate = useCallback((format: string) => formatDateStringLocal(date, format), [date]);
@@ -36,26 +31,15 @@ function HeaderItem({ transaction, accountId }: HeaderItemProps) {
     return ITEM_HEIGHT * (transactionLength - 1) + MARGIN_TOP * transactionLength + ITEM_HEIGHT / 2;
   }, [transactionLength]);
 
-  const getTotalMoneyInDay = useMemo(() => {
-    let totalIncome = 0;
-    let totalExpense = 0;
-    data.forEach((item) => {
-      if (item.transactionType === TRANSACTION_TYPE.INCOME) {
-        totalIncome += item.amount;
-      }
-      if (item.transactionType === TRANSACTION_TYPE.EXPENSE) {
-        totalExpense += -item.amount;
-      }
-      if (item.transactionType === TRANSACTION_TYPE.TRANSFER) {
-        if (item.toAccountId === accountId) {
-          totalIncome += item.amount;
-        } else {
-          totalExpense += -item.amount;
-        }
-      }
-    });
-    return { totalIncome, totalExpense };
-  }, [data]);
+  const getTotalMoneyInDay = (type: TRANSACTION_TYPE) => {
+    let total = 0;
+    transaction.data
+      .filter((item) => (type === TRANSACTION_TYPE.INCOME ? item.amount > 0 : item.amount < 0))
+      .forEach((item) => {
+        total += item.amount;
+      });
+    return total;
+  };
 
   return (
     <View style={styles.item}>
@@ -82,11 +66,15 @@ function HeaderItem({ transaction, accountId }: HeaderItemProps) {
           </RNText>
         </View>
         <View style={styles.dayExpense}>
-          {!!getTotalMoneyInDay.totalIncome && (
-            <RNText color="green">{formatNumber(getTotalMoneyInDay.totalIncome, true)}</RNText>
+          {!!getTotalMoneyInDay(TRANSACTION_TYPE.INCOME) && (
+            <RNText color="green">
+              {formatNumber(getTotalMoneyInDay(TRANSACTION_TYPE.INCOME), true)}
+            </RNText>
           )}
-          {!!getTotalMoneyInDay.totalExpense && (
-            <RNText color="red">{formatNumber(getTotalMoneyInDay.totalExpense, true)}</RNText>
+          {!!getTotalMoneyInDay(TRANSACTION_TYPE.EXPENSE) && (
+            <RNText color="red">
+              {formatNumber(getTotalMoneyInDay(TRANSACTION_TYPE.EXPENSE), true)}
+            </RNText>
           )}
         </View>
       </View>

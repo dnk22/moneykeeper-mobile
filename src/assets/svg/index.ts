@@ -63,8 +63,12 @@ import up from './up.svg';
 import view from './view.svg';
 import work from './work.svg';
 import trayUp from './trayUp.svg';
+import display from './display.svg';
+import filter from './filter.svg';
 
 export {
+  filter,
+  display,
   add,
   arrowCircleDown,
   arrowCircleUp,

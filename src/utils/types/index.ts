@@ -34,17 +34,10 @@ export type AccountViewSettingsProps = {
   isViewActive: boolean;
 };
 
-export type TransactionListConfigProps = {
-  isShowDescription: boolean;
-  isShowAmountAfterTransaction: boolean;
-  isShowExpense: boolean;
-  isShowIncome: boolean;
-};
-
 export type AppStateProps = {
   accountViewSettings: AccountViewSettingsProps;
   isReportViewByGrid: boolean;
-  transactionListConfig: TransactionListConfigProps;
+  transactionListDisplayConfig: Record<string, boolean>;
   homeBottomBarType: typeof FLAT | typeof STICKY;
   viewCategoryMostAndRecent: keyof typeof VIEW_CATEGORY_FAST_BY_COLUMN;
 };

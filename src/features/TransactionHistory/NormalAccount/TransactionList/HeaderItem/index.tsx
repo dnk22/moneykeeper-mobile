@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { RNText } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
@@ -11,6 +11,8 @@ import { formatNumber } from 'utils/math';
 import { TTransactions } from 'database/types';
 import { TRANSACTION_TYPE } from 'utils/constant';
 import { ITEM_HEIGHT, MARGIN_TOP } from 'share/dimensions';
+import { useAppSelector } from 'store/index';
+import { selectTransactionListConfig } from 'store/app/app.selector';
 import TransactionItem from '../TransactionItem';
 import styles from './styles';
 
@@ -25,6 +27,7 @@ type HeaderItemProps = {
 function HeaderItem({ date, accountId, onRefreshDate, reload }: HeaderItemProps) {
   const { colors } = useCustomTheme();
   const [transaction, setTransaction] = useState<TTransactions[] | any[]>([]);
+  const display = useAppSelector((state) => selectTransactionListConfig(state));
   const formatDate = useCallback((format: string) => formatDateStringLocal(date, format), [date]);
   const transactionLength = size(transaction);
 
@@ -55,30 +58,22 @@ function HeaderItem({ date, accountId, onRefreshDate, reload }: HeaderItemProps)
     return formatDate('EEEE');
   };
 
-  const parentLineHeight = useMemo(() => {
+  const parentLineHeight = () => {
     return ITEM_HEIGHT * (transactionLength - 1) + MARGIN_TOP * transactionLength + ITEM_HEIGHT / 2;
-  }, [transactionLength]);
+  };
 
-  const getTotalMoneyInDay = useMemo(() => {
-    let totalIncome = 0;
-    let totalExpense = 0;
-    transaction.forEach((item) => {
-      if (item.transactionType === TRANSACTION_TYPE.INCOME) {
-        totalIncome += item.amount;
-      }
-      if (item.transactionType === TRANSACTION_TYPE.EXPENSE) {
-        totalExpense += -item.amount;
-      }
-      if (item.transactionType === TRANSACTION_TYPE.TRANSFER) {
-        if (item.toAccountId === accountId) {
-          totalIncome += item.amount;
-        } else {
-          totalExpense += -item.amount;
-        }
-      }
-    });
-    return { totalIncome, totalExpense };
-  }, [transaction]);
+  const getTotalMoneyInDay = (type: TRANSACTION_TYPE, show?: boolean) => {
+    let total = 0;
+    if (!show) {
+      return total;
+    }
+    transaction
+      .filter((item) => (type === TRANSACTION_TYPE.INCOME ? item.amount > 0 : item.amount < 0))
+      .forEach((item) => {
+        total += item.amount;
+      });
+    return total;
+  };
 
   return (
     <>
@@ -88,7 +83,7 @@ function HeaderItem({ date, accountId, onRefreshDate, reload }: HeaderItemProps)
             style={[
               styles.parentLine,
               {
-                height: parentLineHeight,
+                height: parentLineHeight(),
               },
             ]}
           />
@@ -106,20 +101,14 @@ function HeaderItem({ date, accountId, onRefreshDate, reload }: HeaderItemProps)
             </RNText>
           </View>
           <View style={styles.dayExpense}>
-            {!!getTotalMoneyInDay.totalIncome && (
+            {!!getTotalMoneyInDay(TRANSACTION_TYPE.INCOME, display.income) && (
               <RNText color="green">
-                {formatNumber(
-                  getTotalMoneyInDay.totalIncome,
-                  true,
-                )}
+                {formatNumber(getTotalMoneyInDay(TRANSACTION_TYPE.INCOME, display.income), true)}
               </RNText>
             )}
-            {!!getTotalMoneyInDay.totalExpense && (
+            {!!getTotalMoneyInDay(TRANSACTION_TYPE.EXPENSE, display.expense) && (
               <RNText color="red">
-                {formatNumber(
-                  getTotalMoneyInDay.totalExpense,
-                  true,
-                )}
+                {formatNumber(getTotalMoneyInDay(TRANSACTION_TYPE.EXPENSE, display.expense), true)}
               </RNText>
             )}
           </View>
@@ -128,7 +117,12 @@ function HeaderItem({ date, accountId, onRefreshDate, reload }: HeaderItemProps)
       {isArray(transaction) &&
         transaction.map((item) => {
           return (
-            <TransactionItem data={item} key={item.id} onRefreshTransactionList={onRefreshDate} />
+            <TransactionItem
+              data={item}
+              key={item.id}
+              onRefreshTransactionList={onRefreshDate}
+              display={{ description: display.description, amount: display.amount }}
+            />
           );
         })}
     </>

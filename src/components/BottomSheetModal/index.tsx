@@ -17,7 +17,6 @@ type BottomSheetProps = {
 const BottomSheet = forwardRef(
   ({ children, snapPoints, index = 0 }: BottomSheetProps, ref: any) => {
     const { colors } = useCustomTheme();
-
     const snapPointsInit = useMemo(() => ['50%', '80%'], []);
 
     const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {

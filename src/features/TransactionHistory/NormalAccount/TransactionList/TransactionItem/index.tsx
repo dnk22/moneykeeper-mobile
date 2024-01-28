@@ -15,15 +15,16 @@ import { deleteTransactionById } from 'services/api/transactions';
 import { formatNumber } from 'utils/math';
 import isEqual from 'react-fast-compare';
 import { showToast } from 'utils/system';
-import { get } from 'lodash';
 import { TRANSACTION_TYPE } from 'utils/constant';
 import styles from './styles';
 
 function TransactionItem({
   data,
+  display,
   onRefreshTransactionList,
 }: {
   data: TTransactions;
+  display: Record<string, boolean>;
   onRefreshTransactionList: () => void;
 }) {
   const { colors } = useCustomTheme();
@@ -78,6 +79,7 @@ function TransactionItem({
         return data?.categoryName;
     }
   };
+
   const renderCategoryIcon = () => {
     switch (data.transactionType) {
       case TRANSACTION_TYPE.TRANSFER:
@@ -104,9 +106,9 @@ function TransactionItem({
               <IconComponent name={renderCategoryIcon()} />
               <View style={styles.detailInfo}>
                 <RNText>{renderCategoryName()}</RNText>
-                {data?.descriptions && (
+                {display.description && data?.descriptions && (
                   <RNText color="gray" fontSize={11} style={styles.textDescription}>
-                    {get(data, 'descriptions', '')}
+                    {data?.descriptions}
                   </RNText>
                 )}
               </View>
@@ -115,9 +117,11 @@ function TransactionItem({
               <RNText color={data?.amount < 0 ? 'red' : 'green'}>
                 {formatNumber(Math.abs(data?.amount), true)}
               </RNText>
-              <RNText fontSize={13} color="gray">
-                {`(${formatNumber(data?.closingAmount, true)})`}
-              </RNText>
+              {display.amount && (
+                <RNText fontSize={13} color="gray">
+                  {`(${formatNumber(data?.closingAmount, true)})`}
+                </RNText>
+              )}
             </View>
           </View>
         </TouchableHighlightComponent>

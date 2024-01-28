@@ -7,9 +7,9 @@ export const styles = StyleSheet.create({
   },
   modalView: {
     flexDirection: 'column',
-    borderRadius: 15,
     borderBottomLeftRadius: 28,
     borderBottomRightRadius: 28,
+    borderRadius: 15,
     padding: 15,
   },
   modalAction: {

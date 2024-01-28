@@ -9,7 +9,11 @@ import HeaderItem from './HeaderItem';
 import { TransactionHistoryContext } from '../context';
 
 function TransactionList() {
-  const { accountId, refreshData, currentStatement: monthData } = useContext(TransactionHistoryContext);
+  const {
+    accountId,
+    refreshData,
+    currentStatement: monthData,
+  } = useContext(TransactionHistoryContext);
   const [data, setData] = useState<GroupedTransactionProps[]>([]);
 
   useFocusEffect(
@@ -35,7 +39,7 @@ function TransactionList() {
   };
 
   const renderItem = ({ item }: { item: GroupedTransactionProps }) => {
-    return <HeaderItem transaction={item} accountId={accountId} />;
+    return <HeaderItem transaction={item} />;
   };
 
   return <VirtualizedListComponent data={data} renderItem={renderItem} id="date" />;

@@ -4,7 +4,11 @@ const styles = StyleSheet.create({
   item: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingVertical: 13,
+    gap: 10,
+  },
+  displayItem: {
+    paddingVertical: 6,
   },
   group: {
     position: 'relative',
@@ -15,18 +19,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginTop: 10,
   },
-  displayTextStyle: {
-    position: 'absolute',
-    top: -10,
-    left: 15,
-    paddingVertical: 2,
-  },
   divider: {
     borderTopWidth: 0.2,
     borderColor: 'lightgray',
     marginBottom: 5,
     marginTop: 10,
     marginHorizontal: 5,
+  },
+  // display modal
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingBottom: 10,
   },
 });
 
