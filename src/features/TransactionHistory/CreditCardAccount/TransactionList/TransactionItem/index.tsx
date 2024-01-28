@@ -19,7 +19,13 @@ import { TRANSACTION_TYPE } from 'utils/constant';
 import { TransactionHistoryContext } from '../../context';
 import styles from './styles';
 
-function TransactionItem({ data }: { data: TTransactions }) {
+function TransactionItem({
+  data,
+  display,
+}: {
+  data: TTransactions;
+  display: Record<string, boolean>;
+}) {
   const { colors } = useCustomTheme();
   const tapPosition = useRef<number>(0);
   const navigation =
@@ -99,7 +105,7 @@ function TransactionItem({ data }: { data: TTransactions }) {
               <IconComponent name={renderCategoryIcon()} />
               <View style={styles.detailInfo}>
                 <RNText>{renderCategoryName()}</RNText>
-                {data?.descriptions && (
+                {data?.descriptions && display.description && (
                   <RNText color="gray" fontSize={11} style={styles.textDescription}>
                     {data?.descriptions}
                   </RNText>
@@ -110,9 +116,11 @@ function TransactionItem({ data }: { data: TTransactions }) {
               <RNText color={data?.amount < 0 ? 'red' : 'green'}>
                 {formatNumber(Math.abs(data?.amount), true)}
               </RNText>
-              <RNText fontSize={13} color="gray">
-                {`(${formatNumber(data?.closingAmount, true)})`}
-              </RNText>
+              {display.amount && (
+                <RNText fontSize={13} color="gray">
+                  {`(${formatNumber(data?.closingAmount, true)})`}
+                </RNText>
+              )}
             </View>
           </View>
         </TouchableHighlightComponent>

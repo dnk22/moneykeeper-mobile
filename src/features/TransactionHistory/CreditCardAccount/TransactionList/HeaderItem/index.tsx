@@ -9,12 +9,15 @@ import { formatNumber } from 'utils/math';
 import { TRANSACTION_TYPE } from 'utils/constant';
 import { ITEM_HEIGHT, MARGIN_TOP } from 'share/dimensions';
 import { GroupedTransactionProps } from 'utils/types';
+import { useAppSelector } from 'store/index';
+import { selectTransactionListConfig } from 'store/app/app.selector';
 import TransactionItem from '../TransactionItem';
 import styles from './styles';
 
 function HeaderItem({ transaction }: { transaction: GroupedTransactionProps }) {
   const { colors } = useCustomTheme();
   const { date, data = [] } = transaction;
+  const display = useAppSelector((state) => selectTransactionListConfig(state));
   const formatDate = useCallback((format: string) => formatDateStringLocal(date, format), [date]);
   const transactionLength = size(data);
 
@@ -31,8 +34,11 @@ function HeaderItem({ transaction }: { transaction: GroupedTransactionProps }) {
     return ITEM_HEIGHT * (transactionLength - 1) + MARGIN_TOP * transactionLength + ITEM_HEIGHT / 2;
   }, [transactionLength]);
 
-  const getTotalMoneyInDay = (type: TRANSACTION_TYPE) => {
+  const getTotalMoneyInDay = (type: TRANSACTION_TYPE, show?: boolean) => {
     let total = 0;
+    if (!show) {
+      return total;
+    }
     transaction.data
       .filter((item) => (type === TRANSACTION_TYPE.INCOME ? item.amount > 0 : item.amount < 0))
       .forEach((item) => {
@@ -66,21 +72,27 @@ function HeaderItem({ transaction }: { transaction: GroupedTransactionProps }) {
           </RNText>
         </View>
         <View style={styles.dayExpense}>
-          {!!getTotalMoneyInDay(TRANSACTION_TYPE.INCOME) && (
+          {!!getTotalMoneyInDay(TRANSACTION_TYPE.INCOME, display.income) && (
             <RNText color="green">
-              {formatNumber(getTotalMoneyInDay(TRANSACTION_TYPE.INCOME), true)}
+              {formatNumber(getTotalMoneyInDay(TRANSACTION_TYPE.INCOME, display.income), true)}
             </RNText>
           )}
-          {!!getTotalMoneyInDay(TRANSACTION_TYPE.EXPENSE) && (
+          {!!getTotalMoneyInDay(TRANSACTION_TYPE.EXPENSE, display.expense) && (
             <RNText color="red">
-              {formatNumber(getTotalMoneyInDay(TRANSACTION_TYPE.EXPENSE), true)}
+              {formatNumber(getTotalMoneyInDay(TRANSACTION_TYPE.EXPENSE, display.expense), true)}
             </RNText>
           )}
         </View>
       </View>
       {isArray(data) &&
         data.map((item) => {
-          return <TransactionItem data={item} key={item.id} />;
+          return (
+            <TransactionItem
+              data={item}
+              key={item.id}
+              display={{ description: display.description, amount: display.amount }}
+            />
+          );
         })}
     </View>
   );
