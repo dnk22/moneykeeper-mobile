@@ -23,7 +23,12 @@ import styles from './styles';
 import { get } from 'lodash';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constant';
 import { useAppDispatch } from 'store/index';
-import { removeAccountStatement, updateAccountStatement } from 'store/account/account.slice';
+import {
+  removeAccountStatement,
+  updateAccountNotification,
+  updateAccountStatement,
+} from 'store/account/account.slice';
+import { addDays } from 'date-fns';
 
 const defaultValues = {
   accountName: '',
@@ -39,6 +44,8 @@ const defaultValues = {
   descriptions: '',
 };
 
+type ModalType = 'paymentDate' | 'statementDay';
+
 function AddAccount() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
@@ -49,7 +56,7 @@ function AddAccount() {
   // state local
   const inputNameRef = useRef<any>(null);
   const bankLogo = useRef<any>(null);
-  const isModalType = useRef<'paymentDate' | 'statementDay'>('statementDay');
+  const isModalType = useRef<ModalType>('statementDay');
 
   // state from store
   const ACCOUNT_NOT_SHOW_BANK = [AccountType[0].id, AccountType[5].id];
@@ -81,7 +88,7 @@ function AddAccount() {
     navigation.setOptions({
       headerRight: () => <Submit onPress={handleSubmit(onHandleSubmit)} />,
     });
-  }, [watch('id')]);
+  }, []);
 
   useEffect(() => {
     if (params?.accountId) {
@@ -127,12 +134,8 @@ function AddAccount() {
     });
   };
 
-  const handleOnOpenStatementDayPicker = () => {
-    isModalType.current = 'statementDay';
-    onToggleModalStatement();
-  };
-  const handleOnOpenDayAfterPicker = () => {
-    isModalType.current = 'paymentDate';
+  const handleOnOpenModalSelectPaymentDay = (type: ModalType) => {
+    isModalType.current = type;
     onToggleModalStatement();
   };
 
@@ -160,20 +163,33 @@ function AddAccount() {
         data.accountTypeId !== ACCOUNT_CATEGORY_ID.CREDITCARD ? +get(data, 'initialAmount', 0) : 0,
       creditCardLimit: +get(data, 'creditCardLimit', 0),
       accountLogo: bankLogo.current || AccountType[getValues('accountTypeId')].icon,
+      creditCardReminderList: data.creditCardIsReminder ? data.creditCardReminderList : '',
     };
     updateAccountDB({ id: params?.accountId, account: requestData })
-      .then((res) => {
-        dispatch(
-          updateAccountStatement({
-            [res]: {
-              statementDate: requestData.creditCardStatementDay,
-              paymentDate: requestData.creditCardDayAfterStatement,
-            },
-          }),
-        );
-        navigation.goBack();
+      .then((res: string) => {
+        if (res) {
+          if (requestData.accountTypeId === ACCOUNT_CATEGORY_ID.CREDITCARD) {
+            dispatch(
+              updateAccountStatement({
+                [res]: {
+                  statementDate: requestData.creditCardStatementDay,
+                  paymentDate: requestData.creditCardDayAfterStatement,
+                },
+              }),
+            );
+            dispatch(
+              updateAccountNotification({
+                [res]: requestData.creditCardReminderList,
+              }),
+            );
+          } else {
+            dispatch(removeAccountStatement(res));
+          }
+          navigation.goBack();
+        }
       })
       .catch(({ error }) => {
+        console.log(error, 'error');
         showToast({
           type: 'error',
           text2: error,
@@ -272,26 +288,33 @@ function AddAccount() {
             <StatementModalPicker
               type={isModalType.current}
               isVisible={isShowModalStatement}
-              value={watch('creditCardStatementDay')}
+              statementDate={watch('creditCardStatementDay')}
+              paymentDate={watch('creditCardDayAfterStatement')}
               onValueChange={onStatementChange}
               onToggleModal={onToggleModalStatement}
             />
             <View style={[styles.group, { backgroundColor: colors.surface }]}>
               <View style={[styles.itemGroup, styles.itemGroupBetween]}>
                 <View style={[styles.itemGroup, { gap: 10 }]}>
-                  <SvgIcon name="textWord" style={styles.icon} />
+                  <SvgIcon name="calendarHoliday" style={styles.icon} />
                   <RNText preset="title">Ngày sao kê</RNText>
                 </View>
-                <Pressable style={styles.statementDay} onPress={handleOnOpenStatementDayPicker}>
+                <Pressable
+                  style={styles.statementDay}
+                  onPress={() => handleOnOpenModalSelectPaymentDay('statementDay')}
+                >
                   <RNText>{watch('creditCardStatementDay')}</RNText>
                 </Pressable>
               </View>
               <View style={[styles.itemGroup, styles.itemGroupBetween]}>
                 <View style={[styles.itemGroup, { gap: 10 }]}>
-                  <SvgIcon name="textWord" style={styles.icon} />
+                  <SvgIcon name="calendarHoliday" style={styles.icon} />
                   <RNText preset="title">Hạn thanh toán sau sao kê</RNText>
                 </View>
-                <Pressable style={styles.statementDay} onPress={handleOnOpenDayAfterPicker}>
+                <Pressable
+                  style={styles.statementDay}
+                  onPress={() => handleOnOpenModalSelectPaymentDay('paymentDate')}
+                >
                   <RNText>{watch('creditCardDayAfterStatement')}</RNText>
                 </Pressable>
               </View>

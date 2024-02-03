@@ -14,7 +14,7 @@ import {
   TRANSACTION_CATEGORY_LIST,
 } from 'navigation/constants';
 import { TransactionParamListProps } from 'navigation/types';
-import { ButtonText } from 'navigation/elements';
+import Submit from 'navigation/elements/Submit';
 import { isEqual, isObject, size } from 'lodash';
 import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constant';
 import { deleteTransactionById, updateTransaction } from 'services/api/transactions';
@@ -53,7 +53,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
   // Use `setOptions` to update the button that submit form
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <ButtonText title="Lưu" onPress={handleSubmit(onSubmit)} />,
+      headerRight: () => <Submit onPress={handleSubmit(onSubmit)} />,
     });
   }, []);
 

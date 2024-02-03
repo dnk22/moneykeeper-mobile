@@ -65,8 +65,10 @@ import work from './work.svg';
 import trayUp from './trayUp.svg';
 import display from './display.svg';
 import filter from './filter.svg';
+import selector from './selector.svg';
 
 export {
+  selector,
   filter,
   display,
   add,

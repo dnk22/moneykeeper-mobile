@@ -8,7 +8,8 @@ import styles from './styles';
 
 type StatementModalPickerProps = {
   isVisible: boolean;
-  value: number;
+  statementDate: number;
+  paymentDate: number;
   onValueChange: (value: number) => void;
   onToggleModal: any;
   type: 'paymentDate' | 'statementDay';
@@ -16,18 +17,19 @@ type StatementModalPickerProps = {
 
 export default function StatementModalPicker({
   isVisible,
-  value,
+  statementDate,
+  paymentDate,
   onValueChange,
   onToggleModal,
   type,
 }: StatementModalPickerProps) {
   const { colors } = useCustomTheme();
-  const [day, setDay] = useState<number>(value);
+  const [day, setDay] = useState<number>(statementDate);
   const data = type === 'paymentDate' ? [15, 25] : DAY_IN_MONTH;
 
   useEffect(() => {
-    setDay(value);
-  }, [value]);
+    setDay(type === 'paymentDate' ? paymentDate : statementDate);
+  }, [type]);
 
   const handleOnDone = () => {
     onValueChange(day);

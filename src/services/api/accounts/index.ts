@@ -29,7 +29,7 @@ export async function updateAccountDB({ id, account }: { id?: string; account: T
   try {
     if (id) {
       delete account.id;
-      return queryUpdateAccount({ id, account }).then(async ({ isUpdateBalance, data }) => {
+      return await queryUpdateAccount({ id, account }).then(async ({ isUpdateBalance, data }) => {
         if (isUpdateBalance) {
           await queryUpdateBalanceAfterUpdateAccount({ accountData: data });
           await queryCalculateAllBalanceAfterDate({
@@ -40,7 +40,7 @@ export async function updateAccountDB({ id, account }: { id?: string; account: T
         return id;
       });
     } else {
-      return queryAddAccount(account).then(async (res) => {
+      return await queryAddAccount(account).then(async (res) => {
         await queryAddBalanceFromAccount(res);
         return res.accountId;
       });

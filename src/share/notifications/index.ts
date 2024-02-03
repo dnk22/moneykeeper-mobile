@@ -1,5 +1,6 @@
 import notifee, {
   Notification,
+  RepeatFrequency,
   TimestampTrigger,
   TriggerType,
 } from '@notifee/react-native';
@@ -8,6 +9,8 @@ export interface ICreateTriggerNotification {
   timestamp: number;
   title: string;
   body: string;
+  repeatFrequency: RepeatFrequency;
+  id?: string;
 }
 
 export async function displayNotifications({
@@ -31,7 +34,11 @@ export async function cancel(notificationId: string) {
 }
 
 export async function getAllTriggerNotifications() {
-  return await notifee.getTriggerNotifications();
+  return await notifee.getTriggerNotificationIds().then((ids) => console.log(ids, 'list noti'));
+}
+export async function clearAllTriggerNotifications() {
+  const list = await notifee.getTriggerNotificationIds();
+  return await notifee.cancelTriggerNotifications(list);
 }
 
 export async function getTriggerNotificationById(id: string) {
@@ -42,6 +49,8 @@ export async function createTriggerNotification({
   timestamp,
   title,
   body,
+  repeatFrequency,
+  id,
 }: ICreateTriggerNotification) {
   // Create a time-based trigger
   const trigger: TimestampTrigger = {
@@ -50,14 +59,15 @@ export async function createTriggerNotification({
     alarmManager: {
       allowWhileIdle: true,
     },
+    repeatFrequency,
   };
-
   // Create a trigger notification
-  await notifee.createTriggerNotification(
+  return await notifee.createTriggerNotification(
     {
       title,
       body,
+      id,
     },
-    trigger
+    trigger,
   );
 }

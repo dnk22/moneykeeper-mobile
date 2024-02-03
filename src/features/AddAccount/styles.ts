@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
   },
   subText: {
     opacity: 0.5,
+    fontStyle: 'italic',
   },
   statementDay: {
     width: 55,

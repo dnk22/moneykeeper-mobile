@@ -1,9 +1,19 @@
-import { createListenerMiddleware } from '@reduxjs/toolkit';
+// listenerMiddleware.ts
+import { createListenerMiddleware, addListener, isAnyOf } from '@reduxjs/toolkit';
+import type { RootState, AppDispatch } from './index';
+import { onAccountStatementListener } from './account/account.listen';
+import { updateAccountStatement, removeAccountStatement } from './account/account.slice';
 
-// Create the middleware instance and methods
 export const listenerMiddleware = createListenerMiddleware();
 
-// listenerMiddleware.startListening({
-//   actionCreator: addOrUpdateCountDown,
-//   effect: onAddOrUpdateCountDown,
-// });
+export const startAppListening = listenerMiddleware.startListening.withTypes<
+  RootState,
+  AppDispatch
+>();
+
+export const addAppListener = addListener.withTypes<RootState, AppDispatch>();
+
+listenerMiddleware.startListening({
+  matcher: isAnyOf(updateAccountStatement, removeAccountStatement),
+  effect: onAccountStatementListener,
+});

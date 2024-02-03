@@ -81,6 +81,7 @@ export const queryAddAccount = async (account: TAccount) => {
         openAmount: accountDB?.initialAmount,
         closingAmount: accountDB?.initialAmount,
         transactionDateAt: null,
+        accountTypeId: accountDB.accountTypeId,
       };
     });
   } catch (error) {

@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   bar: {
     flexDirection: 'row',
-    marginTop: 15,
+    marginTop: 10,
     width: '100%',
     height: 10,
     borderRadius: 4,

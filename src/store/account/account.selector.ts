@@ -7,5 +7,5 @@ const appState = (state: RootState) => state[accountSlice.name];
 // export selectors
 export const selectAccountStatementList = createSelector(
   appState,
-  (state) => state.accountStatementList,
+  (state) => state.accountStatementInfo,
 );
