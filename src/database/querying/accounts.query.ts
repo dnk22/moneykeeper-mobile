@@ -4,6 +4,7 @@ import { ACCOUNTS, BALANCE } from 'database/constants';
 import { database } from 'database/index';
 import { Q } from '@nozbe/watermelondb';
 import { isEqual } from 'lodash';
+import { handleError } from 'utils/axios';
 
 export type TGetAllAccounts = {
   isActive?: boolean;
@@ -134,10 +135,16 @@ export const queryChangeAccountStatusById = async (id: string) => {
 };
 
 /** DELETE */
-export const queryDeleteAccount = async (id: string) => {
-  return await database.write(async () => {
-    return (await database.get<AccountModel>(ACCOUNTS).find(id)).markAsDeleted();
-  });
+export const queryDeleteAccountById = async (id: string) => {
+  try {
+    return await database.write(async () => {
+      return (await database.get<AccountModel>(ACCOUNTS).find(id)).markAsDeleted();
+    });
+  } catch (error) {
+    return handleError({
+      error: 'Xóa tài khoản thất bại!',
+    });
+  }
 };
 
 export const deleteAllAccount = async () => {

@@ -6,10 +6,10 @@ import { ACCOUNT, DASHBOARD, SETTINGS, TRANSACTIONS, REPORT } from '../constants
 // routes screen
 import Settings from 'features/Settings';
 import AccountNavigation from 'navigation/Account';
-import Dashboard from 'features/Dashboard';
 import TransactionNavigation from 'navigation/Transaction';
 import ReportNavigation from 'navigation/Report';
 import { HomeStackParamList } from 'navigation/types';
+import DashboardNavigation from 'navigation/Dashboard';
 
 // set up routes
 const BottomTab = createBottomTabNavigator<HomeStackParamList>();
@@ -28,7 +28,7 @@ function HomeNavigation() {
           tabBarIcon: ({ color }) => <SvgIcon name="house" color={color} />,
           tabBarLabel: 'Tổng quan',
         }}
-        component={Dashboard}
+        component={DashboardNavigation}
       />
       <BottomTab.Screen
         name={ACCOUNT}

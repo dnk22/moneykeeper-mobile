@@ -32,6 +32,14 @@ const styles = StyleSheet.create({
     borderRadius: 1,
     borderColor: '#d3d3d3',
   },
+  statementSeparator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 5,
+    borderRadius: 5,
+    padding: 10,
+  },
 });
 
 export default styles;

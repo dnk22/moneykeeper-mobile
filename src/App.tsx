@@ -15,6 +15,7 @@ import KeyboardCalculator from 'features/Transaction/AddTransaction/common/Input
 import BlurScreen from 'features/BlurScreen';
 import Toast from 'react-native-toast-message';
 import { persistor, store } from './store';
+import { requestNotifications } from 'react-native-permissions';
 
 LogBox.ignoreAllLogs();
 
@@ -28,6 +29,13 @@ const App = () => {
 
   useEffect(() => {
     prepareInitData();
+  }, []);
+
+  useEffect(() => {
+    requestNotifications(['alert', 'sound']).then(({ status, settings }) => {
+      // console.log(settings, 'settings');
+      // console.log(status, 'status');
+    });
   }, []);
 
   async function prepareInitData() {

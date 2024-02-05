@@ -13,13 +13,12 @@ import { BankModel } from 'database/models';
 import InputCalculator from 'features/Transaction/AddTransaction/common/InputCalculator';
 import { ADD_ACCOUNT } from 'navigation/constants';
 import { AccountType } from 'utils/data';
-import { deleteAccountById, getAccountById, updateAccountDB } from 'services/api/accounts';
+import { getAccountById, updateAccountDB } from 'services/api/accounts';
 import { showToast } from 'utils/system';
 import Notifications from './Notifications';
 import StatementModalPicker from './StatementModalPicker';
 import AccountTypeSelect from './AccountTypeSelect';
 import AccountBankSelect from './AccountBankSelect';
-import styles from './styles';
 import { get } from 'lodash';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constant';
 import { useAppDispatch } from 'store/index';
@@ -28,7 +27,8 @@ import {
   updateAccountNotification,
   updateAccountStatement,
 } from 'store/account/account.slice';
-import { addDays } from 'date-fns';
+import { queryDeleteAccountById } from 'database/querying';
+import styles from './styles';
 
 const defaultValues = {
   accountName: '',
@@ -199,10 +199,21 @@ function AddAccount() {
 
   const onOkDelete = () => {
     params?.accountId &&
-      deleteAccountById(params.accountId).then(() => {
-        dispatch(removeAccountStatement(params.accountId));
-        navigation.goBack();
-      });
+      queryDeleteAccountById(params.accountId)
+        .then(() => {
+          showToast({
+            type: 'success',
+            text2: 'Xóa tài khoản thành công',
+          });
+          dispatch(removeAccountStatement(params.accountId));
+          navigation.goBack();
+        })
+        .catch(({ error }) => {
+          showToast({
+            type: 'error',
+            text2: error,
+          });
+        });
   };
 
   const onConfirmDeleteAccount = () =>

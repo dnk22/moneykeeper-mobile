@@ -59,10 +59,6 @@ export async function getFirstAccount() {
   return await queryGetFirstAccount();
 }
 
-export async function deleteAccountById(id: string) {
-  return await queryDeleteAccount(id);
-}
-
 export async function changeAccountStatusById(id: string) {
   return await queryChangeAccountStatusById(id);
 }

@@ -13,7 +13,7 @@ export type GetTransactionByDate = {
 
 /** read */
 /** query list transaction group by date  */
-export const queryTransactionListGroupByDate = async (accountId: string) => {
+export const queryUniqueTransactionDates = async (accountId: string) => {
   const query = `SELECT DISTINCT 
       strftime('%Y-%m-%d', datetime(dateTimeAt/1000, 'unixepoch')) AS date 
       FROM ${TRANSACTIONS}
@@ -99,6 +99,25 @@ export const queryTransactionById = async (id: string) => {
   });
 };
 
+export const queryRecentTransaction = async (limit: number) => {
+  const query = `SELECT tran.id,tran.amount, tran.accountId, tran.toAccountId, tran.categoryId,tran.transactionType, tran.descriptions, tran.dateTimeAt, bal._id, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount,bal.movementAMount AS amount
+      FROM ${TRANSACTIONS} tran
+      LEFT JOIN ${TRANSACTION_CATEGORY} tCategory ON tCategory.id=tran.categoryId
+      LEFT JOIN ${BALANCE} bal ON bal.transactionId=tran.id AND bal.accountId=tran.accountId
+      LEFT JOIN ${ACCOUNTS} acc ON acc.id=tran.accountId
+      LEFT JOIN ${ACCOUNTS} accTo ON accTo.id=tran.toAccountId
+      WHERE tran._status != 'deleted'
+      ORDER BY tran.dateTimeAt DESC, bal._id DESC
+      LIMIT ${limit}
+    `;
+  return await database.read(async () => {
+    return await database
+      .get<TransactionModel>(TRANSACTIONS)
+      .query(Q.unsafeSqlQuery(query))
+      .unsafeFetchRaw();
+  });
+};
+
 /** create */
 /**
  *
@@ -113,7 +132,7 @@ export const queryAddNewTransaction = async (transaction: TTransactions) => {
       });
     });
   } catch (error) {
-    console.log(error,'error');
+    console.log(error, 'error');
     return handleError({
       error: 'ADD-TRANS',
     });

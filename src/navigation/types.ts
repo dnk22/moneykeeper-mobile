@@ -27,6 +27,8 @@ import {
   LEND_BORROW,
   APPEARANCE,
   ACCOUNT_CREDIT_CARD_DETAIL,
+  DASHBOARDHOME,
+  NOTIFICATION,
 } from './constants';
 import { BANK_TYPE, TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
 
@@ -44,7 +46,7 @@ export type RootStackScreenProps<T extends keyof RootStackParamList> = NativeSta
 
 /** home stack navigation */
 export type HomeStackParamList = {
-  [DASHBOARD]: undefined;
+  [DASHBOARD]: DashboardParamList;
   [ACCOUNT]: NavigatorScreenParams<AccountStackParamList>;
   [TRANSACTIONS]: NavigatorScreenParams<TransactionParamList>;
   [REPORT]: undefined;
@@ -54,6 +56,11 @@ export type HomeStackParamListProps<T extends keyof HomeStackParamList> = Bottom
   HomeStackParamList,
   T
 >;
+
+export type DashboardParamList = {
+  [DASHBOARDHOME]: undefined;
+  [NOTIFICATION]: undefined;
+};
 
 /** account stack navigation */
 export type AccountStackParamList = {

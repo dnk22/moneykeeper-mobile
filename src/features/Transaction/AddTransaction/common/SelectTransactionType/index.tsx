@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import {
   RNText,
@@ -19,6 +19,7 @@ type SelectTransactionTypeProps = {
   currentCategoryId?: string;
   currentType: TRANSACTION_TYPE;
   onItemPress: (item: TTransactionType) => void;
+  isEditMode?: boolean;
 };
 
 function SelectTransactionType({
@@ -26,12 +27,16 @@ function SelectTransactionType({
   currentCategoryId,
   currentType,
   onItemPress,
+  isEditMode,
 }: SelectTransactionTypeProps) {
   const prevActive = useRef<any>(undefined);
   const [isActive, setIsActive] = useState<any>(0);
   const [isShowTransactionTypeModal, setIsShowTransactionTypeModal] = useState(false);
 
   const onToggleTransactionTypeModal = () => {
+    if (isEditMode && currentType === TRANSACTION_TYPE.ADJUSTMENT) {
+      return;
+    }
     setIsShowTransactionTypeModal(!isShowTransactionTypeModal);
   };
 
@@ -49,7 +54,7 @@ function SelectTransactionType({
     setIsActive(currentType);
   }, [currentCategoryId, currentType]);
 
-  function renderItem({ item }: { item: TTransactionType }) {
+  function renderItem({ item, index }: { item: TTransactionType }) {
     const onHandleTransactionTypeItemPress = () => {
       if (prevActive.current !== +item.id) {
         prevActive.current = +item.id;
@@ -58,6 +63,9 @@ function SelectTransactionType({
       }
       onToggleTransactionTypeModal();
     };
+    if (isEditMode && currentType !== TRANSACTION_TYPE.ADJUSTMENT && index === 5) {
+      return <></>;
+    }
 
     return (
       <TouchableHighlightComponent onPress={onHandleTransactionTypeItemPress}>
@@ -73,6 +81,7 @@ function SelectTransactionType({
       </TouchableHighlightComponent>
     );
   }
+
   return (
     <>
       <ModalComponent

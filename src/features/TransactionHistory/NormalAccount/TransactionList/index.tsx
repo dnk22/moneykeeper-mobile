@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import { VirtualizedListComponent } from 'components/index';
-import { getTransactionLisGroupByDate } from 'services/api/transactions';
 import { useFocusEffect } from '@react-navigation/native';
-import HeaderItem from './HeaderItem';
+import { queryUniqueTransactionDates } from 'database/querying';
 import { isArray } from 'lodash';
+import HeaderItem from './HeaderItem';
 
 type TransactionListProps = {
   accountId: string;
@@ -18,12 +18,12 @@ function TransactionList({ accountId }: TransactionListProps) {
 
   useFocusEffect(
     useCallback(() => {
-      fetchTransactionByGroupDate();
+      fetchTransactionLisGroupByDate();
     }, [accountId]),
   );
 
-  const fetchTransactionByGroupDate = () => {
-    getTransactionLisGroupByDate(accountId).then((res) => {
+  const fetchTransactionLisGroupByDate = () => {
+    queryUniqueTransactionDates(accountId).then((res) => {
       if (isArray(res)) {
         setData(res);
         setReload(reload + 1);
@@ -38,7 +38,7 @@ function TransactionList({ accountId }: TransactionListProps) {
         date={date}
         accountId={accountId}
         reload={reload}
-        onRefreshDate={fetchTransactionByGroupDate}
+        onRefreshDate={fetchTransactionLisGroupByDate}
       />
     );
   };

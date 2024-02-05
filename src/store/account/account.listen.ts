@@ -4,7 +4,6 @@ import { clearAllTriggerNotifications, createTriggerNotification } from 'share/n
 import { RepeatFrequency } from '@notifee/react-native';
 
 export async function onAccountStatementListener(action: Action, listenerApi: any) {
-  // create trigger notification
   // Extract statementDate values from the data object
   const statementDates = Object.values(listenerApi.getState().account.accountStatementInfo).map(
     (item) => item.statementDate,

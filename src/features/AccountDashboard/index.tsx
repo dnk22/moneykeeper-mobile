@@ -55,7 +55,11 @@ function Accounts() {
             true,
           )}`}</RNText>
         </View>
-        <AccountList account={accountData} onActionPress={onActionPress} />
+        <AccountList
+          account={accountData}
+          onActionPress={onActionPress}
+          onRefresh={fetchListAccount}
+        />
       </View>
     </>
   );

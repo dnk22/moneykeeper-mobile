@@ -12,8 +12,8 @@ import { TransactionHistoryContext } from './context';
 import Summary from './Summary';
 import StatementPicker from './StatementPicker';
 import TransactionList from './TransactionList';
-import styles from './styles';
 import HeaderBarConfig from '../HeaderBarConfig';
+import styles from './styles';
 
 type CreditCardAccountProps = {
   navigation: AccountStackParamListProps<typeof ACCOUNT_CREDIT_CARD_DETAIL>['navigation'];

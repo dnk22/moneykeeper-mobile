@@ -48,53 +48,61 @@ function HeaderItem({ transaction }: { transaction: GroupedTransactionProps }) {
   };
 
   return (
-    <View style={styles.item}>
-      {Boolean(transactionLength) && (
-        <View
-          style={[
-            styles.parentLine,
-            {
-              height: parentLineHeight,
-            },
-          ]}
-        />
-      )}
-      <View style={[styles.header, { backgroundColor: colors.surface, height: ITEM_HEIGHT }]}>
-        <View>
-          <RNText fontSize={30} style={styles.day}>
-            {formatDate('dd')}
-          </RNText>
-        </View>
-        <View>
-          <RNText>{formatDayOfTheWeek()}</RNText>
-          <RNText color="gray" fontSize={14}>
-            {formatDate('MM/yyyy')}
-          </RNText>
-        </View>
-        <View style={styles.dayExpense}>
-          {!!getTotalMoneyInDay(TRANSACTION_TYPE.INCOME, display.income) && (
-            <RNText color="green">
-              {formatNumber(getTotalMoneyInDay(TRANSACTION_TYPE.INCOME, display.income), true)}
+    <>
+      {/* <View style={[styles.statementSeparator, { backgroundColor: colors.primary }]}>
+        <RNText color="#ffffff">haah</RNText>
+        <RNText color="#ffffff">
+          {formatNumber(getTotalMoneyInDay(TRANSACTION_TYPE.EXPENSE, display.expense), true)}
+        </RNText>
+      </View> */}
+      <View style={styles.item}>
+        {Boolean(transactionLength) && (
+          <View
+            style={[
+              styles.parentLine,
+              {
+                height: parentLineHeight,
+              },
+            ]}
+          />
+        )}
+        <View style={[styles.header, { backgroundColor: colors.surface, height: ITEM_HEIGHT }]}>
+          <View>
+            <RNText fontSize={30} style={styles.day}>
+              {formatDate('dd')}
             </RNText>
-          )}
-          {!!getTotalMoneyInDay(TRANSACTION_TYPE.EXPENSE, display.expense) && (
-            <RNText color="red">
-              {formatNumber(getTotalMoneyInDay(TRANSACTION_TYPE.EXPENSE, display.expense), true)}
+          </View>
+          <View>
+            <RNText>{formatDayOfTheWeek()}</RNText>
+            <RNText color="gray" fontSize={14}>
+              {formatDate('MM/yyyy')}
             </RNText>
-          )}
+          </View>
+          <View style={styles.dayExpense}>
+            {!!getTotalMoneyInDay(TRANSACTION_TYPE.INCOME, display.income) && (
+              <RNText color="green">
+                {formatNumber(getTotalMoneyInDay(TRANSACTION_TYPE.INCOME, display.income), true)}
+              </RNText>
+            )}
+            {!!getTotalMoneyInDay(TRANSACTION_TYPE.EXPENSE, display.expense) && (
+              <RNText color="red">
+                {formatNumber(getTotalMoneyInDay(TRANSACTION_TYPE.EXPENSE, display.expense), true)}
+              </RNText>
+            )}
+          </View>
         </View>
+        {isArray(data) &&
+          data.map((item) => {
+            return (
+              <TransactionItem
+                data={item}
+                key={item.id}
+                display={{ description: display.description, amount: display.amount }}
+              />
+            );
+          })}
       </View>
-      {isArray(data) &&
-        data.map((item) => {
-          return (
-            <TransactionItem
-              data={item}
-              key={item.id}
-              display={{ description: display.description, amount: display.amount }}
-            />
-          );
-        })}
-    </View>
+    </>
   );
 }
 

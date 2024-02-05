@@ -8,9 +8,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import Submit from 'navigation/elements/Submit';
 import { deleteTransactionById, updateTransactionTransfer } from 'services/api/transactions';
 import { showToast } from 'utils/system';
-import { isEqual } from 'lodash';
 import { TransactionParamListProps } from 'navigation/types';
-import { ADD_TRANSACTION, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
+import { ADD_TRANSACTION } from 'navigation/constants';
 import MoreDetail from '../common/MoreDetail';
 import AccountSelect from '../common/AccountSelect';
 import Fee from '../common/Fee';
@@ -20,7 +19,7 @@ import { defaultValues } from '../constant';
 import { AddTransactionType } from '../type';
 import styles from '../styles.common';
 
-function Transfer({ params }: AddTransactionType) {
+function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
   const { colors } = useCustomTheme();
   const navigation =
     useNavigation<TransactionParamListProps<typeof ADD_TRANSACTION>['navigation']>();
@@ -54,20 +53,13 @@ function Transfer({ params }: AddTransactionType) {
         if (!success) {
           return;
         }
-        if (navigation.canGoBack() && isEqual(routerName, CREATE_TRANSACTION_FROM_ACCOUNT)) {
-          // navigate to previous screen
-          navigation.goBack();
-          return;
-        }
+        onSubmitSuccess();
         // reset form state
         reset({
           ...defaultValues,
           toAccountId: '',
           accountId: data?.accountId,
           transactionType: data?.transactionType,
-        });
-        navigation.setParams({
-          categoryId: '',
         });
       })
       .catch(({ error }) => {

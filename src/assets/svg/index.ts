@@ -66,8 +66,14 @@ import trayUp from './trayUp.svg';
 import display from './display.svg';
 import filter from './filter.svg';
 import selector from './selector.svg';
+import sync from './sync.svg';
+import eyeOpen from './eyeOpen.svg';
+import eyeClose from './eyeClose.svg';
 
 export {
+  eyeClose,
+  eyeOpen,
+  sync,
   selector,
   filter,
   display,

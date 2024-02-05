@@ -13,7 +13,6 @@ import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 import { TransactionParamListProps } from 'navigation/types';
 import {
   ADD_TRANSACTION,
-  CREATE_TRANSACTION_FROM_ACCOUNT,
   EXPENSE_CATEGORY,
   INCOME_CATEGORY,
   TRANSACTION_CATEGORY,
@@ -29,7 +28,7 @@ import { AddTransactionType } from '../type';
 import CategorySelect from '../common/CategorySelect';
 import styles from '../styles.common';
 
-function Adjustment({ params }: AddTransactionType) {
+function Adjustment({ params, onSubmitSuccess }: AddTransactionType) {
   const isEditMode = !!params?.transactionId;
   const { colors } = useCustomTheme();
   const prevCategoryType = useRef<TTransactionsCategory>(null);
@@ -49,7 +48,7 @@ function Adjustment({ params }: AddTransactionType) {
     navigation.setOptions({
       headerRight: () => <Submit onPress={handleSubmit(onSubmit)} />,
     });
-  }, []);
+  }, [differenceValue]);
 
   useEffect(() => {
     setValue('descriptions', 'Điều chỉnh số dư');
@@ -121,6 +120,7 @@ function Adjustment({ params }: AddTransactionType) {
       prevCategoryType.current = item;
     }
   };
+  console.log(differenceValue, 'differenceValue');
 
   const onSubmit = (data: TTransactions) => {
     const requestData = {
@@ -136,19 +136,12 @@ function Adjustment({ params }: AddTransactionType) {
         if (!success) {
           return;
         }
-        if (navigation.canGoBack() && routerName === CREATE_TRANSACTION_FROM_ACCOUNT) {
-          // navigate to previous screen
-          navigation.goBack();
-          return;
-        }
+        onSubmitSuccess();
         // reset form state
         reset({
           ...defaultValues,
           accountId: data?.accountId,
           transactionType: data?.transactionType,
-          categoryId: '',
-        });
-        navigation.setParams({
           categoryId: '',
         });
       })

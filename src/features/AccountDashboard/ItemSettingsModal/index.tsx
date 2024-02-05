@@ -4,11 +4,13 @@ import { Alert, View } from 'react-native';
 import { TAccount } from 'database/types';
 import { useNavigation } from '@react-navigation/native';
 import { ADD_ACCOUNT, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
-import { changeAccountStatusById, deleteAccountById } from 'services/api/accounts';
+import { changeAccountStatusById } from 'services/api/accounts';
 import { TRANSACTION_TYPE } from 'utils/constant';
 import { useAppDispatch } from 'store/index';
 import { removeAccountStatement } from 'store/account/account.slice';
+import { queryDeleteAccountById } from 'database/querying';
 import styles from './styles';
+import { showToast } from 'utils/system';
 
 type ItemSettingsModalProps = IModalComponentProps & { account: TAccount; onActionPressDone?: any };
 
@@ -59,14 +61,21 @@ function ItemSettingsModal({
 
   const onOk = () => {
     account?.id &&
-      deleteAccountById(account.id)
+      queryDeleteAccountById(account.id)
         .then(() => {
           dispatch(removeAccountStatement(account?.id));
           onToggleModal();
           onActionPressDone();
+          showToast({
+            type: 'success',
+            text2: 'Xóa tài khoản thành công',
+          });
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(({ error }) => {
+          showToast({
+            type: 'error',
+            text2: error,
+          });
         });
   };
 

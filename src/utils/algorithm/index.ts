@@ -88,9 +88,11 @@ export function generateMonthlyStatements(
 
   /** get all month available */
   referenceDates.forEach((item) => {
+    // define statement of month
     const statementDayOfMonth = new Date(item.date);
     statementDayOfMonth.setDate(statementDay);
     statementDayOfMonth.setHours(23, 59, 59, 999);
+    // if item date < statement of month , got this, else add month + 1 for next statement
     if (new Date(item.date).getTime() <= new Date(statementDayOfMonth).getTime()) {
       months.push(statementDayOfMonth.getTime());
     } else {
@@ -99,12 +101,16 @@ export function generateMonthlyStatements(
     }
   });
 
-  /** remove duplicate */
+  /** all unique statement */
   const uniqueMonths = Array.from(
-    new Set(months.filter((item) => item <= latestStatementMonth.getTime())),
+    new Set(
+      months.filter(
+        (item) => item <= latestStatementMonth.getTime() && item < new Date().getTime(),
+      ),
+    ),
   );
+
   return uniqueMonths.map((month) => {
-    /** get start Date */
     const startDate = new Date(month);
     startDate.setMonth(new Date(month).getMonth() - 1);
     startDate.setDate(new Date(startDate).getDate() + 1);

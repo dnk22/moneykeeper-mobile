@@ -1,12 +1,63 @@
-import { memo } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { View } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import isEqual from 'react-fast-compare';
-import { styles } from './styles';
 import { useCustomTheme } from 'resources/theme';
-import { RNText, SvgIcon } from 'components/index';
+import { IconComponent, RNText, SvgIcon } from 'components/index';
+import { queryRecentTransaction } from 'database/querying';
+import { TTransactions } from 'database/types';
+import { styles } from './styles';
+import { isToday, isYesterday, parseISO } from 'date-fns';
+import { formatDateLocal } from 'utils/date';
+import { formatNumber } from 'utils/math';
+import { TRANSACTION_TYPE } from 'utils/constant';
 
 function RecentTransactions() {
   const { colors } = useCustomTheme();
+  const [transactionList, setTransactionList] = useState<TTransactions[]>([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      queryRecentTransaction(4).then((res) => {
+        setTransactionList(res);
+      });
+    }, []),
+  );
+
+  const formatTransactionDate = (date: number) => {
+    if (isToday(date)) {
+      return 'Hôm nay';
+    } else if (isYesterday(date)) {
+      return 'Hôm qua';
+    }
+    return formatDateLocal(date, 'EEEE');
+  };
+
+  const renderCategoryName = (
+    type: TRANSACTION_TYPE,
+    categoryName?: string,
+    amount: number,
+    accountName?: string,
+  ) => {
+    switch (type) {
+      case TRANSACTION_TYPE.TRANSFER:
+        return `Chuyển khoản ${amount >= 0 ? 'từ' : 'tới'} ${accountName}`;
+      case TRANSACTION_TYPE.ADJUSTMENT:
+        return 'Cân bằng số dư';
+      default:
+        return categoryName;
+    }
+  };
+
+  const renderCategoryIcon = (type: TRANSACTION_TYPE, icon: string, amount: number) => {
+    switch (type) {
+      case TRANSACTION_TYPE.TRANSFER:
+        return amount >= 0 ? 'transferDown' : 'transferUp';
+      default:
+        return icon;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -16,27 +67,54 @@ function RecentTransactions() {
           <SvgIcon name="forward" preset="forwardLink" color="#00a8e8" />
         </View>
       </View>
-      {[1, 2, 3, 4].map((item) => {
-        return (
-          <View style={[styles.item, { backgroundColor: colors.surface }]} key={item}>
-            <View style={styles.itemContent}>
-              <View style={[styles.icon, { backgroundColor: colors.background }]}>
-                <SvgIcon name="forward" preset="forwardLink" color="#00a8e8" />
+      {!transactionList.length && (
+        <View
+          style={{
+            alignItems: 'center',
+            paddingVertical: 20,
+            backgroundColor: colors.surface,
+            borderRadius: 10,
+          }}
+        >
+          <RNText color="red">Chưa có ghi chép nào gần đây</RNText>
+        </View>
+      )}
+      {transactionList &&
+        transactionList.length > 0 &&
+        transactionList.map((item) => {
+          return (
+            <View style={[styles.item, { backgroundColor: colors.surface }]} key={item.id}>
+              <View style={styles.itemContent}>
+                <View style={[styles.icon, { backgroundColor: colors.background }]}>
+                  <IconComponent
+                    name={renderCategoryIcon(item.transactionType, item.categoryIcon, item.amount)}
+                  />
+                </View>
+                <View style={styles.rowGap}>
+                  <RNText style={styles.itemCategory}>
+                    {renderCategoryName(
+                      item.transactionType,
+                      item.categoryName,
+                      item.amount,
+                      item.accountName,
+                    )}
+                  </RNText>
+                  {item.descriptions && (
+                    <RNText numberOfLines={1} preset="subTitle">
+                      {item.descriptions}
+                    </RNText>
+                  )}
+                </View>
               </View>
-              <View style={styles.rowGap}>
-                <RNText style={styles.itemCategory}>Ăn uống</RNText>
-                <RNText numberOfLines={1} preset="subTitle">
-                  Ăn trưa
+              <View style={[styles.itemDateTime, styles.rowGap]}>
+                <RNText color={item.amount > 0 ? 'green' : 'red'}>
+                  {formatNumber(item.amount, true)}
                 </RNText>
+                <RNText preset="subTitle">{formatTransactionDate(item.dateTimeAt)}</RNText>
               </View>
             </View>
-            <View style={[styles.itemDateTime, styles.rowGap]}>
-              <RNText>+ 24.000</RNText>
-              <RNText preset="subTitle">Hôm qua, 2:45</RNText>
-            </View>
-          </View>
-        );
-      })}
+          );
+        })}
     </View>
   );
 }

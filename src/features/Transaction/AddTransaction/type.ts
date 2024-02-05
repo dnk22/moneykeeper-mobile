@@ -15,4 +15,5 @@ export type AddTransactionType = {
     categoryId?: string;
     accountId?: string;
   };
+  onSubmitSuccess: () => void;
 };

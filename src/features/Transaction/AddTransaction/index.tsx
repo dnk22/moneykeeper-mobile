@@ -8,7 +8,7 @@ import ExpenseAndIncome from './ExpenseAndIncome';
 import { TransactionParamListProps } from 'navigation/types';
 import { FormProvider, useForm } from 'react-hook-form';
 import { TTransactions } from 'database/types';
-import { ADD_TRANSACTION } from 'navigation/constants';
+import { ADD_TRANSACTION, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
 import { getLendBorrowCategory } from 'services/api/transactionsCategory';
 import { getTransactionById } from 'services/api/transactions';
 import { TTransactionType } from 'utils/types';
@@ -28,7 +28,7 @@ type AddTransactionsProps = {
   route: TransactionParamListProps<typeof ADD_TRANSACTION>['route'];
 };
 function AddTransactions({ navigation, route }: AddTransactionsProps) {
-  const { params } = route;
+  const { params, name: routerName } = route;
   const { colors } = useCustomTheme();
   const lendBorrowData = useAppSelector((state) => selectLendBorrowData(state));
   const useDispatch = useAppDispatch();
@@ -52,6 +52,7 @@ function AddTransactions({ navigation, route }: AddTransactionsProps) {
           currentCategoryId={getValues('categoryId')}
           currentType={watch('transactionType')}
           onItemPress={handleOnChangeTransactionType}
+          isEditMode={!!params?.transactionId}
         />
       ),
     });
@@ -150,6 +151,17 @@ function AddTransactions({ navigation, route }: AddTransactionsProps) {
     return values.includes(watch('transactionType'));
   };
 
+  const onSubmitSuccess = () => {
+    if (navigation.canGoBack() && routerName === CREATE_TRANSACTION_FROM_ACCOUNT) {
+      // navigate to previous screen
+      navigation.goBack();
+      return;
+    }
+    navigation.setParams({
+      categoryId: '',
+    });
+  };
+
   return (
     <View style={styles.container}>
       <FormProvider {...transactionForm}>
@@ -159,10 +171,14 @@ function AddTransactions({ navigation, route }: AddTransactionsProps) {
           extraScrollHeight={40}
         >
           {transactionTypeSelected([TRANSACTION_TYPE.EXPENSE, TRANSACTION_TYPE.INCOME]) && (
-            <ExpenseAndIncome params={params} />
+            <ExpenseAndIncome params={params} onSubmitSuccess={onSubmitSuccess} />
           )}
-          {transactionTypeSelected([TRANSACTION_TYPE.TRANSFER]) && <Transfer params={params} />}
-          {transactionTypeSelected([TRANSACTION_TYPE.ADJUSTMENT]) && <Adjustment params={params} />}
+          {transactionTypeSelected([TRANSACTION_TYPE.TRANSFER]) && (
+            <Transfer params={params} onSubmitSuccess={onSubmitSuccess} />
+          )}
+          {transactionTypeSelected([TRANSACTION_TYPE.ADJUSTMENT]) && (
+            <Adjustment params={params} onSubmitSuccess={onSubmitSuccess} />
+          )}
         </KeyboardAwareScrollView>
       </FormProvider>
     </View>

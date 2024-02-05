@@ -26,9 +26,10 @@ type AccountListProps = {
   isDeactivate?: boolean;
   onActionPress?: (account: TAccount) => void;
   account?: TAccount[];
+  onRefresh: () => void;
 };
 
-function AccountList({ onActionPress, account = [] }: AccountListProps) {
+function AccountList({ onActionPress, account = [], onRefresh }: AccountListProps) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
@@ -90,6 +91,8 @@ function AccountList({ onActionPress, account = [] }: AccountListProps) {
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
         ListEmptyComponent={<Empty text="Không có tài khoản nào!" />}
+        onRefresh={onRefresh}
+        hasPull
       />
       {isViewActive && (
         <PressableHaptic

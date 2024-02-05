@@ -15,7 +15,6 @@ import {
 } from 'navigation/constants';
 import { TransactionParamListProps } from 'navigation/types';
 import Submit from 'navigation/elements/Submit';
-import { isEqual, isObject, size } from 'lodash';
 import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constant';
 import { deleteTransactionById, updateTransaction } from 'services/api/transactions';
 import { useFormContext } from 'react-hook-form';
@@ -33,7 +32,7 @@ import { AddTransactionType } from '../type';
 import { defaultValues } from '../constant';
 import styles from '../styles.common';
 
-function ExpenseAndIncome({ params }: AddTransactionType) {
+function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
   const { colors } = useCustomTheme();
   const navigation =
     useNavigation<TransactionParamListProps<typeof ADD_TRANSACTION>['navigation']>();
@@ -59,7 +58,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
 
   useFocusEffect(
     useCallback(() => {
-      if (isEqual(routerName, CREATE_TRANSACTION_FROM_ACCOUNT) && !params?.transactionId) {
+      if (routerName === CREATE_TRANSACTION_FROM_ACCOUNT && !params?.transactionId) {
         setValue('dateTimeAt', new Date());
       }
     }, [routerName, params?.transactionId]),
@@ -80,11 +79,7 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
 
   /** start account function */
   const renderIfLendBorrow = () => {
-    return Boolean(
-      isObject(lendBorrowData) &&
-        size(lendBorrowData) &&
-        Object.keys(lendBorrowData).includes(getValues('categoryId')),
-    );
+    return Boolean(lendBorrowData && Object.keys(lendBorrowData).includes(getValues('categoryId')));
   };
 
   const handleOnDateTimePicker = (date: Date) => {
@@ -152,19 +147,12 @@ function ExpenseAndIncome({ params }: AddTransactionType) {
         if (!success) {
           return;
         }
-        // navigate to previous screen
-        if (navigation.canGoBack() && isEqual(routerName, CREATE_TRANSACTION_FROM_ACCOUNT)) {
-          navigation.goBack();
-          return;
-        }
+        onSubmitSuccess();
         // reset form state
         reset({
           ...defaultValues,
           accountId: data?.accountId,
           transactionType: data?.transactionType,
-        });
-        navigation.setParams({
-          categoryId: '',
         });
       })
       .catch(({ error }) => {

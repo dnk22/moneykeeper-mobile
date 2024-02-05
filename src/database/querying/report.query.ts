@@ -5,10 +5,10 @@ import { Q } from '@nozbe/watermelondb';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
 
 export const queryGetAllBalance = async () => {
-  const query = `SELECT * FROM ${ACCOUNTS}`;
+  const query = `SELECT * FROM ${BALANCE}`;
   return await database.read(async () => {
     const res = await database
-      .get<AccountModel>(ACCOUNTS)
+      .get<BalanceModel>(BALANCE)
       .query(Q.unsafeSqlQuery(query))
       .unsafeFetchRaw();
     console.log(res);
@@ -116,6 +116,31 @@ export const queryGetAllStatement = async ({ accountId }: { accountId: string })
           `SELECT DISTINCT strftime('%Y-%m-%d', datetime(dateTimeAt/1000, 'unixepoch')) AS date
           FROM ${TRANSACTIONS} WHERE accountId='${accountId}'
           ORDER BY month DESC;`,
+        ),
+      )
+      .unsafeFetchRaw();
+    return result;
+  });
+};
+
+export const getCurrentBalanceAllAccount = async () => {
+  return await database.read(async () => {
+    const result = await database
+      .get<AccountModel>(ACCOUNTS)
+      .query(
+        Q.experimentalJoinTables([BALANCE]),
+        Q.unsafeSqlQuery(
+          `SELECT acc.id, bal.closingAmount FROM ${ACCOUNTS} acc
+            LEFT JOIN (
+              SELECT
+                b._id,
+                b.accountId,
+                b.closingAmount,
+                b.transactionDateAt,
+                ROW_NUMBER() OVER (PARTITION BY b.accountId ORDER BY b.transactionDateAt DESC, b._id DESC) AS row_num
+              FROM ${BALANCE} b
+            ) bal ON bal.accountId = acc.id AND bal.row_num = 1
+            WHERE acc._status!='deleted'`,
         ),
       )
       .unsafeFetchRaw();

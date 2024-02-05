@@ -16,6 +16,7 @@ export function showToast({ type, text2, ...rest }: ToastProps) {
     topOffset: 60,
     text1: type === 'error' ? 'Oops! Lỗi mất rồi.' : 'Thành công!',
     text2,
+    visibilityTime: 2000,
     ...rest,
   });
 }

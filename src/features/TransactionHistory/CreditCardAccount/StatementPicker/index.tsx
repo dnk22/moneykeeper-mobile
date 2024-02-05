@@ -11,7 +11,7 @@ import {
 } from 'components/index';
 import { formatDateLocal } from 'utils/date';
 import { BottomSheetFlatList, BottomSheetModal } from '@gorhom/bottom-sheet';
-import { queryTransactionListGroupByDate } from 'database/querying';
+import { queryUniqueTransactionDates } from 'database/querying';
 import { generateMonthlyStatements } from 'utils/algorithm';
 import { StatementViewProps } from 'utils/types';
 import { TransactionHistoryContext } from '../context';
@@ -33,7 +33,7 @@ function StatementPicker({ onChange }: StatementPickerProps) {
   const [viewMonth, setViewMonth] = useState<StatementViewProps>(defaultStatement);
 
   const getAllStatements = () => {
-    queryTransactionListGroupByDate(accountId).then((res) => {
+    queryUniqueTransactionDates(accountId).then((res) => {
       if (res.length) {
         const convertDataToRangeDate = generateMonthlyStatements(
           res,
