@@ -1,5 +1,6 @@
 import { memo, useRef } from 'react';
 import { Alert, View } from 'react-native';
+import isEqual from 'react-fast-compare';
 import {
   RNText,
   SwipeableComponent,
@@ -13,21 +14,21 @@ import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
 import { deleteTransactionById } from 'services/api/transactions';
 import { formatNumber } from 'utils/math';
-import isEqual from 'react-fast-compare';
 import { showToast } from 'utils/system';
 import { TRANSACTION_TYPE } from 'utils/constant';
+import { useAppDispatch } from 'store/index';
+import { refreshTransactionHistory } from 'store/transactions/transactions.slice';
 import styles from './styles';
 
 function TransactionItem({
   data,
   display,
-  onRefreshTransactionList,
 }: {
   data: TTransactions;
   display: Record<string, boolean>;
-  onRefreshTransactionList: () => void;
 }) {
   const { colors } = useCustomTheme();
+  const dispatch = useAppDispatch();
   const tapPosition = useRef<number>(0);
   const navigation =
     useNavigation<AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['navigation']>();
@@ -43,7 +44,7 @@ function TransactionItem({
       deleteTransactionById(data.id)
         .then(({ success }) => {
           if (success) {
-            onRefreshTransactionList();
+            dispatch(refreshTransactionHistory());
           }
         })
         .catch(({ error }) => {

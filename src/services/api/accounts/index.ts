@@ -1,7 +1,6 @@
 import {
   TGetAllAccounts,
   queryAddAccount,
-  queryDeleteAccount,
   queryAccountById,
   queryUpdateAccount,
   queryAllAccount,
@@ -10,6 +9,8 @@ import {
   queryAddBalanceFromAccount,
   queryUpdateBalanceAfterUpdateAccount,
   queryCalculateAllBalanceAfterDate,
+  queryDeleteAllTransactionRelatedWithAccountId,
+  queryDeleteAccountById,
 } from 'database/querying';
 import { TAccount } from 'database/types';
 import { handleError } from 'utils/axios';
@@ -57,6 +58,11 @@ export async function getAccountById(id: string, getAll?: boolean) {
 }
 export async function getFirstAccount() {
   return await queryGetFirstAccount();
+}
+
+export async function deleteAccountById(accountId: string) {
+  await queryDeleteAllTransactionRelatedWithAccountId(accountId);
+  // return await queryDeleteAccountById(accountId);
 }
 
 export async function changeAccountStatusById(id: string) {

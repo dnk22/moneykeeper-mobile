@@ -2,10 +2,14 @@ import { RootState } from 'store/index';
 import { createSelector } from '@reduxjs/toolkit';
 import { transactionsSlice } from './transactions.slice';
 
-const lendBorrowId = (state: RootState) => state[transactionsSlice.name].lendBorrowId;
+const transactionState = (state: RootState) => state[transactionsSlice.name];
 
 // export custom selector
 export const selectLendBorrowId = createSelector(
-  lendBorrowId,
-  (tAccountType) => tAccountType,
+  transactionState,
+  (state) => state.lendBorrowId,
+);
+export const selectRefreshTransactionHistory = createSelector(
+  transactionState,
+  (state) => state.refreshTransactionHistory,
 );

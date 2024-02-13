@@ -4,6 +4,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { queryUniqueTransactionDates } from 'database/querying';
 import { isArray } from 'lodash';
 import HeaderItem from './HeaderItem';
+import { useAppSelector } from 'store/index';
+import { selectRefreshTransactionHistory } from 'store/transactions/transactions.selector';
 
 type TransactionListProps = {
   accountId: string;
@@ -13,20 +15,21 @@ type DataProps = {
 };
 
 function TransactionList({ accountId }: TransactionListProps) {
+  const refreshTransactionHistory = useAppSelector((state) =>
+    selectRefreshTransactionHistory(state),
+  );
   const [data, setData] = useState<DataProps[]>([]);
-  const [reload, setReload] = useState(0);
 
   useFocusEffect(
     useCallback(() => {
       fetchTransactionLisGroupByDate();
-    }, [accountId]),
+    }, [accountId, refreshTransactionHistory]),
   );
 
   const fetchTransactionLisGroupByDate = () => {
     queryUniqueTransactionDates(accountId).then((res) => {
       if (isArray(res)) {
         setData(res);
-        setReload(reload + 1);
       }
     });
   };
@@ -37,7 +40,7 @@ function TransactionList({ accountId }: TransactionListProps) {
       <HeaderItem
         date={date}
         accountId={accountId}
-        reload={reload}
+        reload={refreshTransactionHistory}
         onRefreshDate={fetchTransactionLisGroupByDate}
       />
     );

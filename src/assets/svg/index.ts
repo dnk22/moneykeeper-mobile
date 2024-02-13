@@ -69,8 +69,10 @@ import selector from './selector.svg';
 import sync from './sync.svg';
 import eyeOpen from './eyeOpen.svg';
 import eyeClose from './eyeClose.svg';
+import exchange from './exchange.svg';
 
 export {
+  exchange,
   eyeClose,
   eyeOpen,
   sync,

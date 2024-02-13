@@ -135,10 +135,10 @@ export const queryChangeAccountStatusById = async (id: string) => {
 };
 
 /** DELETE */
-export const queryDeleteAccountById = async (id: string) => {
+export const queryDeleteAccountById = async (accountId: string) => {
   try {
     return await database.write(async () => {
-      return (await database.get<AccountModel>(ACCOUNTS).find(id)).markAsDeleted();
+      return (await database.get<AccountModel>(ACCOUNTS).find(accountId)).markAsDeleted();
     });
   } catch (error) {
     return handleError({

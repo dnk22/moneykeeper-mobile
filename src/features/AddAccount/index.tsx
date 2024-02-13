@@ -13,7 +13,7 @@ import { BankModel } from 'database/models';
 import InputCalculator from 'features/Transaction/AddTransaction/common/InputCalculator';
 import { ADD_ACCOUNT } from 'navigation/constants';
 import { AccountType } from 'utils/data';
-import { getAccountById, updateAccountDB } from 'services/api/accounts';
+import { deleteAccountById, getAccountById, updateAccountDB } from 'services/api/accounts';
 import { showToast } from 'utils/system';
 import Notifications from './Notifications';
 import StatementModalPicker from './StatementModalPicker';
@@ -27,7 +27,6 @@ import {
   updateAccountNotification,
   updateAccountStatement,
 } from 'store/account/account.slice';
-import { queryDeleteAccountById } from 'database/querying';
 import styles from './styles';
 
 const defaultValues = {
@@ -199,14 +198,14 @@ function AddAccount() {
 
   const onOkDelete = () => {
     params?.accountId &&
-      queryDeleteAccountById(params.accountId)
+      deleteAccountById(params.accountId)
         .then(() => {
           showToast({
             type: 'success',
             text2: 'Xóa tài khoản thành công',
           });
-          dispatch(removeAccountStatement(params.accountId));
-          navigation.goBack();
+          // dispatch(removeAccountStatement(params.accountId));
+          // navigation.goBack();
         })
         .catch(({ error }) => {
           showToast({
@@ -219,7 +218,7 @@ function AddAccount() {
   const onConfirmDeleteAccount = () =>
     Alert.alert(
       `Xóa ${getValues('accountName')}`,
-      'Xóa tài khoản đồng này nghĩa với việc tất cả các ghi chép của tài khoản này sẽ bị xóa theo, HÃY CẨN THẬN!',
+      'Xóa tài khoản đồng này nghĩa với việc tất cả các ghi chép của tài khoản này và các tài khoản liên quan sẽ bị xóa theo, HÃY CẨN THẬN!',
       [
         {
           text: 'Hủy bỏ',

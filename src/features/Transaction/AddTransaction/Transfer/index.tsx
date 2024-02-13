@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
 import { InputField, RNText, SvgIcon, SwitchField, FormAction } from 'components/index';
@@ -23,9 +23,7 @@ function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
   const { colors } = useCustomTheme();
   const navigation =
     useNavigation<TransactionParamListProps<typeof ADD_TRANSACTION>['navigation']>();
-  const { name: routerName } =
-    useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
-  const { control, handleSubmit, setValue, watch, reset } = useFormContext<any>();
+  const { control, handleSubmit, setValue, watch, reset, getValues } = useFormContext<any>();
 
   // Use `setOptions` to update the button that submit form
   useEffect(() => {
@@ -74,20 +72,31 @@ function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
     setValue('fee', 0);
   };
 
+  const exchangeAccount = () => {
+    const { accountId, toAccountId } = getValues();
+    setValue('accountId', toAccountId);
+    setValue('toAccountId', accountId);
+  };
+
   return (
     <>
       <InputCalculator name="amount" control={control} />
-      <View style={[styles.group, { backgroundColor: colors.surface }]}>
-        <AccountSelect title="Từ tài khoản" swapId="toAccountId" isShowSubTitle />
-        <AccountSelect
-          name="toAccountId"
-          title="Tới tài khoản"
-          excludeId="accountId"
-          isShowSubTitle
-        />
-        <DateTimeSelect values={watch('dateTimeAt')} onChangeDate={handleOnDateTimePicker} />
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Pressable onPress={exchangeAccount}>
+          <SvgIcon name="exchange" style={styles.iconExchange} />
+        </Pressable>
+        <View style={[styles.group, { backgroundColor: colors.surface, flex: 1 }]}>
+          <AccountSelect title="Từ tài khoản" swapId="toAccountId" isShowSubTitle />
+          <AccountSelect
+            name="toAccountId"
+            title="Tới tài khoản"
+            excludeId="accountId"
+            isShowSubTitle
+          />
+        </View>
       </View>
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
+        <DateTimeSelect values={watch('dateTimeAt')} onChangeDate={handleOnDateTimePicker} />
         <View style={styles.itemGroup}>
           <SvgIcon name="textWord" style={styles.iconShadow} />
           <View style={styles.groupContent}>

@@ -100,10 +100,7 @@ export const queryAddNewBalanceTransaction = async (transaction: TransactionMode
 };
 
 /** update */
-export const queryUpdateBalanceTransaction = async (
-  transaction: TTransactions,
-  accountIdQuery?: string,
-) => {
+export const queryUpdateBalanceTransaction = async (transaction: any, accountIdQuery?: string) => {
   try {
     const query = [Q.where('transactionId', transaction.id)];
     if (accountIdQuery) {
@@ -234,13 +231,10 @@ export const queryDeleteBalanceById = async (id: string, accountId?: string) => 
       query.push(Q.where('accountId', accountId));
     }
     return await database.write(async () => {
-      const res = await database
+      await database
         .get<BalanceModel>(BALANCE)
         .query(...query)
-        .fetch();
-      for await (const item of res) {
-        await item.destroyPermanently();
-      }
+        .destroyAllPermanently();
       return true;
     });
   } catch (error) {

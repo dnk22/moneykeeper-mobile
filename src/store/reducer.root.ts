@@ -7,7 +7,7 @@ import accountReducer, { accountSlice } from './account/account.slice';
 import transactionCategoryReducer, {
   transactionCategorySlice,
 } from './transactionCategory/transactionCategory.slice';
-// import transactionsReducer, { transactionsSlice } from './transactions/transactions.slice';
+import transactionsReducer, { transactionsSlice } from './transactions/transactions.slice';
 
 const appPersistConfig = {
   key: 'root',
@@ -21,15 +21,11 @@ const appPersistConfig = {
   ],
 };
 
-// const transactionPersistConfig = {
-//   key: transactionsSlice.name,
-//   storage: reduxPersistStorage,
-//   blacklist: [
-//     'transactionAccountSelected',
-//     'transactionCategorySelected',
-//     'transactionTypeIdSelected',
-//   ],
-// };
+const transactionPersistConfig = {
+  key: transactionsSlice.name,
+  storage: reduxPersistStorage,
+  blacklist: ['refreshTransactionHistory'],
+};
 
 // const accountPersistConfig = {
 //   key: accountSlice.name,
@@ -41,7 +37,7 @@ const allReducer = combineReducers({
   [appSlice.name]: appReducer,
   [transactionCategorySlice.name]: transactionCategoryReducer,
   [accountSlice.name]: accountReducer,
-  // [transactionsSlice.name]: persistReducer(transactionPersistConfig, transactionsReducer),
+  [transactionsSlice.name]: persistReducer(transactionPersistConfig, transactionsReducer),
 });
 
 export const persistedReducer = persistReducer(appPersistConfig, allReducer);

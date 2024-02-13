@@ -120,7 +120,6 @@ function HeaderItem({ date, accountId, onRefreshDate, reload }: HeaderItemProps)
             <TransactionItem
               data={item}
               key={item.id}
-              onRefreshTransactionList={onRefreshDate}
               display={{ description: display.description, amount: display.amount }}
             />
           );

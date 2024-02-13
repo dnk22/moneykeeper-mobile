@@ -5,21 +5,27 @@ import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect } from '@react-navigation/native';
 import { queryGetSummaryAccountById } from 'database/querying';
 import { formatNumber } from 'utils/math';
+import { useAppSelector } from 'store/index';
+import { selectRefreshTransactionHistory } from 'store/transactions/transactions.selector';
 import styles from './styles';
 
 function Summary({ accountId }: { accountId: string }) {
   const { colors } = useCustomTheme();
+  const refreshTransactionHistory = useAppSelector((state) =>
+    selectRefreshTransactionHistory(state),
+  );
   const [summary, setSummary] = useState<Record<string, number>>({
     totalIncome: 0,
     totalExpense: 0,
   });
+  console.log(refreshTransactionHistory,'refreshTransactionHistory');
 
   useFocusEffect(
     useCallback(() => {
       queryGetSummaryAccountById({ accountId }).then((res) => {
         setSummary(res);
       });
-    }, [accountId]),
+    }, [accountId, refreshTransactionHistory]),
   );
 
   return (

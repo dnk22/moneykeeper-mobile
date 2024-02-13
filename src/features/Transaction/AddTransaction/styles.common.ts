@@ -39,6 +39,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 6,
   },
+  iconExchange: {
+    marginRight: 10,
+  },
   formInput: {
     height: 50,
     width: '100%',

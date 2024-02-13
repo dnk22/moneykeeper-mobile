@@ -1,10 +1,11 @@
 import { database } from 'database/index';
 import { ACCOUNTS, BALANCE, TRANSACTIONS, TRANSACTION_CATEGORY } from 'database/constants';
-import { TransactionModel } from 'database/models';
+import { BalanceModel, TransactionModel } from 'database/models';
 import { TTransactions } from 'database/types';
 import { Q } from '@nozbe/watermelondb';
 import { isEqual } from 'lodash';
 import { handleError } from 'utils/axios';
+import { TRANSACTION_TYPE } from 'utils/constant';
 
 export type GetTransactionByDate = {
   date: string;
@@ -203,6 +204,44 @@ export const queryDeleteTransactionById = async (id: string) => {
   } catch (error) {
     return handleError({
       error: 'DEL-TRANS',
+    });
+  }
+};
+
+export const queryDeleteAllTransactionRelatedWithAccountId = async (accountId: string) => {
+  try {
+    return await database.write(async () => {
+      const relatedTransaction = await database
+        .get<TransactionModel>(TRANSACTIONS)
+        .query(
+          Q.unsafeSqlQuery(`SELECT id, accountId, dateTimeAt FROM ${TRANSACTIONS} 
+        WHERE toAccountId='${accountId}'`),
+        )
+        .unsafeFetchRaw();
+
+      if (relatedTransaction && relatedTransaction.length <= 0) {
+        return;
+      }
+      console.log(relatedTransaction, 'relatedTransaction');
+
+      let transactionIds: string[] = relatedTransaction.map((item) => item.id);
+
+      // // delete balance related
+      await database
+        .get<BalanceModel>(BALANCE)
+        .query(Q.where('transactionId', Q.oneOf([...transactionIds])))
+        .destroyAllPermanently();
+
+      // // delete transaction related
+      await database
+        .get<TransactionModel>(TRANSACTIONS)
+        .query(Q.where('toAccountId', Q.eq(accountId)))
+        .markAllAsDeleted();
+    });
+  } catch (error) {
+    console.log(error, 'error');
+    return handleError({
+      error: 'DEL-ALL-REL',
     });
   }
 };

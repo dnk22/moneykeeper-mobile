@@ -8,7 +8,7 @@ export const queryGetAllBalance = async () => {
   const query = `SELECT * FROM ${BALANCE}`;
   return await database.read(async () => {
     const res = await database
-      .get<BalanceModel>(BALANCE)
+      .get<TransactionModel>(BALANCE)
       .query(Q.unsafeSqlQuery(query))
       .unsafeFetchRaw();
     console.log(res);
@@ -36,8 +36,8 @@ export const queryGetSummaryAccountById = async ({ accountId }: { accountId: str
               ELSE 0 
           END) AS totalExpense 
       FROM ${TRANSACTIONS}
-      WHERE accountId='${accountId}' OR toAccountId='${accountId}'
-          AND _status!='deleted' 
+      WHERE (accountId='${accountId}' OR toAccountId='${accountId}')
+          AND _status!='deleted'
           AND excludeReport=0`,
         ),
       )

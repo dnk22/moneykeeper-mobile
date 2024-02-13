@@ -54,13 +54,12 @@ export const updateTransaction = async ({ id, data }: { id?: string; data: TTran
     if (!id) {
       return queryAddNewTransaction(data).then(async (transaction) => {
         // Update the usage count for the transaction category
-        await queryUpdateUseCountTransactionCategory(transaction.categoryId);
+        queryUpdateUseCountTransactionCategory(transaction.categoryId);
         // Update the balance and calculate new balances after the transaction
-        await queryAddNewBalanceTransaction(transaction).then(async () => {
-          await queryCalculateAllBalanceAfterDate({
-            accountId: transaction.accountId,
-            date: new Date(transaction.dateTimeAt).getTime(),
-          });
+        await queryAddNewBalanceTransaction(transaction);
+        await queryCalculateAllBalanceAfterDate({
+          accountId: transaction.accountId,
+          date: new Date(transaction.dateTimeAt).getTime(),
         });
         return {
           success: true,
@@ -77,7 +76,7 @@ export const updateTransaction = async ({ id, data }: { id?: string; data: TTran
           prevDate,
         }: any) => {
           if (isUpdateCountCategory) {
-            await queryUpdateUseCountTransactionCategory(data.categoryId);
+            queryUpdateUseCountTransactionCategory(data.categoryId);
           }
           if (isUpdateBalance) {
             await queryUpdateBalanceTransaction({ ...data, id }, prevAccountId);

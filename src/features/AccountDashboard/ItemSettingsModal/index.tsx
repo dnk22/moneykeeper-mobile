@@ -4,11 +4,10 @@ import { Alert, View } from 'react-native';
 import { TAccount } from 'database/types';
 import { useNavigation } from '@react-navigation/native';
 import { ADD_ACCOUNT, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
-import { changeAccountStatusById } from 'services/api/accounts';
+import { changeAccountStatusById, deleteAccountById } from 'services/api/accounts';
 import { TRANSACTION_TYPE } from 'utils/constant';
 import { useAppDispatch } from 'store/index';
 import { removeAccountStatement } from 'store/account/account.slice';
-import { queryDeleteAccountById } from 'database/querying';
 import styles from './styles';
 import { showToast } from 'utils/system';
 
@@ -61,7 +60,7 @@ function ItemSettingsModal({
 
   const onOk = () => {
     account?.id &&
-      queryDeleteAccountById(account.id)
+    deleteAccountById(account.id)
         .then(() => {
           dispatch(removeAccountStatement(account?.id));
           onToggleModal();
@@ -82,7 +81,7 @@ function ItemSettingsModal({
   const onConfirmDelete = () =>
     Alert.alert(
       `Xóa ${account?.accountName}`,
-      'Xóa tài khoản đồng này nghĩa với việc tất cả các ghi chép của tài khoản này sẽ bị xóa theo, HÃY CẨN THẬN!',
+      'Xóa tài khoản đồng này nghĩa với việc tất cả các ghi chép của tài khoản này và các tài khoản liên quan sẽ bị xóa theo, HÃY CẨN THẬN!',
       [
         {
           text: 'Hủy bỏ',
