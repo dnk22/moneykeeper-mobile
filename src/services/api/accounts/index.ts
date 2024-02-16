@@ -11,6 +11,7 @@ import {
   queryCalculateAllBalanceAfterDate,
   queryDeleteAllTransactionRelatedWithAccountId,
   queryDeleteAccountById,
+  queryCalculateAllBalanceAfterDeleteAccount,
 } from 'database/querying';
 import { TAccount } from 'database/types';
 import { handleError } from 'utils/axios';
@@ -61,8 +62,23 @@ export async function getFirstAccount() {
 }
 
 export async function deleteAccountById(accountId: string) {
-  await queryDeleteAllTransactionRelatedWithAccountId(accountId);
-  // return await queryDeleteAccountById(accountId);
+  return await queryDeleteAllTransactionRelatedWithAccountId(accountId).then(
+    async (accountReCalculateBalance: { accountId: string; dateTimeAt: number }[]) => {
+      if (accountReCalculateBalance.length) {
+        await queryDeleteAccountById(accountId);
+        // calculate account balance
+        const accountCalc = accountReCalculateBalance.filter(
+          (item) => item.accountId !== accountId,
+        );
+        for await (const { accountId, dateTimeAt } of accountCalc) {
+          await queryCalculateAllBalanceAfterDate({
+            accountId,
+            date: dateTimeAt,
+          });
+        }
+      }
+    },
+  );
 }
 
 export async function changeAccountStatusById(id: string) {

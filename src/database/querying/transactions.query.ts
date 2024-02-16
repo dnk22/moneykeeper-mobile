@@ -6,6 +6,7 @@ import { Q } from '@nozbe/watermelondb';
 import { isEqual } from 'lodash';
 import { handleError } from 'utils/axios';
 import { TRANSACTION_TYPE } from 'utils/constant';
+import { queryCalculateAllBalanceAfterDate } from './balance.query';
 
 export type GetTransactionByDate = {
   date: string;
@@ -210,34 +211,45 @@ export const queryDeleteTransactionById = async (id: string) => {
 
 export const queryDeleteAllTransactionRelatedWithAccountId = async (accountId: string) => {
   try {
-    return await database.write(async () => {
-      const relatedTransaction = await database
+    let accountReCalculateBalance: { accountId: string; dateTimeAt: number }[] = [];
+    await database.write(async () => {
+      const transferTransaction = await database
         .get<TransactionModel>(TRANSACTIONS)
         .query(
-          Q.unsafeSqlQuery(`SELECT id, accountId, dateTimeAt FROM ${TRANSACTIONS} 
-        WHERE toAccountId='${accountId}'`),
+          Q.unsafeSqlQuery(`SELECT id FROM ${TRANSACTIONS} 
+        WHERE transactionType=${TRANSACTION_TYPE.TRANSFER} AND _status!='deleted' AND (toAccountId='${accountId}' OR accountId='${accountId}')`),
         )
         .unsafeFetchRaw();
 
-      if (relatedTransaction && relatedTransaction.length <= 0) {
-        return;
+      // re-calculate balance in related account
+      accountReCalculateBalance = await database
+        .get<TransactionModel>(TRANSACTIONS)
+        .query(
+          Q.unsafeSqlQuery(`SELECT accountId, dateTimeAt FROM ${TRANSACTIONS} 
+      WHERE (toAccountId='${accountId}' OR accountId='${accountId}') GROUP BY accountId HAVING MIN(dateTimeAt)`),
+        )
+        .unsafeFetchRaw();
+
+      // delete balance related
+      if (transferTransaction && transferTransaction.length) {
+        await database
+          .get<BalanceModel>(BALANCE)
+          .query(
+            Q.where(
+              'transactionId',
+              Q.oneOf(Array.from(transferTransaction.map((item) => item.id))),
+            ),
+          )
+          .destroyAllPermanently();
       }
-      console.log(relatedTransaction, 'relatedTransaction');
 
-      let transactionIds: string[] = relatedTransaction.map((item) => item.id);
-
-      // // delete balance related
-      await database
-        .get<BalanceModel>(BALANCE)
-        .query(Q.where('transactionId', Q.oneOf([...transactionIds])))
-        .destroyAllPermanently();
-
-      // // delete transaction related
+      // delete transaction related
       await database
         .get<TransactionModel>(TRANSACTIONS)
         .query(Q.where('toAccountId', Q.eq(accountId)))
-        .markAllAsDeleted();
+        .destroyAllPermanently();
     });
+    return accountReCalculateBalance;
   } catch (error) {
     console.log(error, 'error');
     return handleError({

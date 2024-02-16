@@ -1,6 +1,6 @@
 import { Model } from '@nozbe/watermelondb';
 import { Associations } from '@nozbe/watermelondb/Model';
-import { field, text, date, readonly, children } from '@nozbe/watermelondb/decorators';
+import { field, text, date, children } from '@nozbe/watermelondb/decorators';
 import { ACCOUNTS, BALANCE, TRANSACTIONS } from 'database/constants';
 
 export default class AccountModel extends Model {

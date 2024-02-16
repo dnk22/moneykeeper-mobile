@@ -1,7 +1,7 @@
 import { TAccount, TBalance, TTransactions } from 'database/types';
 import { database } from 'database/index';
 import { BalanceModel, TransactionModel } from 'database/models';
-import { BALANCE } from 'database/constants';
+import { BALANCE, TRANSACTIONS } from 'database/constants';
 import { Q } from '@nozbe/watermelondb';
 import { isEmpty } from 'lodash';
 import { SQLiteQuery } from '@nozbe/watermelondb/adapters/sqlite';
@@ -206,24 +206,6 @@ export const queryCalculateAllBalanceAfterDate = async ({
 };
 
 /** delete */
-export const queryDeleteBalanceAfterDeleteAccount = (accountId: string) => {
-  return database.write(async () => {
-    // Find all child records by accountId
-    const childRecords = await database
-      .get<BalanceModel>(BALANCE)
-      .query(Q.where('accountId', accountId))
-      .fetch();
-
-    // Delete all child records recursively
-    async function deleteChildRecords(records: BalanceModel[]) {
-      for (const record of records) {
-        await record.markAsDeleted();
-      }
-    }
-    return await deleteChildRecords(childRecords);
-  });
-};
-
 export const queryDeleteBalanceById = async (id: string, accountId?: string) => {
   try {
     const query = [Q.where('transactionId', id)];

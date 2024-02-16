@@ -81,11 +81,16 @@ function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
   return (
     <>
       <InputCalculator name="amount" control={control} />
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View
+        style={[
+          styles.group,
+          { backgroundColor: colors.surface, flexDirection: 'row', alignItems: 'center' },
+        ]}
+      >
         <Pressable onPress={exchangeAccount}>
           <SvgIcon name="exchange" style={styles.iconExchange} />
         </Pressable>
-        <View style={[styles.group, { backgroundColor: colors.surface, flex: 1 }]}>
+        <View style={{ flex: 1 }}>
           <AccountSelect title="Từ tài khoản" swapId="toAccountId" isShowSubTitle />
           <AccountSelect
             name="toAccountId"
