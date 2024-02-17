@@ -30,6 +30,11 @@ function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
     navigation.setOptions({
       headerRight: () => <Submit onPress={handleSubmit(onSubmit)} />,
     });
+    return () => {
+      navigation.setOptions({
+        headerRight: () => undefined,
+      });
+    };
   }, []);
 
   const handleOnDateTimePicker = (date: Date) => {

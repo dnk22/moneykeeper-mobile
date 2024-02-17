@@ -8,6 +8,17 @@ type NotificationsProps = {
   onValueChange: (value: string) => void;
 };
 
+const notiList = [
+  {
+    label: 'Trước 3 ngày',
+    value: '3',
+  },
+  {
+    label: 'Trước 1 tuần',
+    value: '7',
+  },
+];
+
 function Notifications({ value, onValueChange }: NotificationsProps) {
   const [noti, setNoti] = useState<string[]>([]);
 
@@ -40,30 +51,16 @@ function Notifications({ value, onValueChange }: NotificationsProps) {
           onPress={(value) => handleChangeChecked(value, '0')}
         />
       </Pressable>
-      <Pressable style={styles.itemNotification}>
-        <RNText>Trước 1 ngày</RNText>
-        <CheckboxComponent
-          type="checkbox"
-          check={value?.includes('1')}
-          onPress={(value) => handleChangeChecked(value, '1')}
-        />
-      </Pressable>
-      <Pressable style={styles.itemNotification}>
-        <RNText>Trước 2 ngày</RNText>
-        <CheckboxComponent
-          type="checkbox"
-          check={value?.includes('2')}
-          onPress={(value) => handleChangeChecked(value, '2')}
-        />
-      </Pressable>
-      <Pressable style={styles.itemNotification}>
-        <RNText>Trước 1 tuần</RNText>
-        <CheckboxComponent
-          type="checkbox"
-          check={value?.includes('7')}
-          onPress={(value) => handleChangeChecked(value, '7')}
-        />
-      </Pressable>
+      {notiList.map((item) => (
+        <Pressable style={styles.itemNotification}>
+          <RNText>{item.label}</RNText>
+          <CheckboxComponent
+            type="checkbox"
+            check={value?.includes(item.value)}
+            onPress={(value) => handleChangeChecked(value, item.value)}
+          />
+        </Pressable>
+      ))}
     </>
   );
 }

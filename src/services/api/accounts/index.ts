@@ -11,7 +11,6 @@ import {
   queryCalculateAllBalanceAfterDate,
   queryDeleteAllTransactionRelatedWithAccountId,
   queryDeleteAccountById,
-  queryCalculateAllBalanceAfterDeleteAccount,
 } from 'database/querying';
 import { TAccount } from 'database/types';
 import { handleError } from 'utils/axios';

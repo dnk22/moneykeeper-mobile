@@ -1,5 +1,4 @@
 import { Action } from '@reduxjs/toolkit';
-import notifee from '@notifee/react-native';
 import { clearAllTriggerNotifications, createTriggerNotification } from 'share/notifications';
 import { RepeatFrequency } from '@notifee/react-native';
 
@@ -9,14 +8,10 @@ export async function onAccountStatementListener(action: Action, listenerApi: an
     (item) => item.statementDate,
   );
 
+  // clear all notification of statement before update
+  clearAllTriggerNotifications('statement');
   // Get unique statementDate date
   const uniqueStatementDates = [...new Set(statementDates)];
-  // clear all notification of statement before update
-  clearAllTriggerNotifications();
-  const clearStatementNotiList = (await notifee.getTriggerNotificationIds()).filter((item) =>
-    item.includes('statement'),
-  );
-  notifee.cancelTriggerNotifications(clearStatementNotiList);
   for await (const item of uniqueStatementDates) {
     const date = new Date(Date.now());
     date.setDate(item);

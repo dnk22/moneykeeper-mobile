@@ -44,10 +44,12 @@ export const textPresets = StyleSheet.create({
     fontWeight: '500',
   },
   widgetTitle: {
-    fontWeight: '700',
+    fontWeight: '500',
+    fontSize: 17,
   },
   widgetViewMore: {
     color: '#00a8e8',
+    fontWeight: '500',
   },
   subTitle: {
     color: 'gray',

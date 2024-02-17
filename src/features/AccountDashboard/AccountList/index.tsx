@@ -1,14 +1,7 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { SectionListData, View } from 'react-native';
 import isEqual from 'react-fast-compare';
-import {
-  Empty,
-  IconComponent,
-  PressableHaptic,
-  RNText,
-  SectionListComponent,
-  SvgIcon,
-} from 'components/index';
+import { Empty, PressableHaptic, RNText, SectionListComponent, SvgIcon } from 'components/index';
 import { TAccount } from 'database/types';
 import { debounce } from 'lodash';
 import { useCustomTheme } from 'resources/theme';
@@ -81,7 +74,7 @@ function AccountList({ onActionPress, account = [], onRefresh }: AccountListProp
           )}
           style={styles.iconSwapContainer}
         >
-          <IconComponent name="swap" size={20} useTheme style={styles.iconSwap} />
+          <SvgIcon name="swap" />
         </PressableHaptic>
       </View>
       <View style={[styles.divider, { backgroundColor: colors.divider }]} />

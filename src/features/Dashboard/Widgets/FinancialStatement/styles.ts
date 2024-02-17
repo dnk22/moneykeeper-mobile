@@ -12,8 +12,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bottom: {
-    height: 60,
-    marginBottom: 20,
+    paddingBottom: 10,
     paddingHorizontal: 10,
   },
   widgetCard: {
@@ -21,14 +20,6 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 20,
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 5,
   },
   topBarToolbar: {
     flexDirection: 'row',
@@ -36,7 +27,6 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     padding: 8,
-    bottom: 20,
     paddingHorizontal: 20,
     borderTopStartRadius: 10,
     borderBottomStartRadius: 10,

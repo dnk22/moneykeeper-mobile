@@ -36,9 +36,12 @@ export async function cancel(notificationId: string) {
 export async function getAllTriggerNotifications() {
   return await notifee.getTriggerNotificationIds().then((ids) => console.log(ids, 'list noti'));
 }
-export async function clearAllTriggerNotifications() {
-  const list = await notifee.getTriggerNotificationIds();
-  return await notifee.cancelTriggerNotifications(list);
+
+export async function clearAllTriggerNotifications(name: string) {
+  const filterList = (await notifee.getTriggerNotificationIds()).filter((item) =>
+    item.includes(name),
+  );
+  return await notifee.cancelTriggerNotifications(filterList);
 }
 
 export async function getTriggerNotificationById(id: string) {

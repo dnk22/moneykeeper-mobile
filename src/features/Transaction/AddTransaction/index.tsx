@@ -56,6 +56,11 @@ function AddTransactions({ navigation, route }: AddTransactionsProps) {
         />
       ),
     });
+    return () => {
+      navigation.setOptions({
+        headerTitle: () => undefined,
+      });
+    };
   }, [watch('categoryId'), watch('transactionType'), lendBorrowData]);
 
   useEffect(() => {

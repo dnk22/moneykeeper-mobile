@@ -3,6 +3,15 @@ import { database } from 'database/index';
 import { AccountModel, BalanceModel, TransactionModel } from 'database/models';
 import { Q } from '@nozbe/watermelondb';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
+import {
+  endOfMonth,
+  endOfQuarter,
+  endOfYear,
+  startOfMonth,
+  startOfQuarter,
+  startOfYear,
+} from 'date-fns';
+import { TRANSACTION_TYPE } from 'utils/constant';
 
 export const queryGetAllBalance = async () => {
   const query = `SELECT * FROM ${BALANCE}`;
@@ -141,6 +150,43 @@ export const getCurrentBalanceAllAccount = async () => {
               FROM ${BALANCE} b
             ) bal ON bal.accountId = acc.id AND bal.row_num = 1
             WHERE acc._status!='deleted'`,
+        ),
+      )
+      .unsafeFetchRaw();
+    return result;
+  });
+};
+
+export const getExpenseIncomeInRangeDate = async (rangeDate: string) => {
+  let startDate: Date | number = new Date();
+  let endDate: Date | number = new Date();
+  switch (rangeDate) {
+    case 'now':
+      startDate = startDate.setUTCHours(0, 0, 0, 0);
+      endDate = endDate.setUTCHours(23, 59, 59, 999);
+      break;
+    case 'quart':
+      startDate = startOfQuarter(startDate).getTime();
+      endDate = endOfQuarter(endDate).getTime();
+      break;
+    case 'year':
+      startDate = startOfYear(startDate).getTime();
+      endDate = endOfYear(endDate).getTime();
+      break;
+    default:
+      startDate = startOfMonth(startDate).getTime();
+      endDate = endOfMonth(endDate).getTime();
+      break;
+  }
+  return await database.read(async () => {
+    const result = await database
+      .get<TransactionModel>(TRANSACTIONS)
+      .query(
+        Q.unsafeSqlQuery(
+          `SELECT SUM(CASE WHEN amount > 0 THEN amount ELSE 0 END) AS totalIncome,
+          SUM(CASE WHEN amount < 0 THEN -amount ELSE 0 END) AS totalExpense
+          FROM ${TRANSACTIONS}
+          WHERE _status!='deleted' AND transactionType != ${TRANSACTION_TYPE.TRANSFER} AND dateTimeAt BETWEEN ${startDate} AND ${endDate}`,
         ),
       )
       .unsafeFetchRaw();

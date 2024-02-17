@@ -9,6 +9,7 @@ import {
   IconComponent,
   TouchableHighlightComponent,
   FlatListComponent,
+  SvgIcon,
 } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { TRANSACTION_CATEGORY_TYPE, VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constant';
@@ -112,7 +113,7 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
           <RNText color="#1BA7EF" style={{ opacity: 0.7 }}>
             {mapTitle[viewCategoryMostAndRecent]}
           </RNText>
-          <IconComponent name="forward" size={14} opacity={0.7} color="#1BA7EF" />
+          <SvgIcon name="forward" preset="forwardLink" color="#00a8e8" />
         </View>
       </MenuView>
       <FlatListComponent data={data} horizontal renderItem={renderItem} />

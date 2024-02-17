@@ -54,6 +54,11 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
     navigation.setOptions({
       headerRight: () => <Submit onPress={handleSubmit(onSubmit)} />,
     });
+    return () => {
+      navigation.setOptions({
+        headerRight: () => undefined,
+      });
+    };
   }, []);
 
   useFocusEffect(

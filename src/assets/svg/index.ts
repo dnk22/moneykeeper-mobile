@@ -70,8 +70,12 @@ import sync from './sync.svg';
 import eyeOpen from './eyeOpen.svg';
 import eyeClose from './eyeClose.svg';
 import exchange from './exchange.svg';
+import swap from './swap.svg';
+import accountBG from './accountBG.svg';
 
 export {
+  accountBG,
+  swap,
   exchange,
   eyeClose,
   eyeOpen,

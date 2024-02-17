@@ -3,9 +3,9 @@ import { VirtualizedListComponent } from 'components/index';
 import { useFocusEffect } from '@react-navigation/native';
 import { queryUniqueTransactionDates } from 'database/querying';
 import { isArray } from 'lodash';
-import HeaderItem from './HeaderItem';
 import { useAppSelector } from 'store/index';
 import { selectRefreshTransactionHistory } from 'store/transactions/transactions.selector';
+import HeaderItem from './HeaderItem';
 
 type TransactionListProps = {
   accountId: string;

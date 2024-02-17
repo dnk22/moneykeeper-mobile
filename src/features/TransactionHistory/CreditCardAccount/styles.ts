@@ -10,8 +10,8 @@ const styles = StyleSheet.create({
   createButton: {
     zIndex: 5,
     position: 'absolute',
-    bottom: 40,
-    right: 30,
+    bottom: 30,
+    right: 15,
     height: 60,
     width: 60,
     borderRadius: 30,

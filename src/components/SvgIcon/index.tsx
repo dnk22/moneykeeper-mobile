@@ -13,7 +13,7 @@ interface SvgIconProps extends SvgProps {
   size?: number;
 }
 
-function SvgIcon({ name, color, size, preset = 'default', ...rest }: SvgIconProps) {
+function SvgIcon({ name, width, height, color, size, preset = 'default', ...rest }: SvgIconProps) {
   const { colors } = useCustomTheme();
 
   // import svg icon by name
@@ -26,8 +26,8 @@ function SvgIcon({ name, color, size, preset = 'default', ...rest }: SvgIconProp
   };
   return (
     <Icon
-      width={dimension.width}
-      height={dimension.height}
+      width={width || dimension.width}
+      height={height || dimension.height}
       color={color || colors.text}
       {...rest}
     />

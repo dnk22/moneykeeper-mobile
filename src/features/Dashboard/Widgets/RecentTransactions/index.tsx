@@ -62,10 +62,7 @@ function RecentTransactions() {
     <View style={styles.container}>
       <View style={styles.header}>
         <RNText preset="widgetTitle">Ghi chép gần đây</RNText>
-        <View style={styles.viewMore}>
-          <RNText preset="widgetViewMore">Xem tất cả</RNText>
-          <SvgIcon name="forward" preset="forwardLink" color="#00a8e8" />
-        </View>
+        <RNText preset="widgetViewMore">Xem tất cả</RNText>
       </View>
       {!transactionList.length && (
         <View

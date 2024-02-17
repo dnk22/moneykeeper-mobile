@@ -38,7 +38,7 @@ export default function StatementModalPicker({
   return (
     <ModalComponent isVisible={isVisible} onToggleModal={onToggleModal} isBackdropClose={false}>
       <View style={[styles.header, { borderBottomColor: colors.divider }]}>
-        <RNText preset="linkMedium">
+        <RNText preset="modalTitle">
           {type === 'paymentDate' ? 'Hạn thanh toán sau sao kê' : 'Ngày sao kê'}
         </RNText>
         <Pressable onPress={handleOnDone}>

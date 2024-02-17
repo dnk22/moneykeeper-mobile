@@ -72,17 +72,8 @@ function FinancialStatement() {
           </View>
           <View style={[styles.topBarToolbar, { backgroundColor: colors.primary }]}>
             <Pressable onPress={onHideMoney}>
-              <SvgIcon name="eyeOpen" color="white" />
+              <SvgIcon name="sync" color="white" size={20} />
             </Pressable>
-            <View
-              style={{
-                width: 0.5,
-                height: '60%',
-                backgroundColor: 'white',
-                marginHorizontal: 15,
-              }}
-            />
-            <SvgIcon name="sync" color="white" size={18} />
           </View>
         </View>
       </View>

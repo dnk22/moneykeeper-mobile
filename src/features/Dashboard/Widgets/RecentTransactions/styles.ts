@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     height: 330,
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   header: {
     height: 40,
@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
   },
   item: {
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 8,
     marginBottom: 5,
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -41,9 +41,5 @@ export const styles = StyleSheet.create({
   },
   rowGap: {
     rowGap: 5,
-  },
-  viewMore: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
 });

@@ -60,7 +60,7 @@ function ItemSettingsModal({
 
   const onOk = () => {
     account?.id &&
-    deleteAccountById(account.id)
+      deleteAccountById(account.id)
         .then(() => {
           dispatch(removeAccountStatement(account?.id));
           onToggleModal();
@@ -92,7 +92,11 @@ function ItemSettingsModal({
     );
 
   return (
-    <ModalComponent isVisible={isVisible} onToggleModal={onToggleModal}>
+    <ModalComponent
+      isVisible={isVisible}
+      onToggleModal={onToggleModal}
+      styleDefaultContent={{ padding: 5 }}
+    >
       <View>
         <TouchableHighlightComponent
           onPress={() => onItemPress(TRANSFER)}
@@ -118,6 +122,12 @@ function ItemSettingsModal({
             <RNText>Sửa tài khoản</RNText>
           </View>
         </TouchableHighlightComponent>
+        <TouchableHighlightComponent onPress={() => onItemPress(INACTIVE)}>
+          <View style={styles.item}>
+            <SvgIcon name={isAccountDisable ? 'lockOpen' : 'lock'} size={22} color="red" />
+            <RNText>{isAccountDisable ? 'Tái sử dụng' : 'Ngừng sử dụng'}</RNText>
+          </View>
+        </TouchableHighlightComponent>
         <TouchableHighlightComponent
           onPress={() => onItemPress(DELETE)}
           isDisable={isAccountDisable}
@@ -125,12 +135,6 @@ function ItemSettingsModal({
           <View style={styles.item}>
             <SvgIcon name="trash" size={22} color="red" />
             <RNText>Xóa tài khoản</RNText>
-          </View>
-        </TouchableHighlightComponent>
-        <TouchableHighlightComponent onPress={() => onItemPress(INACTIVE)}>
-          <View style={styles.item}>
-            <SvgIcon name={isAccountDisable ? 'lockOpen' : 'lock'} size={22} color="red" />
-            <RNText>{isAccountDisable ? 'Tái sử dụng' : 'Ngừng sử dụng'}</RNText>
           </View>
         </TouchableHighlightComponent>
       </View>

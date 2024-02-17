@@ -178,11 +178,16 @@ function AddAccount() {
             );
             dispatch(
               updateAccountNotification({
-                [res]: requestData.creditCardReminderList,
+                [res]: requestData.creditCardIsReminder ? requestData.creditCardReminderList : '',
               }),
             );
           } else {
             dispatch(removeAccountStatement(res));
+            dispatch(
+              updateAccountNotification({
+                [res]: '',
+              }),
+            );
           }
           navigation.goBack();
         }
@@ -204,8 +209,8 @@ function AddAccount() {
             type: 'success',
             text2: 'Xóa tài khoản thành công',
           });
-          // dispatch(removeAccountStatement(params.accountId));
-          // navigation.goBack();
+          dispatch(removeAccountStatement(params.accountId));
+          navigation.goBack();
         })
         .catch(({ error }) => {
           showToast({
@@ -332,7 +337,7 @@ function AddAccount() {
 
             <View style={[styles.group, { backgroundColor: colors.surface }]}>
               <View style={[styles.itemGroup, styles.itemGroupBetween]}>
-                <RNText preset="title">Bật Thông báo ?</RNText>
+                <RNText preset="title">Thông báo thanh toán ?</RNText>
                 <SwitchField name="creditCardIsReminder" control={control} />
               </View>
               <Collapsible collapsed={!watch('creditCardIsReminder')}>
