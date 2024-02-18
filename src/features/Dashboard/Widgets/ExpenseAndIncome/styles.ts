@@ -17,6 +17,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  noData: {
+    paddingVertical: 20,
+    alignItems: 'center',
+  },
   row: {
     gap: 15,
     marginTop: 10,
@@ -54,16 +58,16 @@ export const styles = StyleSheet.create({
   },
   expenseIcon: {
     backgroundColor: '#DEBDC5',
-    borderColor: '#893547',
+    borderColor: '#E25C5C',
     borderWidth: 1,
   },
   balanceIcon: {
     backgroundColor: '#F0E0B7',
-    borderColor: '#CCB57A',
+    borderColor: '#FCAA18',
     borderWidth: 1,
   },
   chartView: {
-    height: 140,
+    height: 120,
     gap: 10,
     paddingRight: 10,
     flexDirection: 'row',
@@ -78,6 +82,19 @@ export const styles = StyleSheet.create({
   chartBalance: {
     position: 'absolute',
     bottom: 0,
-    backgroundColor: '#CCB57A',
+    backgroundColor: '#FCAA18',
+  },
+  progressBar: {
+    width: '100%',
+    height: 20,
+    flexDirection: 'row',
+    marginTop: 25,
+    marginBottom: 10,
+    borderRadius: 6,
+    overflow: 'hidden',
+  },
+  barName: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

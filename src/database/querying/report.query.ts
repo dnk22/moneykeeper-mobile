@@ -179,17 +179,45 @@ export const getExpenseIncomeInRangeDate = async (rangeDate: string) => {
       break;
   }
   return await database.read(async () => {
-    const result = await database
+    const totalAmount = await database
       .get<TransactionModel>(TRANSACTIONS)
       .query(
         Q.unsafeSqlQuery(
-          `SELECT SUM(CASE WHEN amount > 0 THEN amount ELSE 0 END) AS totalIncome,
-          SUM(CASE WHEN amount < 0 THEN -amount ELSE 0 END) AS totalExpense
+          `SELECT SUM(CASE WHEN amount > 0 THEN amount ELSE 0 END) AS income,
+          SUM(CASE WHEN amount < 0 THEN -amount ELSE 0 END) AS expense
           FROM ${TRANSACTIONS}
           WHERE _status!='deleted' AND transactionType != ${TRANSACTION_TYPE.TRANSFER} AND dateTimeAt BETWEEN ${startDate} AND ${endDate}`,
         ),
       )
       .unsafeFetchRaw();
-    return result;
+
+    const categoryGroup = await database
+      .get<TransactionModel>(TRANSACTIONS)
+      .query(
+        Q.unsafeSqlQuery(
+          `SELECT
+              COALESCE(tc.parentId, t.categoryId) AS categoryParentId,
+              COALESCE(tc_parent.categoryName, 'Uncategorized') AS categoryName,
+              SUM(CASE WHEN t.amount < 0 THEN -t.amount ELSE 0 END) AS expense
+          FROM
+              ${TRANSACTIONS} t
+          JOIN
+              ${TRANSACTION_CATEGORY} tc ON t.categoryId = tc.id
+          LEFT JOIN
+              ${TRANSACTION_CATEGORY} tc_parent ON COALESCE(tc.parentId, t.categoryId) = tc_parent.id
+          WHERE
+              t._status!='deleted' 
+              AND t.transactionType != ${TRANSACTION_TYPE.TRANSFER} AND t.transactionType != ${TRANSACTION_TYPE.INCOME}
+              AND t.dateTimeAt BETWEEN ${startDate} AND ${endDate}
+          GROUP BY
+            COALESCE(tc.parentId, t.categoryId) 
+          ORDER BY expense DESC`,
+        ),
+      )
+      .unsafeFetchRaw();
+    return {
+      totalAmount,
+      categoryGroup,
+    };
   });
 };

@@ -7,7 +7,12 @@ import FlatList from 'components/FlatList';
 import { TAccount } from 'database/types';
 import { useCustomTheme } from 'resources/theme';
 import { formatNumber } from 'utils/math';
-import { ACCOUNT, ACCOUNT_CREDIT_CARD_DETAIL, ACCOUNT_NORMAL_DETAIL } from 'navigation/constants';
+import {
+  ACCOUNT,
+  ACCOUNT_CREDIT_CARD_DETAIL,
+  ACCOUNT_NORMAL_DETAIL,
+  ADD_ACCOUNT,
+} from 'navigation/constants';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constant';
 import { styles } from './styles';
 
@@ -71,15 +76,31 @@ function Wallets() {
     navigation.navigate(ACCOUNT);
   };
 
+  const onNavigateAddAccount = () => {
+    navigation.navigate(ACCOUNT, { screen: ADD_ACCOUNT });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <RNText preset="widgetTitle">Ví của bạn</RNText>
-        <PressableHaptic onPress={onNavigateAccount}>
-          <RNText preset="widgetViewMore">Xem tất cả</RNText>
-        </PressableHaptic>
+        {!!accounts.length && (
+          <PressableHaptic onPress={onNavigateAccount}>
+            <RNText preset="widgetViewMore">Xem tất cả</RNText>
+          </PressableHaptic>
+        )}
       </View>
-      <FlatList horizontal data={accounts} renderItem={renderItem} />
+      {!!!accounts.length && (
+        <PressableHaptic onPress={onNavigateAddAccount}>
+          <View style={[styles.noData, { backgroundColor: colors.surface }]}>
+            <View style={[styles.addIcon, { backgroundColor: colors.primary }]}>
+              <SvgIcon name="add" color="white" />
+            </View>
+            <RNText fontSize={12}>Bạn chưa có tài khoản nào, thêm mới ngay. </RNText>
+          </View>
+        </PressableHaptic>
+      )}
+      {!!accounts.length && <FlatList horizontal data={accounts} renderItem={renderItem} />}
     </View>
   );
 }

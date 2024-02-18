@@ -38,7 +38,7 @@ function ParentItem({ data, disabled }: ParentItemProps) {
         <View style={styles.itemHeader}>
           <ShakeAnimation isActiveAnim={isUpdate && !disabled}>
             <View style={styles.iconView}>
-              <IconComponent name={data.icon} size={24} />
+              <IconComponent name={data.icon} size={22} />
             </View>
           </ShakeAnimation>
           <RNText numberOfLines={1} style={styles.headerTitle} fontSize={18}>
@@ -59,7 +59,7 @@ function ParentItem({ data, disabled }: ParentItemProps) {
             <View style={[styles.itemChild, { width: ITEM_WIDTH }]}>
               <ShakeAnimation isActiveAnim={isUpdate && !disabled}>
                 <View style={styles.iconView}>
-                  <IconComponent name={children.icon} size={24} />
+                  <IconComponent name={children.icon} size={22} />
                 </View>
               </ShakeAnimation>
               <RNText numberOfLines={1} fontSize={12} style={{ opacity: 0.8 }}>

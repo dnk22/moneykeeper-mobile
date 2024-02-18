@@ -5,7 +5,7 @@ export default {
   transparent: 'transparent',
   surface: '#FFFFFF',
   background: '#F6F7F8',
-  primary: '#029C8E',
+  primary: '#246BFD',
   card: 'rgb(255, 255, 255)',
   text: 'rgb(28, 28, 30)',
   border: 'rgb(216, 216, 216)',
@@ -15,3 +15,8 @@ export default {
   divider: 'rgba(0, 0, 0, 0.12)',
   white : 'white'
 };
+
+// primary: '#281C9D',
+// primary: '#5655B9',
+// primary: '#246BFD',
+// primary: '#6541A0',

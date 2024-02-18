@@ -91,7 +91,7 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
       >
         <View style={[styles.itemChild, { width: ITEM_WIDTH }]}>
           <View style={styles.iconView}>
-            <IconComponent name={item.icon} size={24} />
+            <IconComponent name={item.icon} size={22} />
           </View>
           <RNText numberOfLines={1} fontSize={12} style={{ opacity: 0.8 }}>
             {item.categoryName}

@@ -64,9 +64,7 @@ function AccountList({ onActionPress, account = [], onRefresh }: AccountListProp
   return (
     <View style={[styles.wrapper, { backgroundColor: colors.surface }]}>
       <View style={styles.header}>
-        <RNText style={styles.title} fontSize={18}>
-          {isViewActive ? 'Đang sử dụng' : 'Ngừng sử dụng'}
-        </RNText>
+        <RNText style={styles.title}>{isViewActive ? 'Đang sử dụng' : 'Ngừng sử dụng'}</RNText>
         <PressableHaptic
           onPress={debounce(
             () => dispatch(updateAccountViewSettings({ isViewActive: !isViewActive })),

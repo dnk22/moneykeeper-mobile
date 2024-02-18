@@ -40,8 +40,8 @@ export const textPresets = StyleSheet.create({
     fontWeight: '500',
   },
   homeTotalBalance: {
-    fontSize: normalize(24),
-    fontWeight: '500',
+    fontSize: normalize(20),
+    fontWeight: '700',
   },
   widgetTitle: {
     fontWeight: '500',

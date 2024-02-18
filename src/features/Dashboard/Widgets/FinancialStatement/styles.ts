@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { SCREEN_WIDTH } from 'share/dimensions';
 
 export const styles = StyleSheet.create({
   container: {
@@ -6,7 +7,7 @@ export const styles = StyleSheet.create({
   },
   top: {
     paddingHorizontal: 20,
-    paddingBottom: 10,
+    paddingBottom: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -17,22 +18,58 @@ export const styles = StyleSheet.create({
   },
   widgetCard: {
     height: 80,
-    borderRadius: 10,
-    padding: 20,
-    justifyContent: 'center',
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 15,
+    borderTopRightRadius: 25,
+    overflow: 'hidden',
   },
-  topBarToolbar: {
-    flexDirection: 'row',
+  cardTopOutline: {
+    top: -5,
+    left: -4,
+    height: 25,
+    width: SCREEN_WIDTH,
     alignItems: 'center',
-    position: 'absolute',
-    right: 0,
-    padding: 8,
-    paddingHorizontal: 20,
-    borderTopStartRadius: 10,
-    borderBottomStartRadius: 10,
+    justifyContent: 'center',
+    overflow: 'hidden',
+    padding: 5,
+    borderRadius: 12,
   },
-  topBarBalance: {
+  cardTop: {
+    height: '100%',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    paddingLeft: 10,
+    borderRadius: 20,
+  },
+  cardTopCenter: {
+    height: 5,
+    width: '100%',
+    borderRadius: 30,
+  },
+  totalBalance: {
     rowGap: 5,
+    paddingHorizontal: 15,
+  },
+  leftToolbar: {
+    height: 32,
+    width: 50,
+    top: 32,
+    right: 0,
+    padding: 4,
+    alignSelf: 'center',
+    position: 'absolute',
+    borderTopStartRadius: 30,
+    borderBottomStartRadius: 30,
+  },
+  sync: {
+    width: 50,
+    right: 0,
+    padding: 4,
+    paddingHorizontal: 15,
+    borderTopStartRadius: 30,
+    borderBottomStartRadius: 30,
   },
   viewTotalDetails: {
     flexDirection: 'row',

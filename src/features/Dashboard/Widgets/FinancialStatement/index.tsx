@@ -50,7 +50,7 @@ function FinancialStatement() {
   return (
     <View style={styles.container}>
       <View style={[styles.top, { backgroundColor: colors.primary }]}>
-        <RNText preset={'linkLarge'} color="white">{`${hello} , Duy!`}</RNText>
+        <RNText preset={'linkLarge'} color="white">{`${hello}, Duy!`}</RNText>
         <View>
           <Pressable onPress={onNavigationNotification}>
             <SvgIcon name="bell" color="white" />
@@ -58,22 +58,31 @@ function FinancialStatement() {
         </View>
       </View>
       <View style={[styles.bottom, { backgroundColor: colors.primary }]}>
-        <View style={[styles.widgetCard, { backgroundColor: colors.surface }]}>
-          <View style={styles.topBarBalance}>
-            <View style={styles.viewTotalDetails}>
-              <RNText color="gray" fontSize={14}>
-                Xem Chi tiết
-              </RNText>
-              <SvgIcon name="forward" preset="forwardLink" color="gray" />
+        <View style={{ position: 'relative', height: 80 }}>
+          <View style={[styles.widgetCard, { backgroundColor: colors.surface }]}>
+            <View style={[styles.cardTopOutline, { backgroundColor: colors.primary }]}>
+              <View style={[styles.cardTop, { backgroundColor: colors.surface }]}>
+                <View style={[styles.cardTopCenter, { backgroundColor: colors.primary }]} />
+              </View>
             </View>
-            <RNText preset="homeTotalBalance" color={colors.primary} style={{ maxWidth: '60%' }}>
-              {formatNumber(currentBalance, true)}
-            </RNText>
+            <View style={styles.totalBalance}>
+              <View style={styles.viewTotalDetails}>
+                <RNText color="gray" fontSize={12}>
+                  Xem Chi tiết
+                </RNText>
+                <SvgIcon name="forward" preset="forwardLink" color="gray" />
+              </View>
+              <RNText preset="homeTotalBalance" color={colors.primary} style={{ maxWidth: '60%' }}>
+                {formatNumber(currentBalance, true)}
+              </RNText>
+            </View>
           </View>
-          <View style={[styles.topBarToolbar, { backgroundColor: colors.primary }]}>
-            <Pressable onPress={onHideMoney}>
-              <SvgIcon name="sync" color="white" size={20} />
-            </Pressable>
+          <View style={[styles.leftToolbar, { backgroundColor: colors.primary }]}>
+            <View style={[styles.sync, { backgroundColor: colors.surface }]}>
+              <Pressable onPress={onHideMoney}>
+                <SvgIcon name="sync" size={16} />
+              </Pressable>
+            </View>
           </View>
         </View>
       </View>

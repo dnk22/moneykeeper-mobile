@@ -85,6 +85,9 @@ function TransactionCategoryTaBBar({ navigation, route }: any) {
             tabBarStyle: { backgroundColor: colors.surface },
             tabBarActiveTintColor: colors.primary,
             tabBarInactiveTintColor: colors.text,
+            tabBarLabelStyle: {
+              fontWeight: '500',
+            },
           }}
         >
           {(!params.tabHide || params.tabHide !== INCOME_CATEGORY) && (

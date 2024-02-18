@@ -1,3 +1,4 @@
+import { BOX_SHADOW } from 'resources/theme/constants';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -31,5 +32,17 @@ export const styles = StyleSheet.create({
   },
   amount: {
     fontWeight: 'bold',
+  },
+  noData: {
+    padding: 10,
+    borderRadius: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...BOX_SHADOW,
+  },
+  addIcon: {
+    borderRadius: 30,
+    padding: 10,
+    marginBottom: 5,
   },
 });

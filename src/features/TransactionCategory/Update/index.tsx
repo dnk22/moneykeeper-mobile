@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { InputField, InputSelection, SvgIcon, PressableHaptic, FormAction, IconComponent } from 'components/index';
+import {
+  InputField,
+  InputSelection,
+  SvgIcon,
+  PressableHaptic,
+  FormAction,
+  IconComponent,
+} from 'components/index';
 import { TransactionCategoryParamProps } from 'navigation/types';
 import { useForm } from 'react-hook-form';
 import { useCustomTheme } from 'resources/theme';
@@ -18,7 +25,7 @@ import styles from './styles';
 function UpdateTransactionCategory() {
   const { colors } = useCustomTheme();
   const navigation =
-    useNavigation<TransactionCategoryParamProps<typeof PARENT_LIST>['navigation']>();
+    useNavigation<TransactionCategoryParamProps<typeof UPDATE_TRANSACTION_CATEGORY>['navigation']>();
   const { params } =
     useRoute<TransactionCategoryParamProps<typeof UPDATE_TRANSACTION_CATEGORY>['route']>();
   const [parentGroup, setParentGroup] = useState<TransactionCategoryModel | undefined>(undefined);
@@ -29,7 +36,7 @@ function UpdateTransactionCategory() {
       defaultValues: {
         isSystem: false,
         useCount: 0,
-        parentId: '',
+        parentId: null,
       },
     });
 
@@ -50,14 +57,14 @@ function UpdateTransactionCategory() {
   useEffect(() => {
     if (params?.parentId) {
       setValue('parentId', params.parentId);
+      getTransactionCategoryByID(params?.parentId).then((res) => {
+        setParentGroup(res);
+      });
+    } else {
+      setValue('parentId', null);
+      setParentGroup(undefined);
     }
   }, [params?.parentId]);
-
-  useEffect(() => {
-    if (getValues('parentId')) {
-      setParentState(getValues('parentId'));
-    }
-  }, [watch('parentId')]);
 
   const fetchDataInEditMode = async (id?: string) => {
     if (!id) return;
@@ -66,13 +73,6 @@ function UpdateTransactionCategory() {
       setIsShowSelectParent(res.parentId);
       reset(res);
     }
-  };
-
-  const setParentState = async (id: any) => {
-    if (!id) return;
-    setValue('parentId', id);
-    const res = await getTransactionCategoryByID(id);
-    setParentGroup(res);
   };
 
   const handleOnSelectParent = () => {
@@ -92,8 +92,9 @@ function UpdateTransactionCategory() {
   };
 
   const handleOnDeleteParent = () => {
-    setValue('parentId', '');
-    setParentGroup(undefined);
+    navigation.setParams({
+      parentId: undefined,
+    });
   };
 
   const handleOnDeleteIcon = () => {
@@ -120,7 +121,7 @@ function UpdateTransactionCategory() {
           ]}
           onPress={navigateToSelectIcon}
         >
-          <IconComponent size={38} name={getValues('icon') || 'unknown'}  />
+          <IconComponent size={38} name={getValues('icon') || 'unknown'} />
           {watch('icon') && (
             <PressableHaptic onPress={handleOnDeleteIcon} style={styles.clearIcon}>
               <SvgIcon size={18} name="closeCircle" color="red" />

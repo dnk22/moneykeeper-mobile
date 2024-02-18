@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: 10,
-    padding: 5,
   },
   headerTitle: {
     flex: 1,
