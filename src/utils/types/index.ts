@@ -1,4 +1,5 @@
 import { TTransactions } from 'database/types';
+import { WidgetOrderListProps } from 'features/Dashboard/constants';
 import {
   BANK_TYPE,
   FLAT,
@@ -40,6 +41,7 @@ export type AppStateProps = {
   transactionListDisplayConfig: Record<string, boolean>;
   homeBottomBarType: typeof FLAT | typeof STICKY;
   viewCategoryMostAndRecent: keyof typeof VIEW_CATEGORY_FAST_BY_COLUMN;
+  widgetOrder: WidgetOrderListProps[];
 };
 
 export type GroupedTransactionProps = {

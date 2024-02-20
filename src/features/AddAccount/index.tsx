@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { TAccountType, TAccount } from 'database/types';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AccountStackParamListProps } from 'navigation/types';
-import Submit from 'navigation/elements/Submit';
+import HeaderIcon from 'navigation/elements/HeaderIcon';
 import Collapsible from 'react-native-collapsible';
 import { BankModel } from 'database/models';
 import InputCalculator from 'features/Transaction/AddTransaction/common/InputCalculator';
@@ -82,10 +82,10 @@ function AddAccount() {
   );
   const currentAccountType = useMemo(() => watch('accountTypeId'), [watch('accountTypeId')]);
 
-  // // Use `setOptions` to update account
+  // Use `setOptions` to update account
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <Submit onPress={handleSubmit(onHandleSubmit)} />,
+      headerRight: () => <HeaderIcon onPress={handleSubmit(onHandleSubmit)} />,
     });
   }, []);
 

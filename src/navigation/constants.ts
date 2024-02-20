@@ -6,6 +6,7 @@ export const HOME = 'home';
 export const DASHBOARD = 'dashboard';
 export const DASHBOARDHOME = 'dashboardHome';
 export const NOTIFICATION = 'notification';
+export const WIDGET_SETTINGS = 'widgetSettings';
 
 // settings screen constants
 export const SETTINGS = 'settings';

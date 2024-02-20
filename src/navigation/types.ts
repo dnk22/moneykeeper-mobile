@@ -29,6 +29,7 @@ import {
   ACCOUNT_CREDIT_CARD_DETAIL,
   DASHBOARDHOME,
   NOTIFICATION,
+  WIDGET_SETTINGS,
 } from './constants';
 import { BANK_TYPE, TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
 
@@ -38,6 +39,7 @@ export type RootStackParamList = {
   [BANK_NAVIGATION]: NavigatorScreenParams<BankParams>;
   [TRANSACTION_CATEGORY]: NavigatorScreenParams<TransactionCategoryParams>;
   [APPEARANCE]: undefined;
+  [WIDGET_SETTINGS]: undefined;
 };
 export type RootStackScreenProps<T extends keyof RootStackParamList> = NativeStackScreenProps<
   RootStackParamList,
@@ -61,6 +63,9 @@ export type DashboardParamList = {
   [DASHBOARDHOME]: undefined;
   [NOTIFICATION]: undefined;
 };
+
+export type DashboardStackParamListProps<T extends keyof DashboardParamList> =
+  NativeStackScreenProps<DashboardParamList, T>;
 
 /** account stack navigation */
 export type AccountStackParamList = {

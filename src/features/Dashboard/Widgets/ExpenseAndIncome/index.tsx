@@ -72,7 +72,7 @@ function ExpenseAndIncome() {
       data.totalAmount.income > data.totalAmount?.expense
         ? data.totalAmount.income
         : data.totalAmount.expense;
-    return (value / point) * 100;
+    return (value / point) * 100 < 1 ? 1 : (value / point) * 100;
   };
 
   const getProgressBarWidth = (value: number) => {
@@ -130,7 +130,7 @@ function ExpenseAndIncome() {
                       styles.chart,
                       {
                         backgroundColor: '#17C03F',
-                        height: `${getChartHeight(data.totalAmount.income) || 1}%`,
+                        height: `${getChartHeight(data.totalAmount.income)}%`,
                       },
                     ]}
                   />
@@ -139,9 +139,9 @@ function ExpenseAndIncome() {
                       styles.chart,
                       styles.chartBalance,
                       {
-                        height: `${
-                          getChartHeight(data.totalAmount.income - data.totalAmount.expense) || 1
-                        }%`,
+                        height: `${getChartHeight(
+                          data.totalAmount.income - data.totalAmount.expense,
+                        )}%`,
                       },
                     ]}
                   />
@@ -151,7 +151,7 @@ function ExpenseAndIncome() {
                     styles.chart,
                     {
                       backgroundColor: '#E25C5C',
-                      height: `${getChartHeight(data.totalAmount.expense) || 1}%`,
+                      height: `${getChartHeight(data.totalAmount.expense)}%`,
                     },
                   ]}
                 />

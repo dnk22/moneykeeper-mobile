@@ -9,6 +9,7 @@ import { useCustomTheme } from 'resources/theme';
 import { formatNumber } from 'utils/math';
 import {
   ACCOUNT,
+  ACCOUNTTAB,
   ACCOUNT_CREDIT_CARD_DETAIL,
   ACCOUNT_NORMAL_DETAIL,
   ADD_ACCOUNT,
@@ -72,12 +73,9 @@ function Wallets() {
     );
   };
 
-  const onNavigateAccount = () => {
-    navigation.navigate(ACCOUNT);
-  };
-
   const onNavigateAddAccount = () => {
-    navigation.navigate(ACCOUNT, { screen: ADD_ACCOUNT });
+    navigation.navigate(ACCOUNT, { screen: ACCOUNTTAB });
+    setTimeout(() => navigation.navigate(ADD_ACCOUNT), 0);
   };
 
   return (
@@ -85,7 +83,7 @@ function Wallets() {
       <View style={styles.header}>
         <RNText preset="widgetTitle">Ví của bạn</RNText>
         {!!accounts.length && (
-          <PressableHaptic onPress={onNavigateAccount}>
+          <PressableHaptic onPress={() => navigation.navigate(ACCOUNT)}>
             <RNText preset="widgetViewMore">Xem tất cả</RNText>
           </PressableHaptic>
         )}

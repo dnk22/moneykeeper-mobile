@@ -72,8 +72,16 @@ import eyeClose from './eyeClose.svg';
 import exchange from './exchange.svg';
 import swap from './swap.svg';
 import accountBG from './accountBG.svg';
+import config from './config.svg';
+import cancel from './cancel.svg';
+import drag from './drag.svg';
+import arrowUp from './arrowUp.svg';
 
 export {
+  arrowUp,
+  drag,
+  cancel,
+  config,
   accountBG,
   swap,
   exchange,

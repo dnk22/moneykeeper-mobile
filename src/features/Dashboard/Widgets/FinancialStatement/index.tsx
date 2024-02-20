@@ -5,15 +5,15 @@ import { RNText, SvgIcon } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import { getCurrentBalanceAllAccount, queryGetAllBalance } from 'database/querying';
-import { styles } from './styles';
 import { isArray } from 'lodash';
 import { formatNumber } from 'utils/math';
-import { NOTIFICATION } from 'navigation/constants';
+import { NOTIFICATION, WIDGET_SETTINGS } from 'navigation/constants';
 import { getAllTriggerNotifications } from 'share/notifications';
+import { styles } from './styles';
 
 function FinancialStatement() {
   const { colors } = useCustomTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const [currentBalance, setCurrentBalance] = useState(0);
 
   useFocusEffect(
@@ -38,10 +38,6 @@ function FinancialStatement() {
     }
   }, [useIsFocused, new Date()]);
 
-  const onNavigationNotification = () => {
-    navigation.navigate(NOTIFICATION);
-  };
-
   const onHideMoney = () => {
     queryGetAllBalance();
     getAllTriggerNotifications();
@@ -51,9 +47,12 @@ function FinancialStatement() {
     <View style={styles.container}>
       <View style={[styles.top, { backgroundColor: colors.primary }]}>
         <RNText preset={'linkLarge'} color="white">{`${hello}, Duy!`}</RNText>
-        <View>
-          <Pressable onPress={onNavigationNotification}>
+        <View style={styles.topToolbar}>
+          <Pressable onPress={() => navigation.navigate(NOTIFICATION)}>
             <SvgIcon name="bell" color="white" />
+          </Pressable>
+          <Pressable onPress={() => navigation.navigate(WIDGET_SETTINGS)}>
+            <SvgIcon name="config" color="white" />
           </Pressable>
         </View>
       </View>

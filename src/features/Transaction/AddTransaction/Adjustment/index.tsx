@@ -5,7 +5,7 @@ import { TTransactions, TTransactionsCategory } from 'database/types';
 import { InputField, RNText, SvgIcon, SwitchField, FormAction } from 'components/index';
 import { useFormContext } from 'react-hook-form';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import Submit from 'navigation/elements/Submit';
+import HeaderIcon from 'navigation/elements/HeaderIcon';
 import { deleteTransactionById, updateTransaction } from 'services/api/transactions';
 import { showToast } from 'utils/system';
 import { formatNumber } from 'utils/math';
@@ -46,7 +46,7 @@ function Adjustment({ params, onSubmitSuccess }: AddTransactionType) {
   // Use `setOptions` to update the button that submit form
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <Submit onPress={handleSubmit(onSubmit)} />,
+      headerRight: () => <HeaderIcon onPress={handleSubmit(onSubmit)} />,
     });
     return () => {
       navigation.setOptions({

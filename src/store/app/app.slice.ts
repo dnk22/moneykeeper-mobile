@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { WIDGET_INIT_LIST } from 'features/Dashboard/constants';
 import { FLAT, VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constant/index';
 import { AccountViewSettingsProps, AppStateProps } from 'utils/types';
 
@@ -18,6 +19,7 @@ const initialState = {
   },
   homeBottomBarType: FLAT,
   viewCategoryMostAndRecent: VIEW_CATEGORY_FAST_BY_COLUMN.MOST,
+  widgetOrder: WIDGET_INIT_LIST,
 } as AppStateProps;
 
 export const appSlice = createSlice({
@@ -53,6 +55,11 @@ export const appSlice = createSlice({
       { payload }: PayloadAction<AppStateProps['viewCategoryMostAndRecent']>,
     ) {
       state.viewCategoryMostAndRecent = payload;
+      return state;
+    },
+    updateWidgetOrder(state, { payload }: PayloadAction<AppStateProps['widgetOrder']>) {
+      state.widgetOrder = payload;
+      return state;
     },
   },
 });
@@ -65,6 +72,7 @@ export const {
   updateTransactionListDisplayConfig,
   updateHomeBottomBarType,
   updateViewCategoryMostAndRecent,
+  updateWidgetOrder,
 } = appSlice.actions;
 
 export type TAppSlice = {

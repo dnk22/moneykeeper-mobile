@@ -50,7 +50,7 @@ const CheckboxComponent = ({
           style={{
             width: size,
             height: size,
-            tintColor: color || primary,
+            tintColor: color || check ? primary : undefined ,
           }}
           source={
             type === 'checkbox'

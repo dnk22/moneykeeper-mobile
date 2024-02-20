@@ -1,52 +1,29 @@
-import { IconProps } from 'components/SvgIcon/const';
-
-interface ISettingsRouteItem {
-  link: string;
-  name: string;
-  icon: IconProps;
-}
-interface ISettingRoutes {
-  [key: string]: { key: string; child: ISettingsRouteItem[] };
-}
-export const settingRoutes: ISettingRoutes = {
-  settings: {
-    key: 'settings',
-    child: [
-      {
-        link: 'general',
-        name: 'Cài đặt chung',
-        icon: 'settings',
-      },
-      {
-        link: 'appearance',
-        name: 'Giao diện',
-        icon: 'text',
-      },
-      {
-        link: 'notifications',
-        name: 'Thông báo',
-        icon: 'bellBadge',
-      },
-      {
-        link: 'sync',
-        name: 'Đồng bộ cloud',
-        icon: 'cloudSync',
-      },
-    ],
-  },
-  more: {
-    key: 'more',
-    child: [
-      {
-        link: 'help-feedback',
-        name: 'Giúp đỡ & Phản hồi',
-        icon: 'claim',
-      },
-      {
-        link: 'Term',
-        name: 'Terms of Service',
-        icon: 'questionCircle',
-      },
-    ],
-  },
+export type WidgetOrderListProps = {
+  label: string;
+  key: string;
+  isActive: boolean;
 };
+
+export const WIDGET_IMPORT_LIST = {
+  expenseAndIncome: require('./Widgets/ExpenseAndIncome'),
+  wallets: require('./Widgets/Wallets'),
+  history: require('./Widgets/RecentTransactions'),
+};
+
+export const WIDGET_INIT_LIST = [
+  {
+    label: 'Tổng quát chi tiêu',
+    key: 'expenseAndIncome',
+    isActive: true,
+  },
+  {
+    label: 'Ví của bạn',
+    key: 'wallets',
+    isActive: true,
+  },
+  {
+    label: 'Lịch sử ghi chép',
+    key: 'history',
+    isActive: true,
+  },
+];
