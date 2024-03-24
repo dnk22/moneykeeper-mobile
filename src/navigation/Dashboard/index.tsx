@@ -7,6 +7,7 @@ import { useCustomTheme } from 'resources/theme';
 // import route component
 import Dashboard from 'features/Dashboard';
 import Notification from 'features/Notification';
+import CommonStack from 'navigation/CommonStack';
 
 //set up routes
 const TransactionStack = createNativeStackNavigator<DashboardParamList>();
@@ -22,6 +23,7 @@ function DashboardNavigation() {
             backgroundColor: colors.primary,
           },
           headerTintColor: 'white',
+          headerBackTitleVisible: false,
         }}
       >
         <TransactionStack.Screen
@@ -32,8 +34,9 @@ function DashboardNavigation() {
         <TransactionStack.Screen
           name={NOTIFICATION}
           component={Notification}
-          options={{ title: 'Thông báo', headerBackTitleVisible: false }}
+          options={{ title: 'Thông báo' }}
         />
+        <TransactionStack.Group>{CommonStack({ Stack: TransactionStack })}</TransactionStack.Group>
       </TransactionStack.Navigator>
     </SafeAreaView>
   );

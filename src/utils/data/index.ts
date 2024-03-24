@@ -47,6 +47,15 @@ export const TransactionTypeData: TTransactionType[] = [
   },
 ];
 
+export const AccountTypeLogo: { [key: string]: string } = {
+  [ACCOUNT_CATEGORY_ID.MONEY]: 'cash',
+  [ACCOUNT_CATEGORY_ID.BANK]: 'bankAccountType',
+  [ACCOUNT_CATEGORY_ID.CREDITCARD]: 'creditCard',
+  [ACCOUNT_CATEGORY_ID.INVESTMENT]: 'investment',
+  [ACCOUNT_CATEGORY_ID.EWALLET]: 'eWallet',
+  [ACCOUNT_CATEGORY_ID.OTHER]: 'other',
+};
+
 export const AccountType: TAccountType[] = [
   {
     id: ACCOUNT_CATEGORY_ID.MONEY,

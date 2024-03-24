@@ -4,8 +4,9 @@ import { useCustomTheme } from 'resources/theme';
 import * as bankIcon from 'assets/images/banks';
 import * as transactionCategoryIcon from 'assets/images/transactionCategory';
 import * as transactionTypeIcon from 'assets/images/transactionType';
-const transferUp = require('assets/images/transactionCategory/transferUp.png')
-const transferDown = require('assets/images/transactionCategory/transferDown.png')
+import * as reportIcon from 'assets/images/report';
+const transferUp = require('assets/images/transactionCategory/transferUp.png');
+const transferDown = require('assets/images/transactionCategory/transferDown.png');
 import * as commonIcon from 'assets/images/common';
 import { normalize } from 'share/dimensions';
 import { Image, ImageProps } from 'react-native';
@@ -15,6 +16,7 @@ const imgSrc = {
   ...transactionCategoryIcon,
   ...transactionTypeIcon,
   ...commonIcon,
+  ...reportIcon,
   transferDown,
   transferUp,
 };

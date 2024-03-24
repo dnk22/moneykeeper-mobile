@@ -8,13 +8,6 @@ import { handleError } from 'utils/axios';
 import { TransactionCategoryData } from 'utils/data/transactionCategory.default';
 import { SQLiteQuery } from '@nozbe/watermelondb/adapters/sqlite';
 
-const lendAndBorrowCategory = [
-  TRANSACTION_LEND_BORROW_NAME.BORROW,
-  TRANSACTION_LEND_BORROW_NAME.LEND,
-  TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS,
-  TRANSACTION_LEND_BORROW_NAME.REPAYMENT,
-];
-
 /** read */
 export const queryGetLendBorrowData = async () => {
   try {
@@ -22,7 +15,7 @@ export const queryGetLendBorrowData = async () => {
       return database
         .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
         .query(
-          Q.where('categoryName', Q.oneOf(lendAndBorrowCategory)),
+          Q.where('categoryName', Q.oneOf(Object.values(TRANSACTION_LEND_BORROW_NAME))),
           Q.where('_status', Q.notEq('deleted')),
         )
         .unsafeFetchRaw();
@@ -31,11 +24,10 @@ export const queryGetLendBorrowData = async () => {
 };
 
 export const queryGetExpenseIncome = async ({ type }: { type: TRANSACTION_CATEGORY_TYPE }) => {
+  const lendBorrow = Object.values(TRANSACTION_LEND_BORROW_NAME).map((item) => `"${item}"`);
   return await database.read(async () => {
     const query = `SELECT id, categoryName, categoryType, parentId, dictionaryKey, icon, isSystem, sortOrder FROM ${TRANSACTION_CATEGORY}
-    WHERE _status!='deleted' AND categoryType=${type} AND categoryName NOT IN (${lendAndBorrowCategory
-      .map((item) => `"${item}"`)
-      .toString()})`;
+    WHERE _status!='deleted' AND categoryType=${type} AND categoryName NOT IN (${lendBorrow})`;
     const result = await database
       .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
       .query(Q.unsafeSqlQuery(query))

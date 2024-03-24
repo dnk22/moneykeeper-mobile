@@ -23,13 +23,9 @@ function ParentList() {
   const [data, setData] = useState<any>([]);
 
   useEffect(() => {
-    fetchGroup();
+    getParentList(params.type).then((res) => setData(res));
   }, [params.type]);
 
-  async function fetchGroup() {
-    const res = await getParentList(params.type);
-    setData(res);
-  }
   const onPress = (item: TTransactionsCategory) => {
     navigation.navigate({
       name: UPDATE_TRANSACTION_CATEGORY,

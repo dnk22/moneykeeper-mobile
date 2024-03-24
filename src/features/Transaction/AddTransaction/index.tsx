@@ -8,7 +8,7 @@ import ExpenseAndIncome from './ExpenseAndIncome';
 import { TransactionParamListProps } from 'navigation/types';
 import { FormProvider, useForm } from 'react-hook-form';
 import { TTransactions } from 'database/types';
-import { ADD_TRANSACTION, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
+import { ADD_TRANSACTION } from 'navigation/constants';
 import { getLendBorrowCategory } from 'services/api/transactionsCategory';
 import { getTransactionById } from 'services/api/transactions';
 import { TTransactionType } from 'utils/types';
@@ -69,6 +69,7 @@ function AddTransactions({ navigation, route }: AddTransactionsProps) {
         accumulator[currentValue.id] = currentValue.categoryName;
         return accumulator;
       }, {});
+
       useDispatch(setLendBorrowData(data));
     });
   }, []);
@@ -157,7 +158,7 @@ function AddTransactions({ navigation, route }: AddTransactionsProps) {
   };
 
   const onSubmitSuccess = () => {
-    if (navigation.canGoBack() && routerName === CREATE_TRANSACTION_FROM_ACCOUNT) {
+    if (navigation.canGoBack() && routerName !== ADD_TRANSACTION) {
       // navigate to previous screen
       navigation.goBack();
       return;

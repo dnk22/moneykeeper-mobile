@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import { updateAccountViewSettings } from 'store/app/app.slice';
-import Item from './Item';
+import AccountItem from './AccountItem';
 import styles from './styles';
 
 type AccountListProps = {
@@ -58,7 +58,7 @@ function AccountList({ onActionPress, account = [], onRefresh }: AccountListProp
   );
 
   const renderItem = ({ item }: { item: TAccount }) => {
-    return <Item account={item} onActionPress={onActionPress} />;
+    return <AccountItem account={item} onActionPress={onActionPress} />;
   };
 
   return (

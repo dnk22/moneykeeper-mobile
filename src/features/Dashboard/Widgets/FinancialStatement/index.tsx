@@ -5,24 +5,25 @@ import { RNText, SvgIcon } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import { getCurrentBalanceAllAccount, queryGetAllBalance } from 'database/querying';
-import { isArray } from 'lodash';
 import { formatNumber } from 'utils/math';
-import { NOTIFICATION, WIDGET_SETTINGS } from 'navigation/constants';
+import { FINANCE_STATEMENT, NOTIFICATION, WIDGET_SETTINGS } from 'navigation/constants';
 import { getAllTriggerNotifications } from 'share/notifications';
+import { useAppDispatch } from 'store/index';
+import { setViewType } from 'features/Report/FinancialStatement/reducer/financialStatement.slice';
 import { styles } from './styles';
 
 function FinancialStatement() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation<any>();
+  const dispatch = useAppDispatch();
   const [currentBalance, setCurrentBalance] = useState(0);
 
   useFocusEffect(
     useCallback(() => {
+      // clear financial statement when go back to home
+      dispatch(setViewType(true));
       getCurrentBalanceAllAccount().then((res) => {
-        if (res && isArray(res)) {
-          const total = res.reduce((prev, cur) => (prev += cur.closingAmount), 0);
-          setCurrentBalance(total);
-        }
+        setCurrentBalance(res);
       });
     }, []),
   );
@@ -43,39 +44,49 @@ function FinancialStatement() {
     getAllTriggerNotifications();
   };
 
+  const onNavigateToScreen = (screenName: string) => {
+    navigation.navigate(screenName);
+  };
+
   return (
     <View style={styles.container}>
       <View style={[styles.top, { backgroundColor: colors.primary }]}>
         <RNText preset={'linkLarge'} color="white">{`${hello}, Duy!`}</RNText>
         <View style={styles.topToolbar}>
-          <Pressable onPress={() => navigation.navigate(NOTIFICATION)}>
+          <Pressable onPress={() => onNavigateToScreen(NOTIFICATION)}>
             <SvgIcon name="bell" color="white" />
           </Pressable>
-          <Pressable onPress={() => navigation.navigate(WIDGET_SETTINGS)}>
+          <Pressable onPress={() => onNavigateToScreen(WIDGET_SETTINGS)}>
             <SvgIcon name="config" color="white" />
           </Pressable>
         </View>
       </View>
       <View style={[styles.bottom, { backgroundColor: colors.primary }]}>
         <View style={{ position: 'relative', height: 80 }}>
-          <View style={[styles.widgetCard, { backgroundColor: colors.surface }]}>
-            <View style={[styles.cardTopOutline, { backgroundColor: colors.primary }]}>
-              <View style={[styles.cardTop, { backgroundColor: colors.surface }]}>
-                <View style={[styles.cardTopCenter, { backgroundColor: colors.primary }]} />
+          <Pressable onPress={() => onNavigateToScreen(FINANCE_STATEMENT)}>
+            <View style={[styles.widgetCard, { backgroundColor: colors.surface }]}>
+              <View style={[styles.cardTopOutline, { backgroundColor: colors.primary }]}>
+                <View style={[styles.cardTop, { backgroundColor: colors.surface }]}>
+                  <View style={[styles.cardTopCenter, { backgroundColor: colors.primary }]} />
+                </View>
               </View>
-            </View>
-            <View style={styles.totalBalance}>
-              <View style={styles.viewTotalDetails}>
-                <RNText color="gray" fontSize={12}>
-                  Xem Chi tiết
+              <View style={styles.totalBalance}>
+                <View style={styles.viewTotalDetails}>
+                  <RNText color="gray" fontSize={12}>
+                    Xem Chi tiết
+                  </RNText>
+                  <SvgIcon name="forward" preset="forwardLink" color="gray" />
+                </View>
+                <RNText
+                  preset="homeTotalBalance"
+                  color={colors.primary}
+                  style={{ maxWidth: '60%' }}
+                >
+                  {formatNumber(currentBalance, true)}
                 </RNText>
-                <SvgIcon name="forward" preset="forwardLink" color="gray" />
               </View>
-              <RNText preset="homeTotalBalance" color={colors.primary} style={{ maxWidth: '60%' }}>
-                {formatNumber(currentBalance, true)}
-              </RNText>
             </View>
-          </View>
+          </Pressable>
           <View style={[styles.leftToolbar, { backgroundColor: colors.primary }]}>
             <View style={[styles.sync, { backgroundColor: colors.surface }]}>
               <Pressable onPress={onHideMoney}>

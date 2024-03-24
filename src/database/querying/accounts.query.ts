@@ -38,7 +38,7 @@ export const queryAllAccount = async ({ text = '', excludeId = '' }: TGetAllAcco
       )
       .unsafeFetchRaw();
     var endTime = performance.now();
-    console.log(`get list account: ${(endTime - startTime) / 1000} s`);
+    console.log(`get list account: ${Number((endTime - startTime) / 1000).toFixed(5)} s`);
     return result;
   });
 };

@@ -42,4 +42,9 @@ export const styles = StyleSheet.create({
   rowGap: {
     rowGap: 5,
   },
+  emptyView: {
+    alignItems: 'center',
+    paddingVertical: 20,
+    borderRadius: 10,
+  },
 });

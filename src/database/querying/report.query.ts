@@ -1,8 +1,8 @@
+import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constant';
 import { ACCOUNTS, BALANCE, TRANSACTIONS, TRANSACTION_CATEGORY } from 'database/constants';
 import { database } from 'database/index';
 import { AccountModel, BalanceModel, TransactionModel } from 'database/models';
 import { Q } from '@nozbe/watermelondb';
-import TransactionCategoryModel from 'database/models/transactionCategory.model';
 import {
   endOfMonth,
   endOfQuarter,
@@ -11,7 +11,8 @@ import {
   startOfQuarter,
   startOfYear,
 } from 'date-fns';
-import { TRANSACTION_TYPE } from 'utils/constant';
+import { ACCOUNT_CATEGORY_ID, TRANSACTION_TYPE } from 'utils/constant';
+import { get } from 'lodash';
 
 export const queryGetAllBalance = async () => {
   const query = `SELECT * FROM ${BALANCE}`;
@@ -116,44 +117,60 @@ export const queryGetPaymentDueCreditCardByAccountId = async ({
   });
 };
 
-export const queryGetAllStatement = async ({ accountId }: { accountId: string }) => {
-  return await database.read(async () => {
-    const result = await database
-      .get<TransactionModel>(TRANSACTIONS)
-      .query(
-        Q.unsafeSqlQuery(
-          `SELECT DISTINCT strftime('%Y-%m-%d', datetime(dateTimeAt/1000, 'unixepoch')) AS date
-          FROM ${TRANSACTIONS} WHERE accountId='${accountId}'
-          ORDER BY month DESC;`,
-        ),
-      )
-      .unsafeFetchRaw();
-    return result;
-  });
-};
-
 export const getCurrentBalanceAllAccount = async () => {
+  var startTime = performance.now();
   return await database.read(async () => {
-    const result = await database
+    const totalMoneyInAccount = await database
       .get<AccountModel>(ACCOUNTS)
       .query(
-        Q.experimentalJoinTables([BALANCE]),
+        Q.experimentalJoinTables([TRANSACTIONS]),
         Q.unsafeSqlQuery(
-          `SELECT acc.id, bal.closingAmount FROM ${ACCOUNTS} acc
-            LEFT JOIN (
-              SELECT
-                b._id,
-                b.accountId,
-                b.closingAmount,
-                b.transactionDateAt,
-                ROW_NUMBER() OVER (PARTITION BY b.accountId ORDER BY b.transactionDateAt DESC, b._id DESC) AS row_num
-              FROM ${BALANCE} b
-            ) bal ON bal.accountId = acc.id AND bal.row_num = 1
-            WHERE acc._status!='deleted'`,
+          `SELECT acc.id, SUM(bal.closingAmount) AS value FROM ${ACCOUNTS} acc
+          LEFT JOIN (
+            SELECT
+              b._id,
+              b.accountId,
+              b.closingAmount,
+              b.transactionDateAt,
+              ROW_NUMBER() OVER (PARTITION BY b.accountId ORDER BY b.transactionDateAt DESC, b._id DESC) AS row_num
+            FROM ${BALANCE} b
+          ) bal ON bal.accountId = acc.id AND bal.row_num = 1
+          WHERE acc._status!='deleted'`,
         ),
       )
       .unsafeFetchRaw();
-    return result;
+    const debtLoan = await database
+      .get<AccountModel>(ACCOUNTS)
+      .query(
+        Q.experimentalJoinTables([TRANSACTIONS]),
+        Q.unsafeSqlQuery(
+          `SELECT 
+          SUM(CASE 
+              WHEN transC.categoryName = '${TRANSACTION_LEND_BORROW_NAME.LEND}' THEN amount 
+              ELSE 0 
+            END) + SUM(CASE 
+                          WHEN transC.categoryName = '${TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS}' THEN amount 
+                          ELSE 0 
+                       END) AS debt,
+          SUM(CASE 
+              WHEN transC.categoryName = '${TRANSACTION_LEND_BORROW_NAME.BORROW}' THEN amount 
+              ELSE 0 
+            END) + SUM(CASE 
+                          WHEN transC.categoryName = '${TRANSACTION_LEND_BORROW_NAME.REPAYMENT}' THEN amount 
+                          ELSE 0 
+                       END) AS loan
+        FROM ${TRANSACTIONS} trans
+        LEFT JOIN ${TRANSACTION_CATEGORY} transC ON transC.id = trans.categoryId
+        WHERE trans._status != 'deleted' AND 
+              transC.categoryName IN ('${TRANSACTION_LEND_BORROW_NAME.LEND}','${TRANSACTION_LEND_BORROW_NAME.REPAYMENT}','${TRANSACTION_LEND_BORROW_NAME.BORROW}','${TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS}')`,
+        ),
+      )
+      .unsafeFetchRaw();
+    const moneyAccountRemain = get(totalMoneyInAccount[0], 'value', 0);
+    const debtLoanRemain = Math.abs(get(debtLoan[0], 'debt', 0)) - get(debtLoan[0], 'loan', 0);
+    var endTime = performance.now();
+    console.log(`get financial statement: ${Number((endTime - startTime) / 1000).toFixed(5)} s`);
+    return moneyAccountRemain + debtLoanRemain;
   });
 };
 
@@ -219,5 +236,48 @@ export const getExpenseIncomeInRangeDate = async (rangeDate: string) => {
       totalAmount,
       categoryGroup,
     };
+  });
+};
+
+export const queryAccountStatement = async (isOwnedViewType: boolean) => {
+  return await database.read(async () => {
+    return await database
+      .get<AccountModel>(ACCOUNTS)
+      .query(
+        Q.experimentalJoinTables([TRANSACTIONS]),
+        Q.unsafeSqlQuery(
+          `SELECT acc.id, acc.accountName , acc.accountLogo AS logo, acc.isActive, acc.accountTypeName, acc.accountTypeId, acc.sortOrder, bal.closingAmount AS value FROM ${ACCOUNTS} acc
+          LEFT JOIN (
+            SELECT
+              b._id,
+              b.accountId,
+              b.closingAmount,
+              b.transactionDateAt,
+              ROW_NUMBER() OVER (PARTITION BY b.accountId ORDER BY b.transactionDateAt DESC, b._id DESC) AS row_num
+            FROM ${BALANCE} b
+          ) bal ON bal.accountId = acc.id AND bal.row_num = 1
+          WHERE acc._status!='deleted' AND acc.accountTypeId ${isOwnedViewType ? '!=' : '='} ${
+            ACCOUNT_CATEGORY_ID.CREDITCARD
+          }`,
+        ),
+      )
+      .unsafeFetchRaw();
+  });
+};
+export const queryGetDebtLoanStatement = async (isOwnedViewType: boolean) => {
+  const categoryName = isOwnedViewType
+    ? `'${TRANSACTION_LEND_BORROW_NAME.LEND}','${TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS}'`
+    : `'${TRANSACTION_LEND_BORROW_NAME.BORROW}','${TRANSACTION_LEND_BORROW_NAME.REPAYMENT}'`;
+  return await database.read(async () => {
+    return await database
+      .get<TransactionModel>(TRANSACTIONS)
+      .query(
+        Q.unsafeSqlQuery(
+          `SELECT trans.id, trans.relatedPerson, transC.categoryType, SUM(trans.amount) AS value, transC.categoryName FROM ${TRANSACTIONS} trans
+          LEFT JOIN ${TRANSACTION_CATEGORY} transC ON transC.id = trans.categoryId
+          WHERE trans._status!='deleted' AND transC.categoryName IN (${categoryName}) GROUP BY trans.relatedPerson`,
+        ),
+      )
+      .unsafeFetchRaw();
   });
 };

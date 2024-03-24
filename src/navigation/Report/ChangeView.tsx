@@ -6,13 +6,13 @@ import { useAppDispatch, useAppSelector } from 'store/index';
 
 function ChangeView({}: HeaderButtonProps) {
   const useDispatch = useAppDispatch();
-  const getReportView = useAppSelector((state) => selectReportViewSettings(state));
+  const isGrid = useAppSelector((state) => selectReportViewSettings(state));
   const handleOnChangeReportView = () => {
     useDispatch(updateReportViewSettings());
   };
   return (
     <PressableHaptic onPress={handleOnChangeReportView}>
-      <SvgIcon name={getReportView} color="white" />
+      <SvgIcon name={isGrid ? 'grid' : 'list'} color="white" />
     </PressableHaptic>
   );
 }

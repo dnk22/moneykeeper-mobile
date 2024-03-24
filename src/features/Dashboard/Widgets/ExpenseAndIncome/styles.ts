@@ -96,5 +96,7 @@ export const styles = StyleSheet.create({
   barName: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
+    marginRight: 20,
   },
 });

@@ -3,13 +3,14 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   group: {
     borderRadius: 10,
-    padding: 10,
+    padding: 8,
     marginBottom: 10,
   },
   itemHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: 10,
+    paddingVertical: 5,
   },
   headerTitle: {
     flex: 1,

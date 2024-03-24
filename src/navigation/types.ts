@@ -30,6 +30,8 @@ import {
   DASHBOARDHOME,
   NOTIFICATION,
   WIDGET_SETTINGS,
+  EXPENSE_INCOME_DETAIL,
+  FINANCE_STATEMENT,
 } from './constants';
 import { BANK_TYPE, TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
 
@@ -62,6 +64,10 @@ export type HomeStackParamListProps<T extends keyof HomeStackParamList> = Bottom
 export type DashboardParamList = {
   [DASHBOARDHOME]: undefined;
   [NOTIFICATION]: undefined;
+  [FINANCE_STATEMENT]: undefined;
+  [EXPENSE_INCOME_DETAIL]: {
+    dateView: string;
+  };
 };
 
 export type DashboardStackParamListProps<T extends keyof DashboardParamList> =

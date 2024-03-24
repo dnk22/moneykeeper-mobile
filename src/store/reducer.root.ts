@@ -8,6 +8,9 @@ import transactionCategoryReducer, {
   transactionCategorySlice,
 } from './transactionCategory/transactionCategory.slice';
 import transactionsReducer, { transactionsSlice } from './transactions/transactions.slice';
+import financialStatementReducer, {
+  financialStatementSlice,
+} from 'features/Report/FinancialStatement/reducer/financialStatement.slice';
 
 const appPersistConfig = {
   key: 'root',
@@ -18,6 +21,7 @@ const appPersistConfig = {
     // accountSlice.name,
     // transactionCategorySlice.name,
     // appSlice.name,
+    financialStatementSlice.name,
   ],
 };
 
@@ -38,6 +42,7 @@ const allReducer = combineReducers({
   [transactionCategorySlice.name]: transactionCategoryReducer,
   [accountSlice.name]: accountReducer,
   [transactionsSlice.name]: persistReducer(transactionPersistConfig, transactionsReducer),
+  [financialStatementSlice.name]: financialStatementReducer,
 });
 
 export const persistedReducer = persistReducer(appPersistConfig, allReducer);

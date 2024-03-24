@@ -1,7 +1,8 @@
 import React, { memo, useCallback, useMemo } from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl, View } from 'react-native';
 import { PropsFlatList } from './model';
 import isEqual from 'react-fast-compare';
+import { useCustomTheme } from 'resources/theme';
 
 const FlatListComponent: PropsFlatList = ({
   data,
@@ -15,8 +16,10 @@ const FlatListComponent: PropsFlatList = ({
   refreshing,
   hasPull = false,
   id = 'id',
+  showSeparator,
   ...rest
 }) => {
+  const { colors } = useCustomTheme();
   const renderRefreshControl = useMemo(
     () => (
       <RefreshControl
@@ -45,6 +48,16 @@ const FlatListComponent: PropsFlatList = ({
       initialNumToRender={initialNumToRender}
       showsVerticalScrollIndicator={showsVerticalScrollIndicator}
       showsHorizontalScrollIndicator={showsHorizontalScrollIndicator}
+      ItemSeparatorComponent={({ highlighted }) => {
+        return showSeparator ? (
+          <View
+            style={[
+              { height: 0.8, width: '90%', backgroundColor: colors.divider, alignSelf: 'center' },
+              highlighted,
+            ]}
+          />
+        ) : undefined;
+      }}
       {...rest}
     />
   );

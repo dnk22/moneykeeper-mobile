@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
 export const HOME = 'home';
 
@@ -6,7 +6,9 @@ export const HOME = 'home';
 export const DASHBOARD = 'dashboard';
 export const DASHBOARDHOME = 'dashboardHome';
 export const NOTIFICATION = 'notification';
+export const EXPENSE_INCOME_DETAIL = 'ExpenseIncomeDetail';
 export const WIDGET_SETTINGS = 'widgetSettings';
+export const FINANCE_STATEMENT = 'financeStatement';
 
 // settings screen constants
 export const SETTINGS = 'settings';

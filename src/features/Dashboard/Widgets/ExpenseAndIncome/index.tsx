@@ -1,14 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { styles } from './styles';
 import { useCustomTheme } from 'resources/theme';
-import { RNText, SvgIcon } from 'components/index';
+import { PressableHaptic, RNText, SvgIcon } from 'components/index';
 import { MenuView } from '@react-native-menu/menu';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { getExpenseIncomeInRangeDate } from 'database/querying';
 import { formatNumber } from 'utils/math';
 import { MATERIAL_COLOR } from 'utils/constant';
 import FlatList from 'components/FlatList';
+import { styles } from './styles';
+import { EXPENSE_INCOME_DETAIL } from 'navigation/constants';
 
 const dateViewSelect = [
   {
@@ -34,8 +35,9 @@ type DATA = {
   categoryGroup: { categoryName: string; categoryParentId: string; expense: number }[];
 };
 
-function ExpenseAndIncome() {
+function ExpenseAndIncome({ title }: { title: string }) {
   const { colors } = useCustomTheme();
+  const navigation = useNavigation<any>();
   const [dateView, setDateView] = useState('month');
   const [data, setData] = useState<DATA>({
     totalAmount: { income: 0, expense: 0 },
@@ -63,6 +65,15 @@ function ExpenseAndIncome() {
     return dateViewSelect.find((item) => item.id === dateView)?.title;
   };
 
+  const renderProgressLabel = ({ item, index }: any) => (
+    <View style={styles.barName} key={item.categoryParentId}>
+      <View style={[styles.icon, { backgroundColor: MATERIAL_COLOR[index] }]} />
+      <RNText fontSize={10} style={{ fontWeight: '300' }}>{`${
+        item.categoryName
+      } (${getProgressBarWidth(item.expense)}%)`}</RNText>
+    </View>
+  );
+
   const currentBalance = () => {
     return formatNumber(data.totalAmount.income - data.totalAmount.expense, true);
   };
@@ -80,15 +91,25 @@ function ExpenseAndIncome() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.surface }]}>
+    <PressableHaptic
+      style={[styles.container, { backgroundColor: colors.surface }]}
+      onPress={() => navigation.navigate(EXPENSE_INCOME_DETAIL, { dateView: renderMenuTitle() })}
+    >
       <View style={styles.top}>
-        <RNText preset="widgetTitle">Tổng quát chi tiêu</RNText>
-        <MenuView title="Xem theo" onPressAction={onChangeDateView} actions={dateViewSelect}>
-          <View style={styles.dateView}>
-            <RNText color="#00a8e8">{renderMenuTitle()}</RNText>
-            <SvgIcon name="forward" preset="forwardLink" color="#00a8e8" />
-          </View>
-        </MenuView>
+        <RNText preset="widgetTitle">{title}</RNText>
+        <PressableHaptic
+          onPress={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+        >
+          <MenuView title="Xem theo" onPressAction={onChangeDateView} actions={dateViewSelect}>
+            <View style={styles.dateView}>
+              <RNText color="#00a8e8">{renderMenuTitle()}</RNText>
+              <SvgIcon name="forward" preset="forwardLink" color="#00a8e8" />
+            </View>
+          </MenuView>
+        </PressableHaptic>
       </View>
       {!!!data.categoryGroup.length && (
         <View style={styles.noData}>
@@ -175,6 +196,7 @@ function ExpenseAndIncome() {
             horizontal
             centerContent
             showsHorizontalScrollIndicator={false}
+            scrollEnabled
             contentContainerStyle={{ height: 'auto' }}
           >
             <FlatList
@@ -186,22 +208,12 @@ function ExpenseAndIncome() {
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={true}
               data={data.categoryGroup}
-              renderItem={({ item, index }) => (
-                <View
-                  style={[styles.barName, { gap: 8, marginRight: 20 }]}
-                  key={item.categoryParentId}
-                >
-                  <View style={[styles.icon, { backgroundColor: MATERIAL_COLOR[index] }]} />
-                  <RNText fontSize={10} style={{ fontWeight: '300' }}>{`${
-                    item.categoryName
-                  } (${getProgressBarWidth(item.expense)}%)`}</RNText>
-                </View>
-              )}
+              renderItem={renderProgressLabel}
             />
           </ScrollView>
         </>
       )}
-    </View>
+    </PressableHaptic>
   );
 }
 export default ExpenseAndIncome;

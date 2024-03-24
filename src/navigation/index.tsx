@@ -30,21 +30,20 @@ function AppNavigators() {
         <RootStack.Screen name={BANK_NAVIGATION} component={BankNavigation} />
         <RootStack.Screen name={TRANSACTION_CATEGORY} component={TransactionCategoryNavigation} />
       </RootStack.Group>
-      <RootStack.Screen
-        name={WIDGET_SETTINGS}
-        component={WidgetSettings}
-        options={{
-          title: 'Chỉnh sửa DS Widget',
-          headerShown: true,
-          presentation: 'containedModal',
-        }}
-      />
       <RootStack.Group screenOptions={{ headerShown: true }}>
         <RootStack.Screen
           name={APPEARANCE}
           component={Appearance}
           options={{
             title: 'Giao diện',
+          }}
+        />
+        <RootStack.Screen
+          name={WIDGET_SETTINGS}
+          component={WidgetSettings}
+          options={{
+            title: 'Chỉnh sửa DS Widget',
+            presentation: 'containedModal',
           }}
         />
       </RootStack.Group>

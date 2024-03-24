@@ -12,15 +12,16 @@ import { ACCOUNT_NORMAL_DETAIL, ACCOUNT_CREDIT_CARD_DETAIL } from 'navigation/co
 import { useCustomTheme } from 'resources/theme';
 import { AccountStackParamListProps } from 'navigation/types';
 import { formatNumber } from 'utils/math';
-import styles from './styles';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constant';
+import styles from './styles';
 
 type ItemProps = {
   account: TAccount;
+  transparentBackground?: boolean;
   onActionPress?: (account: TAccount) => void;
 };
 
-function Item({ account, onActionPress }: ItemProps) {
+function AccountItem({ account, transparentBackground, onActionPress }: ItemProps) {
   const { colors } = useCustomTheme();
   const navigation =
     useNavigation<AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['navigation']>();
@@ -44,7 +45,7 @@ function Item({ account, onActionPress }: ItemProps) {
   return (
     <View style={styles.itemContainer}>
       <TouchableHighlightComponent
-        style={{ backgroundColor: colors.surface }}
+        style={{ backgroundColor: transparentBackground ? undefined : colors.surface }}
         onPress={handleOnItemPress}
       >
         <View style={styles.itemContent}>
@@ -73,4 +74,4 @@ function Item({ account, onActionPress }: ItemProps) {
     </View>
   );
 }
-export default Item;
+export default AccountItem;

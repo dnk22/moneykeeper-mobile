@@ -6,6 +6,7 @@ interface Props extends FlatListProps<any> {
   onLoadMore?: () => void;
   hasPull?: boolean;
   id?: string;
+  showSeparator?: boolean;
 }
 
 export type PropsFlatList = React.FC<Props>;

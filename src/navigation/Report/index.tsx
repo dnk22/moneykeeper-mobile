@@ -9,6 +9,7 @@ import { ReportParamList } from 'navigation/types';
 import HomeReport from 'features/Report';
 import { useCustomTheme } from 'resources/theme';
 import ChangeView from './ChangeView';
+import CommonStack from 'navigation/CommonStack';
 
 //set up routes
 const ReportStack = createNativeStackNavigator<ReportParamList>();
@@ -21,6 +22,7 @@ function ReportNavigation() {
       backgroundColor: colors.primary,
     },
     headerTintColor: 'white',
+    headerBackTitleVisible: false,
   };
   return (
     <ReportStack.Navigator initialRouteName={HOME_REPORT} screenOptions={rootOptions}>
@@ -28,10 +30,11 @@ function ReportNavigation() {
         name={HOME_REPORT}
         component={HomeReport}
         options={{
-          title: 'Báo cáo và phân tích',
+          title: 'Phân tích và báo cáo',
           headerRight: (props) => <ChangeView {...props} />,
         }}
       />
+      <ReportStack.Group>{CommonStack({ Stack: ReportStack })}</ReportStack.Group>
     </ReportStack.Navigator>
   );
 }

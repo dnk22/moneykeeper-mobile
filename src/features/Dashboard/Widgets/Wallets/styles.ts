@@ -29,9 +29,11 @@ export const styles = StyleSheet.create({
   },
   amountView: {
     rowGap: 5,
+    width: '100%',
   },
   amount: {
     fontWeight: 'bold',
+    width: '100%',
   },
   noData: {
     padding: 10,
@@ -44,5 +46,10 @@ export const styles = StyleSheet.create({
     borderRadius: 30,
     padding: 10,
     marginBottom: 5,
+  },
+  accountIcon: {
+    position: 'absolute',
+    bottom: 8,
+    right: 10,
   },
 });

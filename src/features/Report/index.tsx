@@ -2,17 +2,18 @@ import React from 'react';
 import { View, ScrollView, SafeAreaView } from 'react-native';
 import { selectReportViewSettings } from 'store/app/app.selector';
 import { useAppSelector } from 'store/index';
-import Item from './Item';
+import { FINANCE_STATEMENT } from 'navigation/constants';
+import Card from './Card';
 import styles from './styles';
 
 const data = [
   {
-    name: 'Tình hình tài chính',
-    link: 'financial-statement',
+    name: 'Tổng quan tài sản',
+    link: FINANCE_STATEMENT,
     icon: 'statementReport',
   },
   {
-    name: 'Báo cáo thu chi',
+    name: 'Phân tích',
     link: 'income-expense-report',
     icon: 'expenseIncomeReport',
   },
@@ -34,10 +35,10 @@ function HomeReport() {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.list}>
         <View style={styles.row}>
-          {data.map((item, key) => {
+          {data.map((item) => {
             return (
               <View key={item.link}>
-                <Item item={item} isGridView={getReportView} />
+                <Card item={item} isGridView={getReportView} />
               </View>
             );
           })}

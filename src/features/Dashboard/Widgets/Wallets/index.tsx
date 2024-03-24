@@ -9,7 +9,6 @@ import { useCustomTheme } from 'resources/theme';
 import { formatNumber } from 'utils/math';
 import {
   ACCOUNT,
-  ACCOUNTTAB,
   ACCOUNT_CREDIT_CARD_DETAIL,
   ACCOUNT_NORMAL_DETAIL,
   ADD_ACCOUNT,
@@ -17,7 +16,7 @@ import {
 import { ACCOUNT_CATEGORY_ID } from 'utils/constant';
 import { styles } from './styles';
 
-function Wallets() {
+function Wallets({ title }: { title: string }) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation<any>();
   const [accounts, setAccount] = useState([]);
@@ -32,22 +31,17 @@ function Wallets() {
     const { id, accountName, accountTypeId, creditCardLimit } = account;
     switch (accountTypeId) {
       case ACCOUNT_CATEGORY_ID.CREDITCARD:
-        navigation.navigate(ACCOUNT, {
-          screen: ACCOUNT_CREDIT_CARD_DETAIL,
-          params: {
-            accountId: id,
-            accountName,
-            creditCardLimit,
-          },
+        navigation.navigate(ACCOUNT_CREDIT_CARD_DETAIL, {
+          accountId: id,
+          accountName,
+          creditCardLimit,
         });
         break;
       default:
-        navigation.navigate(ACCOUNT, {
-          screen: ACCOUNT_NORMAL_DETAIL,
-          params: {
-            accountId: id,
-            accountName,
-          },
+        navigation.navigate(ACCOUNT);
+        navigation.navigate(ACCOUNT_NORMAL_DETAIL, {
+          accountId: id,
+          accountName,
         });
         break;
     }
@@ -60,28 +54,29 @@ function Wallets() {
           <SvgIcon name="accountBG" width={155} height={100} style={{ position: 'absolute' }} />
           <View style={styles.itemTop}>
             <View style={styles.amountView}>
-              <RNText style={styles.title}>Số dư:</RNText>
+              <RNText style={styles.title} fontSize={13}>
+                Số dư:
+              </RNText>
               <RNText style={styles.amount}>{formatNumber(item.closingAmount, true)}</RNText>
             </View>
-            <IconComponent name={item.accountLogo} />
           </View>
           <RNText style={styles.title} fontSize={12}>
             {item.accountName}
           </RNText>
+          <IconComponent name={item.accountLogo} style={styles.accountIcon} />
         </View>
       </PressableHaptic>
     );
   };
 
   const onNavigateAddAccount = () => {
-    navigation.navigate(ACCOUNT, { screen: ACCOUNTTAB });
-    setTimeout(() => navigation.navigate(ADD_ACCOUNT), 0);
+    navigation.navigate(ADD_ACCOUNT);
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <RNText preset="widgetTitle">Ví của bạn</RNText>
+        <RNText preset="widgetTitle">{title}</RNText>
         {!!accounts.length && (
           <PressableHaptic onPress={() => navigation.navigate(ACCOUNT)}>
             <RNText preset="widgetViewMore">Xem tất cả</RNText>

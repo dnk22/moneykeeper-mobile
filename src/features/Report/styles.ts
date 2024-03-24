@@ -25,18 +25,19 @@ const styles = StyleSheet.create({
     margin: 5,
     position: 'relative',
     borderRadius: 10,
+    overflow: 'hidden',
   },
   cardContent: {
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
   textViewHolder: {
+    zIndex: 998,
     width: '100%',
     position: 'absolute',
     bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.4)',
     paddingHorizontal: 10,
-    paddingVertical: 13,
+    paddingVertical: 8,
     alignItems: 'center',
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
@@ -49,6 +50,7 @@ const styles = StyleSheet.create({
   },
   textOnImage: {
     color: 'white',
+    zIndex: 1000,
   },
 });
 export default styles;

@@ -3,16 +3,16 @@ import { View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import isEqual from 'react-fast-compare';
 import { useCustomTheme } from 'resources/theme';
-import { IconComponent, RNText, SvgIcon } from 'components/index';
+import { IconComponent, RNText } from 'components/index';
 import { queryRecentTransaction } from 'database/querying';
 import { TTransactions } from 'database/types';
-import { styles } from './styles';
-import { isToday, isYesterday, parseISO } from 'date-fns';
+import { isToday, isYesterday } from 'date-fns';
 import { formatDateLocal } from 'utils/date';
 import { formatNumber } from 'utils/math';
 import { TRANSACTION_TYPE } from 'utils/constant';
+import { styles } from './styles';
 
-function RecentTransactions() {
+function RecentTransactions({ title }: { title: string }) {
   const { colors } = useCustomTheme();
   const [transactionList, setTransactionList] = useState<TTransactions[]>([]);
 
@@ -61,17 +61,17 @@ function RecentTransactions() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <RNText preset="widgetTitle">Ghi chép gần đây</RNText>
+        <RNText preset="widgetTitle">{title}</RNText>
         <RNText preset="widgetViewMore">Xem tất cả</RNText>
       </View>
       {!transactionList.length && (
         <View
-          style={{
-            alignItems: 'center',
-            paddingVertical: 20,
-            backgroundColor: colors.surface,
-            borderRadius: 10,
-          }}
+          style={[
+            styles.emptyView,
+            {
+              backgroundColor: colors.surface,
+            },
+          ]}
         >
           <RNText color="red">Chưa có ghi chép nào gần đây</RNText>
         </View>

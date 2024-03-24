@@ -52,7 +52,7 @@ function Notifications({ value, onValueChange }: NotificationsProps) {
         />
       </Pressable>
       {notiList.map((item) => (
-        <Pressable style={styles.itemNotification}>
+        <Pressable style={styles.itemNotification} key={item.value}>
           <RNText>{item.label}</RNText>
           <CheckboxComponent
             type="checkbox"

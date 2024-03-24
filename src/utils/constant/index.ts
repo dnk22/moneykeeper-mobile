@@ -51,6 +51,7 @@ export const MAP_LEND_BORROW: any = {
   ['REPAYMENT']: TRANSACTION_TYPE.EXPENSE,
 };
 
+
 export const MATERIAL_COLOR = [
   '#F44336',
   '#2196F3',

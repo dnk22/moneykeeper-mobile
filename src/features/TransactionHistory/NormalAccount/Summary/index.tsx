@@ -18,7 +18,6 @@ function Summary({ accountId }: { accountId: string }) {
     totalIncome: 0,
     totalExpense: 0,
   });
-  console.log(refreshTransactionHistory,'refreshTransactionHistory');
 
   useFocusEffect(
     useCallback(() => {

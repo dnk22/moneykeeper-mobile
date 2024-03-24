@@ -20,7 +20,7 @@ function Dashboard() {
           widgetOrder.map((item) => {
             if (item.isActive) {
               const Widget = WIDGET_IMPORT_LIST[item.key].default;
-              return <Widget key={item.key} />;
+              return <Widget key={item.key} title={item.label} />;
             }
           })}
       </ScrollView>

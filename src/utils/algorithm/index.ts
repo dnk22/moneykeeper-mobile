@@ -25,13 +25,18 @@ export const groupAccountDataByValue = (
     [key: string]: {
       title: string;
       data: TAccount[];
+      amount: number;
+      accountTypeId?: any;
     };
   } = {};
   data.forEach((item: TAccount) => {
     if (!groupedData[item.accountTypeId]) {
-      groupedData[item.accountTypeId] = { title: '', data: [] };
+      groupedData[item.accountTypeId] = { title: '', data: [], amount: 0 };
     }
     groupedData[item.accountTypeId].title = item.accountTypeName;
+    groupedData[item.accountTypeId].accountTypeId = item.accountTypeId;
+    groupedData[item.accountTypeId].amount = groupedData[item.accountTypeId].amount +=
+      item?.closingAmount || 0;
     groupedData[item.accountTypeId].data.push(item);
   });
 
@@ -142,4 +147,11 @@ export function groupTransactionsByDay(data: TTransactions[]): GroupedTransactio
   });
 
   return groupedData;
+}
+
+export function getTotalAmount(data: any[]) {
+  if (!data.length) {
+    return 0;
+  }
+  return data.reduce((total, current) => (total += current.value), 0);
 }
