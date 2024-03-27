@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   ADD_ACCOUNT,
   ACCOUNT_NORMAL_DETAIL,
@@ -13,9 +14,9 @@ import AddTransactions from 'features/Transaction/AddTransaction';
 import ExpenseIncomeDetail from 'features/Report/ExpenseIncomeDetail';
 import FinancialStatement from 'features/Report/FinancialStatement';
 
-function CommonStack({ Stack }: { Stack: any }) {
+function CommonStack({ Stack, parentName }: { Stack: any; parentName?: string }): any {
   return (
-    <>
+    <React.Fragment key={parentName}>
       <Stack.Screen
         name={ADD_ACCOUNT}
         options={({ route }) => ({
@@ -37,8 +38,11 @@ function CommonStack({ Stack }: { Stack: any }) {
         })}
         component={TransactionHistoryCreditCard}
       />
-      <Stack.Screen name={CREATE_TRANSACTION_FROM_ACCOUNT} component={AddTransactions} />
-
+      <Stack.Screen
+        key={CREATE_TRANSACTION_FROM_ACCOUNT}
+        name={CREATE_TRANSACTION_FROM_ACCOUNT}
+        component={AddTransactions}
+      />
       <Stack.Screen
         name={EXPENSE_INCOME_DETAIL}
         component={ExpenseIncomeDetail}
@@ -53,7 +57,7 @@ function CommonStack({ Stack }: { Stack: any }) {
           title: 'Tổng quan tài sản',
         }}
       />
-    </>
+    </React.Fragment>
   );
 }
 

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import AppNavigators from 'navigation/index';
 import { MyAppTheme } from 'resources/theme';
 import { PersistGate } from 'redux-persist/integration/react';
-import { Loading, StatusBar } from 'components/index';
+import { StatusBar } from 'components/index';
 import RnKeyboard from 'rn-keyboard'; // <-- Import here
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
@@ -14,9 +14,14 @@ import { importTransactionCategoryDataLocal } from 'services/api/transactionsCat
 import KeyboardCalculator from 'features/Transaction/AddTransaction/common/InputCalculator/KeyboardCalculator';
 import BlurScreen from 'features/BlurScreen';
 import Toast from 'react-native-toast-message';
-import { persistor, store } from './store';
+import {
+  SafeAreaProvider,
+  SafeAreaView,
+  initialWindowMetrics,
+} from 'react-native-safe-area-context';
 import { openSettings, requestNotifications } from 'react-native-permissions';
 import { showToast } from 'utils/system';
+import { persistor, store } from './store';
 
 LogBox.ignoreAllLogs();
 
@@ -43,20 +48,27 @@ const App = () => {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <StatusBar />
-      <BlurScreen />
-      <Provider store={store}>
-        <PersistGate loading={<Loading style={{ flex: 1 }} />} persistor={persistor}>
-          <NavigationContainer theme={theme}>
-            <BottomSheetModalProvider>
-              <AppNavigators />
-            </BottomSheetModalProvider>
-          </NavigationContainer>
-        </PersistGate>
-      </Provider>
-      <Toast />
-    </GestureHandlerRootView>
+    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+      <NavigationContainer theme={theme}>
+        <SafeAreaView
+          style={{ flex: 1, backgroundColor: theme.colors.primary }}
+          edges={['top', 'right', 'left']}
+        >
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <StatusBar />
+            <BlurScreen />
+            <Provider store={store}>
+              <PersistGate persistor={persistor}>
+                <BottomSheetModalProvider>
+                  <AppNavigators />
+                </BottomSheetModalProvider>
+              </PersistGate>
+            </Provider>
+            <Toast />
+          </GestureHandlerRootView>
+        </SafeAreaView>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 };
 

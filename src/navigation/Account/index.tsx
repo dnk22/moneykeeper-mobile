@@ -2,7 +2,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ACCOUNTTAB } from 'navigation/constants';
 import { AccountStackParamList } from 'navigation/types';
 import { useCustomTheme } from 'resources/theme';
-
 import AccountTab from './tab';
 
 // header custom icon
@@ -12,7 +11,6 @@ import CommonStack from 'navigation/CommonStack';
 
 //set up routes
 const AccountStack = createNativeStackNavigator<AccountStackParamList>();
-export const Props = typeof AccountStack;
 
 function AccountNavigation() {
   const { colors } = useCustomTheme();

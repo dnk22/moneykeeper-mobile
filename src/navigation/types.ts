@@ -19,7 +19,6 @@ import {
   HOME_REPORT,
   BANK_NAVIGATION,
   BANK_HOME_LIST,
-  CREATE_TRANSACTION_FROM_ACCOUNT,
   PARENT_LIST,
   ICON_SELECT,
   EXPENSE_CATEGORY,
@@ -48,6 +47,20 @@ export type RootStackScreenProps<T extends keyof RootStackParamList> = NativeSta
   T
 >;
 
+export type CommonStackParamsList = {
+  [ADD_ACCOUNT]: {
+    accountId?: string;
+    bankId?: string;
+    toAccountId?: string;
+  };
+  [FINANCE_STATEMENT]: undefined;
+  [EXPENSE_INCOME_DETAIL]: {
+    dateView: string;
+  };
+  [ACCOUNT_NORMAL_DETAIL]: { accountId: string; accountName: string };
+  [ACCOUNT_CREDIT_CARD_DETAIL]: { accountId: string; accountName: string; creditCardLimit: number };
+};
+
 /** home stack navigation */
 export type HomeStackParamList = {
   [DASHBOARD]: DashboardParamList;
@@ -61,30 +74,17 @@ export type HomeStackParamListProps<T extends keyof HomeStackParamList> = Bottom
   T
 >;
 
-export type DashboardParamList = {
+export type DashboardParamList = CommonStackParamsList & {
   [DASHBOARDHOME]: undefined;
   [NOTIFICATION]: undefined;
-  [FINANCE_STATEMENT]: undefined;
-  [EXPENSE_INCOME_DETAIL]: {
-    dateView: string;
-  };
 };
 
 export type DashboardStackParamListProps<T extends keyof DashboardParamList> =
   NativeStackScreenProps<DashboardParamList, T>;
 
 /** account stack navigation */
-export type AccountStackParamList = {
+export type AccountStackParamList = CommonStackParamsList & {
   [ACCOUNTTAB]: undefined;
-  [ADD_ACCOUNT]: { accountId?: string; bankId?: string; toAccountId?: string };
-  [ACCOUNT_NORMAL_DETAIL]: { accountId: string; accountName: string };
-  [ACCOUNT_CREDIT_CARD_DETAIL]: { accountId: string; accountName: string; creditCardLimit: number };
-  [CREATE_TRANSACTION_FROM_ACCOUNT]: {
-    transactionId?: string;
-    categoryId?: string;
-    accountId?: string;
-    transactionType?: TRANSACTION_TYPE;
-  };
 };
 export type AccountStackParamListProps<T extends keyof AccountStackParamList> =
   NativeStackScreenProps<AccountStackParamList, T>;
@@ -127,7 +127,7 @@ export type TransactionCategoryListParamsProps<T extends keyof TransactionCatego
   MaterialTopTabScreenProps<TransactionCategoryListParams, T>;
 
 /** report list stack navigation */
-export type ReportParamList = {
+export type ReportParamList = CommonStackParamsList & {
   [HOME_REPORT]: undefined;
 };
 export type ReportParamListProps<T extends keyof ReportParamList> = NativeStackScreenProps<

@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeBottomBar from '../elements/HomeBottomBar';
 import { SvgIcon } from 'components/index';
 import { ACCOUNT, DASHBOARD, SETTINGS, TRANSACTIONS, REPORT } from '../constants';
+import HomeBottomBar from '../elements/HomeBottomBar';
 
 // routes screen
 import Settings from 'features/Settings';

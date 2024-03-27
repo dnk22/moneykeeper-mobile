@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     height: bottomBarFlatHeight,
     borderTopColor: '#F2F2F2',
     borderTopWidth: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   activeBackground: {
     position: 'absolute',

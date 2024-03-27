@@ -39,15 +39,7 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
   const { name: routerName } =
     useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
   const lendBorrowData = useAppSelector((state) => selectLendBorrowData(state));
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    getValues,
-    watch,
-    reset,
-    formState: { errors },
-  } = useFormContext<any>();
+  const { control, handleSubmit, setValue, getValues, watch, reset } = useFormContext<any>();
 
   // Use `setOptions` to update the button that submit form
   useEffect(() => {
@@ -104,28 +96,26 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
     }
   };
 
-  const getCategoryTabTarget = (currentCategory?: TTransactionsCategory) => {
-    const { transactionType } = getValues();
-    if (currentCategory) {
-      if (Object.values(TRANSACTION_LEND_BORROW_NAME).includes(currentCategory.categoryName)) {
-        return LEND_BORROW;
-      }
-    }
-    if (transactionType === TRANSACTION_TYPE.EXPENSE) {
-      return EXPENSE_CATEGORY;
-    }
-    if (transactionType === TRANSACTION_TYPE.INCOME) {
-      return INCOME_CATEGORY;
-    }
-  };
-
   const handleOnCategoryPress = (item?: TTransactionsCategory) => {
-    const screenTarget = getCategoryTabTarget(item);
+    const { transactionType } = getValues();
+    let screenTarget = EXPENSE_CATEGORY;
+    if (Object.values(TRANSACTION_LEND_BORROW_NAME).includes(item?.categoryName)) {
+      screenTarget = LEND_BORROW;
+    } else {
+      const mapScreen: any = {
+        [TRANSACTION_TYPE.EXPENSE]: EXPENSE_CATEGORY,
+        [TRANSACTION_TYPE.INCOME]: INCOME_CATEGORY,
+      };
+      screenTarget = mapScreen[transactionType];
+    }
     navigation.navigate(TRANSACTION_CATEGORY, {
       screen: TRANSACTION_CATEGORY_LIST,
       params: {
         screen: screenTarget,
-        params: { idActive: getValues('categoryId'), returnScreen: routerName },
+        params: {
+          idActive: getValues('categoryId'),
+          returnScreen: routerName,
+        },
         initial: false,
       },
     });

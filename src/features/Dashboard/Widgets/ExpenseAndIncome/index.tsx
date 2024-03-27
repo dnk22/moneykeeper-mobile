@@ -7,7 +7,6 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { getExpenseIncomeInRangeDate } from 'database/querying';
 import { formatNumber } from 'utils/math';
 import { MATERIAL_COLOR } from 'utils/constant';
-import FlatList from 'components/FlatList';
 import { styles } from './styles';
 import { EXPENSE_INCOME_DETAIL } from 'navigation/constants';
 
@@ -196,20 +195,9 @@ function ExpenseAndIncome({ title }: { title: string }) {
             horizontal
             centerContent
             showsHorizontalScrollIndicator={false}
-            scrollEnabled
-            contentContainerStyle={{ height: 'auto' }}
+            contentContainerStyle={{ height: 'auto', paddingHorizontal: 10 }}
           >
-            <FlatList
-              id="categoryParentId"
-              contentContainerStyle={{ gap: 10 }}
-              scrollEnabled={false}
-              numColumns={Math.ceil(data.categoryGroup.length / 2)}
-              key={data.categoryGroup.length}
-              showsVerticalScrollIndicator={false}
-              showsHorizontalScrollIndicator={true}
-              data={data.categoryGroup}
-              renderItem={renderProgressLabel}
-            />
+            {data.categoryGroup.map((item, index) => renderProgressLabel({ item, index }))}
           </ScrollView>
         </>
       )}

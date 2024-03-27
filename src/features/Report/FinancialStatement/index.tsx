@@ -39,7 +39,6 @@ function FinanceStatement() {
       ]).then((res) => {
         const groupData = convertFinancialData(res[0], isOwnedViewType);
         const groupDebtLoan = convertDebtLoanData(res[1], isOwnedViewType);
-        console.log(groupDebtLoan, 'groupDebtLoan');
         dispatch(setDataDetailLv1([...groupData, ...groupDebtLoan]));
       });
     }, [isOwnedViewType]),

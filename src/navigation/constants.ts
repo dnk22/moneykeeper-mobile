@@ -6,9 +6,6 @@ export const HOME = 'home';
 export const DASHBOARD = 'dashboard';
 export const DASHBOARDHOME = 'dashboardHome';
 export const NOTIFICATION = 'notification';
-export const EXPENSE_INCOME_DETAIL = 'ExpenseIncomeDetail';
-export const WIDGET_SETTINGS = 'widgetSettings';
-export const FINANCE_STATEMENT = 'financeStatement';
 
 // settings screen constants
 export const SETTINGS = 'settings';
@@ -20,10 +17,6 @@ export const ACCOUNTTAB = 'accountTab';
 export const WALLET = 'wallet';
 export const SAVINGS = 'savings';
 export const ACCUMULATE = 'accumulate';
-export const ADD_ACCOUNT = 'addAccount';
-export const ACCOUNT_NORMAL_DETAIL = 'accountNormalDetail';
-export const ACCOUNT_CREDIT_CARD_DETAIL = 'accountCreditCardDetail';
-export const CREATE_TRANSACTION_FROM_ACCOUNT = 'createTransactionFromAccount';
 
 // transaction screen constants
 export const TRANSACTIONS = 'transactions';
@@ -45,3 +38,12 @@ export const HOME_REPORT = 'homeReport';
 export const BANK_NAVIGATION = 'bank';
 export const BANK_HOME_LIST = 'bankHomeList';
 export const TransactionCategoryContext = createContext({});
+
+// common screen constants
+export const CREATE_TRANSACTION_FROM_ACCOUNT = 'createTransactionFromAccount';
+export const ACCOUNT_NORMAL_DETAIL = 'accountNormalDetail';
+export const ACCOUNT_CREDIT_CARD_DETAIL = 'accountCreditCardDetail';
+export const ADD_ACCOUNT = 'addAccount';
+export const EXPENSE_INCOME_DETAIL = 'ExpenseIncomeDetail';
+export const WIDGET_SETTINGS = 'widgetSettings';
+export const FINANCE_STATEMENT = 'financeStatement';

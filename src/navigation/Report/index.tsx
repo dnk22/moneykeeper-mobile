@@ -1,7 +1,4 @@
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationOptions,
-} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HOME_REPORT } from 'navigation/constants';
 import { ReportParamList } from 'navigation/types';
 
@@ -17,15 +14,17 @@ const ReportStack = createNativeStackNavigator<ReportParamList>();
 function ReportNavigation() {
   const { colors } = useCustomTheme();
 
-  const rootOptions: NativeStackNavigationOptions = {
-    headerStyle: {
-      backgroundColor: colors.primary,
-    },
-    headerTintColor: 'white',
-    headerBackTitleVisible: false,
-  };
   return (
-    <ReportStack.Navigator initialRouteName={HOME_REPORT} screenOptions={rootOptions}>
+    <ReportStack.Navigator
+      initialRouteName={HOME_REPORT}
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: colors.primary,
+        },
+        headerTintColor: 'white',
+        headerBackTitleVisible: false,
+      }}
+    >
       <ReportStack.Screen
         name={HOME_REPORT}
         component={HomeReport}
@@ -34,7 +33,9 @@ function ReportNavigation() {
           headerRight: (props) => <ChangeView {...props} />,
         }}
       />
-      <ReportStack.Group>{CommonStack({ Stack: ReportStack })}</ReportStack.Group>
+      <ReportStack.Group>
+        {CommonStack({ Stack: ReportStack, parentName: 'HOME_REPORT' })}
+      </ReportStack.Group>
     </ReportStack.Navigator>
   );
 }
