@@ -2,9 +2,9 @@ import { StyleSheet } from 'react-native';
 import {
   CHILD_LINE_WIDTH,
   CONTAINER_PADDING,
-  ITEM_HEIGHT,
   MARGIN_LEFT,
   MARGIN_TOP,
+  CHILD_ITEM_TRANSACTION_HEIGHT,
 } from 'share/dimensions';
 import { SCREEN_WIDTH } from 'share/dimensions';
 
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   record: {
-    height: ITEM_HEIGHT,
+    height: CHILD_ITEM_TRANSACTION_HEIGHT,
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   childLine: {
     position: 'absolute',
-    top: (ITEM_HEIGHT + MARGIN_TOP) / 2,
+    top: (CHILD_ITEM_TRANSACTION_HEIGHT + MARGIN_TOP) / 2,
     width: CHILD_LINE_WIDTH,
     left: MARGIN_LEFT,
     borderStyle: 'dashed',

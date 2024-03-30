@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { ITEM_HEIGHT, MARGIN_LEFT } from 'share/dimensions';
+import { MARGIN_LEFT, CHILD_ITEM_TRANSACTION_HEIGHT } from 'share/dimensions';
 
 const styles = StyleSheet.create({
   item: {
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
     position: 'absolute',
     left: MARGIN_LEFT,
-    top: ITEM_HEIGHT,
+    top: CHILD_ITEM_TRANSACTION_HEIGHT,
     borderStyle: 'dashed',
     borderWidth: 0.6,
     borderRadius: 1,

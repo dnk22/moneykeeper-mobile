@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { RNText } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
@@ -10,7 +10,11 @@ import { useFocusEffect } from '@react-navigation/native';
 import { formatNumber } from 'utils/math';
 import { TTransactions } from 'database/types';
 import { TRANSACTION_TYPE } from 'utils/constant';
-import { ITEM_HEIGHT, MARGIN_TOP } from 'share/dimensions';
+import {
+  PARENT_ITEM_TRANSACTION_HEIGHT,
+  MARGIN_TOP,
+  CHILD_ITEM_TRANSACTION_HEIGHT,
+} from 'share/dimensions';
 import { useAppSelector } from 'store/index';
 import { selectTransactionListConfig } from 'store/app/app.selector';
 import TransactionItem from '../TransactionItem';
@@ -58,9 +62,13 @@ function HeaderItem({ date, accountId, onRefreshDate, reload }: HeaderItemProps)
     return formatDate('EEEE');
   };
 
-  const parentLineHeight = () => {
-    return ITEM_HEIGHT * (transactionLength - 1) + MARGIN_TOP * transactionLength + ITEM_HEIGHT / 2;
-  };
+  const parentLineHeight = useMemo(
+    () =>
+      CHILD_ITEM_TRANSACTION_HEIGHT * (transactionLength - 1) +
+      MARGIN_TOP * (transactionLength + 1) +
+      CHILD_ITEM_TRANSACTION_HEIGHT / 2,
+    [transactionLength],
+  );
 
   const getTotalMoneyInDay = (type: TRANSACTION_TYPE, show?: boolean) => {
     let total = 0;
@@ -83,12 +91,20 @@ function HeaderItem({ date, accountId, onRefreshDate, reload }: HeaderItemProps)
             style={[
               styles.parentLine,
               {
-                height: parentLineHeight(),
+                height: parentLineHeight,
               },
             ]}
           />
         )}
-        <View style={[styles.header, { backgroundColor: colors.surface, height: ITEM_HEIGHT }]}>
+        <View
+          style={[
+            styles.header,
+            {
+              backgroundColor: colors.surface,
+              height: PARENT_ITEM_TRANSACTION_HEIGHT,
+            },
+          ]}
+        >
           <View>
             <RNText fontSize={30} style={styles.day}>
               {formatDate('dd')}

@@ -50,13 +50,13 @@ const App = () => {
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <NavigationContainer theme={theme}>
+        <BlurScreen />
         <SafeAreaView
           style={{ flex: 1, backgroundColor: theme.colors.primary }}
           edges={['top', 'right', 'left']}
         >
           <GestureHandlerRootView style={{ flex: 1 }}>
             <StatusBar />
-            <BlurScreen />
             <Provider store={store}>
               <PersistGate persistor={persistor}>
                 <BottomSheetModalProvider>

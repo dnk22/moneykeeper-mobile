@@ -7,7 +7,11 @@ import { isToday, isYesterday, parseISO } from 'date-fns';
 import { isArray, size } from 'lodash';
 import { formatNumber } from 'utils/math';
 import { TRANSACTION_TYPE } from 'utils/constant';
-import { ITEM_HEIGHT, MARGIN_TOP } from 'share/dimensions';
+import {
+  PARENT_ITEM_TRANSACTION_HEIGHT,
+  MARGIN_TOP,
+  CHILD_ITEM_TRANSACTION_HEIGHT,
+} from 'share/dimensions';
 import { GroupedTransactionProps } from 'utils/types';
 import { useAppSelector } from 'store/index';
 import { selectTransactionListConfig } from 'store/app/app.selector';
@@ -30,9 +34,13 @@ function HeaderItem({ transaction }: { transaction: GroupedTransactionProps }) {
     return formatDate('EEEE');
   };
 
-  const parentLineHeight = useMemo(() => {
-    return ITEM_HEIGHT * (transactionLength - 1) + MARGIN_TOP * transactionLength + ITEM_HEIGHT / 2;
-  }, [transactionLength]);
+  const parentLineHeight = useMemo(
+    () =>
+      CHILD_ITEM_TRANSACTION_HEIGHT * (transactionLength - 1) +
+      MARGIN_TOP * transactionLength +
+      CHILD_ITEM_TRANSACTION_HEIGHT / 2,
+    [transactionLength],
+  );
 
   const getTotalMoneyInDay = (type: TRANSACTION_TYPE, show?: boolean) => {
     let total = 0;
@@ -66,7 +74,15 @@ function HeaderItem({ transaction }: { transaction: GroupedTransactionProps }) {
             ]}
           />
         )}
-        <View style={[styles.header, { backgroundColor: colors.surface, height: ITEM_HEIGHT }]}>
+        <View
+          style={[
+            styles.header,
+            {
+              backgroundColor: colors.surface,
+              height: PARENT_ITEM_TRANSACTION_HEIGHT,
+            },
+          ]}
+        >
           <View>
             <RNText fontSize={30} style={styles.day}>
               {formatDate('dd')}
