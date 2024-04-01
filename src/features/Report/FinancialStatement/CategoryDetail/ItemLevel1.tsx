@@ -1,13 +1,13 @@
-import { IconComponent, RNText, TouchableHighlightComponent } from 'components/index';
 import { View } from 'react-native';
+import { IconComponent, RNText, TouchableHighlightComponent } from 'components/index';
 import { formatNumber } from 'utils/math';
-import { useAppDispatch } from 'store/index';
-import { dataLevelProps } from '../types';
-import { setDataDetailLv2, setPageView } from '../reducer/financialStatement.slice';
-import styles from './styles';
 import { MATERIAL_COLOR } from 'utils/constant';
+import { useAppDispatch } from 'store/index';
+import { setDataDetailLv2, setPageView } from '../reducer/financialStatement.slice';
+import { dataLevelProps } from '../types';
+import styles from './styles';
 
-function AccountItem({
+function ItemLevel1({
   item,
   totalAmount,
   index,
@@ -18,13 +18,13 @@ function AccountItem({
 }) {
   const dispatch = useAppDispatch();
 
-  const setDataDetail = () => {
-    dispatch(setDataDetailLv2(item.data));
-    dispatch(setPageView({ page: 1, resetLv2: false }));
+  const percent = () => {
+    return `${Number(((item.value / totalAmount) * 100).toFixed(2))}%`;
   };
 
-  const percent = () => {
-    return `${((item.value / totalAmount) * 100).toFixed(2)}%`;
+  const setDataDetail = () => {
+    dispatch(setDataDetailLv2(item.accountName || ''));
+    dispatch(setPageView({ page: 1, resetLv2: false }));
   };
 
   return (
@@ -45,16 +45,18 @@ function AccountItem({
             </RNText>
           </View>
         </View>
-        <View style={[styles.accountName, styles.amountCol]}>
-          <RNText fontSize={12} style={styles.amount} preset="subTitle">
-            {percent()}
-          </RNText>
-          <RNText fontSize={15} style={styles.amount}>
-            {formatNumber(item.value, true)}
-          </RNText>
+        <View style={styles.rightCol}>
+          <View style={[styles.accountName, styles.amountCol]}>
+            <RNText fontSize={12} style={styles.amount} preset="subTitle">
+              {percent()}
+            </RNText>
+            <RNText fontSize={15} style={styles.amount}>
+              {formatNumber(item.value, true)}
+            </RNText>
+          </View>
         </View>
       </View>
     </TouchableHighlightComponent>
   );
 }
-export default AccountItem;
+export default ItemLevel1;

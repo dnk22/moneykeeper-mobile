@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   col: {
     alignItems: 'center',
@@ -36,6 +37,14 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  settingsDot: {
+    transform: [{ rotate: '90deg' }],
+  },
+  amountView: {
+    gap: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 export default styles;

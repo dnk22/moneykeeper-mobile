@@ -16,13 +16,18 @@ import { MATERIAL_COLOR } from 'utils/constant';
 function PieChart() {
   const { colors } = useCustomTheme();
   const dataLv1 = useAppSelector((state) => selectDataDetailLevel1(state));
-  const dataLv2 = useAppSelector((state) => selectDataDetailLevel2(state));
+  const isItemLevel2Selected = useAppSelector((state) => selectDataDetailLevel2(state));
   const isOwnedViewType = useAppSelector((state) => selectViewType(state));
 
-  const dataFocus = useMemo(
-    () => (dataLv2 && dataLv2.length ? dataLv2 : dataLv1),
-    [dataLv1, dataLv2],
-  );
+  const dataFocus = useMemo(() => {
+    if (isItemLevel2Selected) {
+      return (
+        dataLv1 && dataLv1.find((item) => item.accountName === isItemLevel2Selected)?.data
+      );
+    } else {
+      return dataLv1;
+    }
+  }, [dataLv1, isItemLevel2Selected]);
 
   const pieData = useMemo(() => {
     return [...dataFocus].map((item, index) => ({
@@ -30,10 +35,10 @@ function PieChart() {
       value: item.value,
       text: item.relatedPerson || item.accountName,
     }));
-  }, [dataLv1, dataLv2]);
+  }, [dataFocus]);
 
   const totalCurrentAccount = () => {
-    if (!pieData.length) {
+    if (!pieData || !pieData.length) {
       return 0;
     }
     return formatNumber(
@@ -43,12 +48,12 @@ function PieChart() {
   };
 
   const innerTitle = useMemo(() => {
-    if (dataLv2 && dataLv2.length) {
-      return dataLv2[0].categoryName || dataLv2[0].accountTypeName;
+    if (isItemLevel2Selected) {
+      return dataFocus[0].categoryName || dataFocus[0].accountTypeName;
     } else {
       return isOwnedViewType ? 'Tổng Sở hữu' : 'Tổng dư nợ';
     }
-  }, [isOwnedViewType, dataLv2]);
+  }, [isOwnedViewType, isItemLevel2Selected]);
 
   const renderPieInnerComponent = () => {
     return (

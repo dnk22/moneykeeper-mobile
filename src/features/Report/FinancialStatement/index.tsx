@@ -11,7 +11,11 @@ import {
 import { formatNumber } from 'utils/math';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { setDataDetailLv1, setTotal, setViewType } from './reducer/financialStatement.slice';
-import { selectTotal, selectViewType } from './reducer/financialStatement.selector';
+import {
+  selectRefreshData,
+  selectTotal,
+  selectViewType,
+} from './reducer/financialStatement.selector';
 import { convertDebtLoanData, convertFinancialData } from './helper';
 import PieChart from './PieChart';
 import CategoryDetail from './CategoryDetail';
@@ -21,6 +25,7 @@ function FinanceStatement() {
   const { colors } = useCustomTheme();
   const dispatch = useAppDispatch();
   const isOwnedViewType = useAppSelector((state) => selectViewType(state));
+  const isRefreshData = useAppSelector((state) => selectRefreshData(state));
   const total = useAppSelector((state) => selectTotal(state));
 
   useFocusEffect(
@@ -41,7 +46,7 @@ function FinanceStatement() {
         const groupDebtLoan = convertDebtLoanData(res[1], isOwnedViewType);
         dispatch(setDataDetailLv1([...groupData, ...groupDebtLoan]));
       });
-    }, [isOwnedViewType]),
+    }, [isOwnedViewType, isRefreshData]),
   );
 
   const onChangeViewType = (index: any) => {

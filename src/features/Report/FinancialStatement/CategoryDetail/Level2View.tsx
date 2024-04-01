@@ -1,15 +1,24 @@
-import { useMemo } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { SectionListData, View } from 'react-native';
-import { useAppSelector } from 'store/index';
 import { RNText, SectionListComponent } from 'components/index';
-import ItemSettingsModal from 'features/AccountDashboard/ItemSettingsModal';
-import { selectDataDetailLevel2 } from '../reducer/financialStatement.selector';
-import AccountItem from './AccountItem';
 import { getTotalAmount } from 'utils/algorithm';
+import ItemSettingsModal from 'features/AccountDashboard/ItemSettingsModal';
+import { TAccount } from 'database/types';
+import { useAppDispatch, useAppSelector } from 'store/index';
+import ItemLevel2 from './ItemLevel2';
 import { dataLevelProps } from '../types';
+import { setRefreshData } from '../reducer/financialStatement.slice';
+import {
+  selectDataDetailLevel1,
+  selectDataDetailLevel2,
+} from '../reducer/financialStatement.selector';
 
 function Level2View() {
-  const dataLevel2 = useAppSelector((state) => selectDataDetailLevel2(state)) || [];
+  const dispatch = useAppDispatch();
+  const [isShowModal, setIsShowModal] = useState(false);
+  const currentAccountPressed = useRef<TAccount | any>(null);
+  const dataLevel1 = useAppSelector((state) => selectDataDetailLevel1(state)) || [];
+  const isItemLevel2Selected = useAppSelector((state) => selectDataDetailLevel2(state)) || [];
 
   const dataFormatted = useMemo(() => {
     const groupedData: {
@@ -20,6 +29,16 @@ function Level2View() {
       };
     } = {};
 
+    /** filter data for level2 with accountName selected */
+    const dataLevel2 =
+      dataLevel1 && dataLevel1.find((item) => item.accountName === isItemLevel2Selected)?.data;
+    if (!dataLevel2 || !dataLevel2.length) {
+      return {
+        original: [],
+        formatted: [],
+      };
+    }
+    /** selection list data format */
     dataLevel2.forEach((item: any) => {
       if (!groupedData[item.isActive]) {
         groupedData[item.isActive] = { title: '', data: [], amount: 0 };
@@ -29,12 +48,15 @@ function Level2View() {
         item?.closingAmount || 0;
       groupedData[item.isActive].data.push(item);
     });
-    return Object.values(groupedData).reverse();
-  }, [dataLevel2]);
+    return {
+      original: dataLevel2,
+      formatted: Object.values(groupedData).reverse(),
+    };
+  }, [dataLevel1, isItemLevel2Selected]);
 
   const totalCurrentAccount = useMemo(() => {
-    return getTotalAmount(dataLevel2);
-  }, [dataLevel2]);
+    return getTotalAmount(dataFormatted.original);
+  }, [dataFormatted.original]);
 
   const renderSectionHeader = ({ section }: { section: SectionListData<any> }) => {
     const { title } = section;
@@ -46,20 +68,40 @@ function Level2View() {
     );
   };
 
+  const onToggleModal = () => {
+    setIsShowModal(!isShowModal);
+  };
+
+  const onActionPress = (item: dataLevelProps) => {
+    currentAccountPressed.current = item;
+    onToggleModal();
+  };
+
   const renderItem = ({ item, index }: { item: dataLevelProps; index: number }) => {
-    return <AccountItem item={item} index={index} totalAmount={totalCurrentAccount} />;
+    return (
+      <ItemLevel2
+        item={item}
+        index={index}
+        totalAmount={totalCurrentAccount}
+        onActionPress={onActionPress}
+      />
+    );
+  };
+
+  const onActionDone = () => {
+    dispatch(setRefreshData());
   };
 
   return (
     <View style={{ flex: 1, marginTop: 10 }}>
-      {/* <ItemSettingsModal
-        isVisible={isShowItemSettingsModal}
+      <ItemSettingsModal
+        isVisible={isShowModal}
         onToggleModal={onToggleModal}
         account={currentAccountPressed.current}
-        onActionPressDone={fetchListAccount}
-      /> */}
+        onActionPressDone={onActionDone}
+      />
       <SectionListComponent
-        sections={dataFormatted}
+        sections={dataFormatted.formatted}
         initialNumToRender={8}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}

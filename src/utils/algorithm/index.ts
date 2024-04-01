@@ -150,7 +150,7 @@ export function groupTransactionsByDay(data: TTransactions[]): GroupedTransactio
 }
 
 export function getTotalAmount(data: any[]) {
-  if (!data.length) {
+  if (!data || !data.length) {
     return 0;
   }
   return data.reduce((total, current) => (total += current.value), 0);

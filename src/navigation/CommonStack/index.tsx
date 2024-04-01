@@ -41,6 +41,9 @@ function CommonStack({ Stack, parentName }: { Stack: any; parentName?: string })
       <Stack.Screen
         key={CREATE_TRANSACTION_FROM_ACCOUNT}
         name={CREATE_TRANSACTION_FROM_ACCOUNT}
+        options={() => ({
+          title: '',
+        })}
         component={AddTransactions}
       />
       <Stack.Screen
