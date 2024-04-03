@@ -47,3 +47,7 @@ export const ADD_ACCOUNT = 'addAccount';
 export const EXPENSE_INCOME_DETAIL = 'ExpenseIncomeDetail';
 export const WIDGET_SETTINGS = 'widgetSettings';
 export const FINANCE_STATEMENT = 'financeStatement';
+export const EXPENSE_INCOME_REPORT = 'expenseIncomeReport';
+export const EXPENSE_INCOME_ANALYZE = 'expenseIncomeAnalyze';
+export const DEBT_LOAN_REPORT = 'debtLoanReport';
+export const CONTACT_REPORT = 'contactReport';

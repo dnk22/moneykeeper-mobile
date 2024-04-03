@@ -6,13 +6,17 @@ import {
   ACCOUNT_CREDIT_CARD_DETAIL,
   EXPENSE_INCOME_DETAIL,
   FINANCE_STATEMENT,
+  EXPENSE_INCOME_REPORT,
+  DEBT_LOAN_REPORT,
 } from 'navigation/constants';
 import AddAccount from 'features/AddAccount';
 import TransactionHistoryNormal from 'features/TransactionHistory/NormalAccount';
 import TransactionHistoryCreditCard from 'features/TransactionHistory/CreditCardAccount';
 import AddTransactions from 'features/Transaction/AddTransaction';
-import ExpenseIncomeDetail from 'features/Report/ExpenseIncomeDetail';
+import ExpenseIncome from 'features/Report/ExpenseIncome';
 import FinancialStatement from 'features/Report/FinancialStatement';
+import ExpenseIncomeReport from 'features/Report/ExpenseIncome';
+import DebtLoanReport from 'features/Report/DebtLoan';
 
 function CommonStack({ Stack, parentName }: { Stack: any; parentName?: string }): any {
   return (
@@ -48,7 +52,7 @@ function CommonStack({ Stack, parentName }: { Stack: any; parentName?: string })
       />
       <Stack.Screen
         name={EXPENSE_INCOME_DETAIL}
-        component={ExpenseIncomeDetail}
+        component={ExpenseIncome}
         options={({ route: { params } }) => ({
           title: `Chi tiêu ${params.dateView.toLowerCase()}`,
         })}
@@ -58,6 +62,20 @@ function CommonStack({ Stack, parentName }: { Stack: any; parentName?: string })
         component={FinancialStatement}
         options={{
           title: 'Tổng quan tài sản',
+        }}
+      />
+      <Stack.Screen
+        name={EXPENSE_INCOME_REPORT}
+        component={ExpenseIncomeReport}
+        options={{
+          title: 'Thu & Chi',
+        }}
+      />
+      <Stack.Screen
+        name={DEBT_LOAN_REPORT}
+        component={DebtLoanReport}
+        options={{
+          title: 'Theo dõi Vay Nợ',
         }}
       />
     </React.Fragment>

@@ -89,10 +89,17 @@ function ExpenseAndIncome({ title }: { title: string }) {
     return ((value / data.totalAmount.expense) * 100).toFixed(2);
   };
 
+  const onNavigationToReport = () => {
+    if (!data.categoryGroup.length) {
+      return;
+    }
+    navigation.navigate(EXPENSE_INCOME_DETAIL, { dateView: renderMenuTitle() });
+  };
+
   return (
     <PressableHaptic
       style={[styles.container, { backgroundColor: colors.surface }]}
-      onPress={() => navigation.navigate(EXPENSE_INCOME_DETAIL, { dateView: renderMenuTitle() })}
+      onPress={onNavigationToReport}
     >
       <View style={styles.top}>
         <RNText preset="widgetTitle">{title}</RNText>
