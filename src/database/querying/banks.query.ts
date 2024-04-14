@@ -79,7 +79,6 @@ export const importDefaultBanksData = async () => {
     });
     var endTime = performance.now();
     console.log(`Import bank data: ${Number((endTime - startTime) / 1000).toFixed(5)} s`);
-    console.log('Import completed!');
   } catch (error) {
     console.log('Import failed: ', error);
   }

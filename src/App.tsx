@@ -9,8 +9,6 @@ import { StatusBar } from 'components/index';
 import RnKeyboard from 'rn-keyboard'; // <-- Import here
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { importBankDataLocal } from 'services/api/banks';
-import { importTransactionCategoryDataLocal } from 'services/api/transactionsCategory';
 import KeyboardCalculator from 'features/Transaction/AddTransaction/common/InputCalculator/KeyboardCalculator';
 import BlurScreen from 'features/BlurScreen';
 import Toast from 'react-native-toast-message';
@@ -34,18 +32,12 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    prepareInitData();
     requestNotifications(['alert', 'sound']).then(({ status, settings }) => {
       if (['blocked', 'denied'].includes(status)) {
         // openSettings().catch(() => showToast({ type: 'error', text2: 'Không thể mở cài đặt' }));
       }
     });
   }, []);
-
-  async function prepareInitData() {
-    importBankDataLocal();
-    importTransactionCategoryDataLocal();
-  }
 
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>

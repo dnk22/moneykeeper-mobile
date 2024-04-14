@@ -13,6 +13,8 @@ import {
 } from 'date-fns';
 import { ACCOUNT_CATEGORY_ID, TRANSACTION_TYPE } from 'utils/constant';
 import { get } from 'lodash';
+import { DebtLoanTypes } from 'utils/types';
+import { TGetDebtLoanDetailByPerson } from 'utils/types/request.type';
 
 export const queryGetAllBalance = async () => {
   const query = `SELECT * FROM ${BALANCE}`;
@@ -140,9 +142,8 @@ export const getCurrentBalanceAllAccount = async () => {
       )
       .unsafeFetchRaw();
     const debtLoan = await database
-      .get<AccountModel>(ACCOUNTS)
+      .get<TransactionModel>(TRANSACTIONS)
       .query(
-        Q.experimentalJoinTables([TRANSACTIONS]),
         Q.unsafeSqlQuery(
           `SELECT 
           SUM(CASE 
@@ -264,8 +265,13 @@ export const queryAccountStatement = async (isOwnedViewType: boolean) => {
       .unsafeFetchRaw();
   });
 };
-export const queryGetDebtLoanStatement = async (isOwnedViewType: boolean) => {
-  const categoryName = isOwnedViewType
+
+export const queryGetDebtLoanList = async ({
+  isDebt,
+}: {
+  isDebt: boolean;
+}): Promise<DebtLoanTypes[]> => {
+  const categoryName = isDebt
     ? `'${TRANSACTION_LEND_BORROW_NAME.LEND}','${TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS}'`
     : `'${TRANSACTION_LEND_BORROW_NAME.BORROW}','${TRANSACTION_LEND_BORROW_NAME.REPAYMENT}'`;
   return await database.read(async () => {
@@ -273,9 +279,64 @@ export const queryGetDebtLoanStatement = async (isOwnedViewType: boolean) => {
       .get<TransactionModel>(TRANSACTIONS)
       .query(
         Q.unsafeSqlQuery(
-          `SELECT trans.id, trans.relatedPerson, transC.categoryType, SUM(trans.amount) AS value, transC.categoryName FROM ${TRANSACTIONS} trans
+          `SELECT trans.id, trans.categoryId, trans.relatedPerson, transC.categoryType, SUM(trans.amount) AS value, transC.categoryName FROM ${TRANSACTIONS} trans
           LEFT JOIN ${TRANSACTION_CATEGORY} transC ON transC.id = trans.categoryId
           WHERE trans._status!='deleted' AND transC.categoryName IN (${categoryName}) GROUP BY trans.relatedPerson`,
+        ),
+      )
+      .unsafeFetchRaw();
+  });
+};
+
+export const queryGetDebtLoanStatementSummary = async ({ isDebt }: { isDebt: boolean }) => {
+  return await database.read(async () => {
+    const categoryName = isDebt
+      ? `'${TRANSACTION_LEND_BORROW_NAME.LEND}','${TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS}'`
+      : `'${TRANSACTION_LEND_BORROW_NAME.BORROW}','${TRANSACTION_LEND_BORROW_NAME.REPAYMENT}'`;
+    return await database
+      .get<TransactionModel>(TRANSACTIONS)
+      .query(
+        Q.unsafeSqlQuery(
+          `SELECT SUM(CASE 
+            WHEN transC.categoryName = '${
+              isDebt ? TRANSACTION_LEND_BORROW_NAME.LEND : TRANSACTION_LEND_BORROW_NAME.BORROW
+            }' THEN amount 
+            ELSE 0 
+          END) AS total, 
+            SUM(CASE 
+            WHEN transC.categoryName = '${
+              isDebt
+                ? TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS
+                : TRANSACTION_LEND_BORROW_NAME.REPAYMENT
+            }' THEN amount 
+            ELSE 0 
+          END) AS collected FROM ${TRANSACTIONS} trans
+          LEFT JOIN ${TRANSACTION_CATEGORY} transC ON transC.id = trans.categoryId
+          WHERE trans._status!='deleted' AND transC.categoryName IN (${categoryName})`,
+        ),
+      )
+      .unsafeFetchRaw();
+  });
+};
+export const queryGetDebtLoanDetailByPerson = async ({
+  relatedPerson,
+  type,
+}: {
+  relatedPerson: string;
+  type: TRANSACTION_CATEGORY_TYPE;
+}): Promise<TGetDebtLoanDetailByPerson[]> => {
+  return await database.read(async () => {
+    const categoryName = !type
+      ? `'${TRANSACTION_LEND_BORROW_NAME.LEND}','${TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS}'`
+      : `'${TRANSACTION_LEND_BORROW_NAME.BORROW}','${TRANSACTION_LEND_BORROW_NAME.REPAYMENT}'`;
+    return await database
+      .get<TransactionModel>(TRANSACTIONS)
+      .query(
+        Q.unsafeSqlQuery(
+          `SELECT trans.id, transC.categoryType, transC.categoryName, transC.icon, trans.descriptions, trans.amount, trans.dateTimeAt, acc.accountLogo, acc.accountName FROM ${TRANSACTIONS} trans
+          LEFT JOIN ${TRANSACTION_CATEGORY} transC ON transC.id = trans.categoryId
+          LEFT JOIN ${ACCOUNTS} acc ON acc.id = trans.accountId
+          WHERE trans._status!='deleted' AND trans.relatedPerson = '${relatedPerson}' AND transC.categoryName IN (${categoryName})`,
         ),
       )
       .unsafeFetchRaw();

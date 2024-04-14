@@ -6,7 +6,7 @@ import { useCustomTheme } from 'resources/theme';
 import {
   getCurrentBalanceAllAccount,
   queryAccountStatement,
-  queryGetDebtLoanStatement,
+  queryGetDebtLoanList,
 } from 'database/querying';
 import { formatNumber } from 'utils/math';
 import { useAppDispatch, useAppSelector } from 'store/index';
@@ -40,7 +40,7 @@ function FinanceStatement() {
     useCallback(() => {
       Promise.all([
         queryAccountStatement(isOwnedViewType),
-        queryGetDebtLoanStatement(isOwnedViewType),
+        queryGetDebtLoanList({ isDebt: isOwnedViewType }),
       ]).then((res) => {
         const groupData = convertFinancialData(res[0], isOwnedViewType);
         const groupDebtLoan = convertDebtLoanData(res[1], isOwnedViewType);

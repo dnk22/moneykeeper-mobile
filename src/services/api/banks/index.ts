@@ -11,10 +11,6 @@ export async function fetchBankData({ type, text }: TSearchBankParams) {
   }
 }
 
-export async function importBankDataLocal() {
-  return await importDefaultBanksData();
-}
-
 export async function getBankById(id: string) {
   return await queryGetBankById(id);
 }

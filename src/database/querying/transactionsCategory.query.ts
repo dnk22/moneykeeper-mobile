@@ -4,7 +4,7 @@ import { TRANSACTION_CATEGORY } from 'database/constants';
 import { TTransactionsCategory } from 'database/types';
 import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constant';
 import { Q } from '@nozbe/watermelondb';
-import { handleError } from 'utils/axios';
+import { handleError, requestSuccess } from 'utils/axios';
 import { TransactionCategoryData } from 'utils/data/transactionCategory.default';
 import { SQLiteQuery } from '@nozbe/watermelondb/adapters/sqlite';
 
@@ -127,9 +127,9 @@ export const getIsTransactionCategoryDataExist = async () => {
 };
 
 /** create */
-
-export const importDefaultTransactionCategory = async () => {
+export const queryImportDefaultTransactionCategory = async () => {
   try {
+    var startTime = performance.now();
     const isHaveDataInit = await database.read(async () => {
       return await database
         .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
@@ -137,7 +137,10 @@ export const importDefaultTransactionCategory = async () => {
         .fetchCount();
     });
     if (Boolean(isHaveDataInit)) {
-      return;
+      return {
+        success: false,
+        data: [],
+      };
     }
     const updateStatements: SQLiteQuery[] = TransactionCategoryData.map((record) => {
       const {
@@ -170,13 +173,27 @@ export const importDefaultTransactionCategory = async () => {
         ],
       ];
     });
-    return database.write(async () => {
-      return await database.adapter.unsafeExecute({
+    return await database.write(async () => {
+      await database.adapter.unsafeExecute({
         sqls: updateStatements,
+      });
+      const res = await database
+        .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
+        .query(
+          Q.unsafeSqlQuery(
+            `SELECT id, categoryName FROM ${TRANSACTION_CATEGORY} WHERE _status!='deleted'`,
+          ),
+        )
+        .unsafeFetchRaw();
+      var endTime = performance.now();
+      console.log(`Import transaction category: ${Number((endTime - startTime) / 1000).toFixed(5)} s`);
+      return requestSuccess({
+        data: res,
       });
     });
   } catch (error) {
     console.log('Import transaction category failed: ', error);
+    return handleError({ error });
   }
 };
 

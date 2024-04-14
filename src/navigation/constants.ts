@@ -50,4 +50,7 @@ export const FINANCE_STATEMENT = 'financeStatement';
 export const EXPENSE_INCOME_REPORT = 'expenseIncomeReport';
 export const EXPENSE_INCOME_ANALYZE = 'expenseIncomeAnalyze';
 export const DEBT_LOAN_REPORT = 'debtLoanReport';
+export const DEBT_LOAN_REPORT_DETAIL = 'debtLoanReportDetail';
+export const DEBT = 'debt';
+export const LOAN = 'loan';
 export const CONTACT_REPORT = 'contactReport';

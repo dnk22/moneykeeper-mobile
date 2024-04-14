@@ -5,6 +5,7 @@ import {
   FLAT,
   SORT_ACCOUNT_BY_KEY,
   STICKY,
+  TRANSACTION_CATEGORY_TYPE,
   TRANSACTION_TYPE,
   VIEW_CATEGORY_FAST_BY_COLUMN,
 } from 'utils/constant';
@@ -26,7 +27,7 @@ export type TTransactionType = {
   value: TRANSACTION_TYPE;
   name: string;
   icon: string;
-  categoryType?: string;
+  categoryType?: TRANSACTION_CATEGORY_TYPE;
 };
 
 export type AccountViewSettingsProps = {
@@ -53,4 +54,13 @@ export type StatementViewProps = {
   month?: Date;
   startDate?: Date;
   endDate?: Date;
+};
+
+export type DebtLoanTypes = {
+  id: string;
+  relatedPerson: string;
+  categoryType: TRANSACTION_CATEGORY_TYPE;
+  categoryName: string;
+  categoryId: string;
+  value: number;
 };

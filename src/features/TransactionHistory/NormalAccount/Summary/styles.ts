@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     borderRadius: 10,
+    marginBottom: 10,
     alignItems: 'center',
     ...BOX_SHADOW,
   },

@@ -9,7 +9,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { formatNumber } from 'utils/math';
 import { MATERIAL_COLOR, ACCOUNT_CATEGORY_ID } from 'utils/constant';
-import { ACCOUNT_CREDIT_CARD_DETAIL, ACCOUNT_NORMAL_DETAIL } from 'navigation/constants';
+import { ACCOUNT_CREDIT_CARD_DETAIL, ACCOUNT_NORMAL_DETAIL, DEBT_LOAN_REPORT_DETAIL } from 'navigation/constants';
 import { dataLevelProps } from '../types';
 import styles from './styles';
 
@@ -32,6 +32,10 @@ function ItemLevel2({
 
   const onNavigationToAccount = () => {
     if (item.relatedPerson) {
+      navigation.navigate(DEBT_LOAN_REPORT_DETAIL, {
+        personName: item.relatedPerson,
+        type: item.categoryType,
+      });
     } else {
       const { id, accountName, accountTypeId } = item;
       switch (accountTypeId) {

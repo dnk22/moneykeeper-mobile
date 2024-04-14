@@ -8,6 +8,7 @@ import {
   FINANCE_STATEMENT,
   EXPENSE_INCOME_REPORT,
   DEBT_LOAN_REPORT,
+  DEBT_LOAN_REPORT_DETAIL,
 } from 'navigation/constants';
 import AddAccount from 'features/AddAccount';
 import TransactionHistoryNormal from 'features/TransactionHistory/NormalAccount';
@@ -17,6 +18,7 @@ import ExpenseIncome from 'features/Report/ExpenseIncome';
 import FinancialStatement from 'features/Report/FinancialStatement';
 import ExpenseIncomeReport from 'features/Report/ExpenseIncome';
 import DebtLoanReport from 'features/Report/DebtLoan';
+import DebtLoanDetail from 'features/Report/DebtLoan/Detail';
 
 function CommonStack({ Stack, parentName }: { Stack: any; parentName?: string }): any {
   return (
@@ -51,6 +53,13 @@ function CommonStack({ Stack, parentName }: { Stack: any; parentName?: string })
         component={AddTransactions}
       />
       <Stack.Screen
+        name={EXPENSE_INCOME_REPORT}
+        component={ExpenseIncomeReport}
+        options={{
+          title: 'Thu & Chi',
+        }}
+      />
+      <Stack.Screen
         name={EXPENSE_INCOME_DETAIL}
         component={ExpenseIncome}
         options={({ route: { params } }) => ({
@@ -65,18 +74,18 @@ function CommonStack({ Stack, parentName }: { Stack: any; parentName?: string })
         }}
       />
       <Stack.Screen
-        name={EXPENSE_INCOME_REPORT}
-        component={ExpenseIncomeReport}
-        options={{
-          title: 'Thu & Chi',
-        }}
-      />
-      <Stack.Screen
         name={DEBT_LOAN_REPORT}
         component={DebtLoanReport}
         options={{
           title: 'Theo dõi Vay Nợ',
         }}
+      />
+      <Stack.Screen
+        name={DEBT_LOAN_REPORT_DETAIL}
+        component={DebtLoanDetail}
+        options={({ route: { params } }) => ({
+          title: params.personName,
+        })}
       />
     </React.Fragment>
   );

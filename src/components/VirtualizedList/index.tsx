@@ -27,6 +27,7 @@ function VirtualizedListComponent({
       initialNumToRender={initialNumToRender}
       windowSize={windowSize}
       maxToRenderPerBatch={maxToRenderPerBatch}
+      contentContainerStyle={{ gap: 10 }}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       getItemCount={getItemCount}

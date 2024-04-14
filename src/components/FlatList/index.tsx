@@ -48,11 +48,12 @@ const FlatListComponent: PropsFlatList = ({
       initialNumToRender={initialNumToRender}
       showsVerticalScrollIndicator={showsVerticalScrollIndicator}
       showsHorizontalScrollIndicator={showsHorizontalScrollIndicator}
+      contentContainerStyle={{ gap: 8 }}
       ItemSeparatorComponent={({ highlighted }) => {
         return showSeparator ? (
           <View
             style={[
-              { height: 0.8, width: '90%', backgroundColor: colors.divider, alignSelf: 'center' },
+              { height: 0.8, width: '95%', backgroundColor: colors.divider, alignSelf: 'center' },
               highlighted,
             ]}
           />

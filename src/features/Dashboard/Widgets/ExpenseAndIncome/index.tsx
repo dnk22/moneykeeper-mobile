@@ -1,14 +1,14 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
-import { PressableHaptic, RNText, SvgIcon } from 'components/index';
+import { PressableHaptic, ProgressLineChart, RNText, SvgIcon } from 'components/index';
 import { MenuView } from '@react-native-menu/menu';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { getExpenseIncomeInRangeDate } from 'database/querying';
 import { formatNumber } from 'utils/math';
 import { MATERIAL_COLOR } from 'utils/constant';
-import { styles } from './styles';
 import { EXPENSE_INCOME_DETAIL } from 'navigation/constants';
+import { styles } from './styles';
 
 const dateViewSelect = [
   {
@@ -56,6 +56,13 @@ function ExpenseAndIncome({ title }: { title: string }) {
     }, [dateView]),
   );
 
+  const dataProgressLineChart = useMemo(() => {
+    return data.categoryGroup.map((item) => ({
+      title: item.categoryName,
+      value: item.expense,
+    }));
+  }, [data.categoryGroup]);
+
   const onChangeDateView = ({ nativeEvent: { event } }: any) => {
     setDateView(event);
   };
@@ -63,15 +70,6 @@ function ExpenseAndIncome({ title }: { title: string }) {
   const renderMenuTitle = () => {
     return dateViewSelect.find((item) => item.id === dateView)?.title;
   };
-
-  const renderProgressLabel = ({ item, index }: any) => (
-    <View style={styles.barName} key={item.categoryParentId}>
-      <View style={[styles.icon, { backgroundColor: MATERIAL_COLOR[index] }]} />
-      <RNText fontSize={10} style={{ fontWeight: '300' }}>{`${
-        item.categoryName
-      } (${getProgressBarWidth(item.expense)}%)`}</RNText>
-    </View>
-  );
 
   const currentBalance = () => {
     return formatNumber(data.totalAmount.income - data.totalAmount.expense, true);
@@ -84,6 +82,15 @@ function ExpenseAndIncome({ title }: { title: string }) {
         : data.totalAmount.expense;
     return (value / point) * 100 < 1 ? 1 : (value / point) * 100;
   };
+
+  const renderProgressLabel = ({ item, index }: any) => (
+    <View style={styles.barName} key={item.categoryParentId}>
+      <View style={[styles.icon, { backgroundColor: MATERIAL_COLOR[index] }]} />
+      <RNText fontSize={10} style={{ fontWeight: '300' }}>{`${
+        item.categoryName
+      } (${getProgressBarWidth(item.expense)}%)`}</RNText>
+    </View>
+  );
 
   const getProgressBarWidth = (value: number) => {
     return ((value / data.totalAmount.expense) * 100).toFixed(2);
@@ -186,17 +193,7 @@ function ExpenseAndIncome({ title }: { title: string }) {
             </View>
           </View>
           <View style={styles.progressBar}>
-            {data.categoryGroup.map((item, index) => {
-              return (
-                <View
-                  key={item.categoryParentId}
-                  style={{
-                    width: `${getProgressBarWidth(item.expense)}%`,
-                    backgroundColor: MATERIAL_COLOR[index],
-                  }}
-                />
-              );
-            })}
+            <ProgressLineChart data={dataProgressLineChart} />
           </View>
           <ScrollView
             horizontal

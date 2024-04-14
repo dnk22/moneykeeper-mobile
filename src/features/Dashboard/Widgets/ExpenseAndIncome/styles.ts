@@ -86,12 +86,8 @@ export const styles = StyleSheet.create({
   },
   progressBar: {
     width: '100%',
-    height: 20,
-    flexDirection: 'row',
-    marginTop: 25,
+    marginTop: 20,
     marginBottom: 10,
-    borderRadius: 6,
-    overflow: 'hidden',
   },
   barName: {
     flexDirection: 'row',

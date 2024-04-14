@@ -5,9 +5,8 @@ import {
   queryTransactionCategoryById,
   queryAddTransactionCategory,
   queryUpdateTransactionCategory,
-  queryGetLendBorrowData,
   queryGetExpenseIncome,
-  importDefaultTransactionCategory,
+  queryImportDefaultTransactionCategory,
 } from 'database/querying';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
 
@@ -17,9 +16,6 @@ type getMostUsedOrRecentTransactionProps = {
 };
 
 /** read */
-export const getLendBorrowCategory = async () => {
-  return await queryGetLendBorrowData();
-};
 
 export const getExpenseAndIncome = async ({ type }: { type: TRANSACTION_CATEGORY_TYPE }) => {
   return await queryGetExpenseIncome({ type });
@@ -58,8 +54,8 @@ export const getTransactionCategoryByID = async (id: string) => {
 };
 
 /** create */
-export async function importTransactionCategoryDataLocal() {
-  return await importDefaultTransactionCategory();
+export async function importTransactionCategoryData() {
+  return await queryImportDefaultTransactionCategory();
 }
 
 /** update */

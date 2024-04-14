@@ -1,4 +1,12 @@
-import { format, formatDistanceToNow, differenceInMilliseconds, isDate, parseISO } from 'date-fns';
+import {
+  format,
+  formatDistanceToNow,
+  differenceInMilliseconds,
+  isDate,
+  parseISO,
+  isToday,
+  isYesterday,
+} from 'date-fns';
 import { vi } from 'date-fns/locale';
 
 // define variable
@@ -16,8 +24,17 @@ export const formatDateLocal = (
   formatType: string = 'dd/MM/yyyy',
   local: any = vi,
 ) => {
-  if (!isDate(new Date(date))) return '';
+  if (!isDate(new Date()) || !date) return '';
   return format(new Date(date), formatType, { locale: local });
+};
+
+export const formatDayOfTheWeek = (date: Date | number) => {
+  if (isToday(parseISO(new Date(date).toISOString()))) {
+    return 'Hôm nay';
+  } else if (isYesterday(parseISO(new Date(date).toISOString()))) {
+    return 'Hôm qua';
+  }
+  return formatDateLocal(date, 'EEEE');
 };
 
 export const formatDateStringLocal = (

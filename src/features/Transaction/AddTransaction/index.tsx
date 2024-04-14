@@ -9,19 +9,17 @@ import { TransactionParamListProps } from 'navigation/types';
 import { FormProvider, useForm } from 'react-hook-form';
 import { TTransactions } from 'database/types';
 import { ADD_TRANSACTION } from 'navigation/constants';
-import { getLendBorrowCategory } from 'services/api/transactionsCategory';
 import { getTransactionById } from 'services/api/transactions';
 import { TTransactionType } from 'utils/types';
 import { getFirstAccount } from 'services/api/accounts';
-import { useAppDispatch, useAppSelector } from 'store/index';
-import { setLendBorrowData } from 'store/transactionCategory/transactionCategory.slice';
+import { useAppSelector } from 'store/index';
 import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';
 import { getKeyByValue } from 'utils/algorithm';
 import { defaultValues } from './constant';
 import SelectTransactionType from './common/SelectTransactionType';
 import Transfer from './Transfer';
-import styles from './styles';
 import Adjustment from './Adjustment';
+import styles from './styles';
 
 type AddTransactionsProps = {
   navigation: TransactionParamListProps<typeof ADD_TRANSACTION>['navigation'];
@@ -31,12 +29,12 @@ function AddTransactions({ navigation, route }: AddTransactionsProps) {
   const { params, name: routerName } = route;
   const { colors } = useCustomTheme();
   const lendBorrowData = useAppSelector((state) => selectLendBorrowData(state));
-  const useDispatch = useAppDispatch();
 
   /** setup form */
   const transactionForm = useForm<TTransactions>({
     defaultValues: {
       ...defaultValues,
+      amount: params?.amount || 0,
       transactionType: TRANSACTION_TYPE.EXPENSE,
     },
   });
@@ -62,17 +60,6 @@ function AddTransactions({ navigation, route }: AddTransactionsProps) {
       });
     };
   }, [watch('categoryId'), watch('transactionType'), lendBorrowData]);
-
-  useEffect(() => {
-    getLendBorrowCategory().then((res: any[]) => {
-      const data = res.reduce((accumulator, currentValue) => {
-        accumulator[currentValue.id] = currentValue.categoryName;
-        return accumulator;
-      }, {});
-
-      useDispatch(setLendBorrowData(data));
-    });
-  }, []);
 
   // set default account when mode = add & accountId = null
   useFocusEffect(

@@ -105,11 +105,9 @@ function HeaderItem({ date, accountId, onRefreshDate, reload }: HeaderItemProps)
             },
           ]}
         >
-          <View>
-            <RNText fontSize={30} style={styles.day}>
-              {formatDate('dd')}
-            </RNText>
-          </View>
+          <RNText fontSize={30} style={styles.day}>
+            {formatDate('dd')}
+          </RNText>
           <View>
             <RNText>{formatDayOfTheWeek()}</RNText>
             <RNText color="gray" fontSize={14}>

@@ -45,15 +45,13 @@ function ItemLevel1({
             </RNText>
           </View>
         </View>
-        <View style={styles.rightCol}>
-          <View style={[styles.accountName, styles.amountCol]}>
-            <RNText fontSize={12} style={styles.amount} preset="subTitle">
-              {percent()}
-            </RNText>
-            <RNText fontSize={15} style={styles.amount}>
-              {formatNumber(item.value, true)}
-            </RNText>
-          </View>
+        <View style={[styles.accountName, styles.amountCol]}>
+          <RNText fontSize={12} style={styles.amount} preset="subTitle">
+            {percent()}
+          </RNText>
+          <RNText fontSize={15} style={styles.amount}>
+            {formatNumber(item.value, true)}
+          </RNText>
         </View>
       </View>
     </TouchableHighlightComponent>

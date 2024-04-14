@@ -55,6 +55,7 @@ export const LendAndBorrowData: TTransactionsCategory[] = [
     icon: 'collectDebts',
   },
 ];
+
 export const TransactionCategoryData: TTransactionsCategory[] = [
   ...LendAndBorrowData,
   {

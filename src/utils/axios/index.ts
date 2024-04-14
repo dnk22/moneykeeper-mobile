@@ -6,10 +6,18 @@ const AxiosInstance = axios.create({
   baseURL: BASE_URL,
 });
 
-export const handleError = ({ error }: { error: string | unknown }) => {
+export const requestSuccess = ({ error, data }: { error?: string | unknown; data?: any }) => {
+  return Promise.resolve({
+    success: true,
+    data,
+    error,
+  });
+};
+export const handleError = ({ error, data }: { error: string | unknown; data?: any }) => {
   return Promise.reject({
     success: false,
-    error: error,
+    error,
+    data,
   });
 };
 

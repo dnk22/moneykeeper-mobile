@@ -76,8 +76,12 @@ import config from './config.svg';
 import cancel from './cancel.svg';
 import drag from './drag.svg';
 import arrowUp from './arrowUp.svg';
+import payIn from './payIn.svg';
+import payOut from './payOut.svg';
 
 export {
+  payIn,
+  payOut,
   arrowUp,
   drag,
   cancel,

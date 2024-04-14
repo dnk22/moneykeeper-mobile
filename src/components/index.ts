@@ -23,10 +23,12 @@ import VirtualizedListComponent from 'components/VirtualizedList';
 import Empty from 'components/Empty';
 import BottomSheet from 'components/BottomSheetModal';
 import IconComponent from 'components/IconComponent';
+import ProgressLineChart from 'components/ProgressLineChart';
 
 import FormAction from 'components/common/FormAction';
 
 export {
+  ProgressLineChart,
   IconComponent,
   DateTimePicker,
   InputField,

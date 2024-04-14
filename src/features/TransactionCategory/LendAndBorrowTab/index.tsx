@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { FlatListComponent } from 'components/index';
 import { TTransactionsCategory } from 'database/types';
-import { getLendBorrowCategory } from 'services/api/transactionsCategory';
+import { queryGetLendBorrowData } from 'database/querying';
 import ParentItem from '../ExpenseIncomeTab/ParentItem';
 
 function LendAndBorrowTab() {
   const [data, setData] = useState<any>([]);
 
   useEffect(() => {
-    getLendBorrowCategory().then((res) => setData(res));
+    queryGetLendBorrowData().then((res) => setData(res));
   }, []);
 
   const renderItem = ({ item }: { item: TTransactionsCategory }) => {

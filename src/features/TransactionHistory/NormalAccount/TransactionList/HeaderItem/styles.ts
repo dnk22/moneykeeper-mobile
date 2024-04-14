@@ -4,7 +4,6 @@ import { MARGIN_LEFT, CHILD_ITEM_TRANSACTION_HEIGHT } from 'share/dimensions';
 const styles = StyleSheet.create({
   item: {
     borderRadius: 10,
-    marginTop: 10,
     alignItems: 'center',
   },
   header: {
