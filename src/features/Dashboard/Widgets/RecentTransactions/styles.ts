@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-    height: 330,
+    maxHeight: 330,
     paddingHorizontal: 5,
   },
   header: {

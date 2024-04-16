@@ -181,12 +181,17 @@ export const queryImportDefaultTransactionCategory = async () => {
         .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
         .query(
           Q.unsafeSqlQuery(
-            `SELECT id, categoryName FROM ${TRANSACTION_CATEGORY} WHERE _status!='deleted'`,
+            `SELECT id, categoryName FROM ${TRANSACTION_CATEGORY} 
+            WHERE _status!='deleted' AND categoryName IN (${Object.values(
+              TRANSACTION_LEND_BORROW_NAME,
+            ).map((item) => `'${item}'`)})`,
           ),
         )
         .unsafeFetchRaw();
       var endTime = performance.now();
-      console.log(`Import transaction category: ${Number((endTime - startTime) / 1000).toFixed(5)} s`);
+      console.log(
+        `Import transaction category: ${Number((endTime - startTime) / 1000).toFixed(5)} s`,
+      );
       return requestSuccess({
         data: res,
       });

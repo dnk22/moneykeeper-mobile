@@ -1,29 +1,39 @@
 import { useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
-import { ProgressLineChart, RNText, FlatListComponent } from 'components/index';
+import {
+  ProgressLineChart,
+  RNText,
+  FlatListComponent,
+  SvgIcon,
+  PressableHaptic,
+} from 'components/index';
 import { useFocusEffect } from '@react-navigation/native';
-import { DEBT_LOAN_REPORT_DETAIL } from 'navigation/constants';
+import { CREATE_TRANSACTION_FROM_ACCOUNT, DEBT_LOAN_REPORT_DETAIL } from 'navigation/constants';
 import { ReportParamListProps } from 'navigation/types';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
+import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constant';
 import { queryGetDebtLoanDetailByPerson } from 'database/querying';
 import { TGetDebtLoanDetailByPerson } from 'utils/types/request.type';
 import { formatNumber } from 'utils/math';
 import { useCustomTheme } from 'resources/theme';
 import { showToast } from 'utils/system';
 import { formatDateLocal } from 'utils/date';
-import { SCREEN_WIDTH } from 'share/dimensions';
+import { useAppSelector } from 'store/index';
+import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';
 import DebtLoanItemDetail from './DebtLoanItemDetail';
 import styles from './styles';
 
 export default function DebtLoanDetail({
+  navigation,
   route,
 }: {
+  navigation: ReportParamListProps<typeof DEBT_LOAN_REPORT_DETAIL>['navigation'];
   route: ReportParamListProps<typeof DEBT_LOAN_REPORT_DETAIL>['route'];
 }) {
   const {
     params: { personName, type },
   } = route;
   const { colors } = useCustomTheme();
+  const lendBorrowData = useAppSelector((state) => selectLendBorrowData(state));
   const [data, setData] = useState<{
     original: TGetDebtLoanDetailByPerson[];
     formatted: { data: TGetDebtLoanDetailByPerson[]; date: string }[];
@@ -66,6 +76,21 @@ export default function DebtLoanDetail({
     },
   ];
 
+  const handlePayment = () => {
+    // if type get REPAYMENT , COLLECT_DEBTS else
+    const categoryNameTarget = type
+      ? TRANSACTION_LEND_BORROW_NAME.REPAYMENT
+      : TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS;
+    const categoryId = Object.keys(lendBorrowData).find(
+      (key) => lendBorrowData[key] === categoryNameTarget,
+    );
+    navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, {
+      amount: +remain,
+      categoryId,
+      relatedPerson: personName,
+    });
+  };
+
   const renderItem = ({ item }: { item: any }) => {
     return <DebtLoanItemDetail item={item} />;
   };
@@ -100,6 +125,18 @@ export default function DebtLoanDetail({
 
   return (
     <View style={styles.container}>
+      {!!remain && (
+        <PressableHaptic
+          style={[styles.btnAction, { backgroundColor: colors.primary }]}
+          onPress={handlePayment}
+        >
+          <SvgIcon
+            name={type === TRANSACTION_CATEGORY_TYPE.EXPENSE ? 'payIn' : 'payOut'}
+            size={26}
+            color="white"
+          />
+        </PressableHaptic>
+      )}
       <View style={[styles.header, { backgroundColor: colors.surface }]}>
         <View style={styles.row}>
           <View style={[styles.col, { alignItems: 'flex-start' }]}>

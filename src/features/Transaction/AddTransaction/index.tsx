@@ -97,6 +97,15 @@ function AddTransactions({ navigation, route }: AddTransactionsProps) {
     }
   }, [params?.categoryId]);
 
+  useEffect(() => {
+    if (params?.relatedPerson) {
+      setValue('relatedPerson', params?.relatedPerson);
+      navigation.setParams({
+        relatedPerson: undefined,
+      });
+    }
+  }, [params?.relatedPerson]);
+
   const fetchDataInEditMode = async (id: string) => {
     const res = await getTransactionById(id);
     if (res?.id) {
@@ -145,8 +154,8 @@ function AddTransactions({ navigation, route }: AddTransactionsProps) {
   };
 
   const onSubmitSuccess = () => {
+    // navigate to previous screen
     if (navigation.canGoBack() && routerName !== ADD_TRANSACTION) {
-      // navigate to previous screen
       navigation.goBack();
       return;
     }

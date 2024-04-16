@@ -37,7 +37,7 @@ function PieChart({ data }: { data: DebtLoanTypes[] }) {
         <RNText fontSize={14} style={styles.fontWeight300}>
           Tổng
         </RNText>
-        <RNText fontSize={18} style={styles.totalAmount}>
+        <RNText style={styles.totalAmount}>
           {totalCurrentAccount()}
         </RNText>
       </View>

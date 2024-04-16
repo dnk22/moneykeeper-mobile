@@ -2,23 +2,30 @@ import { View } from 'react-native';
 import { PressableHaptic, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
 import { useNavigation } from '@react-navigation/native';
 import { ReportParamListProps } from 'navigation/types';
-import { MATERIAL_COLOR, TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
+import {
+  MATERIAL_COLOR,
+  TRANSACTION_CATEGORY_TYPE,
+  TRANSACTION_LEND_BORROW_NAME,
+} from 'utils/constant';
 import { formatNumber } from 'utils/math';
 import { DebtLoanTypes } from 'utils/types';
 import { CREATE_TRANSACTION_FROM_ACCOUNT, DEBT_LOAN_REPORT_DETAIL } from 'navigation/constants';
 import { useCustomTheme } from 'resources/theme';
 import { MenuAction, MenuView, NativeActionEvent } from '@react-native-menu/menu';
+import { useAppSelector } from 'store/index';
+import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';
 import styles from './styles';
 
 function Item({ data, index }: { data: DebtLoanTypes; index: number }) {
   const navigation =
     useNavigation<ReportParamListProps<typeof DEBT_LOAN_REPORT_DETAIL>['navigation']>();
   const { colors } = useCustomTheme();
+  const lendBorrowData = useAppSelector((state) => selectLendBorrowData(state));
 
   const menuData: MenuAction[] = [
     {
       id: String(data.value),
-      title: formatNumber(data.value, true),
+      title: formatNumber(Math.abs(data.value), true),
     },
     {
       id: '0',
@@ -34,9 +41,17 @@ function Item({ data, index }: { data: DebtLoanTypes; index: number }) {
   };
 
   const onHandlePressAction = ({ nativeEvent: { event } }: NativeActionEvent) => {
+    // if type LEND get COLLECT_DEBTS , REPAYMENT else
+    const categoryNameTarget = data.categoryType
+      ? TRANSACTION_LEND_BORROW_NAME.REPAYMENT
+      : TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS;
+    const categoryId = Object.keys(lendBorrowData).find(
+      (key) => lendBorrowData[key] === categoryNameTarget,
+    );
     navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, {
       amount: +event,
-      categoryId: data.categoryId
+      categoryId,
+      relatedPerson: data.relatedPerson,
     });
   };
 
@@ -75,7 +90,7 @@ function Item({ data, index }: { data: DebtLoanTypes; index: number }) {
                     name={
                       data.categoryType === TRANSACTION_CATEGORY_TYPE.EXPENSE ? 'payIn' : 'payOut'
                     }
-                    size={22}
+                    size={24}
                     color="white"
                   />
                 </View>

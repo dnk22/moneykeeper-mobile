@@ -65,6 +65,7 @@ export type CommonStackParamsList = {
     accountId?: string;
     transactionType?: TRANSACTION_TYPE;
     amount?: number;
+    relatedPerson?: string;
   };
   [ACCOUNT_NORMAL_DETAIL]: { accountId: string; accountName: string };
   [ACCOUNT_CREDIT_CARD_DETAIL]: { accountId: string; accountName: string; creditCardLimit: number };
@@ -107,6 +108,7 @@ export type TransactionParamList = {
     accountId?: string;
     transactionType?: TRANSACTION_TYPE;
     amount?: number;
+    relatedPerson?: string;
   };
 };
 export type TransactionParamListProps<T extends keyof TransactionParamList> =

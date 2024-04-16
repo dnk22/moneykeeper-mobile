@@ -73,8 +73,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   actionButton: {
-    width: 30,
-    height: 30,
+    width: 38,
+    height: 38,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,

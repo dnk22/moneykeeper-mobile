@@ -90,6 +90,19 @@ const styles = StyleSheet.create({
     gap: 2,
     flexDirection: 'row',
   },
-  gap2: { gap: 2 },
+  gap2: {
+    gap: 2,
+  },
+  btnAction: {
+    zIndex: 1,
+    position: 'absolute',
+    bottom: 30,
+    right: 30,
+    width: 60,
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 30,
+  },
 });
 export default styles;
