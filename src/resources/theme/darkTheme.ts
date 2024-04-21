@@ -13,5 +13,6 @@ export default {
   error: 'rgb(255, 59, 48)',
   info: '#ffd700',
   divider: 'rgba(255, 255, 255, 0.12)',
-  white : 'white'
+  white: 'white',
+  success: 'green',
 };

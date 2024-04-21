@@ -13,7 +13,8 @@ export default {
   error: 'rgb(255, 59, 48)',
   info: '#ffd700',
   divider: 'rgba(0, 0, 0, 0.12)',
-  white : 'white'
+  white : 'white',
+  success: 'green',
 };
 
 // primary: '#281C9D',

@@ -20,7 +20,7 @@ function DebtLoanStatement({ isDebt }: { isDebt: boolean }) {
       color: 'green',
     },
     {
-      value: debtLoanStatement.total,
+      value: debtLoanStatement.total - debtLoanStatement.collected,
       color: colors.divider,
     },
   ];

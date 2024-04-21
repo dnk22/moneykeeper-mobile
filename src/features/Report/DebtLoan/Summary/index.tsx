@@ -22,7 +22,7 @@ function DebtLoanSummary({ isDebt = false }: { isDebt?: boolean }) {
     <>
       {!!debtLoanData.length ? (
         <>
-          <PieChart data={debtLoanData} />
+          <PieChart data={debtLoanData} isDebt={isDebt} />
           <DebtLoanStatement isDebt={isDebt} />
           <DebtLoanList data={debtLoanData} />
         </>

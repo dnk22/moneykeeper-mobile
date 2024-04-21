@@ -1,23 +1,32 @@
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { IconComponent, RNText } from 'components/index';
 import { formatDateLocal, formatDayOfTheWeek } from 'utils/date';
 import { TGetDebtLoanDetailByPerson } from 'utils/types/request.type';
 import { useCustomTheme } from 'resources/theme';
-import styles from './styles';
 import { MATERIAL_COLOR } from 'utils/constant';
 import { formatNumber } from 'utils/math';
+import { useNavigation } from '@react-navigation/native';
+import { CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
+import styles from './styles';
 
-type DebtLoanItemDetailProps = {
+function DebtLoanItemDetail({
+  item,
+}: {
   item: {
     date: any;
     data: TGetDebtLoanDetailByPerson[];
   };
-};
-
-function DebtLoanItemDetail({ item }: DebtLoanItemDetailProps) {
+}) {
   const { colors } = useCustomTheme();
-  // Generate a random number between 1 and 10
+  const navigation = useNavigation<any>();
+  // Generate a random number between 1 and 50
   const randomNumber = Math.floor(Math.random() * 50) + 1;
+
+  const onNavigationToTransactionDetail = (transactionId: string) => {
+    navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, {
+      transactionId,
+    });
+  };
 
   return (
     <>
@@ -36,11 +45,12 @@ function DebtLoanItemDetail({ item }: DebtLoanItemDetailProps) {
         </View>
       </View>
       <View>
-        {item.data.map((pack) => {
+        {(item.data || []).map((pack) => {
           return (
-            <View
+            <Pressable
               key={pack.id}
               style={[styles.row, styles.childItem, { backgroundColor: colors.surface }]}
+              onPress={() => onNavigationToTransactionDetail(pack.id)}
             >
               <View style={styles.row}>
                 <IconComponent name={pack.icon} />
@@ -52,7 +62,9 @@ function DebtLoanItemDetail({ item }: DebtLoanItemDetailProps) {
                 </View>
               </View>
               <View style={[styles.colRight, styles.gap2]}>
-                <RNText fontSize={15}>{formatNumber(pack.amount, true)}</RNText>
+                <RNText fontSize={15} color={pack.amount < 0 ? colors.error : colors.success}>
+                  {formatNumber(Math.abs(pack.amount), true)}
+                </RNText>
                 <View style={styles.accountName}>
                   <IconComponent name={pack.accountLogo} size={14} />
                   <RNText style={styles.descriptions} fontSize={11} color={'gray'}>
@@ -60,7 +72,7 @@ function DebtLoanItemDetail({ item }: DebtLoanItemDetailProps) {
                   </RNText>
                 </View>
               </View>
-            </View>
+            </Pressable>
           );
         })}
       </View>

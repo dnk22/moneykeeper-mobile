@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   header: {
-    height: 36,
+    height: 38,
     paddingLeft: 15,
     paddingRight: 5,
     flexDirection: 'row',

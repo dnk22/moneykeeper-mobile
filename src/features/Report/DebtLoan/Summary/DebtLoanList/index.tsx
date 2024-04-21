@@ -6,6 +6,8 @@ import { useCustomTheme } from 'resources/theme';
 import { DebtLoanTypes } from 'utils/types';
 import Item from './Item';
 import styles from './styles';
+import { Circle, Line, Path, Rect, Svg } from 'react-native-svg';
+import { SCREEN_WIDTH } from 'share/dimensions';
 
 function DebtLoanList({ data }: { data: DebtLoanTypes[] }) {
   const { colors } = useCustomTheme();
@@ -29,9 +31,10 @@ function DebtLoanList({ data }: { data: DebtLoanTypes[] }) {
           onPress={debounce(() => setIsViewActive(!isViewActive), 200)}
           style={styles.iconSwapContainer}
         >
-          <SvgIcon name="swap" size={24} />
+          <SvgIcon name="swap" size={24} color={colors.primary} />
         </PressableHaptic>
       </View>
+
       <View style={[styles.divider, { backgroundColor: colors.divider }]} />
       <View style={styles.content}>
         <FlatListComponent

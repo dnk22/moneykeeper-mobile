@@ -111,7 +111,7 @@ export default function DebtLoanDetail({
           }, {});
           setData({
             original: res,
-            formatted: Object.values(formatData),
+            formatted: Object.values(formatData).reverse(),
           });
         })
         .catch(() => {

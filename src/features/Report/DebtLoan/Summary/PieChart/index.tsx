@@ -1,15 +1,18 @@
 import { useMemo } from 'react';
 import { ScrollView, View } from 'react-native';
 import { PieChart as PieChartComponent } from 'react-native-gifted-charts';
-import { RNText } from 'components/index';
+import { Empty, RNText } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { formatNumber } from 'utils/math';
 import { MATERIAL_COLOR } from 'utils/constant';
 import { DebtLoanTypes } from 'utils/types';
 import styles from './styles';
 
-function PieChart({ data }: { data: DebtLoanTypes[] }) {
+function PieChart({ data, isDebt }: { data: DebtLoanTypes[]; isDebt: boolean }) {
   const { colors } = useCustomTheme();
+  const emptyString = isDebt
+    ? 'Không còn khoản cho vay nào cần thu'
+    : 'Không còn khoản nợ nào cần trả';
 
   const pieData = useMemo(() => {
     return [...data]
@@ -37,41 +40,47 @@ function PieChart({ data }: { data: DebtLoanTypes[] }) {
         <RNText fontSize={14} style={styles.fontWeight300}>
           Tổng
         </RNText>
-        <RNText style={styles.totalAmount}>
-          {totalCurrentAccount()}
-        </RNText>
+        <RNText style={styles.totalAmount}>{totalCurrentAccount()}</RNText>
       </View>
     );
   };
 
   return (
     <View style={styles.pieChart}>
-      <PieChartComponent
-        data={pieData}
-        donut
-        radius={90}
-        strokeWidth={4}
-        innerRadius={70}
-        strokeColor={colors.background}
-        innerCircleColor={colors.background}
-        centerLabelComponent={renderPieInnerComponent}
-      />
-      <View style={{ paddingVertical: 10 }}>
-        <ScrollView
-          centerContent
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.pieDescription}
-        >
-          {[...pieData].map((item) => {
-            return (
-              <View key={item.color} style={styles.barName}>
-                <View style={[styles.icon, { backgroundColor: item.color }]} />
-                <RNText style={styles.fontWeight300}>{`${item.text} `}</RNText>
-              </View>
-            );
-          })}
-        </ScrollView>
-      </View>
+      {!!pieData.length ? (
+        <>
+          <PieChartComponent
+            data={pieData}
+            donut
+            radius={90}
+            strokeWidth={4}
+            innerRadius={70}
+            strokeColor={colors.background}
+            innerCircleColor={colors.background}
+            centerLabelComponent={renderPieInnerComponent}
+          />
+          <View style={{ paddingVertical: 10 }}>
+            <ScrollView
+              centerContent
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.pieDescription}
+            >
+              {[...pieData].map((item) => {
+                return (
+                  <View key={item.color} style={styles.barName}>
+                    <View style={[styles.icon, { backgroundColor: item.color }]} />
+                    <RNText style={styles.fontWeight300}>{`${item.text} `}</RNText>
+                  </View>
+                );
+              })}
+            </ScrollView>
+          </View>
+        </>
+      ) : (
+        <View style={{ flex: 1 }}>
+          <Empty text={emptyString} />
+        </View>
+      )}
     </View>
   );
 }
