@@ -1,23 +1,22 @@
 /**
  * Metro configuration for React Native
- * https://github.com/facebook/react-native
+ * https://reactnative.dev/docs/metro
  *
  * @format
  */
+const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 
-const { getDefaultConfig } = require('metro-config');
-
-module.exports = (async () => {
-  const {
-    resolver: { sourceExts, assetExts },
-  } = await getDefaultConfig();
-  return {
+module.exports = async () => {
+  const defaultConfig = await getDefaultConfig(__dirname);
+  
+  return mergeConfig(defaultConfig, {
     transformer: {
       babelTransformerPath: require.resolve('react-native-svg-transformer'),
     },
     resolver: {
-      assetExts: assetExts.filter((ext) => ext !== 'svg'),
-      sourceExts: [...sourceExts, 'svg'],
+      assetExts: defaultConfig.resolver.assetExts.filter((ext) => ext !== 'svg'),
+      sourceExts: [...defaultConfig.resolver.sourceExts, 'svg'],
     },
-  };
-})();
+  });
+};
+
