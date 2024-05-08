@@ -12,9 +12,10 @@ import {
   TouchableHighlightComponent,
 } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
-import { addNewContact, getAllContact } from 'services/api/contacts';
+import { addNewContact } from 'services/api/contacts';
 import { TContact } from 'database/types';
 import { openSettings } from 'react-native-permissions';
+import { queryAllContact } from 'database/querying';
 import NormalItem from './Item';
 import ContactItem from './ContactItem';
 import styles from './styles';
@@ -35,7 +36,7 @@ function Contact({
   const isHaveDataInit = useRef(false);
 
   const getContacts = (text?: string) => {
-    getAllContact(text).then((res) => {
+    queryAllContact(text).then((res) => {
       isHaveDataInit.current = Boolean(res.length);
       setContactData(res);
     });

@@ -333,9 +333,10 @@ export const queryGetDebtLoanDetailByPerson = async ({
       .get<TransactionModel>(TRANSACTIONS)
       .query(
         Q.unsafeSqlQuery(
-          `SELECT trans.id, transC.categoryType, transC.categoryName, transC.icon, trans.descriptions, trans.amount, trans.dateTimeAt, acc.accountLogo, acc.accountName FROM ${TRANSACTIONS} trans
+          `SELECT trans.id, bal._id, transC.categoryType, transC.categoryName, transC.icon, trans.descriptions, trans.amount, trans.dateTimeAt, acc.accountLogo, acc.accountName FROM ${TRANSACTIONS} trans
           LEFT JOIN ${TRANSACTION_CATEGORY} transC ON transC.id = trans.categoryId
           LEFT JOIN ${ACCOUNTS} acc ON acc.id = trans.accountId
+          LEFT JOIN ${BALANCE} bal ON bal.transactionId = trans.id
           WHERE trans._status!='deleted' AND trans.relatedPerson = '${relatedPerson}' AND transC.categoryName IN (${categoryName})`,
         ),
       )

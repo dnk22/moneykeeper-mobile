@@ -1,17 +1,8 @@
 import {
   queryAddNewContact,
-  queryAllContact,
   queryDeleteContact,
   queryUpdateContact,
 } from 'database/querying';
-
-export async function getAllContact(text?: string) {
-  try {
-    return await queryAllContact(text);
-  } catch (error) {
-    return [];
-  }
-}
 
 export async function addNewContact(text: string) {
   try {

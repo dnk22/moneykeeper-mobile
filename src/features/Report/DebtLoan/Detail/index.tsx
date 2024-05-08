@@ -109,15 +109,23 @@ export default function DebtLoanDetail({
             result[date].data.push(item);
             return result;
           }, {});
+
+          const sortedData: any = Object.values(formatData)
+            .reverse()
+            .map((item) => {
+              item.data = [...item.data].sort((el, el2) => el2._id - el._id);
+              return item;
+            });
+
           setData({
             original: res,
-            formatted: Object.values(formatData).reverse(),
+            formatted: sortedData,
           });
         })
         .catch(() => {
           showToast({
             type: 'error',
-            text2: 'Vui lòng thử lại',
+            text2: 'Không tải được thông tin',
           });
         });
     }, [personName, type]),
@@ -170,7 +178,7 @@ export default function DebtLoanDetail({
               {!!data?.original &&
                 formatDateLocal(
                   data?.original[data?.original.length - 1]?.dateTimeAt,
-                  'dd/MM/yyyy hh:mm',
+                  'dd/MM/yyyy HH:mm',
                 )}
             </RNText>
             <RNText style={styles.title}>-</RNText>
@@ -187,7 +195,7 @@ export default function DebtLoanDetail({
             <View style={[styles.row, styles.itemDate]}>
               <RNText style={styles.value} fontSize={13}>
                 {!!data?.original &&
-                  formatDateLocal(data?.original[0]?.dateTimeAt, 'dd/MM/yyyy hh:mm')}
+                  formatDateLocal(data?.original[0]?.dateTimeAt, 'dd/MM/yyyy HH:mm')}
               </RNText>
               <RNText style={styles.title}>-</RNText>
               <RNText style={styles.value} fontSize={13}>

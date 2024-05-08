@@ -10,15 +10,11 @@ import { AccountStackParamListProps } from 'navigation/types';
 import HeaderIcon from 'navigation/elements/HeaderIcon';
 import Collapsible from 'react-native-collapsible';
 import { BankModel } from 'database/models';
-import InputCalculator from 'features/Transaction/AddTransaction/common/InputCalculator';
+import InputCalculator from 'features/AddTransaction/common/InputCalculator';
 import { ADD_ACCOUNT } from 'navigation/constants';
 import { AccountType } from 'utils/data';
 import { deleteAccountById, getAccountById, updateAccountDB } from 'services/api/accounts';
 import { showToast } from 'utils/system';
-import Notifications from './Notifications';
-import StatementModalPicker from './StatementModalPicker';
-import AccountTypeSelect from './AccountTypeSelect';
-import AccountBankSelect from './AccountBankSelect';
 import { get } from 'lodash';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constant';
 import { useAppDispatch } from 'store/index';
@@ -27,6 +23,10 @@ import {
   updateAccountNotification,
   updateAccountStatement,
 } from 'store/account/account.slice';
+import Notifications from './Notifications';
+import StatementModalPicker from './StatementModalPicker';
+import AccountTypeSelect from './AccountTypeSelect';
+import AccountBankSelect from './AccountBankSelect';
 import styles from './styles';
 
 const defaultValues = {

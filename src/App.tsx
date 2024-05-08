@@ -9,7 +9,7 @@ import { StatusBar } from 'components/index';
 import RnKeyboard from 'rn-keyboard'; // <-- Import here
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import KeyboardCalculator from 'features/Transaction/AddTransaction/common/InputCalculator/KeyboardCalculator';
+import KeyboardCalculator from 'features/AddTransaction/common/InputCalculator/KeyboardCalculator';
 import BlurScreen from 'features/BlurScreen';
 import Toast from 'react-native-toast-message';
 import {

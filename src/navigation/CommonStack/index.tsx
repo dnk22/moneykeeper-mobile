@@ -13,7 +13,7 @@ import {
 import AddAccount from 'features/AddAccount';
 import TransactionHistoryNormal from 'features/TransactionHistory/NormalAccount';
 import TransactionHistoryCreditCard from 'features/TransactionHistory/CreditCardAccount';
-import AddTransactions from 'features/Transaction/AddTransaction';
+import AddTransactions from 'features/AddTransaction';
 import ExpenseIncome from 'features/Report/ExpenseIncome';
 import FinancialStatement from 'features/Report/FinancialStatement';
 import ExpenseIncomeReport from 'features/Report/ExpenseIncome';

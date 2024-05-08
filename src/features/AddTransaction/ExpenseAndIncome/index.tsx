@@ -159,7 +159,7 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
   };
 
   return (
-    <View>
+    <>
       <InputCalculator name="amount" control={control} inputTextColor={getInputCalculatorColor()} />
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
         <CategorySelect onPress={handleOnCategoryPress} />
@@ -171,7 +171,7 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
               [
                 TRANSACTION_LEND_BORROW_NAME.BORROW,
                 TRANSACTION_LEND_BORROW_NAME.REPAYMENT,
-              ].includes(lendBorrowData[watch('categoryId')])
+              ].includes(lendBorrowData[getValues('categoryId')])
                 ? 'Người cho vay'
                 : 'Người vay'
             }
@@ -198,10 +198,10 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
             <>
               <RelatedPersonSelect
                 fieldName={
-                  watch('transactionType') === TRANSACTION_TYPE.EXPENSE ? 'giver' : 'payee'
+                  getValues('transactionType') === TRANSACTION_TYPE.EXPENSE ? 'giver' : 'payee'
                 }
                 title={
-                  watch('transactionType') === TRANSACTION_TYPE.EXPENSE
+                  getValues('transactionType') === TRANSACTION_TYPE.EXPENSE
                     ? 'Chi cho ai'
                     : 'Nhận từ ai'
                 }
@@ -251,7 +251,7 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
         onSubmit={handleSubmit(onSubmit)}
       />
       <View style={{ height: 150 }} />
-    </View>
+    </>
   );
 }
 
