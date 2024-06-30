@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import { RNText } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
-import { formatDateStringLocal } from 'utils/date';
+import { formatDateStringLocal, formatDayOfTheWeek } from 'utils/date';
 import { isToday, isYesterday, parseISO } from 'date-fns';
 import { isArray, size } from 'lodash';
 import { formatNumber } from 'utils/math';
@@ -24,15 +24,6 @@ function HeaderItem({ transaction }: { transaction: GroupedTransactionProps }) {
   const display = useAppSelector((state) => selectTransactionListConfig(state));
   const formatDate = useCallback((format: string) => formatDateStringLocal(date, format), [date]);
   const transactionLength = size(data);
-
-  const formatDayOfTheWeek = () => {
-    if (isToday(parseISO(date))) {
-      return 'Hôm nay';
-    } else if (isYesterday(parseISO(date))) {
-      return 'Hôm qua';
-    }
-    return formatDate('EEEE');
-  };
 
   const parentLineHeight = useMemo(
     () =>
@@ -89,7 +80,7 @@ function HeaderItem({ transaction }: { transaction: GroupedTransactionProps }) {
             </RNText>
           </View>
           <View>
-            <RNText>{formatDayOfTheWeek()}</RNText>
+            <RNText>{formatDayOfTheWeek(date)}</RNText>
             <RNText color="gray" fontSize={14}>
               {formatDate('MM/yyyy')}
             </RNText>

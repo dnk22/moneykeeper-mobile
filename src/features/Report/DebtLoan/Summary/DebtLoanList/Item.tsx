@@ -29,7 +29,7 @@ function Item({ data, index }: { data: DebtLoanTypes; index: number }) {
     },
     {
       id: '0',
-      title: 'Khác',
+      title: 'Số khác',
     },
   ];
 

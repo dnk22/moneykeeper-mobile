@@ -1,4 +1,8 @@
-import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constant';
+import {
+  TRANSACTION_CATEGORY_TYPE,
+  TRANSACTION_LEND_BORROW_NAME,
+  VIEW_EXPENSE_INCOME_REPORT_BY,
+} from 'utils/constant';
 import { ACCOUNTS, BALANCE, TRANSACTIONS, TRANSACTION_CATEGORY } from 'database/constants';
 import { database } from 'database/index';
 import { AccountModel, BalanceModel, TransactionModel } from 'database/models';
@@ -15,6 +19,13 @@ import { ACCOUNT_CATEGORY_ID, TRANSACTION_TYPE } from 'utils/constant';
 import { get } from 'lodash';
 import { DebtLoanTypes } from 'utils/types';
 import { TGetDebtLoanDetailByPerson } from 'utils/types/request.type';
+
+const debtLoanCategory = `(
+  '${TRANSACTION_LEND_BORROW_NAME.BORROW}', 
+  '${TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS}', 
+  '${TRANSACTION_LEND_BORROW_NAME.LEND}', 
+  '${TRANSACTION_LEND_BORROW_NAME.REPAYMENT}'
+)`;
 
 export const queryGetAllBalance = async () => {
   const query = `SELECT * FROM ${BALANCE}`;
@@ -163,7 +174,7 @@ export const getCurrentBalanceAllAccount = async () => {
         FROM ${TRANSACTIONS} trans
         LEFT JOIN ${TRANSACTION_CATEGORY} transC ON transC.id = trans.categoryId
         WHERE trans._status != 'deleted' AND 
-              transC.categoryName IN ('${TRANSACTION_LEND_BORROW_NAME.LEND}','${TRANSACTION_LEND_BORROW_NAME.REPAYMENT}','${TRANSACTION_LEND_BORROW_NAME.BORROW}','${TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS}')`,
+              transC.categoryName IN ${debtLoanCategory}`,
         ),
       )
       .unsafeFetchRaw();
@@ -338,6 +349,121 @@ export const queryGetDebtLoanDetailByPerson = async ({
           LEFT JOIN ${ACCOUNTS} acc ON acc.id = trans.accountId
           LEFT JOIN ${BALANCE} bal ON bal.transactionId = trans.id
           WHERE trans._status!='deleted' AND trans.relatedPerson = '${relatedPerson}' AND transC.categoryName IN (${categoryName})`,
+        ),
+      )
+      .unsafeFetchRaw();
+  });
+};
+
+export const queryGetExpenseIncomeReportByCurrentDate = async ({
+  isIncludesDetLoan,
+  startDate,
+  endDate,
+}: {
+  isIncludesDetLoan?: boolean;
+  startDate: Date;
+  endDate: Date;
+}) => {
+  const startOfDate = new Date(startDate).setUTCHours(0, 0, 0, 0);
+  const endOfDate = new Date(endDate).setUTCHours(23, 59, 59, 999);
+
+  const debtLoanQuery = !isIncludesDetLoan
+    ? `AND transC.categoryName NOT IN ${debtLoanCategory}`
+    : '';
+
+  return await database.read(async () => {
+    return await database
+      .get<TransactionModel>(TRANSACTIONS)
+      .query(
+        Q.unsafeSqlQuery(
+          `SELECT 
+          SUM(CASE 
+              WHEN amount >= 0 THEN amount 
+              ELSE 0 
+          END)AS totalIncome,
+          SUM(CASE 
+              WHEN amount < 0 THEN amount 
+              ELSE 0 
+          END) AS totalExpense
+        FROM ${TRANSACTIONS} trans
+        LEFT JOIN ${TRANSACTION_CATEGORY} transC ON transC.id = trans.categoryId
+        WHERE trans._status!='deleted' ${debtLoanQuery} AND trans.excludeReport=0 AND trans.dateTimeAt BETWEEN ${startOfDate} AND ${endOfDate}`,
+        ),
+      )
+      .unsafeFetchRaw();
+  });
+};
+
+export type TQueryGetExpenseIncomeReportGroupByDate = {
+  date: Date;
+  totalIncome: number;
+  totalExpense: number;
+};
+export const queryGetExpenseIncomeReportGroupByDate = async ({
+  type,
+  isIncludesDetLoan,
+  startDate,
+  endDate,
+}: {
+  type: VIEW_EXPENSE_INCOME_REPORT_BY;
+  isIncludesDetLoan?: boolean;
+  startDate: Date;
+  endDate: Date;
+}): Promise<TQueryGetExpenseIncomeReportGroupByDate[]> => {
+  let groupByType = '';
+  let selectDateQuery = `strftime('%Y-%m', datetime(dateTimeAt/1000, 'unixepoch'))  AS date`;
+  // Convert start and end dates to UTC timestamps
+  const startOfDate = new Date(startDate).setUTCHours(0, 0, 0, 0);
+  const endOfDate = new Date(endDate).setUTCHours(23, 59, 59, 999);
+
+  // Generate debt loan query based on whether to include debt/loan transactions
+  const debtLoanQuery = !isIncludesDetLoan
+    ? `AND transC.categoryName NOT IN ${debtLoanCategory}`
+    : '';
+
+  switch (type) {
+    case VIEW_EXPENSE_INCOME_REPORT_BY.MONTH:
+      groupByType = `GROUP BY strftime('%Y-%m', datetime(dateTimeAt/1000, 'unixepoch')) 
+          ORDER BY strftime('%Y-%m', datetime(dateTimeAt/1000, 'unixepoch')) DESC;`;
+      break;
+    case VIEW_EXPENSE_INCOME_REPORT_BY.QUARTER:
+      selectDateQuery = `strftime('%Y', datetime(dateTimeAt/1000, 'unixepoch')) || '-' ||
+          CASE 
+              WHEN strftime('%m', datetime(dateTimeAt/1000, 'unixepoch')) BETWEEN '01' AND '03' THEN '1' 
+              WHEN strftime('%m', datetime(dateTimeAt/1000, 'unixepoch')) BETWEEN '04' AND '06' THEN '4' 
+              WHEN strftime('%m', datetime(dateTimeAt/1000, 'unixepoch')) BETWEEN '07' AND '09' THEN '7' 
+              ELSE '10'
+          END AS date`;
+      groupByType = `GROUP BY date
+          ORDER BY date DESC`;
+      break;
+    case VIEW_EXPENSE_INCOME_REPORT_BY.YEAR:
+      groupByType = `GROUP BY strftime('%Y', datetime(dateTimeAt/1000, 'unixepoch')) 
+          ORDER BY strftime('%Y', datetime(dateTimeAt/1000, 'unixepoch')) DESC;`;
+      break;
+    default:
+      break;
+  }
+
+  return await database.read(async () => {
+    return await database
+      .get<TransactionModel>(TRANSACTIONS)
+      .query(
+        Q.unsafeSqlQuery(
+          `SELECT 
+          SUM(CASE 
+              WHEN amount >= 0 THEN amount 
+              ELSE 0 
+          END)AS totalIncome,
+          SUM(CASE 
+              WHEN amount < 0 THEN amount 
+              ELSE 0 
+          END) AS totalExpense,
+          ${selectDateQuery}
+        FROM ${TRANSACTIONS} trans
+        LEFT JOIN ${TRANSACTION_CATEGORY} transC ON transC.id = trans.categoryId
+        WHERE trans._status!='deleted' ${debtLoanQuery} AND trans.excludeReport=0 AND trans.dateTimeAt BETWEEN ${startOfDate} AND ${endOfDate}
+        ${groupByType}`,
         ),
       )
       .unsafeFetchRaw();

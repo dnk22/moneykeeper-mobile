@@ -2,8 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { RNText } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
-import { formatDateStringLocal } from 'utils/date';
-import { isToday, isYesterday, parseISO } from 'date-fns';
+import { formatDateStringLocal, formatDayOfTheWeek } from 'utils/date';
 import { isArray, isEmpty, isEqual as isEqualLodash, size } from 'lodash';
 import { getTransactionByDate } from 'services/api/transactions';
 import { useFocusEffect } from '@react-navigation/native';
@@ -53,15 +52,6 @@ function HeaderItem({ date, accountId, onRefreshDate, reload }: HeaderItemProps)
     }, [reload]),
   );
 
-  const formatDayOfTheWeek = () => {
-    if (isToday(parseISO(date))) {
-      return 'Hôm nay';
-    } else if (isYesterday(parseISO(date))) {
-      return 'Hôm qua';
-    }
-    return formatDate('EEEE');
-  };
-
   const parentLineHeight = useMemo(
     () =>
       CHILD_ITEM_TRANSACTION_HEIGHT * (transactionLength - 1) +
@@ -109,7 +99,7 @@ function HeaderItem({ date, accountId, onRefreshDate, reload }: HeaderItemProps)
             {formatDate('dd')}
           </RNText>
           <View>
-            <RNText>{formatDayOfTheWeek()}</RNText>
+            <RNText>{formatDayOfTheWeek(date)}</RNText>
             <RNText color="gray" fontSize={14}>
               {formatDate('MM/yyyy')}
             </RNText>

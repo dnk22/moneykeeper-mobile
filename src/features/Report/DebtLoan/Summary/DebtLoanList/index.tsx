@@ -6,8 +6,6 @@ import { useCustomTheme } from 'resources/theme';
 import { DebtLoanTypes } from 'utils/types';
 import Item from './Item';
 import styles from './styles';
-import { Circle, Line, Path, Rect, Svg } from 'react-native-svg';
-import { SCREEN_WIDTH } from 'share/dimensions';
 
 function DebtLoanList({ data }: { data: DebtLoanTypes[] }) {
   const { colors } = useCustomTheme();

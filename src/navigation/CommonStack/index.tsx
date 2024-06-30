@@ -6,7 +6,6 @@ import {
   ACCOUNT_CREDIT_CARD_DETAIL,
   EXPENSE_INCOME_DETAIL,
   FINANCE_STATEMENT,
-  EXPENSE_INCOME_REPORT,
   DEBT_LOAN_REPORT,
   DEBT_LOAN_REPORT_DETAIL,
 } from 'navigation/constants';
@@ -16,7 +15,6 @@ import TransactionHistoryCreditCard from 'features/TransactionHistory/CreditCard
 import AddTransactions from 'features/AddTransaction';
 import ExpenseIncome from 'features/Report/ExpenseIncome';
 import FinancialStatement from 'features/Report/FinancialStatement';
-import ExpenseIncomeReport from 'features/Report/ExpenseIncome';
 import DebtLoanReport from 'features/Report/DebtLoan';
 import DebtLoanDetail from 'features/Report/DebtLoan/Detail';
 
@@ -51,13 +49,6 @@ function CommonStack({ Stack, parentName }: { Stack: any; parentName?: string })
           title: '',
         })}
         component={AddTransactions}
-      />
-      <Stack.Screen
-        name={EXPENSE_INCOME_REPORT}
-        component={ExpenseIncomeReport}
-        options={{
-          title: 'Thu & Chi',
-        }}
       />
       <Stack.Screen
         name={EXPENSE_INCOME_DETAIL}

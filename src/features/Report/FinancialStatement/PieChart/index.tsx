@@ -21,9 +21,7 @@ function PieChart() {
 
   const dataFocus = useMemo(() => {
     if (isItemLevel2Selected) {
-      return (
-        dataLv1 && dataLv1.find((item) => item.accountName === isItemLevel2Selected)?.data
-      );
+      return dataLv1 && dataLv1.find((item) => item.accountName === isItemLevel2Selected)?.data;
     } else {
       return dataLv1;
     }

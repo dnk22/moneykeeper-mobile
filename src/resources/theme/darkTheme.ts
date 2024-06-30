@@ -10,7 +10,7 @@ export default {
   text: 'rgb(229, 229, 231)',
   border: 'rgb(39, 39, 41)',
   notification: 'rgb(255, 69, 58)',
-  error: 'rgb(255, 59, 48)',
+  error: '#ED6665',
   info: '#ffd700',
   divider: 'rgba(255, 255, 255, 0.12)',
   white: 'white',

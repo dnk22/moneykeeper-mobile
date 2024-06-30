@@ -44,7 +44,7 @@ export const textPresets = StyleSheet.create({
     fontWeight: '700',
   },
   widgetTitle: {
-    fontWeight: '500',
+    fontWeight: '700',
     fontSize: 17,
   },
   widgetViewMore: {

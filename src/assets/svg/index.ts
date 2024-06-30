@@ -78,8 +78,18 @@ import drag from './drag.svg';
 import arrowUp from './arrowUp.svg';
 import payIn from './payIn.svg';
 import payOut from './payOut.svg';
+import statementReport from './statementReport.svg';
+import contactBookReport from './contactBookReport.svg';
+import expenseIncomeReport from './expenseIncomeReport.svg';
+import debtLoanReport from './debtLoanReport.svg';
+import expenseIncomeAnalyzeReport from './expenseIncomeAnalyzeReport.svg';
 
 export {
+  expenseIncomeAnalyzeReport,
+  debtLoanReport,
+  expenseIncomeReport,
+  contactBookReport,
+  statementReport,
   payIn,
   payOut,
   arrowUp,

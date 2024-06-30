@@ -33,6 +33,12 @@ export const LEND_BORROW = 'lendBorrow';
 // report screen constants
 export const REPORT = 'report';
 export const HOME_REPORT = 'homeReport';
+export const EXPENSE_INCOME_REPORT_CURRENT = 'expenseIncomeReportCurrent';
+export const EXPENSE_INCOME_REPORT_WEEK = 'expenseIncomeReportWeek';
+export const EXPENSE_INCOME_REPORT_MONTH = 'expenseIncomeReportMonth';
+export const EXPENSE_INCOME_REPORT_QUART = 'expenseIncomeReportQuart';
+export const EXPENSE_INCOME_REPORT_YEAR = 'expenseIncomeReportYear';
+export const EXPENSE_INCOME_REPORT_FREE = 'expenseIncomeReportFree';
 
 // bank screen constants
 export const BANK_NAVIGATION = 'bank';

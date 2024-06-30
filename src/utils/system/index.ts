@@ -13,7 +13,7 @@ export const hapticFeedback = (type?: HapticFeedbackTypes) => {
 export function showToast({ type, text2, ...rest }: ToastProps) {
   Toast.show({
     type,
-    topOffset: 60,
+    topOffset: 42,
     text1: type === 'error' ? 'Oops! Lỗi mất rồi.' : 'Thành công!',
     text2,
     visibilityTime: 2000,

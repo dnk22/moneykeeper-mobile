@@ -2,7 +2,13 @@ import React from 'react';
 import { View, ScrollView, SafeAreaView } from 'react-native';
 import { selectReportViewSettings } from 'store/app/app.selector';
 import { useAppSelector } from 'store/index';
-import { CONTACT_REPORT, DEBT_LOAN_REPORT, EXPENSE_INCOME_ANALYZE, EXPENSE_INCOME_REPORT, FINANCE_STATEMENT } from 'navigation/constants';
+import {
+  CONTACT_REPORT,
+  DEBT_LOAN_REPORT,
+  EXPENSE_INCOME_ANALYZE,
+  EXPENSE_INCOME_REPORT,
+  FINANCE_STATEMENT,
+} from 'navigation/constants';
 import Card from './Card';
 import styles from './styles';
 
@@ -20,17 +26,17 @@ const data = [
   {
     name: 'Phân tích thu & chi',
     link: EXPENSE_INCOME_ANALYZE,
-    icon: 'incomeReport',
+    icon: 'expenseIncomeAnalyzeReport',
   },
   {
     name: 'Theo dõi vay nợ',
     link: DEBT_LOAN_REPORT,
-    icon: 'expenseReport',
+    icon: 'debtLoanReport',
   },
   {
     name: 'Danh bạ thu/chi',
     link: CONTACT_REPORT,
-    icon: 'expenseReport',
+    icon: 'contactBookReport',
   },
 ];
 function HomeReport() {

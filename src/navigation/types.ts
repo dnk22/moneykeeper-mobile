@@ -33,6 +33,7 @@ import {
   FINANCE_STATEMENT,
   DEBT_LOAN_REPORT_DETAIL,
   CREATE_TRANSACTION_FROM_ACCOUNT,
+  EXPENSE_INCOME_REPORT,
 } from './constants';
 import { BANK_TYPE, TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constant';
 
@@ -142,6 +143,7 @@ export type TransactionCategoryListParamsProps<T extends keyof TransactionCatego
 /** report list stack navigation */
 export type ReportParamList = CommonStackParamsList & {
   [HOME_REPORT]: undefined;
+  [EXPENSE_INCOME_REPORT]: undefined;
 };
 export type ReportParamListProps<T extends keyof ReportParamList> = NativeStackScreenProps<
   ReportParamList,

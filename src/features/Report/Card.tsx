@@ -1,9 +1,9 @@
 import { TouchableHighlight } from 'react-native';
 import Animated, { Layout, StretchInX } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
+import SvgIcon from 'components/SvgIcon';
 import { SCREEN_WIDTH } from 'share/dimensions';
 import { useCustomTheme } from 'resources/theme';
-import Statement from 'assets/images/report/statement.svg';
 import styles from './styles';
 
 const AnimatedTouchableHighlight = Animated.createAnimatedComponent(TouchableHighlight);
@@ -35,7 +35,7 @@ function Item({ item, isGridView }: ItemProps) {
           },
         ]}
       >
-        <Statement />
+        <SvgIcon name={item.icon} width={'100%'} height={'100%'} />
         <Animated.View
           style={[styles.textViewHolder, { backgroundColor: colors.primary, opacity: 0.5 }]}
           layout={Layout.springify()}

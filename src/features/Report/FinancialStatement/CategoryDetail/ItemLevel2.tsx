@@ -8,10 +8,23 @@ import {
 } from 'components/index';
 import { useNavigation } from '@react-navigation/native';
 import { formatNumber } from 'utils/math';
-import { MATERIAL_COLOR, ACCOUNT_CATEGORY_ID } from 'utils/constant';
-import { ACCOUNT_CREDIT_CARD_DETAIL, ACCOUNT_NORMAL_DETAIL, DEBT_LOAN_REPORT_DETAIL } from 'navigation/constants';
+import {
+  MATERIAL_COLOR,
+  ACCOUNT_CATEGORY_ID,
+  TRANSACTION_CATEGORY_TYPE,
+  TRANSACTION_LEND_BORROW_NAME,
+} from 'utils/constant';
+import { MenuAction, MenuView, NativeActionEvent } from '@react-native-menu/menu';
+import {
+  ACCOUNT_CREDIT_CARD_DETAIL,
+  ACCOUNT_NORMAL_DETAIL,
+  CREATE_TRANSACTION_FROM_ACCOUNT,
+  DEBT_LOAN_REPORT_DETAIL,
+} from 'navigation/constants';
 import { dataLevelProps } from '../types';
 import styles from './styles';
+import { useAppSelector } from 'store/index';
+import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';
 
 function ItemLevel2({
   item,
@@ -25,9 +38,21 @@ function ItemLevel2({
   onActionPress?: (value: dataLevelProps) => void;
 }) {
   const navigation = useNavigation<any>();
+  const lendBorrowData = useAppSelector((state) => selectLendBorrowData(state));
+
+  const menuData: MenuAction[] = [
+    {
+      id: String(item.value),
+      title: formatNumber(Math.abs(item.value), true),
+    },
+    {
+      id: '0',
+      title: 'Số khác',
+    },
+  ];
 
   const percent = () => {
-    return `${Number(((item.value / totalAmount) * 100).toFixed(2))}%`;
+    return `${totalAmount ? Number(((item.value / totalAmount) * 100).toFixed(2)) : 0}%`;
   };
 
   const onNavigationToAccount = () => {
@@ -53,6 +78,24 @@ function ItemLevel2({
     }
   };
 
+  const onDebLoanAction = ({ nativeEvent: { event } }: NativeActionEvent) => {
+    if (!item.categoryName) {
+      return;
+    }
+    // if type LEND get COLLECT_DEBTS , REPAYMENT else
+    const categoryNameTarget = item.categoryType
+      ? TRANSACTION_LEND_BORROW_NAME.REPAYMENT
+      : TRANSACTION_LEND_BORROW_NAME.COLLECT_DEBTS;
+    const categoryId = Object.keys(lendBorrowData).find(
+      (key) => lendBorrowData[key] === categoryNameTarget,
+    );
+    navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, {
+      amount: +event,
+      categoryId,
+      relatedPerson: item.relatedPerson,
+    });
+  };
+
   return (
     <TouchableHighlightComponent onPress={onNavigationToAccount}>
       <View style={styles.item}>
@@ -76,9 +119,26 @@ function ItemLevel2({
             </View>
           </View>
         </View>
-        <PressableHaptic onPress={() => onActionPress && onActionPress(item)}>
-          <SvgIcon name="settingDot" />
-        </PressableHaptic>
+        {item.categoryName ? (
+          <PressableHaptic
+            onPress={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          >
+            <MenuView
+              title={item.categoryType === TRANSACTION_CATEGORY_TYPE.EXPENSE ? 'Thu nợ' : 'Trả nợ'}
+              onPressAction={onDebLoanAction}
+              actions={menuData}
+            >
+              <SvgIcon name="settingDot" />
+            </MenuView>
+          </PressableHaptic>
+        ) : (
+          <PressableHaptic onPress={() => onActionPress && onActionPress(item)}>
+            <SvgIcon name="settingDot" />
+          </PressableHaptic>
+        )}
       </View>
     </TouchableHighlightComponent>
   );

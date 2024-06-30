@@ -51,6 +51,12 @@ export const MAP_LEND_BORROW: any = {
   ['REPAYMENT']: TRANSACTION_TYPE.EXPENSE,
 };
 
+export enum VIEW_EXPENSE_INCOME_REPORT_BY {
+  MONTH,
+  QUARTER,
+  YEAR,
+  FREE
+}
 
 export const MATERIAL_COLOR = [
   '#F44336',
