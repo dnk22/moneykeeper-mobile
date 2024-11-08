@@ -4,7 +4,7 @@ import { PieChart as PieChartComponent } from 'react-native-gifted-charts';
 import { Empty, RNText } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { formatNumber } from 'utils/math';
-import { MATERIAL_COLOR } from 'utils/constant';
+import { MATERIAL_COLOR } from 'utils/constants';
 import { DebtLoanTypes } from 'utils/types';
 import styles from './styles';
 

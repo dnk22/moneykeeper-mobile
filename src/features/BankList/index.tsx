@@ -8,8 +8,8 @@ import {
 } from 'components/index';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { TBank } from 'database/types';
-import { BANK_TYPE } from 'utils/constant';
-import { ADD_ACCOUNT, BANK_HOME_LIST } from 'navigation/constants';
+import { BANK_TYPE } from 'utils/constants';
+import { ADD_ACCOUNT, BANK_HOME_LIST } from 'utils/constants/navigation.constant';
 import { fetchBankData } from 'services/api/banks';
 import { BankParamsProps } from 'navigation/types';
 import FastImage from 'react-native-fast-image';

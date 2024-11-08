@@ -8418,7 +8418,7 @@ __metadata:
     react-native-gesture-handler: ^2.20.2
     react-native-gifted-charts: ^1.4.47
     react-native-haptic-feedback: ^2.3.3
-    react-native-ios-context-menu: ^2.5.1
+    react-native-ios-context-menu: 1.15.3
     react-native-keyboard-aware-scroll-view: ^0.9.5
     react-native-linear-gradient: ^2.8.3
     react-native-mmkv: ^3.1.0
@@ -9407,17 +9407,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-ios-context-menu@npm:^2.5.1":
-  version: 2.5.1
-  resolution: "react-native-ios-context-menu@npm:2.5.1"
+"react-native-ios-context-menu@npm:1.15.3":
+  version: 1.15.3
+  resolution: "react-native-ios-context-menu@npm:1.15.3"
   dependencies:
     "@dominicstop/ts-event-emitter": ^1.1.0
   peerDependencies:
-    expo: "*"
     react: "*"
     react-native: "*"
-    react-native-ios-utilities: 4.4.x
-  checksum: 76104ccc2fadcdfa281f2da55bbd7b275e0d7f21ffc741be731d672c9f6f137d8cdc460c3d9b3f07312064fa88883171e6bc73ae8cab69a8e89ae428f53ee642
+  checksum: 5c587fe95296b8ae5d93caa98a9816c56425755ba3a113230a8eba70b1eb1e117aa793a1b043e7970eca8d51a32a52695947ffca7555349688bd8723a72df4c6
   languageName: node
   linkType: hard
 

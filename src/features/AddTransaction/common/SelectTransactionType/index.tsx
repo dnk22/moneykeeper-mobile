@@ -11,7 +11,7 @@ import {
 } from 'components/index';
 import { TransactionTypeData } from 'utils/data';
 import { TTransactionType } from 'utils/types';
-import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constant';
+import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constants';
 import styles from './styles';
 
 type SelectTransactionTypeProps = {

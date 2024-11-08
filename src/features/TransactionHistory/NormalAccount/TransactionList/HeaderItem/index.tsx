@@ -8,7 +8,7 @@ import { getTransactionByDate } from 'services/api/transactions';
 import { useFocusEffect } from '@react-navigation/native';
 import { formatNumber } from 'utils/math';
 import { TTransactions } from 'database/types';
-import { TRANSACTION_TYPE } from 'utils/constant';
+import { TRANSACTION_TYPE } from 'utils/constants';
 import {
   PARENT_ITEM_TRANSACTION_HEIGHT,
   MARGIN_TOP,

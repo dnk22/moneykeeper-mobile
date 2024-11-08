@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { DASHBOARDHOME, NOTIFICATION } from 'navigation/constants';
+import { DASHBOARDHOME, NOTIFICATION } from 'utils/constants/navigation.constant';
 import { DashboardParamList } from 'navigation/types';
 import { useCustomTheme } from 'resources/theme';
 

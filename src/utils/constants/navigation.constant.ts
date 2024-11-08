@@ -1,4 +1,5 @@
 import { createContext } from 'react';
+export const TransactionCategoryContext = createContext({});
 
 export const HOME = 'home';
 
@@ -43,7 +44,6 @@ export const EXPENSE_INCOME_REPORT_FREE = 'expenseIncomeReportFree';
 // bank screen constants
 export const BANK_NAVIGATION = 'bank';
 export const BANK_HOME_LIST = 'bankHomeList';
-export const TransactionCategoryContext = createContext({});
 
 // common screen constants
 export const CREATE_TRANSACTION_FROM_ACCOUNT = 'createTransactionFromAccount';

@@ -9,7 +9,7 @@ import HeaderIcon from 'navigation/elements/HeaderIcon';
 import { deleteTransactionById, updateTransaction } from 'services/api/transactions';
 import { showToast } from 'utils/system';
 import { formatNumber } from 'utils/math';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
+import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
 import { TransactionParamListProps } from 'navigation/types';
 import {
   ADD_TRANSACTION,
@@ -17,7 +17,7 @@ import {
   INCOME_CATEGORY,
   TRANSACTION_CATEGORY,
   TRANSACTION_CATEGORY_LIST,
-} from 'navigation/constants';
+} from 'utils/constants/navigation.constant';
 import { queryGetCurrentBalance } from 'database/querying';
 import MoreDetail from '../common/MoreDetail';
 import AccountSelect from '../common/AccountSelect';

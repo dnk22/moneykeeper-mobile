@@ -9,13 +9,13 @@ import {
 } from 'components/index';
 import { useNavigation } from '@react-navigation/native';
 import { AccountStackParamListProps } from 'navigation/types';
-import { ACCOUNT_NORMAL_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
+import { ACCOUNT_NORMAL_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'utils/constants/navigation.constant';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
 import { deleteTransactionById } from 'services/api/transactions';
 import { formatNumber } from 'utils/math';
 import { showToast } from 'utils/system';
-import { TRANSACTION_TYPE } from 'utils/constant';
+import { TRANSACTION_TYPE } from 'utils/constants';
 import { useAppDispatch } from 'store/index';
 import { refreshTransactionHistory } from 'store/transactions/transactions.slice';
 import styles from './styles';

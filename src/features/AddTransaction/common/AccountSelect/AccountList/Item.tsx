@@ -7,7 +7,7 @@ import {
   TouchableHighlightComponent,
 } from 'components/index';
 import { useNavigation } from '@react-navigation/native';
-import { ACCOUNT_NORMAL_DETAIL } from 'navigation/constants';
+import { ACCOUNT_NORMAL_DETAIL } from 'utils/constants/navigation.constant';
 import { useCustomTheme } from 'resources/theme';
 import { AccountStackParamListProps } from 'navigation/types';
 import { formatNumber } from 'utils/math';

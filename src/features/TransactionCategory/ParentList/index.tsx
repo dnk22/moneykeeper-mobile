@@ -10,7 +10,7 @@ import {
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { TTransactionsCategory } from 'database/types';
 import { useCustomTheme } from 'resources/theme';
-import { PARENT_LIST, UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
+import { PARENT_LIST, UPDATE_TRANSACTION_CATEGORY } from 'utils/constants/navigation.constant';
 import { TransactionCategoryParamProps } from 'navigation/types';
 import { getParentList } from 'services/api/transactionsCategory';
 import styles from './styles';

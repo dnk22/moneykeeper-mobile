@@ -1,5 +1,5 @@
 import { TTransactionsCategory } from 'database/types';
-import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constant';
+import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constants';
 
 export const LendAndBorrowData: TTransactionsCategory[] = [
   {

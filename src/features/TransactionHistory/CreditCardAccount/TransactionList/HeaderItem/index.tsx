@@ -6,7 +6,7 @@ import { formatDateStringLocal, formatDayOfTheWeek } from 'utils/date';
 import { isToday, isYesterday, parseISO } from 'date-fns';
 import { isArray, size } from 'lodash';
 import { formatNumber } from 'utils/math';
-import { TRANSACTION_TYPE } from 'utils/constant';
+import { TRANSACTION_TYPE } from 'utils/constants';
 import {
   PARENT_ITEM_TRANSACTION_HEIGHT,
   MARGIN_TOP,

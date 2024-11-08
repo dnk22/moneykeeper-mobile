@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { IconComponent, RNText, TouchableHighlightComponent } from 'components/index';
 import { formatNumber } from 'utils/math';
-import { MATERIAL_COLOR } from 'utils/constant';
+import { MATERIAL_COLOR } from 'utils/constants';
 import { useAppDispatch } from 'store/index';
 import { setDataDetailLv2, setPageView } from '../reducer/financialStatement.slice';
 import { dataLevelProps } from '../types';

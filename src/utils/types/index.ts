@@ -8,7 +8,7 @@ import {
   TRANSACTION_CATEGORY_TYPE,
   TRANSACTION_TYPE,
   VIEW_CATEGORY_FAST_BY_COLUMN,
-} from 'utils/constant';
+} from 'utils/constants';
 
 export type CustomOmit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 

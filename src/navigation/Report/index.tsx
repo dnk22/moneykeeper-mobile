@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { EXPENSE_INCOME_REPORT, HOME_REPORT } from 'navigation/constants';
+import { EXPENSE_INCOME_REPORT, HOME_REPORT } from 'utils/constants/navigation.constant';
 import { ReportParamList } from 'navigation/types';
 
 // import route component

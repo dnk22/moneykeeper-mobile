@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { View } from 'react-native';
-import { MATERIAL_COLOR } from 'utils/constant';
+import { MATERIAL_COLOR } from 'utils/constants';
 import { styles } from './styles';
 
 export default function ProgressLineChart({

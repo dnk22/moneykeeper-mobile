@@ -12,8 +12,8 @@ import {
   ACCOUNT_CREDIT_CARD_DETAIL,
   ACCOUNT_NORMAL_DETAIL,
   ADD_ACCOUNT,
-} from 'navigation/constants';
-import { ACCOUNT_CATEGORY_ID } from 'utils/constant';
+} from 'utils/constants/navigation.constant';
+import { ACCOUNT_CATEGORY_ID } from 'utils/constants';
 import { styles } from './styles';
 
 function Wallets({ title }: { title: string }) {

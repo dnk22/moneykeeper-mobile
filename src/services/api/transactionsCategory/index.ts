@@ -8,7 +8,7 @@ import {
   queryGetExpenseIncome,
   queryImportDefaultTransactionCategory,
 } from 'database/querying';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
+import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
 
 type getMostUsedOrRecentTransactionProps = {
   categoryType: TRANSACTION_CATEGORY_TYPE;

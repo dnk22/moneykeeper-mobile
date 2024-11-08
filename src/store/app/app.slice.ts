@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { WIDGET_INIT_LIST } from 'features/Dashboard/constants';
-import { FLAT, VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constant/index';
+import { FLAT, VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constants/index';
 import { AccountViewSettingsProps, AppStateProps } from 'utils/types';
 
 const initialState = {

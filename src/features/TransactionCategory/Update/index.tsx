@@ -13,7 +13,7 @@ import { TransactionCategoryParamProps } from 'navigation/types';
 import { useForm } from 'react-hook-form';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactionsCategory } from 'database/types';
-import { ICON_SELECT, PARENT_LIST, UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
+import { ICON_SELECT, PARENT_LIST, UPDATE_TRANSACTION_CATEGORY } from 'utils/constants/navigation.constant';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
 import {
   deleteTransactionCategoryByID,

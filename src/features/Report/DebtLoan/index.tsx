@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Loading from 'components/Loading';
 import { useCustomTheme } from 'resources/theme';
-import { DEBT, LOAN } from 'navigation/constants';
+import { DEBT, LOAN } from 'utils/constants/navigation.constant';
 import DebtLoanSummary from './Summary';
 import styles from './styles';
 

@@ -1,5 +1,5 @@
 import { IconProps } from 'components/SvgIcon/const';
-import { TRANSACTION_TYPE, TRANSACTION_CATEGORY_TYPE, ACCOUNT_CATEGORY_ID } from 'utils/constant';
+import { TRANSACTION_TYPE, TRANSACTION_CATEGORY_TYPE, ACCOUNT_CATEGORY_ID } from 'utils/constants';
 
 // user
 export type TUsers = {

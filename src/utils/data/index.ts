@@ -3,7 +3,7 @@ import {
   ACCOUNT_CATEGORY_ID,
   TRANSACTION_LEND_BORROW_NAME,
   TRANSACTION_TYPE,
-} from 'utils/constant';
+} from 'utils/constants';
 import { TTransactionType } from 'utils/types';
 
 export const TransactionTypeData: TTransactionType[] = [

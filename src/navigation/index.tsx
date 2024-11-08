@@ -5,7 +5,7 @@ import {
   HOME,
   TRANSACTION_CATEGORY,
   WIDGET_SETTINGS,
-} from './constants';
+} from 'utils/constants/navigation.constant';
 import Appearance from 'features/Settings/Appearance';
 import WidgetSettings from 'features/Dashboard/WidgetSettings';
 import HomeNavigation from './Home';

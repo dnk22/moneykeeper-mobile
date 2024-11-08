@@ -2,7 +2,7 @@ import { database } from 'database/index';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
 import { TRANSACTION_CATEGORY } from 'database/constants';
 import { TTransactionsCategory } from 'database/types';
-import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constant';
+import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constants';
 import { Q } from '@nozbe/watermelondb';
 import { handleError, requestSuccess } from 'utils/axios';
 import { TransactionCategoryData } from 'utils/data/transactionCategory.default';

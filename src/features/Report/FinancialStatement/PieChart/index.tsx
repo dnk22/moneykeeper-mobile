@@ -11,7 +11,7 @@ import {
   selectViewType,
 } from '../reducer/financialStatement.selector';
 import styles from './styles';
-import { MATERIAL_COLOR } from 'utils/constant';
+import { MATERIAL_COLOR } from 'utils/constants';
 
 function PieChart() {
   const { colors } = useCustomTheme();

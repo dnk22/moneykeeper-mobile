@@ -5,7 +5,7 @@ import { TTransactions } from 'database/types';
 import { Q } from '@nozbe/watermelondb';
 import { isEqual } from 'lodash';
 import { handleError } from 'utils/axios';
-import { TRANSACTION_TYPE } from 'utils/constant';
+import { TRANSACTION_TYPE } from 'utils/constants';
 import { queryCalculateAllBalanceAfterDate } from './balance.query';
 
 export type GetTransactionByDate = {

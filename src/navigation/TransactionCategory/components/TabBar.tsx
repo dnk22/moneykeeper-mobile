@@ -6,13 +6,13 @@ import {
   LEND_BORROW,
   TransactionCategoryContext,
   UPDATE_TRANSACTION_CATEGORY,
-} from 'navigation/constants';
+} from 'utils/constants/navigation.constant';
 import { Loading, PressableHaptic, SvgIcon } from 'components/index';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useCustomTheme } from 'resources/theme';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { TransactionCategoryListParams } from 'navigation/types';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
+import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
 import UpdateTransactionCategoryHeader from './Update';
 import LendAndBorrowTab from 'features/TransactionCategory/LendAndBorrowTab';
 import ExpenseIncomeTab from 'features/TransactionCategory/ExpenseIncomeTab';

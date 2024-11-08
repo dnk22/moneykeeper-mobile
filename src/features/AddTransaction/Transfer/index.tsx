@@ -9,7 +9,7 @@ import HeaderIcon from 'navigation/elements/HeaderIcon';
 import { deleteTransactionById, updateTransactionTransfer } from 'services/api/transactions';
 import { showToast } from 'utils/system';
 import { TransactionParamListProps } from 'navigation/types';
-import { ADD_TRANSACTION } from 'navigation/constants';
+import { ADD_TRANSACTION } from 'utils/constants/navigation.constant';
 import MoreDetail from '../common/MoreDetail';
 import AccountSelect from '../common/AccountSelect';
 import Fee from '../common/Fee';

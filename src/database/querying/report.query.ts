@@ -2,7 +2,7 @@ import {
   TRANSACTION_CATEGORY_TYPE,
   TRANSACTION_LEND_BORROW_NAME,
   VIEW_EXPENSE_INCOME_REPORT_BY,
-} from 'utils/constant';
+} from 'utils/constants';
 import { ACCOUNTS, BALANCE, TRANSACTIONS, TRANSACTION_CATEGORY } from 'database/constants';
 import { database } from 'database/index';
 import { AccountModel, BalanceModel, TransactionModel } from 'database/models';
@@ -15,7 +15,7 @@ import {
   startOfQuarter,
   startOfYear,
 } from 'date-fns';
-import { ACCOUNT_CATEGORY_ID, TRANSACTION_TYPE } from 'utils/constant';
+import { ACCOUNT_CATEGORY_ID, TRANSACTION_TYPE } from 'utils/constants';
 import { get } from 'lodash';
 import { DebtLoanTypes } from 'utils/types';
 import { TGetDebtLoanDetailByPerson } from 'utils/types/request.type';

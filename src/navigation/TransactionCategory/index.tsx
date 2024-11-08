@@ -5,7 +5,7 @@ import {
   PARENT_LIST,
   TRANSACTION_CATEGORY_LIST,
   UPDATE_TRANSACTION_CATEGORY,
-} from 'navigation/constants';
+} from 'utils/constants/navigation.constant';
 import { HEADER_TITLE_FONT_SIZE } from 'resources/theme/constants';
 import { TransactionCategoryParams } from 'navigation/types';
 import TransactionCategoryTapBar from './components/TabBar';

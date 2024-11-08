@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BASE_URL } from 'utils/constant';
+import { BASE_URL } from 'utils/constants';
 
 // Set config defaults when creating the instance
 const AxiosInstance = axios.create({

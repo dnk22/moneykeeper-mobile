@@ -11,12 +11,12 @@ import HeaderIcon from 'navigation/elements/HeaderIcon';
 import Collapsible from 'react-native-collapsible';
 import { BankModel } from 'database/models';
 import InputCalculator from 'features/AddTransaction/common/InputCalculator';
-import { ADD_ACCOUNT } from 'navigation/constants';
+import { ADD_ACCOUNT } from 'utils/constants/navigation.constant';
 import { AccountType } from 'utils/data';
 import { deleteAccountById, getAccountById, updateAccountDB } from 'services/api/accounts';
 import { showToast } from 'utils/system';
 import { get } from 'lodash';
-import { ACCOUNT_CATEGORY_ID } from 'utils/constant';
+import { ACCOUNT_CATEGORY_ID } from 'utils/constants';
 import { useAppDispatch } from 'store/index';
 import {
   removeAccountStatement,

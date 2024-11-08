@@ -4,7 +4,7 @@ import { BarChart } from 'react-native-gifted-charts';
 import { useCustomTheme } from 'resources/theme';
 import { RNText } from 'components/index';
 import { TQueryGetExpenseIncomeReportGroupByDate } from 'database/querying';
-import { VIEW_EXPENSE_INCOME_REPORT_BY } from 'utils/constant';
+import { VIEW_EXPENSE_INCOME_REPORT_BY } from 'utils/constants';
 import { formatDateLocal } from 'utils/date';
 import styles from './styles';
 

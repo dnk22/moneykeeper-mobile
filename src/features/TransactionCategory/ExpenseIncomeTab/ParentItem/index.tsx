@@ -4,7 +4,7 @@ import { IconComponent, RNText, TouchableHighlightComponent } from 'components/i
 import { useCustomTheme } from 'resources/theme';
 import { useNavigation } from '@react-navigation/native';
 import { TTransactionsCategory } from 'database/types';
-import { TransactionCategoryContext, UPDATE_TRANSACTION_CATEGORY } from 'navigation/constants';
+import { TransactionCategoryContext, UPDATE_TRANSACTION_CATEGORY } from 'utils/constants/navigation.constant';
 import { get, size } from 'lodash';
 import ShakeAnimation from 'resources/animations/Shake';
 import { ITEM_WIDTH } from '../../constants.config';

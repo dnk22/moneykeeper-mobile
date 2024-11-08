@@ -17,8 +17,8 @@ import {
   SafeAreaView,
   initialWindowMetrics,
 } from 'react-native-safe-area-context';
-import { openSettings, requestNotifications } from 'react-native-permissions';
-import { showToast } from 'utils/system';
+import { requestNotifications } from 'react-native-permissions';
+// import { showToast } from 'utils/system';
 import { persistor, store } from './store';
 
 LogBox.ignoreAllLogs();

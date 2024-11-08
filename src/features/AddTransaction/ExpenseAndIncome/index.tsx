@@ -12,10 +12,10 @@ import {
   LEND_BORROW,
   TRANSACTION_CATEGORY,
   TRANSACTION_CATEGORY_LIST,
-} from 'navigation/constants';
+} from 'utils/constants/navigation.constant';
 import { TransactionParamListProps } from 'navigation/types';
 import HeaderIcon from 'navigation/elements/HeaderIcon';
-import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constant';
+import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constants';
 import { deleteTransactionById, updateTransaction } from 'services/api/transactions';
 import { useFormContext } from 'react-hook-form';
 import { showToast } from 'utils/system';

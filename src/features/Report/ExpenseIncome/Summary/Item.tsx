@@ -5,7 +5,7 @@ import { useCustomTheme } from 'resources/theme';
 import { RNText } from 'components/index';
 import { formatNumber } from 'utils/math';
 import { formatDateLocal } from 'utils/date';
-import { VIEW_EXPENSE_INCOME_REPORT_BY } from 'utils/constant';
+import { VIEW_EXPENSE_INCOME_REPORT_BY } from 'utils/constants';
 import styles from '../styles';
 
 function Item({

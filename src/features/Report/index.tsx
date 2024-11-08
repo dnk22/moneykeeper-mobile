@@ -8,7 +8,7 @@ import {
   EXPENSE_INCOME_ANALYZE,
   EXPENSE_INCOME_REPORT,
   FINANCE_STATEMENT,
-} from 'navigation/constants';
+} from 'utils/constants/navigation.constant';
 import Card from './Card';
 import styles from './styles';
 

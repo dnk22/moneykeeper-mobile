@@ -6,8 +6,8 @@ import { MenuView } from '@react-native-menu/menu';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { getExpenseIncomeInRangeDate } from 'database/querying';
 import { formatNumber } from 'utils/math';
-import { MATERIAL_COLOR } from 'utils/constant';
-import { EXPENSE_INCOME_DETAIL } from 'navigation/constants';
+import { MATERIAL_COLOR } from 'utils/constants';
+import { EXPENSE_INCOME_DETAIL } from 'utils/constants/navigation.constant';
 import { styles } from './styles';
 
 const dateViewSelect = [

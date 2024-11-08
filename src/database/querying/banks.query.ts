@@ -2,7 +2,7 @@ import { database } from 'database/index';
 import { Q } from '@nozbe/watermelondb';
 import { BankModel } from 'database/models';
 import { BANKS } from 'database/constants';
-import { BANK_TYPE } from 'utils/constant';
+import { BANK_TYPE } from 'utils/constants';
 import { SQLiteQuery } from '@nozbe/watermelondb/adapters/sqlite';
 const jsonBankData = require('utils/data/banks.default.json');
 

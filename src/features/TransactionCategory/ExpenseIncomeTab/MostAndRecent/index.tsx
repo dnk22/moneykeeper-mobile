@@ -12,7 +12,7 @@ import {
   SvgIcon,
 } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
-import { TRANSACTION_CATEGORY_TYPE, VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constant';
+import { TRANSACTION_CATEGORY_TYPE, VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constants';
 import { TTransactionsCategory } from 'database/types';
 import { getMostUsedOrRecentTransaction } from 'services/api/transactionsCategory';
 import { ITEM_WIDTH } from 'features/TransactionCategory/constants.config';

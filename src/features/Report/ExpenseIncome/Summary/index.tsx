@@ -9,7 +9,7 @@ import {
   TQueryGetExpenseIncomeReportGroupByDate,
   queryGetExpenseIncomeReportGroupByDate,
 } from 'database/querying';
-import { VIEW_EXPENSE_INCOME_REPORT_BY } from 'utils/constant';
+import { VIEW_EXPENSE_INCOME_REPORT_BY } from 'utils/constants';
 import { showToast } from 'utils/system';
 import Item from './Item';
 import styles from '../styles';

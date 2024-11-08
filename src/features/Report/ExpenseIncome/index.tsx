@@ -4,9 +4,9 @@ import {
   EXPENSE_INCOME_REPORT_MONTH,
   EXPENSE_INCOME_REPORT_QUART,
   EXPENSE_INCOME_REPORT_YEAR,
-} from 'navigation/constants';
+} from 'utils/constants/navigation.constant';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { VIEW_EXPENSE_INCOME_REPORT_BY } from 'utils/constant';
+import { VIEW_EXPENSE_INCOME_REPORT_BY } from 'utils/constants';
 import { SCREEN_WIDTH } from 'share/dimensions';
 import Summary from './Summary';
 import SummaryNow from './SummaryNow';

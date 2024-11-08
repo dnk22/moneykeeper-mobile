@@ -1,4 +1,4 @@
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
+import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
 
 export type TGetDebtLoanDetailByPerson = {
   id: string;

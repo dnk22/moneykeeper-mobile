@@ -13,14 +13,14 @@ import {
   ACCOUNT_CATEGORY_ID,
   TRANSACTION_CATEGORY_TYPE,
   TRANSACTION_LEND_BORROW_NAME,
-} from 'utils/constant';
+} from 'utils/constants';
 import { MenuAction, MenuView, NativeActionEvent } from '@react-native-menu/menu';
 import {
   ACCOUNT_CREDIT_CARD_DETAIL,
   ACCOUNT_NORMAL_DETAIL,
   CREATE_TRANSACTION_FROM_ACCOUNT,
   DEBT_LOAN_REPORT_DETAIL,
-} from 'navigation/constants';
+} from 'utils/constants/navigation.constant';
 import { dataLevelProps } from '../types';
 import styles from './styles';
 import { useAppSelector } from 'store/index';

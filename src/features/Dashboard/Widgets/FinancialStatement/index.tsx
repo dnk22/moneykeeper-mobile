@@ -6,7 +6,7 @@ import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import { getCurrentBalanceAllAccount, queryGetAllBalance } from 'database/querying';
 import { formatNumber } from 'utils/math';
-import { FINANCE_STATEMENT, NOTIFICATION, WIDGET_SETTINGS } from 'navigation/constants';
+import { FINANCE_STATEMENT, NOTIFICATION, WIDGET_SETTINGS } from 'utils/constants/navigation.constant';
 import { getAllTriggerNotifications } from 'share/notifications';
 import { useAppDispatch } from 'store/index';
 import { setViewType } from 'features/Report/FinancialStatement/reducer/financialStatement.slice';

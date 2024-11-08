@@ -12,7 +12,7 @@ import {
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import { updateAccountViewSettings } from 'store/app/app.slice';
 import { useAppDispatch, useAppSelector } from 'store/index';
-import { SORT_ACCOUNT_BY_KEY } from 'utils/constant';
+import { SORT_ACCOUNT_BY_KEY } from 'utils/constants';
 import styles from './styles';
 
 function Toolbar() {

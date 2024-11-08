@@ -8,9 +8,9 @@ import {
   PressableHaptic,
 } from 'components/index';
 import { useFocusEffect } from '@react-navigation/native';
-import { CREATE_TRANSACTION_FROM_ACCOUNT, DEBT_LOAN_REPORT_DETAIL } from 'navigation/constants';
+import { CREATE_TRANSACTION_FROM_ACCOUNT, DEBT_LOAN_REPORT_DETAIL } from 'utils/constants/navigation.constant';
 import { ReportParamListProps } from 'navigation/types';
-import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constant';
+import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constants';
 import { queryGetDebtLoanDetailByPerson } from 'database/querying';
 import { TGetDebtLoanDetailByPerson } from 'utils/types/request.type';
 import { formatNumber } from 'utils/math';

@@ -1,5 +1,5 @@
 import { IconProps } from 'components/SvgIcon/const';
-import { APPEARANCE } from 'navigation/constants';
+import { APPEARANCE } from 'utils/constants/navigation.constant';
 
 interface ISettingsRouteItem {
   link: string;

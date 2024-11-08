@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button, Pressable, View } from 'react-native';
 import { DateTimePicker, ModalComponent, RNText, SvgIcon } from 'components/index';
 import { Picker } from '@react-native-picker/picker';
-import { VIEW_EXPENSE_INCOME_REPORT_BY } from 'utils/constant';
+import { VIEW_EXPENSE_INCOME_REPORT_BY } from 'utils/constants';
 import { formatDateLocal } from 'utils/date';
 import styles from './styles';
 

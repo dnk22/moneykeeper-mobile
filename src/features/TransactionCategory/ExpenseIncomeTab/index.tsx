@@ -5,7 +5,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useCustomTheme } from 'resources/theme';
 import { getExpenseAndIncome } from 'services/api/transactionsCategory';
 import { TTransactionsCategory } from 'database/types';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/constant';
+import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
 import ParentItem from './ParentItem';
 import MostAndRecent from './MostAndRecent';
 import { isEmpty } from 'lodash';

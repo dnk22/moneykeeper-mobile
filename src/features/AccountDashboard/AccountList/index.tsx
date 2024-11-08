@@ -6,7 +6,7 @@ import { TAccount } from 'database/types';
 import { debounce } from 'lodash';
 import { useCustomTheme } from 'resources/theme';
 import { groupAccountDataByValue, sortDataByKey } from 'utils/algorithm';
-import { ADD_ACCOUNT } from 'navigation/constants';
+import { ADD_ACCOUNT } from 'utils/constants/navigation.constant';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectAccountViewSettings } from 'store/app/app.selector';

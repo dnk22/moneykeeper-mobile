@@ -1,4 +1,4 @@
-import { TRANSACTION_TYPE } from 'utils/constant';
+import { TRANSACTION_TYPE } from 'utils/constants';
 
 export type TransactionTypeProps = {
   params: {

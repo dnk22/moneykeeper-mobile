@@ -9,7 +9,7 @@ import { TTransactions } from 'database/types';
 import { isToday, isYesterday } from 'date-fns';
 import { formatDateLocal } from 'utils/date';
 import { formatNumber } from 'utils/math';
-import { TRANSACTION_TYPE } from 'utils/constant';
+import { TRANSACTION_TYPE } from 'utils/constants';
 import { styles } from './styles';
 
 function RecentTransactions({ title }: { title: string }) {

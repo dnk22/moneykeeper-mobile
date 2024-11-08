@@ -1,5 +1,5 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { SAVINGS, WALLET } from 'navigation/constants';
+import { SAVINGS, WALLET } from 'utils/constants/navigation.constant';
 
 import Accounts from 'features/AccountDashboard';
 import Savings from 'features/Savings';

@@ -8,7 +8,7 @@ import {
   TRANSACTIONS,
   TRANSACTION_CATEGORY,
 } from 'database/constants';
-import { SORT_ACCOUNT_BY_KEY } from 'utils/constant';
+import { SORT_ACCOUNT_BY_KEY } from 'utils/constants';
 
 export default appSchema({
   version: 1,

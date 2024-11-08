@@ -8,7 +8,7 @@ import {
   FINANCE_STATEMENT,
   DEBT_LOAN_REPORT,
   DEBT_LOAN_REPORT_DETAIL,
-} from 'navigation/constants';
+} from 'utils/constants/navigation.constant';
 import AddAccount from 'features/AddAccount';
 import TransactionHistoryNormal from 'features/TransactionHistory/NormalAccount';
 import TransactionHistoryCreditCard from 'features/TransactionHistory/CreditCardAccount';

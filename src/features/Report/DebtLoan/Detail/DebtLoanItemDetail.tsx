@@ -3,10 +3,10 @@ import { IconComponent, RNText } from 'components/index';
 import { formatDateLocal, formatDayOfTheWeek } from 'utils/date';
 import { TGetDebtLoanDetailByPerson } from 'utils/types/request.type';
 import { useCustomTheme } from 'resources/theme';
-import { MATERIAL_COLOR } from 'utils/constant';
+import { MATERIAL_COLOR } from 'utils/constants';
 import { formatNumber } from 'utils/math';
 import { useNavigation } from '@react-navigation/native';
-import { CREATE_TRANSACTION_FROM_ACCOUNT } from 'navigation/constants';
+import { CREATE_TRANSACTION_FROM_ACCOUNT } from 'utils/constants/navigation.constant';
 import styles from './styles';
 
 function DebtLoanItemDetail({

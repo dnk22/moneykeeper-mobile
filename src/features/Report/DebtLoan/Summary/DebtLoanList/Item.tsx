@@ -6,10 +6,10 @@ import {
   MATERIAL_COLOR,
   TRANSACTION_CATEGORY_TYPE,
   TRANSACTION_LEND_BORROW_NAME,
-} from 'utils/constant';
+} from 'utils/constants';
 import { formatNumber } from 'utils/math';
 import { DebtLoanTypes } from 'utils/types';
-import { CREATE_TRANSACTION_FROM_ACCOUNT, DEBT_LOAN_REPORT_DETAIL } from 'navigation/constants';
+import { CREATE_TRANSACTION_FROM_ACCOUNT, DEBT_LOAN_REPORT_DETAIL } from 'utils/constants/navigation.constant';
 import { useCustomTheme } from 'resources/theme';
 import { MenuAction, MenuView, NativeActionEvent } from '@react-native-menu/menu';
 import { useAppSelector } from 'store/index';

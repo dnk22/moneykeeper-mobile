@@ -3,7 +3,7 @@ import { Pressable, View } from 'react-native';
 import { RNText, ModalComponent } from 'components/index';
 import { Picker } from '@react-native-picker/picker';
 import { useCustomTheme } from 'resources/theme';
-import { DAY_IN_MONTH } from 'utils/constant';
+import { DAY_IN_MONTH } from 'utils/constants';
 import styles from './styles';
 
 type StatementModalPickerProps = {

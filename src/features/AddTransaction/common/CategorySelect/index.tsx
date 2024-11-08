@@ -6,7 +6,7 @@ import { debounce, isEqual } from 'lodash';
 import InputSelection from 'components/InputSelection';
 import { getTransactionCategoryByID } from 'services/api/transactionsCategory';
 import { TTransactionsCategory } from 'database/types';
-import { TRANSACTION_TYPE } from 'utils/constant';
+import { TRANSACTION_TYPE } from 'utils/constants';
 
 type CategorySelectProps = {
   onPress: (item?: TTransactionsCategory) => void;
