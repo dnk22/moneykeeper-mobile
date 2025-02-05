@@ -4,7 +4,7 @@ import {
   TRANSACTION_LEND_BORROW_NAME,
   TRANSACTION_TYPE,
 } from 'utils/constants';
-import { TTransactionType } from 'utils/types';
+import { TTransactionType } from 'utils/types/request.type';
 
 export const TransactionTypeData: TTransactionType[] = [
   {

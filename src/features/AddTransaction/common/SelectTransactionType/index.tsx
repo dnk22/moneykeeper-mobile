@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import {
   RNText,
@@ -10,7 +10,7 @@ import {
   IconComponent,
 } from 'components/index';
 import { TransactionTypeData } from 'utils/data';
-import { TTransactionType } from 'utils/types';
+import { TTransactionType } from 'utils/types/request.type';
 import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constants';
 import styles from './styles';
 

@@ -1,3 +1,4 @@
+import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constants';
 import {
   ADD_ACCOUNT,
   ACCOUNT_NORMAL_DETAIL,
@@ -7,7 +8,6 @@ import {
   DEBT_LOAN_REPORT_DETAIL,
   CREATE_TRANSACTION_FROM_ACCOUNT,
 } from 'utils/constants/navigation.constant';
-import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constants';
 
 export type CommonStackParamsList = {
   [ADD_ACCOUNT]: {

@@ -1,6 +1,6 @@
 /** read  */
-import { TSearchBankParams } from 'utils/types';
 import { getBanksDataLocal, importDefaultBanksData, queryGetBankById } from 'database/querying';
+import { TSearchBankParams } from 'utils/types/request.type';
 
 export async function fetchBankData({ type, text }: TSearchBankParams) {
   const res = await getBanksDataLocal({ type, text });

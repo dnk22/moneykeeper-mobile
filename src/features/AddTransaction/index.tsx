@@ -3,22 +3,22 @@ import { Alert, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constants';
-import ExpenseAndIncome from './ExpenseAndIncome';
 import { TransactionParamListProps } from 'navigation/types';
 import { FormProvider, useForm } from 'react-hook-form';
 import { TTransactions } from 'database/types';
 import { ADD_TRANSACTION } from 'utils/constants/navigation.constant';
 import { getTransactionById } from 'services/api/transactions';
-import { TTransactionType } from 'utils/types';
 import { getFirstAccount } from 'services/api/accounts';
 import { useAppSelector } from 'store/index';
 import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';
 import { getKeyByValue } from 'utils/algorithm';
-import { defaultValues } from './constant';
+import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constants';
+import { TTransactionType } from 'utils/types/request.type';
 import SelectTransactionType from './common/SelectTransactionType';
+import ExpenseAndIncome from './ExpenseAndIncome';
 import Transfer from './Transfer';
 import Adjustment from './Adjustment';
+import { defaultValues } from './constant';
 import styles from './styles';
 
 type AddTransactionsProps = {
