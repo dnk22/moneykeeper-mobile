@@ -15,12 +15,12 @@ import TransactionNavigation from 'navigation/Transaction';
 import ReportNavigation from 'navigation/Report';
 import DashboardNavigation from 'navigation/Dashboard';
 import SettingsNavigation from 'navigation/Settings';
-import { HomeStackParamList } from 'navigation/types';
+import { BottomTabStackList } from 'utils/types/navigation';
 
 // set up routes
-const BottomTab = createBottomTabNavigator<HomeStackParamList>();
+const BottomTab = createBottomTabNavigator<BottomTabStackList>();
 
-function HomeNavigation() {
+function RootNavigation() {
   return (
     <BottomTab.Navigator
       screenOptions={{ headerShown: false }}
@@ -75,4 +75,4 @@ function HomeNavigation() {
   );
 }
 
-export default HomeNavigation;
+export default RootNavigation;

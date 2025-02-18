@@ -1,5 +1,5 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
-import { HomeStackParamList } from './home.type';
+import { BottomTabStackList } from './home.type';
 import { BankParams } from './bank.type';
 import { TransactionCategoryParams } from './transactionCategory.type';
 import {
@@ -11,7 +11,7 @@ import {
 } from 'utils/constants/navigation.constant';
 
 export type RootStackParamList = {
-  [HOME]: NavigatorScreenParams<HomeStackParamList>;
+  [HOME]: NavigatorScreenParams<BottomTabStackList>;
   [BANK_NAVIGATION]: NavigatorScreenParams<BankParams>;
   [TRANSACTION_CATEGORY]: NavigatorScreenParams<TransactionCategoryParams>;
   [APPEARANCE]: undefined;

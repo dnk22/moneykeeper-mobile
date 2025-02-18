@@ -10,14 +10,14 @@ import {
   SETTINGS,
 } from 'utils/constants/navigation.constant';
 
-export type HomeStackParamList = {
+export type BottomTabStackList = {
   [DASHBOARD]: undefined;
   [ACCOUNT]: NavigatorScreenParams<AccountStackParamList>;
   [TRANSACTIONS]: NavigatorScreenParams<TransactionParamList>;
   [REPORT]: undefined;
   [SETTINGS]: undefined;
 };
-export type HomeStackParamListProps<T extends keyof HomeStackParamList> = BottomTabScreenProps<
-  HomeStackParamList,
+export type BottomTabStackListProps<T extends keyof BottomTabStackList> = BottomTabScreenProps<
+  BottomTabStackList,
   T
 >;

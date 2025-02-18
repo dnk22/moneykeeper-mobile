@@ -7,11 +7,11 @@ import {
   UPDATE_TRANSACTION_CATEGORY,
 } from 'utils/constants/navigation.constant';
 import { HEADER_TITLE_FONT_SIZE } from 'resources/theme/constants';
-import { TransactionCategoryParams } from 'navigation/types';
-import TransactionCategoryTapBar from './components/TabBar';
 import UpdateTransactionCategory from 'features/TransactionCategory/Update';
 import ParentList from 'features/TransactionCategory/ParentList';
 import IconSelect from 'features/TransactionCategory/IconSelect';
+import TransactionCategoryTapBar from './components/TabBar';
+import { TransactionCategoryParams } from 'utils/types/navigation';
 
 //set up routes
 const TransactionCategoryStack = createNativeStackNavigator<TransactionCategoryParams>();
@@ -20,9 +20,6 @@ function TransactionCategoryNavigation() {
   return (
     <TransactionCategoryStack.Navigator
       initialRouteName={TRANSACTION_CATEGORY_LIST}
-      screenOptions={{
-        headerBackTitleVisible: false,
-      }}
     >
       <TransactionCategoryStack.Screen
         name={TRANSACTION_CATEGORY_LIST}

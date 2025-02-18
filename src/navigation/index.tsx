@@ -17,9 +17,9 @@ import {
   WIDGET_SETTINGS,
 } from 'utils/constants/navigation.constant';
 import TransactionCategoryNavigation from './TransactionCategory';
-import HomeNavigation from './Home';
+import BottomTabNavigation from './BottomTab';
 import BankNavigation from './Bank';
-import { RootStackParamList } from './types';
+import { RootStackParamList } from 'utils/types/navigation';
 
 //set up routes
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -46,7 +46,7 @@ function AppNavigators() {
                   autoHideHomeIndicator: true,
                 }}
               >
-                <RootStack.Screen name={HOME} component={HomeNavigation} />
+                <RootStack.Screen name={HOME} component={BottomTabNavigation} />
                 <RootStack.Group screenOptions={{ presentation: 'modal' }}>
                   <RootStack.Screen name={BANK_NAVIGATION} component={BankNavigation} />
                   <RootStack.Screen

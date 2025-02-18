@@ -11,7 +11,7 @@ import { Loading, PressableHaptic, SvgIcon } from 'components/index';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useCustomTheme } from 'resources/theme';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import { TransactionCategoryListParams } from 'navigation/types';
+import { TransactionCategoryListParams } from 'utils/types/navigation';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
 import UpdateTransactionCategoryHeader from './Update';
 import LendAndBorrowTab from 'features/TransactionCategory/LendAndBorrowTab';

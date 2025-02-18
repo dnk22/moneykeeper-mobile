@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { DASHBOARDHOME, NOTIFICATION } from 'utils/constants/navigation.constant';
-import { DashboardParamList } from 'navigation/types';
+import { DashboardParamList } from 'utils/types/navigation';
 import { useCustomTheme } from 'resources/theme';
 
 // import route component
