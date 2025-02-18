@@ -3,7 +3,7 @@ import { Alert, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { TransactionParamListProps } from 'navigation/types';
+import { TransactionParamListProps } from 'utils/types/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
 import { TTransactions } from 'database/types';
 import { ADD_TRANSACTION } from 'utils/constants/navigation.constant';

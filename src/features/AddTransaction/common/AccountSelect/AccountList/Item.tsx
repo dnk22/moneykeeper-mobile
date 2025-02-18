@@ -9,7 +9,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { ACCOUNT_NORMAL_DETAIL } from 'utils/constants/navigation.constant';
 import { useCustomTheme } from 'resources/theme';
-import { AccountStackParamListProps } from 'navigation/types';
+import { AccountStackParamListProps } from 'utils/types/navigation';
 import { formatNumber } from 'utils/math';
 import styles from './styles';
 

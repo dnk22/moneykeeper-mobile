@@ -16,7 +16,7 @@ import {
   startOfYear,
 } from 'date-fns';
 import { ACCOUNT_CATEGORY_ID, TRANSACTION_TYPE } from 'utils/constants';
-import { get } from 'lodash';
+import get from 'lodash/get';
 import { DebtLoanTypes } from 'utils/types';
 import { TGetDebtLoanDetailByPerson } from 'utils/types/request.type';
 

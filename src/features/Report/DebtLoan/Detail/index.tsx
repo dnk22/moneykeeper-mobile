@@ -9,13 +9,13 @@ import {
 } from 'components/index';
 import { useFocusEffect } from '@react-navigation/native';
 import { CREATE_TRANSACTION_FROM_ACCOUNT, DEBT_LOAN_REPORT_DETAIL } from 'utils/constants/navigation.constant';
-import { ReportParamListProps } from 'navigation/types';
 import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constants';
 import { queryGetDebtLoanDetailByPerson } from 'database/querying';
 import { TGetDebtLoanDetailByPerson } from 'utils/types/request.type';
 import { formatNumber } from 'utils/math';
 import { useCustomTheme } from 'resources/theme';
 import { showToast } from 'utils/system';
+import { ReportParamListProps } from 'utils/types/navigation';
 import { formatDateLocal } from 'utils/date';
 import { useAppSelector } from 'store/index';
 import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';

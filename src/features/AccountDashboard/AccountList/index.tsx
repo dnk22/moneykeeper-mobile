@@ -3,7 +3,7 @@ import { SectionListData, View } from 'react-native';
 import isEqual from 'react-fast-compare';
 import { Empty, PressableHaptic, RNText, SectionListComponent, SvgIcon } from 'components/index';
 import { TAccount } from 'database/types';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import { useCustomTheme } from 'resources/theme';
 import { groupAccountDataByValue, sortDataByKey } from 'utils/algorithm';
 import { ADD_ACCOUNT } from 'utils/constants/navigation.constant';

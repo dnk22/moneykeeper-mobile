@@ -6,10 +6,10 @@ import DateTimePicker from 'components/DateTimePicker';
 import PressableHaptic from 'components/PressableHaptic';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import RNText from 'components/Text';
-import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
 import { formatDateLocal } from 'utils/date';
 import { getHours, getMinutes, set } from 'date-fns';
+import styles from './styles';
 
 interface DateTimeModalPickerProps {
   isVisible: boolean;

@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { PressableHaptic, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
 import { useNavigation } from '@react-navigation/native';
-import { ReportParamListProps } from 'navigation/types';
+import { ReportParamListProps } from 'utils/types/navigation';
 import {
   MATERIAL_COLOR,
   TRANSACTION_CATEGORY_TYPE,

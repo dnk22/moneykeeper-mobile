@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { VirtualizedListComponent } from 'components/index';
 import { useFocusEffect } from '@react-navigation/native';
 import { queryUniqueTransactionDates } from 'database/querying';
-import { isArray } from 'lodash';
+import isArray from 'lodash/isArray';
 import { useAppSelector } from 'store/index';
 import { selectRefreshTransactionHistory } from 'store/transactions/transactions.selector';
 import HeaderItem from './HeaderItem';

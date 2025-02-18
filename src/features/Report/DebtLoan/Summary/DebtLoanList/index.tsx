@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { FlatListComponent, PressableHaptic, RNText, SvgIcon } from 'components/index';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import { useCustomTheme } from 'resources/theme';
 import { DebtLoanTypes } from 'utils/types';
 import Item from './Item';

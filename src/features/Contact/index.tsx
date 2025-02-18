@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
-import { debounce, size } from 'lodash';
+import debounce from 'lodash/debounce';
+import size from 'lodash/size';
 import Contacts from 'react-native-contacts';
 import {
   Empty,

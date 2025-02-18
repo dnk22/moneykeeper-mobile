@@ -9,7 +9,7 @@ import {
   FormAction,
   IconComponent,
 } from 'components/index';
-import { TransactionCategoryParamProps } from 'navigation/types';
+import { TransactionCategoryParamProps } from 'utils/types/navigation';
 import { useForm } from 'react-hook-form';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactionsCategory } from 'database/types';

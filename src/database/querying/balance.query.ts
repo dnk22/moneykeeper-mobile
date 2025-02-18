@@ -1,9 +1,9 @@
 import { TAccount, TBalance, TTransactions } from 'database/types';
 import { database } from 'database/index';
 import { BalanceModel, TransactionModel } from 'database/models';
-import { BALANCE, TRANSACTIONS } from 'database/constants';
+import { BALANCE } from 'database/constants';
 import { Q } from '@nozbe/watermelondb';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { SQLiteQuery } from '@nozbe/watermelondb/adapters/sqlite';
 import { handleError } from 'utils/axios';
 

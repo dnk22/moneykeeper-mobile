@@ -8,7 +8,7 @@ import {
   IconComponent,
 } from 'components/index';
 import { useNavigation } from '@react-navigation/native';
-import { AccountStackParamListProps } from 'navigation/types';
+import { AccountStackParamListProps } from 'utils/types/navigation';
 import { ACCOUNT_NORMAL_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'utils/constants/navigation.constant';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';

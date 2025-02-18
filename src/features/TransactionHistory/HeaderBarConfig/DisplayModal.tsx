@@ -9,7 +9,7 @@ import { View } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectTransactionListConfig } from 'store/app/app.selector';
 import { updateTransactionListDisplayConfig } from 'store/app/app.slice';
-import { get } from 'lodash';
+import get from 'lodash/get';
 import styles from './styles';
 
 const displaySettings = [

@@ -11,7 +11,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { TTransactionsCategory } from 'database/types';
 import { useCustomTheme } from 'resources/theme';
 import { PARENT_LIST, UPDATE_TRANSACTION_CATEGORY } from 'utils/constants/navigation.constant';
-import { TransactionCategoryParamProps } from 'navigation/types';
+import { TransactionCategoryParamProps } from 'utils/types/navigation';
 import { getParentList } from 'services/api/transactionsCategory';
 import styles from './styles';
 

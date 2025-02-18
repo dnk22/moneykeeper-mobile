@@ -8,7 +8,7 @@ import { TTransactionsCategory } from 'database/types';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
 import ParentItem from './ParentItem';
 import MostAndRecent from './MostAndRecent';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 
 type ExpenseIncomeTabProps = {
   type: TRANSACTION_CATEGORY_TYPE;

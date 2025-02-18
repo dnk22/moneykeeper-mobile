@@ -5,7 +5,7 @@ import { selectWidgetOrder } from 'store/app/app.selector';
 import { useSelector } from 'react-redux';
 import FinancialStatement from './Widgets/FinancialStatement';
 import { WIDGET_IMPORT_LIST } from './constants';
-import { isArray } from 'lodash';
+import isArray from 'lodash/isArray';
 import { importDefaultBanksData } from 'database/querying';
 import { useAppDispatch } from 'store/index';
 import { importTransactionCategoryData } from 'services/api/transactionsCategory';

@@ -6,7 +6,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useForm } from 'react-hook-form';
 import { TAccountType, TAccount } from 'database/types';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { AccountStackParamListProps } from 'navigation/types';
+import { AccountStackParamListProps } from 'utils/types/navigation';
 import HeaderIcon from 'navigation/elements/HeaderIcon';
 import Collapsible from 'react-native-collapsible';
 import { BankModel } from 'database/models';
@@ -15,7 +15,7 @@ import { ADD_ACCOUNT } from 'utils/constants/navigation.constant';
 import { AccountType } from 'utils/data';
 import { deleteAccountById, getAccountById, updateAccountDB } from 'services/api/accounts';
 import { showToast } from 'utils/system';
-import { get } from 'lodash';
+import get from 'lodash/get';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constants';
 import { useAppDispatch } from 'store/index';
 import {

@@ -3,7 +3,7 @@ import { TAccount } from 'database/types';
 import { ACCOUNTS, BALANCE } from 'database/constants';
 import { database } from 'database/index';
 import { Q } from '@nozbe/watermelondb';
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import { handleError } from 'utils/axios';
 
 export type TGetAllAccounts = {

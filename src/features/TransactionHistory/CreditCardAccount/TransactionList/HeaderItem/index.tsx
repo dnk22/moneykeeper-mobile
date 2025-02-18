@@ -3,8 +3,8 @@ import { View } from 'react-native';
 import { RNText } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { formatDateStringLocal, formatDayOfTheWeek } from 'utils/date';
-import { isToday, isYesterday, parseISO } from 'date-fns';
-import { isArray, size } from 'lodash';
+import isArray from 'lodash/isArray';
+import size from 'lodash/size';
 import { formatNumber } from 'utils/math';
 import { TRANSACTION_TYPE } from 'utils/constants';
 import {

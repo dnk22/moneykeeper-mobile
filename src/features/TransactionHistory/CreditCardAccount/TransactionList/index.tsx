@@ -1,7 +1,8 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { VirtualizedListComponent } from 'components/index';
 import { useFocusEffect } from '@react-navigation/native';
-import { isArray, size } from 'lodash';
+import isArray from 'lodash/isArray';
+import size from 'lodash/size';
 import { queryGetTransactionsListByMonth } from 'database/querying';
 import { groupTransactionsByDay } from 'utils/algorithm';
 import { GroupedTransactionProps } from 'utils/types';

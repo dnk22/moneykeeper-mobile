@@ -1,5 +1,7 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { get, isEmpty, isEqual } from 'lodash';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/isEqual';
 import { InputSelection, BottomSheet } from 'components/index';
 import { useFormContext } from 'react-hook-form';
 import { useFocusEffect } from '@react-navigation/native';

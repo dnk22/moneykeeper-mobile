@@ -3,10 +3,9 @@ import { ACCOUNTS, BALANCE, TRANSACTIONS, TRANSACTION_CATEGORY } from 'database/
 import { BalanceModel, TransactionModel } from 'database/models';
 import { TTransactions } from 'database/types';
 import { Q } from '@nozbe/watermelondb';
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import { handleError } from 'utils/axios';
 import { TRANSACTION_TYPE } from 'utils/constants';
-import { queryCalculateAllBalanceAfterDate } from './balance.query';
 
 export type GetTransactionByDate = {
   date: string;

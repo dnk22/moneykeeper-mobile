@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { PressableHaptic, SvgIcon } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { ACCOUNT_CREDIT_CARD_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'utils/constants/navigation.constant';
-import { AccountStackParamListProps } from 'navigation/types';
+import { AccountStackParamListProps } from 'utils/types/navigation';
 import ButtonText from 'navigation/elements/ButtonText';
 import { useAppSelector } from 'store/index';
 import { selectAccountStatementList } from 'store/account/account.selector';
