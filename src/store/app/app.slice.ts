@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { WIDGET_INIT_LIST } from 'features/Dashboard/constants';
+import { produce } from 'immer';
+import { COLOR_SCHEME } from 'resources/theme/constants';
 import { FLAT, VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constants/index';
-import { AccountViewSettingsProps, AppStateProps } from 'utils/types';
+import { AccountViewSettingsProps, AppStateProps } from 'utils/types/store.type';
 
 const initialState = {
   accountViewSettings: {
@@ -20,17 +22,21 @@ const initialState = {
   homeBottomBarType: FLAT,
   viewCategoryMostAndRecent: VIEW_CATEGORY_FAST_BY_COLUMN.MOST,
   widgetOrder: WIDGET_INIT_LIST,
+  theme: {
+    auto: true,
+    darkMode: false,
+    color: COLOR_SCHEME.modernBlue,
+  },
 } as AppStateProps;
 
+export const APP_SLICE_NAME = 'appConfig';
+
 export const appSlice = createSlice({
-  name: 'appConfig',
+  name: APP_SLICE_NAME,
   initialState: initialState,
   reducers: {
-    updateAppConfig(state, { payload }: PayloadAction<AppStateProps>) {
-      state = {
-        ...state,
-        ...payload,
-      };
+    updateAppConfig(state, { payload }: PayloadAction<Partial<AppStateProps>>) {
+      Object.assign(state, payload);
     },
     updateAccountViewSettings(
       state,
@@ -41,11 +47,11 @@ export const appSlice = createSlice({
     updateReportViewSettings(state) {
       state.isReportViewByGrid = !state.isReportViewByGrid;
     },
-    updateTransactionListDisplayConfig(state, { payload }: PayloadAction<Record<string, boolean>>) {
-      state.transactionListDisplayConfig = {
-        ...state.transactionListDisplayConfig,
-        ...payload,
-      };
+    updateTransactionListDisplayConfig(
+      state,
+      { payload }: PayloadAction<Partial<AppStateProps['transactionListDisplayConfig']>>,
+    ) {
+      Object.assign(state.transactionListDisplayConfig, payload);
     },
     updateHomeBottomBarType(state, { payload }: PayloadAction<AppStateProps['homeBottomBarType']>) {
       state.homeBottomBarType = payload;
@@ -55,11 +61,14 @@ export const appSlice = createSlice({
       { payload }: PayloadAction<AppStateProps['viewCategoryMostAndRecent']>,
     ) {
       state.viewCategoryMostAndRecent = payload;
-      return state;
     },
     updateWidgetOrder(state, { payload }: PayloadAction<AppStateProps['widgetOrder']>) {
-      state.widgetOrder = payload;
-      return state;
+      state.widgetOrder = produce(state.widgetOrder, (draft) => {
+        draft.splice(0, draft.length, ...payload);
+      });
+    },
+    updateTheme(state, { payload }: PayloadAction<Partial<AppStateProps['theme']>>) {
+      Object.assign(state.theme, payload);
     },
   },
 });
@@ -73,10 +82,11 @@ export const {
   updateHomeBottomBarType,
   updateViewCategoryMostAndRecent,
   updateWidgetOrder,
+  updateTheme,
 } = appSlice.actions;
 
 export type TAppSlice = {
-  [appSlice.name]: ReturnType<(typeof appSlice)['reducer']>;
+  [APP_SLICE_NAME]: ReturnType<(typeof appSlice)['reducer']>;
 };
 
 export default appSlice.reducer;

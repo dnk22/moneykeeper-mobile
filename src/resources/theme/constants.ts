@@ -9,3 +9,23 @@ export const BOX_SHADOW = {
   shadowRadius: 2,
   elevation: 5,
 };
+export enum COLOR_SCHEME {
+  modernBlue,
+  elegantGreen,
+  techPurple,
+}
+export enum THEME_MODE {
+  LIGHT,
+  DARK,
+}
+
+export type TBaseTheme = {
+  colors: {
+    textSecondary: string;
+    divider: string;
+    primaryVariant: string;
+    error: string;
+    success: string;
+    surface: string;
+  };
+};

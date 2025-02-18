@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { TouchableWithoutFeedback, View, Image, StyleProp, ViewStyle } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { styles } from './styles';
@@ -17,6 +17,7 @@ type CheckboxComponentProps = {
   onPress?: (check: boolean) => void;
   disabled?: boolean;
 };
+
 const CheckboxComponent = ({
   style,
   size = 20,
@@ -29,38 +30,33 @@ const CheckboxComponent = ({
   const {
     colors: { primary },
   } = useCustomTheme();
-  const [value, setValue] = useState<boolean>(check);
 
-  useEffect(() => {
-    setValue(check);
-  }, [check]);
+  const imageSource =
+    type === 'checkbox'
+      ? check
+        ? checkbox_check
+        : checkbox_uncheck
+      : check
+      ? radio_check
+      : radio_uncheck;
 
   const onClick = () => {
     if (disabled) return;
-    setValue(!value);
     if (onPress) {
-      onPress(!value);
+      onPress(!check);
     }
   };
 
   return (
     <TouchableWithoutFeedback onPress={onClick}>
-      <View style={[styles.container, style]}>
+      <View style={[styles.container, style, { opacity: disabled ? 0.5 : 1 }]}>
         <Image
           style={{
             width: size,
             height: size,
-            tintColor: color || check ? primary : undefined ,
+            tintColor: color ?? (check ? primary : undefined),
           }}
-          source={
-            type === 'checkbox'
-              ? value
-                ? checkbox_check
-                : checkbox_uncheck
-              : value
-              ? radio_check
-              : radio_uncheck
-          }
+          source={imageSource}
         />
       </View>
     </TouchableWithoutFeedback>

@@ -1,45 +1,31 @@
-import {
-  useTheme,
-  Theme,
-  DefaultTheme,
-  DarkTheme,
-} from '@react-navigation/native';
-
+import { useTheme, Theme, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import lightTheme from './lightTheme';
 import darkTheme from './darkTheme';
+import { COLOR_SCHEME, TBaseTheme } from './constants';
 
-enum ThemeEnum {
-  LIGHT = 'light',
-  DARK = 'dark',
-}
+export type CustomTheme = TBaseTheme & Theme;
 
-export type ThemeColors = typeof lightTheme;
-
-export type ThemeType = {
-  colors: ThemeColors;
-} & Theme;
-
-const CustomLightTheme = {
-  dark: false,
+export const getTheme = (darkMode: boolean, color: COLOR_SCHEME) => ({
+  dark: darkMode,
   colors: {
-    ...DefaultTheme.colors,
-    ...lightTheme,
+    ...(darkMode ? DarkTheme.colors : DefaultTheme.colors),
+    ...(darkMode ? darkTheme[color] : lightTheme[color]),
   },
+  fonts: DefaultTheme.fonts,
+});
+
+export const useAppTheme = ({
+  darkMode,
+  color,
+}: {
+  darkMode: boolean;
+  color: COLOR_SCHEME;
+}): CustomTheme => {
+  return getTheme(darkMode, color);
 };
 
-const CustomDarkTheme = {
-  dark: true,
-  colors: {
-    ...DarkTheme.colors,
-    ...darkTheme,
-  },
+const useCustomTheme = (): CustomTheme => {
+  return useTheme() as CustomTheme;
 };
 
-const MyAppTheme = {
-  default: CustomLightTheme,
-  dark: CustomDarkTheme,
-};
-
-const useCustomTheme = useTheme as () => ThemeType;
-
-export { MyAppTheme, useCustomTheme, ThemeEnum };
+export { useCustomTheme };

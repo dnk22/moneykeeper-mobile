@@ -11,9 +11,10 @@ const initialState: AccountProps = {
   accountStatementInfo: {},
   accountNotifications: {},
 };
+export const ACCOUNT_SLICE_NAME = 'accountStore';
 
 export const accountSlice = createSlice({
-  name: 'account',
+  name: ACCOUNT_SLICE_NAME,
   initialState,
   reducers: {
     updateAccountStatement(
@@ -58,7 +59,7 @@ export const { updateAccountStatement, removeAccountStatement, updateAccountNoti
   accountSlice.actions;
 
 export type TAccountSlice = {
-  [accountSlice.name]: ReturnType<(typeof accountSlice)['reducer']>;
+  [ACCOUNT_SLICE_NAME]: ReturnType<(typeof accountSlice)['reducer']>;
 };
 
 export default accountSlice.reducer;

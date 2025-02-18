@@ -13,6 +13,7 @@ function AccountTab() {
   const { colors } = useCustomTheme();
   return (
     <Tab.Navigator
+      key={'huhu'}
       screenOptions={{
         lazy: true,
         lazyPlaceholder: () => <Loading style={{ flex: 1 }} />,
@@ -29,9 +30,15 @@ function AccountTab() {
         options={{
           title: 'Ví Tiền',
         }}
+        key={WALLET}
         component={Accounts}
       />
-      <Tab.Screen name={SAVINGS} options={{ title: 'Sổ Tiết kiệm' }} component={Savings} />
+      <Tab.Screen
+        key={SAVINGS}
+        name={SAVINGS}
+        options={{ title: 'Sổ Tiết kiệm' }}
+        component={Savings}
+      />
     </Tab.Navigator>
   );
 }

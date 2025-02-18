@@ -10,9 +10,9 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { ACCOUNT_NORMAL_DETAIL, ACCOUNT_CREDIT_CARD_DETAIL } from 'utils/constants/navigation.constant';
 import { useCustomTheme } from 'resources/theme';
-import { AccountStackParamListProps } from 'navigation/types';
 import { formatNumber } from 'utils/math';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constants';
+import { AccountStackParamListProps } from 'utils/types/navigation';
 import styles from './styles';
 
 type ItemProps = {

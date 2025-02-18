@@ -14,8 +14,10 @@ const initialState: TTransactionsState = {
   refreshTransactionHistory: 0,
 } as TTransactionsState;
 
+export const TRANSACTION_SLICE_NAME = 'transactionStore';
+
 export const transactionsSlice = createSlice({
-  name: 'transactions',
+  name: TRANSACTION_SLICE_NAME,
   initialState,
   reducers: {
     updateLendBorrowId(state, { payload }: PayloadAction<TTransactionsState['lendBorrowId']>) {
@@ -31,7 +33,7 @@ export const transactionsSlice = createSlice({
 export const { updateLendBorrowId, refreshTransactionHistory } = transactionsSlice.actions;
 
 export type TTransactionsSlice = {
-  [transactionsSlice.name]: ReturnType<(typeof transactionsSlice)['reducer']>;
+  [TRANSACTION_SLICE_NAME]: ReturnType<(typeof transactionsSlice)['reducer']>;
 };
 
 export default transactionsSlice.reducer;

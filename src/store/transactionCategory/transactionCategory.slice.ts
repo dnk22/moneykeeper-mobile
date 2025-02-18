@@ -9,8 +9,10 @@ const initialState = {
   lendBorrowData: {},
 } as transactionCategoryProps;
 
+export const TRANSACTION_CATEGORY_SLICE_NAME = 'transactionCategoryStore';
+
 export const transactionCategorySlice = createSlice({
-  name: 'transactionCategory',
+  name: TRANSACTION_CATEGORY_SLICE_NAME,
   initialState: initialState,
   reducers: {
     setLendBorrowData(state, { payload }: PayloadAction<Record<string, string>>) {
@@ -23,7 +25,7 @@ export const transactionCategorySlice = createSlice({
 export const { setLendBorrowData } = transactionCategorySlice.actions;
 
 export type TTransactionCategorySlice = {
-  [transactionCategorySlice.name]: ReturnType<(typeof transactionCategorySlice)['reducer']>;
+  [TRANSACTION_CATEGORY_SLICE_NAME]: ReturnType<(typeof transactionCategorySlice)['reducer']>;
 };
 
 export default transactionCategorySlice.reducer;

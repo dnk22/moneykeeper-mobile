@@ -1,18 +1,40 @@
+import { COLOR_SCHEME } from './constants';
 /**
  * Colors containing for dark theme
  */
-export default {
-  transparent: 'transparent',
-  primary: 'rgb(10, 132, 255)',
-  surface: '#182747',
-  background: '#1B2430',
-  card: 'rgb(18, 18, 18)',
-  text: 'rgb(229, 229, 231)',
-  border: 'rgb(39, 39, 41)',
-  notification: 'rgb(255, 69, 58)',
-  error: '#ED6665',
-  info: '#ffd700',
+
+const commonColor = {
   divider: 'rgba(255, 255, 255, 0.12)',
-  white: 'white',
-  success: 'green',
+  text: '#FFFFFF',
+  border: '#424242',
+  textSecondary: '#BDBDBD',
+  surface: '#1E1E1E',
 };
+
+const darkMode: Record<COLOR_SCHEME, any> = {
+  [COLOR_SCHEME.modernBlue]: {
+    primary: '#4A90E2',
+    primaryVariant: '#5A9BEF',
+    background: '#121212',
+    error: '#EF5350',
+    success: '#66BB6A',
+    ...commonColor,
+  },
+  [COLOR_SCHEME.elegantGreen]: {
+    primary: '#FF6F61',
+    primaryVariant: '#FF8A75',
+    background: '#121212',
+    error: '#E57373',
+    success: '#81C784',
+    ...commonColor,
+  },
+  [COLOR_SCHEME.techPurple]: {
+    primary: '#8E44AD',
+    primaryVariant: '#9B59B6',
+    background: '#121212',
+    error: '#E57373',
+    success: '#81C784',
+    ...commonColor,
+  },
+};
+export default darkMode;

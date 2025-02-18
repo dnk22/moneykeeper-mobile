@@ -10,12 +10,12 @@ import {
 import HomeBottomBar from '../elements/HomeBottomBar';
 
 // routes screen
-import Settings from 'features/Settings';
 import AccountNavigation from 'navigation/Account';
 import TransactionNavigation from 'navigation/Transaction';
 import ReportNavigation from 'navigation/Report';
-import { HomeStackParamList } from 'navigation/types';
 import DashboardNavigation from 'navigation/Dashboard';
+import SettingsNavigation from 'navigation/Settings';
+import { HomeStackParamList } from 'navigation/types';
 
 // set up routes
 const BottomTab = createBottomTabNavigator<HomeStackParamList>();
@@ -69,7 +69,7 @@ function HomeNavigation() {
           tabBarIcon: ({ color }) => <SvgIcon name="more" color={color} />,
           tabBarLabel: 'Cài đặt',
         }}
-        component={Settings}
+        component={SettingsNavigation}
       />
     </BottomTab.Navigator>
   );

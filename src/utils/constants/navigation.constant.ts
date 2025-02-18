@@ -10,6 +10,7 @@ export const NOTIFICATION = 'notification';
 
 // settings screen constants
 export const SETTINGS = 'settings';
+export const HOME_SETTINGS = 'home_settings';
 export const APPEARANCE = 'appearance';
 
 // account screen constants

@@ -1,8 +1,8 @@
-import { appSlice } from './app.slice';
+import { APP_SLICE_NAME } from './app.slice';
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from 'store/index';
 
-const appState = (state: RootState) => state[appSlice.name];
+const appState = (state: RootState) => state[APP_SLICE_NAME];
 
 // export selectors
 export const selectAccountViewSettings = createSelector(
@@ -28,3 +28,4 @@ export const selectViewCategoryMostAndRecent = createSelector(
 );
 
 export const selectWidgetOrder = createSelector(appState, (state) => state.widgetOrder);
+export const selectAppTheme = createSelector(appState, (state) => state.theme);

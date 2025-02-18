@@ -23,7 +23,6 @@ function AccountNavigation() {
         },
         headerTintColor: 'white',
         title: '',
-        headerBackTitleVisible: false,
       }}
     >
       <AccountStack.Screen

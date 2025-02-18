@@ -2,14 +2,14 @@ import { persistReducer } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit';
 import { reduxPersistStorage } from 'share/storage';
 
-import appReducer, { appSlice } from './app/app.slice';
-import accountReducer, { accountSlice } from './account/account.slice';
+import appReducer, { APP_SLICE_NAME } from './app/app.slice';
+import accountReducer, { ACCOUNT_SLICE_NAME } from './account/account.slice';
 import transactionCategoryReducer, {
-  transactionCategorySlice,
+  TRANSACTION_CATEGORY_SLICE_NAME,
 } from './transactionCategory/transactionCategory.slice';
-import transactionsReducer, { transactionsSlice } from './transactions/transactions.slice';
+import transactionsReducer, { TRANSACTION_SLICE_NAME } from './transactions/transactions.slice';
 import financialStatementReducer, {
-  financialStatementSlice,
+  FINANCE_STATEMENT_SLICE_NAME,
 } from 'features/Report/FinancialStatement/reducer/financialStatement.slice';
 
 const appPersistConfig = {
@@ -17,32 +17,32 @@ const appPersistConfig = {
   version: 1,
   storage: reduxPersistStorage,
   blacklist: [
-    // transactionsSlice.name,
-    // accountSlice.name,
-    // transactionCategorySlice.name,
-    // appSlice.name,
-    financialStatementSlice.name,
+    // TRANSACTION_SLICE_NAME,
+    // ACCOUNT_SLICE_NAME,
+    // TRANSACTION_CATEGORY_SLICE_NAME,
+    // APP_SLICE_NAME,
+    FINANCE_STATEMENT_SLICE_NAME,
   ],
 };
 
 const transactionPersistConfig = {
-  key: transactionsSlice.name,
+  key: TRANSACTION_SLICE_NAME,
   storage: reduxPersistStorage,
   blacklist: ['refreshTransactionHistory'],
 };
 
 // const accountPersistConfig = {
-//   key: accountSlice.name,
+//   key: ACCOUNT_SLICE_NAME,
 //   storage: reduxPersistStorage,
 //   blacklist: [''],
 // };
 
 const allReducer = combineReducers({
-  [appSlice.name]: appReducer,
-  [transactionCategorySlice.name]: transactionCategoryReducer,
-  [accountSlice.name]: accountReducer,
-  [transactionsSlice.name]: persistReducer(transactionPersistConfig, transactionsReducer),
-  [financialStatementSlice.name]: financialStatementReducer,
+  [APP_SLICE_NAME]: appReducer,
+  [TRANSACTION_CATEGORY_SLICE_NAME]: transactionCategoryReducer,
+  [ACCOUNT_SLICE_NAME]: accountReducer,
+  [TRANSACTION_SLICE_NAME]: persistReducer(transactionPersistConfig, transactionsReducer),
+  [FINANCE_STATEMENT_SLICE_NAME]: financialStatementReducer,
 });
 
 export const persistedReducer = persistReducer(appPersistConfig, allReducer);

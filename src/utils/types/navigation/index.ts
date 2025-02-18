@@ -7,3 +7,4 @@ export * from './home.type';
 export * from './report.type';
 export * from './transaction.type';
 export * from './transactionCategory.type';
+export * from './settings';

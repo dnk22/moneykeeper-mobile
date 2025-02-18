@@ -1,13 +1,13 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { EXPENSE_INCOME_REPORT, HOME_REPORT } from 'utils/constants/navigation.constant';
-import { ReportParamList } from 'navigation/types';
-
-// import route component
+import ExpenseIncomeReport from 'features/Report/ExpenseIncome';
 import HomeReport from 'features/Report';
 import { useCustomTheme } from 'resources/theme';
+
+// import route component
 import ChangeView from './ChangeView';
 import CommonStack from 'navigation/CommonStack';
-import ExpenseIncomeReport from 'features/Report/ExpenseIncome';
+import { ReportParamList } from 'utils/types/navigation';
 
 //set up routes
 const ReportStack = createNativeStackNavigator<ReportParamList>();

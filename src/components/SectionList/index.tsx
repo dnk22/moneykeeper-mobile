@@ -27,7 +27,10 @@ function SectionListComponent({
   ...rest
 }: TSectionListProps) {
   const { colors } = useCustomTheme();
-  const keyExtractor = useCallback((item: any) => (id === '' ? item : item[id]), []);
+  const keyExtractor = useCallback((item: any) => {
+    console.log(item);
+    return item[id];
+  }, []);
 
   const renderRefreshControl = useMemo(
     () => (

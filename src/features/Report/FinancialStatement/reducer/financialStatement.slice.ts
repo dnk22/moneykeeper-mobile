@@ -11,8 +11,10 @@ const initialState = {
   refreshData: 0,
 } as financialStatementProps;
 
+export const FINANCE_STATEMENT_SLICE_NAME = 'financeStatementStore';
+
 export const financialStatementSlice = createSlice({
-  name: 'financialStatement',
+  name: FINANCE_STATEMENT_SLICE_NAME,
   initialState: initialState,
   reducers: {
     setViewType(state, { payload }: PayloadAction<boolean>) {
@@ -52,7 +54,7 @@ export const {
 } = financialStatementSlice.actions;
 
 export type TTransactionCategorySlice = {
-  [financialStatementSlice.name]: ReturnType<(typeof financialStatementSlice)['reducer']>;
+  [FINANCE_STATEMENT_SLICE_NAME]: ReturnType<(typeof financialStatementSlice)['reducer']>;
 };
 
 export default financialStatementSlice.reducer;

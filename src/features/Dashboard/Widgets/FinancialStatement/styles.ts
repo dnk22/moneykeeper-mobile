@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
   cardTopOutline: {
     top: -5,
     left: -4,
-    height: 25,
+    height: 24,
     width: SCREEN_WIDTH,
     alignItems: 'center',
     justifyContent: 'center',
@@ -43,11 +43,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
-    paddingLeft: 10,
+    paddingLeft: 8,
     borderRadius: 20,
   },
   cardTopCenter: {
-    height: 5,
+    height: 2,
     width: '100%',
     borderRadius: 30,
   },
