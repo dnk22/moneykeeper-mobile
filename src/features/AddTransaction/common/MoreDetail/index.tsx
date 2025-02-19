@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import PressableHaptic from 'components/PressableHaptic';
-import { RNText, SvgIcon } from 'components/index';
 import { View } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import { useCustomTheme } from 'resources/theme';
+import SvgIcon from 'components/SvgIcon';
+import RNText from 'components/Text';
 
 function MoreDetail({ children }: { children: React.ReactNode }) {
   const [isShowDetails, setIsShowDetails] = useState<boolean>(false);

@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { ScrollView, View } from 'react-native';
 import { PieChart as PieChartComponent } from 'react-native-gifted-charts';
-import { Empty, RNText } from 'components/index';
+import RNText from 'components/Text';
+import Empty from 'components/Empty';
 import { useCustomTheme } from 'resources/theme';
 import { formatNumber } from 'utils/math';
 import { MATERIAL_COLOR } from 'utils/constants';

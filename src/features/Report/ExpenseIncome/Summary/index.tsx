@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
+import FlatListComponent from 'components/FlatList';
 import { endOfYear, startOfYear } from 'date-fns';
 import { formatDateLocal } from 'utils/date';
-import { FlatListComponent } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect } from '@react-navigation/native';
 import {
@@ -40,10 +40,8 @@ function Summary({ type }: { type: VIEW_EXPENSE_INCOME_REPORT_BY }) {
         });
     }, [type, date]),
   );
-  
-  const onDateChange = () => {
-    
-  }
+
+  const onDateChange = () => {};
 
   const renderItem = ({ item }: { item: TQueryGetExpenseIncomeReportGroupByDate }) => (
     <Item data={item} type={type} />

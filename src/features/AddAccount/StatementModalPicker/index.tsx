@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Pressable, View } from 'react-native';
-import { RNText, ModalComponent } from 'components/index';
+import ModalComponent from 'components/Modal';
+import RNText from 'components/Text';
 import { Picker } from '@react-native-picker/picker';
 import { useCustomTheme } from 'resources/theme';
 import { DAY_IN_MONTH } from 'utils/constants';

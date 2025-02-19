@@ -1,31 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import {
-  InputField,
-  InputSelection,
-  SvgIcon,
-  PressableHaptic,
-  FormAction,
-  IconComponent,
-} from 'components/index';
 import { TransactionCategoryParamProps } from 'utils/types/navigation';
 import { useForm } from 'react-hook-form';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactionsCategory } from 'database/types';
-import { ICON_SELECT, PARENT_LIST, UPDATE_TRANSACTION_CATEGORY } from 'utils/constants/navigation.constant';
+import {
+  ICON_SELECT,
+  PARENT_LIST,
+  UPDATE_TRANSACTION_CATEGORY,
+} from 'utils/constants/navigation.constant';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
 import {
   deleteTransactionCategoryByID,
   getTransactionCategoryByID,
   updateTransactionCategory,
 } from 'services/api/transactionsCategory';
+import PressableHaptic from 'components/PressableHaptic';
+import SvgIcon from 'components/SvgIcon';
+import FormAction from 'components/common/FormAction';
+import IconComponent from 'components/IconComponent';
+import InputField from 'components/InputField';
+import InputSelection from 'components/InputSelection';
 import styles from './styles';
 
 function UpdateTransactionCategory() {
   const { colors } = useCustomTheme();
   const navigation =
-    useNavigation<TransactionCategoryParamProps<typeof UPDATE_TRANSACTION_CATEGORY>['navigation']>();
+    useNavigation<
+      TransactionCategoryParamProps<typeof UPDATE_TRANSACTION_CATEGORY>['navigation']
+    >();
   const { params } =
     useRoute<TransactionCategoryParamProps<typeof UPDATE_TRANSACTION_CATEGORY>['route']>();
   const [parentGroup, setParentGroup] = useState<TransactionCategoryModel | undefined>(undefined);

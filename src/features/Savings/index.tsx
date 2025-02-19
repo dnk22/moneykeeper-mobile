@@ -1,9 +1,8 @@
 import React from 'react';
-import { RNText } from 'components/index';
 import { ScrollView, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
+import RNText from 'components/Text';
 import styles from './styles';
-import Card from './Card';
 
 const Savings = ({}) => {
   const { colors } = useCustomTheme();
@@ -12,9 +11,7 @@ const Savings = ({}) => {
       <View style={styles.totalBalance}>
         <RNText style={styles.title}>Tổng tiền: 10000000Đ</RNText>
       </View>
-      <ScrollView>
-        {/* <Card /> */}
-      </ScrollView>
+      <ScrollView>{/* <Card /> */}</ScrollView>
     </View>
   );
 };

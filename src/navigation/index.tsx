@@ -25,8 +25,8 @@ import { RootStackParamList } from 'utils/types/navigation';
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 function AppNavigators() {
-  const { darkMode, color } = useAppSelector((state) => selectAppTheme(state));
-  const theme = useAppTheme({ darkMode, color });
+  const appThemeState = useAppSelector((state) => selectAppTheme(state));
+  const theme = useAppTheme({ ...appThemeState });
 
   return (
     <>

@@ -1,15 +1,16 @@
 import { memo, useRef } from 'react';
 import { Alert, View } from 'react-native';
 import isEqual from 'react-fast-compare';
-import {
-  RNText,
-  SwipeableComponent,
-  TouchableHighlightComponent,
-  IconComponent,
-} from 'components/index';
+import RNText from 'components/Text';
+import SwipeableComponent from 'components/SwipeableComponent';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import IconComponent from 'components/IconComponent';
 import { useNavigation } from '@react-navigation/native';
 import { AccountStackParamListProps } from 'utils/types/navigation';
-import { ACCOUNT_NORMAL_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'utils/constants/navigation.constant';
+import {
+  ACCOUNT_NORMAL_DETAIL,
+  CREATE_TRANSACTION_FROM_ACCOUNT,
+} from 'utils/constants/navigation.constant';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
 import { deleteTransactionById } from 'services/api/transactions';

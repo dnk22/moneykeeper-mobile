@@ -2,7 +2,6 @@ import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
-import { InputSelection, BottomSheet } from 'components/index';
 import { useFormContext } from 'react-hook-form';
 import { useFocusEffect } from '@react-navigation/native';
 import { getAccountById } from 'services/api/accounts';
@@ -10,6 +9,8 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { TAccount } from 'database/types';
 import { showToast } from 'utils/system';
 import AccountList from './AccountList';
+import InputSelection from 'components/InputSelection';
+import BottomSheet from 'components/BottomSheetModal';
 
 type AccountProp = {
   accountLogo: string;

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { VirtualizedListComponent } from 'components/index';
+import VirtualizedListComponent from 'components/VirtualizedList';
 import { useFocusEffect } from '@react-navigation/native';
 import { queryUniqueTransactionDates } from 'database/querying';
 import isArray from 'lodash/isArray';

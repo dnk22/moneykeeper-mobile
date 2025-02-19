@@ -1,13 +1,16 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
-import { PressableHaptic, ProgressLineChart, RNText, SvgIcon } from 'components/index';
 import { MenuView } from '@react-native-menu/menu';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { getExpenseIncomeInRangeDate } from 'database/querying';
 import { formatNumber } from 'utils/math';
 import { MATERIAL_COLOR } from 'utils/constants';
 import { EXPENSE_INCOME_DETAIL } from 'utils/constants/navigation.constant';
+import PressableHaptic from 'components/PressableHaptic';
+import SvgIcon from 'components/SvgIcon';
+import ProgressLineChart from 'components/ProgressLineChart';
+import RNText from 'components/Text';
 import { styles } from './styles';
 
 const dateViewSelect = [

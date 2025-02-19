@@ -1,11 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
-import { FlatListComponent, PressableHaptic, RNText, SvgIcon } from 'components/index';
 import debounce from 'lodash/debounce';
+import RNText from 'components/Text';
+import FlatListComponent from 'components/FlatList';
 import { useCustomTheme } from 'resources/theme';
 import { DebtLoanTypes } from 'utils/types';
 import Item from './Item';
 import styles from './styles';
+import PressableHaptic from 'components/PressableHaptic';
+import SvgIcon from 'components/SvgIcon';
 
 function DebtLoanList({ data }: { data: DebtLoanTypes[] }) {
   const { colors } = useCustomTheme();

@@ -1,10 +1,10 @@
 import { memo } from 'react';
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import styles from './styles';
 import PressableHaptic from 'components/PressableHaptic';
-import { RNText } from 'components/index';
 import isEqual from 'react-fast-compare';
+import RNText from 'components/Text';
+import styles from './styles';
 
 type ITabBarProps = {
   isFocused?: boolean;

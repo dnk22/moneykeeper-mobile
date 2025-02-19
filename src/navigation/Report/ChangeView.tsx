@@ -1,5 +1,6 @@
 import { HeaderButtonProps } from '@react-navigation/native-stack/lib/typescript/src/types';
-import { SvgIcon, PressableHaptic } from 'components/index';
+import PressableHaptic from 'components/PressableHaptic';
+import SvgIcon from 'components/SvgIcon';
 import { selectReportViewSettings } from 'store/app/app.selector';
 import { updateReportViewSettings } from 'store/app/app.slice';
 import { useAppDispatch, useAppSelector } from 'store/index';

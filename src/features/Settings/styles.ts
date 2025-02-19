@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   group: {
-    backgroundColor: 'white',
     borderRadius: 10,
     marginBottom: 30,
   },
@@ -49,7 +48,6 @@ const styles = StyleSheet.create({
   },
   itemBorderBottom: {
     borderBottomWidth: 0.2,
-    borderColor: '#ccc',
   },
   version: {
     textAlign: 'center',

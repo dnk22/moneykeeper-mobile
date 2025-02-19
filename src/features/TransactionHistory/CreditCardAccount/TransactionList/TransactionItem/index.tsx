@@ -1,15 +1,12 @@
 import { memo, useContext, useRef } from 'react';
 import { Alert, View } from 'react-native';
-import {
-  RNText,
-  SwipeableComponent,
-  TouchableHighlightComponent,
-  IconComponent,
-} from 'components/index';
 import isEqual from 'react-fast-compare';
 import { useNavigation } from '@react-navigation/native';
 import { AccountStackParamListProps } from 'utils/types/navigation';
-import { ACCOUNT_NORMAL_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'utils/constants/navigation.constant';
+import {
+  ACCOUNT_NORMAL_DETAIL,
+  CREATE_TRANSACTION_FROM_ACCOUNT,
+} from 'utils/constants/navigation.constant';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
 import { deleteTransactionById } from 'services/api/transactions';
@@ -17,6 +14,10 @@ import { formatNumber } from 'utils/math';
 import { showToast } from 'utils/system';
 import { TRANSACTION_TYPE } from 'utils/constants';
 import { TransactionHistoryContext } from '../../context';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import SwipeableComponent from 'components/SwipeableComponent';
+import IconComponent from 'components/IconComponent';
+import RNText from 'components/Text';
 import styles from './styles';
 
 function TransactionItem({

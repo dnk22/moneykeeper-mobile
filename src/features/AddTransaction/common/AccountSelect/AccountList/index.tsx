@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { SectionListData, View } from 'react-native';
-import { Empty, RNText } from 'components/index';
 import { TAccount } from 'database/types';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
 import { AccountModel } from 'database/models';
@@ -10,6 +9,8 @@ import { TGetAllAccounts } from 'database/querying';
 import { BottomSheetSectionList, BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { useCustomTheme } from 'resources/theme';
 import Item from './Item';
+import Empty from 'components/Empty';
+import RNText from 'components/Text';
 import styles from './styles';
 
 type AccountListProps = {

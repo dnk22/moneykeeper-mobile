@@ -1,7 +1,8 @@
 import { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import isEqual from 'react-fast-compare';
-import { RNText, SvgIcon } from 'components/index';
+import RNText from 'components/Text';
+
 import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import { getCurrentBalanceAllAccount, queryGetAllBalance } from 'database/querying';
@@ -11,6 +12,7 @@ import { getAllTriggerNotifications } from 'share/notifications';
 import { useAppDispatch } from 'store/index';
 import { setViewType } from 'features/Report/FinancialStatement/reducer/financialStatement.slice';
 import { styles } from './styles';
+import SvgIcon from 'components/SvgIcon';
 
 function FinancialStatement() {
   const { colors } = useCustomTheme();

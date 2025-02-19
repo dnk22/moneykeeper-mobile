@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useFormContext } from 'react-hook-form';
-import { BottomSheet, InputSelection } from 'components/index';
 import Contact from 'features/Contact';
+import InputSelection from 'components/InputSelection';
+import BottomSheet from 'components/BottomSheetModal';
 
 function RelatedPersonSelect({
   title,

@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
-import { RNText, ProgressLineChart } from 'components/index';
+import RNText from 'components/Text';
 import { useFocusEffect } from '@react-navigation/native';
 import { queryGetDebtLoanStatementSummary } from 'database/querying';
 import { formatNumber } from 'utils/math';
 import styles from './styles';
+import ProgressLineChart from 'components/ProgressLineChart';
 
 function DebtLoanStatement({ isDebt }: { isDebt: boolean }) {
   const { colors } = useCustomTheme();

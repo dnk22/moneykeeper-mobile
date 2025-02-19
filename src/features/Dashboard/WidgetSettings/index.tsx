@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { CheckboxComponent, PressableHaptic, RNText, SvgIcon } from 'components/index';
 import HeaderIcon from 'navigation/elements/HeaderIcon';
 import { useCustomTheme } from 'resources/theme';
 import DraggableFlatList, {
@@ -13,6 +12,10 @@ import { useAppDispatch } from 'store/index';
 import { updateWidgetOrder } from 'store/app/app.slice';
 import { WidgetOrderListProps } from '../constants';
 import styles from './styles';
+import CheckboxComponent from 'components/Checkbox';
+import PressableHaptic from 'components/PressableHaptic';
+import SvgIcon from 'components/SvgIcon';
+import RNText from 'components/Text';
 
 function WidgetSettings({ navigation }: any) {
   const { colors } = useCustomTheme();

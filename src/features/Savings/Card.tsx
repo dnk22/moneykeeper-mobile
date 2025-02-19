@@ -1,5 +1,5 @@
 import { memo, useCallback, useRef } from 'react';
-import { RNText, SvgIcon, PressableHaptic } from 'components/index';
+import RNText from 'components/Text';
 import { LayoutChangeEvent, View } from 'react-native';
 import isEqual from 'react-fast-compare';
 import Animated, {
@@ -8,8 +8,10 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
+import PressableHaptic from 'components/PressableHaptic';
+import SvgIcon from 'components/SvgIcon';
+import styles from './styles';
 
 const wrapperHeightDefault = 40;
 

@@ -1,5 +1,6 @@
 import { HeaderButtonProps } from '@react-navigation/native-stack/lib/typescript/src/types';
-import { SvgIcon, PressableHaptic } from 'components/index';
+import PressableHaptic from 'components/PressableHaptic';
+import SvgIcon from 'components/SvgIcon';
 
 function Search({}: HeaderButtonProps) {
   return (

@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
-import { RNText } from 'components/index';
 import { useFocusEffect } from '@react-navigation/native';
 import { TAccount } from 'database/types';
+import RNText from 'components/Text';
 import { getAccountData } from 'services/api/accounts';
 import { formatNumber } from 'utils/math';
 import ItemSettingsModal from './ItemSettingsModal';

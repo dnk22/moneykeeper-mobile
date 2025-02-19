@@ -1,14 +1,17 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Pressable, View } from 'react-native';
-import { InputField, RNText, SvgIcon, SwitchField, FormAction } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useForm } from 'react-hook-form';
 import { TAccountType, TAccount } from 'database/types';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { AccountStackParamListProps } from 'utils/types/navigation';
 import HeaderIcon from 'navigation/elements/HeaderIcon';
 import Collapsible from 'react-native-collapsible';
+import SvgIcon from 'components/SvgIcon';
+import InputField from 'components/InputField';
+import FormAction from 'components/common/FormAction';
+import SwitchField from 'components/Switch/SwitchField';
+import RNText from 'components/Text';
 import { BankModel } from 'database/models';
 import InputCalculator from 'features/AddTransaction/common/InputCalculator';
 import { ADD_ACCOUNT } from 'utils/constants/navigation.constant';
@@ -23,6 +26,7 @@ import {
   updateAccountNotification,
   updateAccountStatement,
 } from 'store/account/account.slice';
+import { AccountStackParamListProps } from 'utils/types/navigation';
 import Notifications from './Notifications';
 import StatementModalPicker from './StatementModalPicker';
 import AccountTypeSelect from './AccountTypeSelect';

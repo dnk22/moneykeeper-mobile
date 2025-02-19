@@ -1,11 +1,5 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import {
-  InputSearch,
-  FlatListComponent,
-  TouchableHighlightComponent,
-  RNText,
-} from 'components/index';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { TBank } from 'database/types';
 import { BANK_TYPE } from 'utils/constants';
@@ -14,8 +8,12 @@ import { fetchBankData } from 'services/api/banks';
 import { BankParamsProps } from 'utils/types/navigation';
 // import FastImage from 'react-native-fast-image';
 // import * as BankIcon from 'assets/images/banks';
-import styles from './styles';
 import IconComponent from 'components/IconComponent';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import InputSearch from 'components/InputSearch';
+import FlatListComponent from 'components/FlatList';
+import RNText from 'components/Text';
+import styles from './styles';
 
 function BankList() {
   const { params } = useRoute<BankParamsProps<typeof BANK_HOME_LIST>['route']>();

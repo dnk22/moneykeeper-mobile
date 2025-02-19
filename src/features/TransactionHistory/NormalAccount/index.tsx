@@ -1,14 +1,18 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { View } from 'react-native';
-import { PressableHaptic, SvgIcon } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
-import { ACCOUNT_NORMAL_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'utils/constants/navigation.constant';
+import {
+  ACCOUNT_NORMAL_DETAIL,
+  CREATE_TRANSACTION_FROM_ACCOUNT,
+} from 'utils/constants/navigation.constant';
 import { AccountStackParamListProps } from 'utils/types/navigation';
 import ButtonText from 'navigation/elements/ButtonText';
 import Summary from './Summary';
 import TransactionList from './TransactionList';
 import HeaderBarConfig from '../HeaderBarConfig';
 import styles from './styles';
+import PressableHaptic from 'components/PressableHaptic';
+import SvgIcon from 'components/SvgIcon';
 
 type NormalAccountProps = {
   navigation: AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['navigation'];

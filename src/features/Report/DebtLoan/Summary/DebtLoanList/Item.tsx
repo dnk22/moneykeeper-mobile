@@ -1,6 +1,7 @@
 import { View } from 'react-native';
-import { PressableHaptic, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
 import { useNavigation } from '@react-navigation/native';
+import RNText from 'components/Text';
+
 import { ReportParamListProps } from 'utils/types/navigation';
 import {
   MATERIAL_COLOR,
@@ -9,11 +10,17 @@ import {
 } from 'utils/constants';
 import { formatNumber } from 'utils/math';
 import { DebtLoanTypes } from 'utils/types';
-import { CREATE_TRANSACTION_FROM_ACCOUNT, DEBT_LOAN_REPORT_DETAIL } from 'utils/constants/navigation.constant';
+import {
+  CREATE_TRANSACTION_FROM_ACCOUNT,
+  DEBT_LOAN_REPORT_DETAIL,
+} from 'utils/constants/navigation.constant';
 import { useCustomTheme } from 'resources/theme';
 import { MenuAction, MenuView, NativeActionEvent } from '@react-native-menu/menu';
 import { useAppSelector } from 'store/index';
 import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';
+import PressableHaptic from 'components/PressableHaptic';
+import SvgIcon from 'components/SvgIcon';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
 import styles from './styles';
 
 function Item({ data, index }: { data: DebtLoanTypes; index: number }) {

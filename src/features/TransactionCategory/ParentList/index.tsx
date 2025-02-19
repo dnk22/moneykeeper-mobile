@@ -1,18 +1,16 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import {
-  Empty,
-  FlatListComponent,
-  RNText,
-  SvgIcon,
-  TouchableHighlightComponent,
-} from 'components/index';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { TTransactionsCategory } from 'database/types';
 import { useCustomTheme } from 'resources/theme';
 import { PARENT_LIST, UPDATE_TRANSACTION_CATEGORY } from 'utils/constants/navigation.constant';
 import { TransactionCategoryParamProps } from 'utils/types/navigation';
 import { getParentList } from 'services/api/transactionsCategory';
+import Empty from 'components/Empty';
+import SvgIcon from 'components/SvgIcon';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import FlatListComponent from 'components/FlatList';
+import RNText from 'components/Text';
 import styles from './styles';
 
 function ParentList() {

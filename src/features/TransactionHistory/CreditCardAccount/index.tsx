@@ -1,6 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { View } from 'react-native';
-import { PressableHaptic, SvgIcon } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { ACCOUNT_CREDIT_CARD_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'utils/constants/navigation.constant';
 import { AccountStackParamListProps } from 'utils/types/navigation';
@@ -13,6 +12,8 @@ import Summary from './Summary';
 import StatementPicker from './StatementPicker';
 import TransactionList from './TransactionList';
 import HeaderBarConfig from '../HeaderBarConfig';
+import PressableHaptic from 'components/PressableHaptic';
+import SvgIcon from 'components/SvgIcon';
 import styles from './styles';
 
 type CreditCardAccountProps = {

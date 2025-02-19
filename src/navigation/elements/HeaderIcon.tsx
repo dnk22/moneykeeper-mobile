@@ -1,4 +1,5 @@
-import { SvgIcon, PressableHaptic } from 'components/index';
+import PressableHaptic from 'components/PressableHaptic';
+import SvgIcon from 'components/SvgIcon';
 
 function HeaderIcon({
   onPress,

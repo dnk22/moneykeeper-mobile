@@ -1,15 +1,13 @@
-import {
-  CheckboxComponent,
-  ModalComponent,
-  RNText,
-  SvgIcon,
-  TouchableHighlightComponent,
-} from 'components/index';
 import { View } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectTransactionListConfig } from 'store/app/app.selector';
 import { updateTransactionListDisplayConfig } from 'store/app/app.slice';
 import get from 'lodash/get';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import CheckboxComponent from 'components/Checkbox';
+import SvgIcon from 'components/SvgIcon';
+import ModalComponent from 'components/Modal';
+import RNText from 'components/Text';
 import styles from './styles';
 
 const displaySettings = [

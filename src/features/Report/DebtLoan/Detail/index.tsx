@@ -1,14 +1,12 @@
 import { useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
-import {
-  ProgressLineChart,
-  RNText,
-  FlatListComponent,
-  SvgIcon,
-  PressableHaptic,
-} from 'components/index';
+import RNText from 'components/Text';
+import FlatListComponent from 'components/FlatList';
 import { useFocusEffect } from '@react-navigation/native';
-import { CREATE_TRANSACTION_FROM_ACCOUNT, DEBT_LOAN_REPORT_DETAIL } from 'utils/constants/navigation.constant';
+import {
+  CREATE_TRANSACTION_FROM_ACCOUNT,
+  DEBT_LOAN_REPORT_DETAIL,
+} from 'utils/constants/navigation.constant';
 import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constants';
 import { queryGetDebtLoanDetailByPerson } from 'database/querying';
 import { TGetDebtLoanDetailByPerson } from 'utils/types/request.type';
@@ -21,6 +19,9 @@ import { useAppSelector } from 'store/index';
 import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';
 import DebtLoanItemDetail from './DebtLoanItemDetail';
 import styles from './styles';
+import PressableHaptic from 'components/PressableHaptic';
+import ProgressLineChart from 'components/ProgressLineChart';
+import SvgIcon from 'components/SvgIcon';
 
 export default function DebtLoanDetail({
   navigation,

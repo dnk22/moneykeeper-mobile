@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { View } from 'react-native';
-import { RNText } from 'components/index';
+import RNText from 'components/Text';
 import { useCustomTheme } from 'resources/theme';
 import { formatDateStringLocal, formatDayOfTheWeek } from 'utils/date';
 import isArray from 'lodash/isArray';

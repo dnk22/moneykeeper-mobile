@@ -1,14 +1,12 @@
 import { memo, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import isEqual from 'react-fast-compare';
-import {
-  ModalComponent,
-  CheckboxComponent,
-  FlatListComponent,
-  RNText,
-  TouchableHighlightComponent,
-  IconComponent,
-} from 'components/index';
+import ModalComponent from 'components/Modal';
+import CheckboxComponent from 'components/Checkbox';
+import FlatListComponent from 'components/FlatList';
+import RNText from 'components/Text';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import IconComponent from 'components/IconComponent';
 import { IModalComponentProps } from 'components/Modal';
 import { TAccountType } from 'database/types';
 import { AccountType } from 'utils/data';

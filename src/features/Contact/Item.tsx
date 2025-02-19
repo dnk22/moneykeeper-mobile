@@ -1,16 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { Alert, TextInput, View } from 'react-native';
 import { GestureResponderEvent } from 'react-native-modal';
-import {
-  PressableHaptic,
-  RNText,
-  SvgIcon,
-  SwipeableComponent,
-  TouchableHighlightComponent,
-} from 'components/index';
 import { TContact } from 'database/types';
 import { deleteContact, updateContact } from 'services/api/contacts';
 import styles from './styles';
+import PressableHaptic from 'components/PressableHaptic';
+import SvgIcon from 'components/SvgIcon';
+import SwipeableComponent from 'components/SwipeableComponent';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import RNText from 'components/Text';
 
 function NormalItem({
   item,

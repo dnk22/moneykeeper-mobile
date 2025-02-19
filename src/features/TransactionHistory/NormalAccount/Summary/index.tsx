@@ -1,12 +1,13 @@
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
-import { RNText, SvgIcon } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect } from '@react-navigation/native';
 import { queryGetSummaryAccountById } from 'database/querying';
 import { formatNumber } from 'utils/math';
 import { useAppSelector } from 'store/index';
 import { selectRefreshTransactionHistory } from 'store/transactions/transactions.selector';
+import SvgIcon from 'components/SvgIcon';
+import RNText from 'components/Text';
 import styles from './styles';
 
 function Summary({ accountId }: { accountId: string }) {

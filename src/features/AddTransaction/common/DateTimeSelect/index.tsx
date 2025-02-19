@@ -3,8 +3,9 @@ import { View } from 'react-native';
 import styles from './styles';
 import SvgIcon from 'components/SvgIcon';
 import PressableHaptic from 'components/PressableHaptic';
-import { DateTimeModalPicker, RNText } from 'components/index';
 import { formatDateLocal } from 'utils/date';
+import DateTimeModalPicker from 'components/DateTimeModalPicker';
+import RNText from 'components/Text';
 
 export type DateTimeSelectProps = {
   values: Date;

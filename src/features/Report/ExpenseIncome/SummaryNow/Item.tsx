@@ -2,7 +2,8 @@ import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect } from '@react-navigation/native';
-import { RNText } from 'components/index';
+import RNText from 'components/Text';
+
 import { queryGetExpenseIncomeReportByCurrentDate } from 'database/querying';
 import { showToast } from 'utils/system';
 import { formatNumber } from 'utils/math';

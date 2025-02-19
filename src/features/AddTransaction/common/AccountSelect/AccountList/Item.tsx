@@ -1,17 +1,15 @@
 import React, { View } from 'react-native';
 import { TAccount } from 'database/types';
-import {
-  CheckboxComponent,
-  RNText,
-  IconComponent,
-  TouchableHighlightComponent,
-} from 'components/index';
 import { useNavigation } from '@react-navigation/native';
 import { ACCOUNT_NORMAL_DETAIL } from 'utils/constants/navigation.constant';
 import { useCustomTheme } from 'resources/theme';
 import { AccountStackParamListProps } from 'utils/types/navigation';
 import { formatNumber } from 'utils/math';
 import styles from './styles';
+import CheckboxComponent from 'components/Checkbox';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import IconComponent from 'components/IconComponent';
+import RNText from 'components/Text';
 
 type ItemProps = {
   account: TAccount;

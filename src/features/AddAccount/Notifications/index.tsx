@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Pressable } from 'react-native';
-import { CheckboxComponent, RNText } from 'components/index';
+import CheckboxComponent from 'components/Checkbox';
+import RNText from 'components/Text';
 import styles from './styles';
 
 type NotificationsProps = {

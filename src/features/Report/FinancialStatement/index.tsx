@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { RNSegmentedControl, RNText } from 'components/index';
+import RNText from 'components/Text';
 import { useCustomTheme } from 'resources/theme';
 import {
   getCurrentBalanceAllAccount,
@@ -20,6 +20,7 @@ import { convertDebtLoanData, convertFinancialData } from './helper';
 import PieChart from './PieChart';
 import CategoryDetail from './CategoryDetail';
 import styles from './styles';
+import RNSegmentedControl from 'components/SegmentedControl';
 
 function FinanceStatement() {
   const { colors } = useCustomTheme();

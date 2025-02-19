@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useState } from 'react';
-import { VirtualizedListComponent } from 'components/index';
 import { useFocusEffect } from '@react-navigation/native';
 import isArray from 'lodash/isArray';
 import size from 'lodash/size';
@@ -8,6 +7,7 @@ import { groupTransactionsByDay } from 'utils/algorithm';
 import { GroupedTransactionProps } from 'utils/types';
 import HeaderItem from './HeaderItem';
 import { TransactionHistoryContext } from '../context';
+import VirtualizedListComponent from 'components/VirtualizedList';
 
 function TransactionList() {
   const {

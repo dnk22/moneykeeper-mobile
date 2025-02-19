@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions, TTransactionsCategory } from 'database/types';
-import { InputField, RNText, SvgIcon, SwitchField, FormAction } from 'components/index';
 import { useFormContext } from 'react-hook-form';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import HeaderIcon from 'navigation/elements/HeaderIcon';
@@ -27,6 +26,11 @@ import { defaultValues } from '../constant';
 import { AddTransactionType } from '../type';
 import CategorySelect from '../common/CategorySelect';
 import styles from '../styles.common';
+import InputField from 'components/InputField';
+import SvgIcon from 'components/SvgIcon';
+import SwitchField from 'components/Switch/SwitchField';
+import FormAction from 'components/common/FormAction';
+import RNText from 'components/Text';
 
 function Adjustment({ params, onSubmitSuccess }: AddTransactionType) {
   const isEditMode = !!params?.transactionId;

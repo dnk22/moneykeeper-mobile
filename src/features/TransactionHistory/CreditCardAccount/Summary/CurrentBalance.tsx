@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { queryGetCurrentBalanceCreditCardByAccountId } from 'database/querying';
-import { RNText } from 'components/index';
+import RNText from 'components/Text';
 import { formatNumber } from 'utils/math';
 import { TransactionHistoryContext } from '../context';
 import styles from './styles';

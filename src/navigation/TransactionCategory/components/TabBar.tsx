@@ -7,7 +7,6 @@ import {
   TransactionCategoryContext,
   UPDATE_TRANSACTION_CATEGORY,
 } from 'utils/constants/navigation.constant';
-import { Loading, PressableHaptic, SvgIcon } from 'components/index';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useCustomTheme } from 'resources/theme';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
@@ -17,6 +16,9 @@ import UpdateTransactionCategoryHeader from './Update';
 import LendAndBorrowTab from 'features/TransactionCategory/LendAndBorrowTab';
 import ExpenseIncomeTab from 'features/TransactionCategory/ExpenseIncomeTab';
 import styles from '../styles';
+import PressableHaptic from 'components/PressableHaptic';
+import SvgIcon from 'components/SvgIcon';
+import Loading from 'components/Loading';
 
 const TabBar = createMaterialTopTabNavigator<TransactionCategoryListParams>();
 

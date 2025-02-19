@@ -1,8 +1,11 @@
 import { useRef, useState } from 'react';
 import { View } from 'react-native';
-import { BottomSheet, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
 import DisplayModal from './DisplayModal';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import SvgIcon from 'components/SvgIcon';
+import BottomSheet from 'components/BottomSheetModal';
+import RNText from 'components/Text';
 import styles from './styles';
 
 function HeaderBarConfig({ onPressSelectMode }: { onPressSelectMode: () => void }) {

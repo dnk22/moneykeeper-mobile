@@ -1,7 +1,6 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { SectionListData, View } from 'react-native';
 import isEqual from 'react-fast-compare';
-import { Empty, PressableHaptic, RNText, SectionListComponent, SvgIcon } from 'components/index';
 import { TAccount } from 'database/types';
 import debounce from 'lodash/debounce';
 import { useCustomTheme } from 'resources/theme';
@@ -12,6 +11,11 @@ import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import { updateAccountViewSettings } from 'store/app/app.slice';
 import AccountItem from './AccountItem';
+import PressableHaptic from 'components/PressableHaptic';
+import SvgIcon from 'components/SvgIcon';
+import RNText from 'components/Text';
+import SectionListComponent from 'components/SectionList';
+import Empty from 'components/Empty';
 import styles from './styles';
 
 type AccountListProps = {

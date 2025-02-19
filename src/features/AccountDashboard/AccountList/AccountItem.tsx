@@ -1,14 +1,13 @@
 import React, { View } from 'react-native';
 import { TAccount } from 'database/types';
-import {
-  IconComponent,
-  PressableHaptic,
-  RNText,
-  SvgIcon,
-  TouchableHighlightComponent,
-} from 'components/index';
+
 import { useNavigation } from '@react-navigation/native';
 import { ACCOUNT_NORMAL_DETAIL, ACCOUNT_CREDIT_CARD_DETAIL } from 'utils/constants/navigation.constant';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import IconComponent from 'components/IconComponent';
+import PressableHaptic from 'components/PressableHaptic';
+import RNText from 'components/Text';
+import SvgIcon from 'components/SvgIcon';
 import { useCustomTheme } from 'resources/theme';
 import { formatNumber } from 'utils/math';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constants';

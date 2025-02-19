@@ -1,4 +1,3 @@
-import { ModalComponent, RNText, SvgIcon, TouchableHighlightComponent } from 'components/index';
 import { IModalComponentProps } from 'components/Modal';
 import { Alert, View } from 'react-native';
 import { TAccount } from 'database/types';
@@ -8,8 +7,12 @@ import { changeAccountStatusById, deleteAccountById } from 'services/api/account
 import { TRANSACTION_TYPE } from 'utils/constants';
 import { useAppDispatch } from 'store/index';
 import { removeAccountStatement } from 'store/account/account.slice';
-import styles from './styles';
 import { showToast } from 'utils/system';
+import ModalComponent from 'components/Modal';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import SvgIcon from 'components/SvgIcon';
+import RNText from 'components/Text';
+import styles from './styles';
 
 type ItemSettingsModalProps = IModalComponentProps & { account: TAccount; onActionPressDone?: any };
 

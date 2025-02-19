@@ -11,7 +11,8 @@ import {
 } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import { formatDateLocal } from 'utils/date';
-import { RNText } from 'components/index';
+import RNText from 'components/Text';
+
 import { LineChart } from 'react-native-gifted-charts';
 import Item from './Item';
 import styles from '../styles';

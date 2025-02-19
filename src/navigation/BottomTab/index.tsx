@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SvgIcon } from 'components/index';
 import {
   ACCOUNT,
   DASHBOARD,
@@ -16,6 +15,7 @@ import ReportNavigation from 'navigation/Report';
 import DashboardNavigation from 'navigation/Dashboard';
 import SettingsNavigation from 'navigation/Settings';
 import { BottomTabStackList } from 'utils/types/navigation';
+import SvgIcon from 'components/SvgIcon';
 
 // set up routes
 const BottomTab = createBottomTabNavigator<BottomTabStackList>();

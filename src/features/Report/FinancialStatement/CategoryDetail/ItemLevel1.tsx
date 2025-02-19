@@ -1,5 +1,7 @@
 import { View } from 'react-native';
-import { IconComponent, RNText, TouchableHighlightComponent } from 'components/index';
+import RNText from 'components/Text';
+import IconComponent from 'components/IconComponent';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
 import { formatNumber } from 'utils/math';
 import { MATERIAL_COLOR } from 'utils/constants';
 import { useAppDispatch } from 'store/index';

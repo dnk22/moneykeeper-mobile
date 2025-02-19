@@ -1,14 +1,13 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import {
-  BottomSheet,
-  Empty,
-  PressableHaptic,
-  RNText,
-  SvgIcon,
-  TouchableHighlightComponent,
-} from 'components/index';
+import RNText from 'components/Text';
+import BottomSheet from 'components/BottomSheetModal';
+import PressableHaptic from 'components/PressableHaptic';
+import Empty from 'components/Empty';
+import SvgIcon from 'components/SvgIcon';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+
 import { formatDateLocal } from 'utils/date';
 import { BottomSheetFlatList, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { queryUniqueTransactionDates } from 'database/querying';
@@ -35,10 +34,7 @@ function StatementPicker({ onChange }: StatementPickerProps) {
   const getAllStatements = () => {
     queryUniqueTransactionDates(accountId).then((res) => {
       if (res.length) {
-        const convertDataToRangeDate = generateMonthlyStatements(
-          res,
-          statementInfo.statementDate,
-        );
+        const convertDataToRangeDate = generateMonthlyStatements(res, statementInfo.statementDate);
         setViewStatementList([defaultStatement, ...convertDataToRangeDate]);
       }
     });
@@ -94,9 +90,7 @@ function StatementPicker({ onChange }: StatementPickerProps) {
         {Object.keys(viewMonth).length > 0 && (
           <View>
             <RNText fontSize={17} style={{ textTransform: 'capitalize', fontWeight: '500' }}>
-              {viewMonth.month
-                ? formatDateLocal(viewMonth.month, 'MMMM, yyyy')
-                : 'Tất cả lịch sử'}
+              {viewMonth.month ? formatDateLocal(viewMonth.month, 'MMMM, yyyy') : 'Tất cả lịch sử'}
             </RNText>
             {viewMonth.month && (
               <RNText fontSize={10} style={{ fontStyle: 'italic' }} color="gray">

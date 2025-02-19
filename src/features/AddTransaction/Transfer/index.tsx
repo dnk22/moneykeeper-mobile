@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Pressable, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
-import { InputField, RNText, SvgIcon, SwitchField, FormAction } from 'components/index';
 import { useFormContext } from 'react-hook-form';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import HeaderIcon from 'navigation/elements/HeaderIcon';
@@ -18,6 +17,11 @@ import InputCalculator from '../common/InputCalculator';
 import { defaultValues } from '../constant';
 import { AddTransactionType } from '../type';
 import styles from '../styles.common';
+import FormAction from 'components/common/FormAction';
+import InputField from 'components/InputField';
+import SvgIcon from 'components/SvgIcon';
+import SwitchField from 'components/Switch/SwitchField';
+import RNText from 'components/Text';
 
 function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
   const { colors } = useCustomTheme();

@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
-import { Empty, FlatListComponent } from 'components/index';
 import { useAppSelector } from 'store/index';
 import { getTotalAmount } from 'utils/algorithm';
-import { selectDataDetailLevel1 } from '../reducer/financialStatement.selector';
+import FlatListComponent from 'components/FlatList';
+import Empty from 'components/Empty';
 import ItemLevel1 from './ItemLevel1';
+import { selectDataDetailLevel1 } from '../reducer/financialStatement.selector';
 import { dataLevelProps } from '../types';
 
 function Level1View() {

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { FlatListComponent } from 'components/index';
 import { TTransactionsCategory } from 'database/types';
 import { queryGetLendBorrowData } from 'database/querying';
 import ParentItem from '../ExpenseIncomeTab/ParentItem';
+import FlatListComponent from 'components/FlatList';
 
 function LendAndBorrowTab() {
   const [data, setData] = useState<any>([]);

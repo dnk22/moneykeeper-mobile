@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { View } from 'react-native';
-import { FlatListComponent, InputSearch } from 'components/index';
+import FlatListComponent from 'components/FlatList';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCustomTheme } from 'resources/theme';
 import { getExpenseAndIncome } from 'services/api/transactionsCategory';
@@ -9,6 +9,7 @@ import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
 import ParentItem from './ParentItem';
 import MostAndRecent from './MostAndRecent';
 import isEmpty from 'lodash/isEmpty';
+import InputSearch from 'components/InputSearch';
 
 type ExpenseIncomeTabProps = {
   type: TRANSACTION_CATEGORY_TYPE;

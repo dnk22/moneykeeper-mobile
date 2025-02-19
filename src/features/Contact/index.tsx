@@ -3,15 +3,6 @@ import { View } from 'react-native';
 import debounce from 'lodash/debounce';
 import size from 'lodash/size';
 import Contacts from 'react-native-contacts';
-import {
-  Empty,
-  FlatListComponent,
-  InputSearch,
-  PressableHaptic,
-  RNText,
-  SvgIcon,
-  TouchableHighlightComponent,
-} from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { addNewContact } from 'services/api/contacts';
 import { TContact } from 'database/types';
@@ -19,6 +10,13 @@ import { openSettings } from 'react-native-permissions';
 import { queryAllContact } from 'database/querying';
 import NormalItem from './Item';
 import ContactItem from './ContactItem';
+import Empty from 'components/Empty';
+import InputSearch from 'components/InputSearch';
+import PressableHaptic from 'components/PressableHaptic';
+import SvgIcon from 'components/SvgIcon';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import FlatListComponent from 'components/FlatList';
+import RNText from 'components/Text';
 import styles from './styles';
 
 function Contact({

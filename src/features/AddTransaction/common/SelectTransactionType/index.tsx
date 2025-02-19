@@ -1,18 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
-import {
-  RNText,
-  PressableHaptic,
-  ModalComponent,
-  FlatListComponent,
-  TouchableHighlightComponent,
-  CheckboxComponent,
-  IconComponent,
-} from 'components/index';
 import { TransactionTypeData } from 'utils/data';
 import { TTransactionType } from 'utils/types/request.type';
 import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constants';
 import styles from './styles';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import IconComponent from 'components/IconComponent';
+import CheckboxComponent from 'components/Checkbox';
+import PressableHaptic from 'components/PressableHaptic';
+import FlatListComponent from 'components/FlatList';
+import RNText from 'components/Text';
+import ModalComponent from 'components/Modal';
 
 type SelectTransactionTypeProps = {
   lendBorrowData: any;

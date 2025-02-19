@@ -1,14 +1,19 @@
 import React, { useContext } from 'react';
 import { View } from 'react-native';
-import { IconComponent, RNText, TouchableHighlightComponent } from 'components/index';
 import { useCustomTheme } from 'resources/theme';
 import { useNavigation } from '@react-navigation/native';
 import { TTransactionsCategory } from 'database/types';
-import { TransactionCategoryContext, UPDATE_TRANSACTION_CATEGORY } from 'utils/constants/navigation.constant';
+import {
+  TransactionCategoryContext,
+  UPDATE_TRANSACTION_CATEGORY,
+} from 'utils/constants/navigation.constant';
 import get from 'lodash/get';
 import size from 'lodash/size';
 import ShakeAnimation from 'resources/animations/Shake';
 import { ITEM_WIDTH } from '../../constants.config';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import IconComponent from 'components/IconComponent';
+import RNText from 'components/Text';
 import styles from './styles';
 
 type ParentItemProps = {

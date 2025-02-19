@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react';
 import { SectionListData, View } from 'react-native';
-import { RNText, SectionListComponent } from 'components/index';
+import RNText from 'components/Text';
+import SectionListComponent from 'components/SectionList';
 import { getTotalAmount } from 'utils/algorithm';
 import ItemSettingsModal from 'features/AccountDashboard/ItemSettingsModal';
 import { TAccount } from 'database/types';

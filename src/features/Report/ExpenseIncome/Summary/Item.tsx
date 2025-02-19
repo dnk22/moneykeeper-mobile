@@ -2,7 +2,8 @@ import { memo } from 'react';
 import { View } from 'react-native';
 import isEqual from 'react-fast-compare';
 import { useCustomTheme } from 'resources/theme';
-import { RNText } from 'components/index';
+import RNText from 'components/Text';
+
 import { formatNumber } from 'utils/math';
 import { formatDateLocal } from 'utils/date';
 import { VIEW_EXPENSE_INCOME_REPORT_BY } from 'utils/constants';

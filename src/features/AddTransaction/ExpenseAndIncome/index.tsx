@@ -2,7 +2,6 @@ import { useCallback, useEffect } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions, TTransactionsCategory } from 'database/types';
-import { InputField, RNText, SvgIcon, SwitchField, FormAction } from 'components/index';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import {
   ADD_TRANSACTION,
@@ -30,6 +29,11 @@ import Fee from '../common/Fee';
 import InputCalculator from '../common/InputCalculator';
 import { AddTransactionType } from '../type';
 import { defaultValues } from '../constant';
+import InputField from 'components/InputField';
+import SvgIcon from 'components/SvgIcon';
+import SwitchField from 'components/Switch/SwitchField';
+import FormAction from 'components/common/FormAction';
+import RNText from 'components/Text';
 import styles from '../styles.common';
 
 function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {

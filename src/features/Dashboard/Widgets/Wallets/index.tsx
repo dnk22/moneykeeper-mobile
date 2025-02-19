@@ -1,6 +1,5 @@
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View } from 'react-native';
-import { IconComponent, PressableHaptic, RNText, SvgIcon } from 'components/index';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { queryAllAccount } from 'database/querying';
 import FlatList from 'components/FlatList';
@@ -15,6 +14,10 @@ import {
 } from 'utils/constants/navigation.constant';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constants';
 import { styles } from './styles';
+import IconComponent from 'components/IconComponent';
+import PressableHaptic from 'components/PressableHaptic';
+import SvgIcon from 'components/SvgIcon';
+import RNText from 'components/Text';
 
 function Wallets({ title }: { title: string }) {
   const { colors } = useCustomTheme();

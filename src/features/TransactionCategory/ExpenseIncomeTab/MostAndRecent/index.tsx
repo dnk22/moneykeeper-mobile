@@ -3,14 +3,7 @@ import { View } from 'react-native';
 import isEqual from 'react-fast-compare';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { MenuAction, MenuView, NativeActionEvent } from '@react-native-menu/menu';
-import {
-  Empty,
-  RNText,
-  IconComponent,
-  TouchableHighlightComponent,
-  FlatListComponent,
-  SvgIcon,
-} from 'components/index';
+
 import { useCustomTheme } from 'resources/theme';
 import { TRANSACTION_CATEGORY_TYPE, VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constants';
 import { TTransactionsCategory } from 'database/types';
@@ -19,6 +12,12 @@ import { ITEM_WIDTH } from 'features/TransactionCategory/constants.config';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectViewCategoryMostAndRecent } from 'store/app/app.selector';
 import { updateViewCategoryMostAndRecent } from 'store/app/app.slice';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import IconComponent from 'components/IconComponent';
+import Empty from 'components/Empty';
+import SvgIcon from 'components/SvgIcon';
+import RNText from 'components/Text';
+import FlatListComponent from 'components/FlatList';
 import styles from './styles';
 
 const ON = 'on';

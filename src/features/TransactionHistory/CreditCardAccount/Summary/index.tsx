@@ -1,7 +1,7 @@
 import React, { memo, useContext } from 'react';
 import { View } from 'react-native';
 import isEqual from 'react-fast-compare';
-import { RNText } from 'components/index';
+import RNText from 'components/Text';
 import { formatNumber } from 'utils/math';
 import { TransactionHistoryContext } from '../context';
 import CurrentBalance from './CurrentBalance';

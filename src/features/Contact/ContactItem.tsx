@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
-import { RNText, TouchableHighlightComponent } from 'components/index';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import RNText from 'components/Text';
 import styles from './styles';
 
 function ContactItem({

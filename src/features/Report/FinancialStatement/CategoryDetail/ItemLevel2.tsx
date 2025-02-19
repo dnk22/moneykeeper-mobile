@@ -1,11 +1,9 @@
 import { View } from 'react-native';
-import {
-  IconComponent,
-  PressableHaptic,
-  RNText,
-  SvgIcon,
-  TouchableHighlightComponent,
-} from 'components/index';
+import RNText from 'components/Text';
+import IconComponent from 'components/IconComponent';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import PressableHaptic from 'components/PressableHaptic';
+import SvgIcon from 'components/SvgIcon';
 import { useNavigation } from '@react-navigation/native';
 import { formatNumber } from 'utils/math';
 import {
