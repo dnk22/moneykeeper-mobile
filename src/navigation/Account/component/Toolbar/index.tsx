@@ -38,7 +38,7 @@ function Toolbar() {
       <ModalComponent isVisible={isShowModal} onToggleModal={onToggleModal}>
         <View style={styles.container}>
           <View>
-            <RNText style={styles.groupHeader} preset="linkXSmall">
+            <RNText style={styles.groupHeader} preset="textXSmall">
               Nhóm
             </RNText>
             <View style={styles.groupContent}>
@@ -47,7 +47,7 @@ function Toolbar() {
             </View>
           </View>
           <View style={styles.group}>
-            <RNText style={styles.groupHeader} preset="linkXSmall">
+            <RNText style={styles.groupHeader} preset="textXSmall">
               Sắp xếp theo
             </RNText>
             <TouchableHighlightComponent

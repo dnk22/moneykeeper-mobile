@@ -35,7 +35,6 @@ function Summary({ type }: { type: VIEW_EXPENSE_INCOME_REPORT_BY }) {
           setData(res);
         })
         .catch((err) => {
-          console.log(err);
           showToast({ type: 'error', text2: 'Vui lòng tải lại!' });
         });
     }, [type, date]),

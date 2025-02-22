@@ -1,16 +1,13 @@
 import React, { memo, useMemo } from 'react';
 import { StyleProp, Text, TextProps, TextStyle } from 'react-native';
 import isEqual from 'react-fast-compare';
-// import { useTranslation } from 'react-i18next';
 import { useCustomTheme } from 'resources/theme';
 import { normalize } from 'share/dimensions';
 import { textPresets } from './preset';
 
 export interface TTextProps extends TextProps {
-  text?: 'string';
+  text?: string;
   children?: string | number;
-  t18n?: any;
-  t18nOptions?: any;
   color?: string;
   style?: StyleProp<TextStyle>;
   fontSize?: number;
@@ -20,28 +17,23 @@ export interface TTextProps extends TextProps {
 function RNText({
   text,
   children,
-  t18n,
-  t18nOptions,
   color,
-  fontSize = 16,
+  fontSize,
   style,
   preset = 'default',
   numberOfLines = 1,
   ...props
 }: TTextProps) {
   const { colors } = useCustomTheme();
-  // setup translation
-  // const [t] = useTranslation();
-  // const i18nText = useMemo(() => t18n && t(t18n, t18nOptions), [t18n, t18nOptions, t]);
-  const content = useMemo(() => text || children, [, text, children]);
 
-  const textColor = color || colors.text;
-  const textSize = normalize(fontSize);
-  const textPreset = textPresets[preset];
+  const content = useMemo(() => text ?? children, [text, children]);
+  const textColor = useMemo(() => color ?? colors.text, [color, colors.text]);
+  const textSize = useMemo(() => normalize(fontSize ?? 16), [fontSize]);
+
   return (
     <Text
       allowFontScaling={false}
-      style={[style, { color: textColor, fontSize: textSize }, textPreset]}
+      style={[style, { color: textColor, fontSize: textSize }, textPresets[preset]]}
       ellipsizeMode="tail"
       numberOfLines={numberOfLines}
       {...props}

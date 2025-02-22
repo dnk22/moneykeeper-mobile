@@ -1,8 +1,8 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { FlatList, RefreshControl, View } from 'react-native';
-import { PropsFlatList } from './model';
-import isEqual from 'react-fast-compare';
 import { useCustomTheme } from 'resources/theme';
+import isEqual from 'react-fast-compare';
+import { PropsFlatList } from './model';
 
 const FlatListComponent: PropsFlatList = ({
   data,
@@ -20,6 +20,13 @@ const FlatListComponent: PropsFlatList = ({
   ...rest
 }) => {
   const { colors } = useCustomTheme();
+
+  const onEndReached = useCallback(() => {
+    if (onLoadMore) {
+      onLoadMore();
+    }
+  }, [onLoadMore]);
+
   const renderRefreshControl = useMemo(
     () => (
       <RefreshControl
@@ -29,10 +36,10 @@ const FlatListComponent: PropsFlatList = ({
         }}
       />
     ),
-    [onRefresh],
+    [onRefresh, refreshing],
   );
 
-  const keyExtractor = useCallback((item: any) => (id === '' ? item : item[id]), []);
+  const keyExtractor = useCallback((item: any) => (id === '' ? item : item[id]), [id]);
 
   return (
     <FlatList
@@ -43,22 +50,26 @@ const FlatListComponent: PropsFlatList = ({
       renderItem={renderItem}
       refreshControl={hasPull ? renderRefreshControl : undefined}
       onEndReachedThreshold={0.5}
-      onEndReached={() => onLoadMore && onLoadMore()}
+      onEndReached={onEndReached}
       maxToRenderPerBatch={maxToRenderPerBatch}
       initialNumToRender={initialNumToRender}
       showsVerticalScrollIndicator={showsVerticalScrollIndicator}
       showsHorizontalScrollIndicator={showsHorizontalScrollIndicator}
       contentContainerStyle={{ gap: 8 }}
-      ItemSeparatorComponent={({ highlighted }) => {
-        return showSeparator ? (
-          <View
-            style={[
-              { height: 0.8, width: '95%', backgroundColor: colors.divider, alignSelf: 'center' },
-              highlighted,
-            ]}
-          />
-        ) : undefined;
-      }}
+      ItemSeparatorComponent={
+        showSeparator
+          ? () => (
+              <View
+                style={{
+                  height: 0.8,
+                  width: '95%',
+                  backgroundColor: colors.divider,
+                  alignSelf: 'center',
+                }}
+              />
+            )
+          : undefined
+      }
       {...rest}
     />
   );

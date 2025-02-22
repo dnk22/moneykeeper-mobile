@@ -1,55 +1,48 @@
 import { normalize } from 'share/dimensions';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TextStyle } from 'react-native';
 
-export const textPresets = StyleSheet.create({
-  linkTitle: {
-    fontSize: normalize(24),
-  },
-  linkSubtitle: {
-    fontSize: normalize(20),
-  },
-  linkLarge: {
-    fontSize: normalize(18),
-  },
-  linkMedium: {
-    fontSize: normalize(16),
-  },
-  linkSmall: {
-    fontSize: normalize(14),
-  },
-  linkXSmall: {
-    fontSize: normalize(11),
-  },
-  linkXXSmall: {
-    fontSize: normalize(9),
-  },
-  textMedium: {
-    fontSize: normalize(16),
-  },
-  textSmall: {
-    fontSize: normalize(14),
-  },
-  textXSmall: {
-    fontSize: normalize(11),
-  },
-  textXXSmall: {
-    fontSize: normalize(9),
-  },
+type TextPresets = {
+  [key: string]: TextStyle;
+};
+
+const FONT_SIZES = {
+  xxSmall: normalize(9),
+  xSmall: normalize(11),
+  small: normalize(14),
+  medium: normalize(16),
+  large: normalize(18),
+  xLarge: normalize(20),
+  xxLarge: normalize(24),
+} as const;
+
+const FONT_WEIGHTS = {
+  regular: '400' as TextStyle['fontWeight'],
+  medium: '500' as TextStyle['fontWeight'],
+  bold: '700' as TextStyle['fontWeight'],
+} as const;
+
+export const textPresets: TextPresets = StyleSheet.create({
+  textLarge: { fontSize: FONT_SIZES.large },
+  textMedium: { fontSize: FONT_SIZES.medium },
+  textSmall: { fontSize: FONT_SIZES.small },
+  textXSmall: { fontSize: FONT_SIZES.xSmall },
+  textXXSmall: { fontSize: FONT_SIZES.xxSmall },
+
   modalTitle: {
-    fontSize: normalize(18),
-    fontWeight: '500',
+    fontSize: FONT_SIZES.large,
+    fontWeight: FONT_WEIGHTS.medium,
   },
   homeTotalBalance: {
     fontSize: normalize(22),
-    fontWeight: '700',
+    fontWeight: FONT_WEIGHTS.bold,
   },
   widgetTitle: {
-    fontWeight: '700',
-    fontSize: 17,
+    fontSize: normalize(17),
+    fontWeight: FONT_WEIGHTS.bold,
   },
   widgetViewMore: {
     color: '#00a8e8',
-    fontWeight: '500',
+    fontWeight: FONT_WEIGHTS.medium,
   },
   subTitle: {
     color: 'gray',
@@ -58,7 +51,7 @@ export const textPresets = StyleSheet.create({
   },
   title: {
     fontSize: normalize(15),
-    fontWeight: '500',
+    fontWeight: FONT_WEIGHTS.medium,
   },
   default: {},
 });

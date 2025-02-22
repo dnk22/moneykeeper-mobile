@@ -129,7 +129,7 @@ function ExpenseAndIncome({ title }: { title: string }) {
       </View>
       {!!!data.categoryGroup.length && (
         <View style={styles.noData}>
-          <RNText color="red">{`${renderMenuTitle()} bạn chưa có ghi chép nào!`}</RNText>
+          <RNText color={colors.alert}>{`${renderMenuTitle()} bạn chưa có ghi chép nào!`}</RNText>
         </View>
       )}
       {!!data.categoryGroup.length && (

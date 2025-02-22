@@ -197,7 +197,6 @@ function AddAccount() {
         }
       })
       .catch(({ error }) => {
-        console.log(error, 'error');
         showToast({
           type: 'error',
           text2: error,

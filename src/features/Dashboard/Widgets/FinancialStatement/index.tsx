@@ -7,7 +7,11 @@ import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import { getCurrentBalanceAllAccount, queryGetAllBalance } from 'database/querying';
 import { formatNumber } from 'utils/math';
-import { FINANCE_STATEMENT, NOTIFICATION, WIDGET_SETTINGS } from 'utils/constants/navigation.constant';
+import {
+  FINANCE_STATEMENT,
+  NOTIFICATION,
+  WIDGET_SETTINGS,
+} from 'utils/constants/navigation.constant';
 import { getAllTriggerNotifications } from 'share/notifications';
 import { useAppDispatch } from 'store/index';
 import { setViewType } from 'features/Report/FinancialStatement/reducer/financialStatement.slice';
@@ -53,7 +57,7 @@ function FinancialStatement() {
   return (
     <View style={styles.container}>
       <View style={[styles.top, { backgroundColor: colors.primary }]}>
-        <RNText preset={'linkLarge'} color="white">{`${hello}, Duy!`}</RNText>
+        <RNText preset={'textLarge'} color="white">{`${hello}, Duy!`}</RNText>
         <View style={styles.topToolbar}>
           <Pressable onPress={() => onNavigateToScreen(NOTIFICATION)}>
             <SvgIcon name="bell" color="white" />

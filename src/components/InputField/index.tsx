@@ -1,24 +1,23 @@
-import React, { memo } from 'react';
+import React, { memo, forwardRef } from 'react';
 import { StyleProp, TextInput, TextInputProps, TextStyle } from 'react-native';
 import { Control, RegisterOptions, useController } from 'react-hook-form';
-import stylesInline from './styles';
 import isEqual from 'react-fast-compare';
 import { useCustomTheme } from 'resources/theme';
+import stylesInline from './styles';
 
-interface IInputField extends TextInputProps {
+export interface IInputField extends TextInputProps {
   name: string;
-  control: Control<any, any>;
-  rules?:
-    | Omit<
-        RegisterOptions<any, string>,
-        'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
-      >
-    | undefined;
-  style?: StyleProp<TextStyle> | any;
-  clearButtonMode?: 'never' | 'while-editing' | 'unless-editing' | 'always' | undefined;
+  control: Control<any>; // Có thể định nghĩa generics nếu bạn muốn rõ ràng hơn
+  rules?: Omit<
+    RegisterOptions<any, string>,
+    'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
+  >;
+  style?: StyleProp<TextStyle>;
+  clearButtonMode?: 'never' | 'while-editing' | 'unless-editing' | 'always';
 }
-const InputField = React.forwardRef<any, any>(function InputField(
-  { name, control, rules, style, clearButtonMode = 'always', ...rest }: IInputField,
+
+const InputField = forwardRef<TextInput, IInputField>(function InputField(
+  { name, control, rules, style, clearButtonMode = 'always', ...rest },
   ref,
 ) {
   const { colors } = useCustomTheme();
@@ -37,7 +36,7 @@ const InputField = React.forwardRef<any, any>(function InputField(
       value={value}
       autoCorrect={false}
       allowFontScaling={false}
-      placeholderTextColor={error?.type ? 'red' : '#9999'}
+      placeholderTextColor={error ? colors.error : colors.textSecondary}
       style={[stylesInline.input, style, { color: colors.text }]}
       onChangeText={onChange}
       onBlur={onBlur}

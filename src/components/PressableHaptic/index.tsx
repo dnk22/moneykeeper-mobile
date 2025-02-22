@@ -1,29 +1,32 @@
-import React, { memo } from 'react';
-import { Pressable, PressableProps, View, GestureResponderEvent } from 'react-native';
+import React, { memo, useMemo } from 'react';
+import { Pressable, PressableProps, GestureResponderEvent } from 'react-native';
 import isEqual from 'react-fast-compare';
 import { hapticFeedback } from 'utils/system';
 
-type baseType = PressableProps & React.RefAttributes<View>;
-
-export interface IPressableHapticProps extends baseType {
+export interface IPressableHapticProps extends PressableProps {
   children: React.ReactNode;
   useHaptic?: boolean;
-  onPress?: (event: GestureResponderEvent) => void;
 }
-function PressableHaptic({ children, useHaptic = true, onPress, ...rest }: IPressableHapticProps) {
-  const onHandlePress = (event: GestureResponderEvent) => {
-    if (onPress) {
-      onPress(event);
-    }
-    if (useHaptic) {
-      hapticFeedback();
-    }
-  };
+
+const PressableHaptic = ({
+  children,
+  useHaptic = true,
+  onPress,
+  ...rest
+}: IPressableHapticProps) => {
+  const onHandlePress = useMemo(
+    () => (event: GestureResponderEvent) => {
+      if (useHaptic) hapticFeedback();
+      onPress?.(event);
+    },
+    [useHaptic, onPress],
+  );
+
   return (
     <Pressable {...rest} onPress={onHandlePress}>
       {children}
     </Pressable>
   );
-}
+};
 
 export default memo(PressableHaptic, isEqual);

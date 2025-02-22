@@ -31,7 +31,6 @@ function Item({
           setData(res[0]);
         })
         .catch((err) => {
-          console.log(err);
           showToast({ type: 'error', text2: 'Vui lòng tải lại!' });
         });
     }, [startDate, endDate]),

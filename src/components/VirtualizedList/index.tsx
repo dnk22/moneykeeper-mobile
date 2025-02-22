@@ -1,12 +1,12 @@
-import { memo } from 'react';
-import isEqual from 'react-fast-compare';
+import { memo, useCallback } from 'react';
 import { VirtualizedList, VirtualizedListProps } from 'react-native';
+import isEqual from 'react-fast-compare';
 
 type VirtualizedListComponentProps = VirtualizedListProps<any> & { id?: string };
 
 function VirtualizedListComponent({
   id = 'id',
-  data,
+  data = [],
   getItem,
   renderItem,
   windowSize = 17,
@@ -14,11 +14,11 @@ function VirtualizedListComponent({
   initialNumToRender = 6,
   ...rest
 }: VirtualizedListComponentProps) {
-  const keyExtractor = (item: any) => item[id];
-  const getItemData = (_data: unknown[], index: number): any => {
-    return _data[index];
-  };
-  const getItemCount = (_data: unknown[]) => _data.length;
+  const keyExtractor = useCallback((item: any) => item?.[id] ?? String(Math.random()), [id]);
+
+  const getItemData = useCallback((_data: unknown[], index: number): any => _data[index], []);
+
+  const getItemCount = useCallback((_data: unknown[]) => _data?.length ?? 0, []);
 
   return (
     <VirtualizedList
@@ -31,7 +31,7 @@ function VirtualizedListComponent({
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       getItemCount={getItemCount}
-      getItem={getItem || getItemData}
+      getItem={getItem ?? getItemData}
       {...rest}
     />
   );

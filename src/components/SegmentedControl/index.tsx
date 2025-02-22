@@ -13,7 +13,7 @@ function RNSegmentedControl({
 }: SegmentedControlProps) {
   const { colors } = useCustomTheme();
   const onHandleChange = (event: any) => {
-    onChange && onChange(event.nativeEvent.selectedSegmentIndex);
+    if (onChange) onChange(event.nativeEvent.selectedSegmentIndex);
   };
   return (
     <SegmentedControl

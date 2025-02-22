@@ -13,7 +13,7 @@ export const startAppListening = listenerMiddleware.startListening.withTypes<
 
 export const addAppListener = addListener.withTypes<RootState, AppDispatch>();
 
-listenerMiddleware.startListening({
-  matcher: isAnyOf(updateAccountStatement, removeAccountStatement),
-  effect: onAccountStatementListener,
-});
+// listenerMiddleware.startListening({
+//   matcher: isAnyOf(updateAccountStatement, removeAccountStatement),
+//   effect: onAccountStatementListener,
+// });

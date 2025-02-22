@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useState, useCallback } from 'react';
 import isEqual from 'react-fast-compare';
 import { View } from 'react-native';
 import ModalComponent from 'components/Modal';
@@ -8,13 +8,13 @@ import TouchableHighlightComponent from 'components/TouchableHighlight';
 import RNText from 'components/Text';
 import { useCustomTheme } from 'resources/theme';
 import { formatDateLocal } from 'utils/date';
-import { getHours, getMinutes, set } from 'date-fns';
+import { getHours, getMinutes, getSeconds, set } from 'date-fns';
 import styles from './styles';
 
 interface DateTimeModalPickerProps {
   isVisible: boolean;
-  value: Date | number;
-  mode?: any;
+  value?: Date | number;
+  mode?: 'date' | 'time';
   onToggleModal: () => void;
   onDateTimePicker?: (date: Date) => void;
 }
@@ -22,50 +22,44 @@ interface DateTimeModalPickerProps {
 function DateTimeModalPicker({
   isVisible,
   mode = 'date',
-  value = new Date(),
+  value,
   onToggleModal,
   onDateTimePicker,
 }: DateTimeModalPickerProps) {
   const { colors } = useCustomTheme();
 
-  const [datePicker, setDatePicker] = useState<any>(value);
-  const [isMode, setIsMode] = useState<any>(mode);
+  const [datePicker, setDatePicker] = useState<Date>(value ? new Date(value) : new Date());
+  const [isMode, setIsMode] = useState<'date' | 'time'>(mode);
   const actionName = isMode === 'date' ? 'Hôm nay' : 'Giờ hiện tại';
 
   useEffect(() => {
     if (isVisible) {
-      setDatePicker(value);
+      setDatePicker(value ? new Date(value) : new Date());
       setIsMode(mode);
     }
-  }, [isVisible]);
+  }, [isVisible, mode, value]);
 
   const onModalHide = () => {
     onDateTimePicker && onDateTimePicker(datePicker);
   };
 
-  const onDateChange = (date?: Date) => {
-    setDatePicker(date);
-  };
-
-  const getCurrentDateTime = () => {
-    if (isMode === 'date') {
-      const hours = getHours(datePicker);
-      const minutes = getMinutes(datePicker);
-      const newValue = set(new Date(), {
-        hours,
-        minutes,
-      });
-      setDatePicker(newValue);
-    } else {
-      const hours = getHours(new Date());
-      const minutes = getMinutes(new Date());
-      const newValue = set(datePicker, {
-        hours,
-        minutes,
-      });
-      setDatePicker(newValue);
+  const onDateChange = useCallback((date?: Date) => {
+    if (date) {
+      setDatePicker(date);
     }
-  };
+  }, []);
+
+  const getCurrentDateTime = useCallback(() => {
+    const now = new Date();
+    setDatePicker((prevDate) => {
+      const newValue = set(prevDate, {
+        hours: isMode === 'date' ? getHours(prevDate) : getHours(now),
+        minutes: isMode === 'date' ? getMinutes(prevDate) : getMinutes(now),
+        seconds: getSeconds(prevDate),
+      });
+      return newValue;
+    });
+  }, [isMode]);
 
   return (
     <ModalComponent

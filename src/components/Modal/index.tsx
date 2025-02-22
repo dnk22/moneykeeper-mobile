@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { StyleProp, TouchableOpacity, View } from 'react-native';
 import Modal, { ModalProps } from 'react-native-modal';
 import { useCustomTheme } from 'resources/theme';
@@ -37,10 +37,26 @@ const ModalComponent = ({
   ...rest
 }: IModalComponentProps) => {
   const { colors } = useCustomTheme();
+
   const onHandleBackdropPress = () => {
-    onBackdropPress && onBackdropPress();
-    !disableCloseOnPressBackDrop && onToggleModal && onToggleModal();
+    if (onBackdropPress) onBackdropPress();
+    if (!disableCloseOnPressBackDrop) onToggleModal();
   };
+
+  const headerComponent = useMemo(() => {
+    if (!title && !isShowClose) return null;
+
+    return (
+      <View style={styles.header}>
+        {title && <RNText preset="modalTitle">{title}</RNText>}
+        {isShowClose && (
+          <TouchableOpacity style={styles.modalAction} onPress={onToggleModal}>
+            <SvgIcon name="closeCircle" preset="closeModal" />
+          </TouchableOpacity>
+        )}
+      </View>
+    );
+  }, [title, isShowClose, onToggleModal]);
 
   return (
     <Modal
@@ -50,25 +66,13 @@ const ModalComponent = ({
       onBackdropPress={onHandleBackdropPress}
       animationInTiming={animationInTiming}
       animationOutTiming={animationOutTiming}
-      hideModalContentWhileAnimating={true}
       animationIn={animationIn}
       animationOut={animationOut}
-      {...rest}
       useNativeDriver
+      {...rest}
     >
-      <View
-        style={[styles.modalView, { backgroundColor: colors.surface, height }, styleDefaultContent]}
-      >
-        {title && isShowClose && (
-          <View style={styles.header}>
-            {title && <RNText preset="modalTitle">{title}</RNText>}
-            {isShowClose && (
-              <TouchableOpacity style={styles.modalAction} onPress={onToggleModal}>
-                <SvgIcon name="closeCircle" preset="closeModal" />
-              </TouchableOpacity>
-            )}
-          </View>
-        )}
+      <View style={[styles.modalView, { backgroundColor: colors.surface, height }, styleDefaultContent]}>
+        {headerComponent}
         {children}
       </View>
     </Modal>

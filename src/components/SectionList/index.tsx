@@ -28,7 +28,6 @@ function SectionListComponent({
 }: TSectionListProps) {
   const { colors } = useCustomTheme();
   const keyExtractor = useCallback((item: any) => {
-    console.log(item);
     return item[id];
   }, []);
 

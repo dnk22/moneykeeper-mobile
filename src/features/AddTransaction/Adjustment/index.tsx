@@ -129,7 +129,6 @@ function Adjustment({ params, onSubmitSuccess }: AddTransactionType) {
       prevCategoryType.current = item;
     }
   };
-  console.log(differenceValue, 'differenceValue');
 
   const onSubmit = (data: TTransactions) => {
     const requestData = {

@@ -19,6 +19,12 @@ export enum THEME_MODE {
   DARK,
 }
 
+export const COMMON_THEME_COLOR = {
+  success: '#888888',
+  error: '#FF6B6B',
+  alert: '#FFA500',
+};
+
 export type TBaseTheme = {
   colors: {
     textSecondary: string;
@@ -27,5 +33,6 @@ export type TBaseTheme = {
     error: string;
     success: string;
     surface: string;
+    alert: string;
   };
 };
