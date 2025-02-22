@@ -4,7 +4,6 @@ import { SCREEN_WIDTH, bottomBarFlatHeight } from 'share/dimensions';
 const styles = StyleSheet.create({
   tabBar: {
     height: bottomBarFlatHeight,
-    borderTopColor: '#F2F2F2',
     borderTopWidth: 1,
     paddingHorizontal: 5,
   },
@@ -34,12 +33,11 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   circle: {
-    width: 40,
-    height: 40,
+    width: 44,
+    height: 44,
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10,
   },
 });
 

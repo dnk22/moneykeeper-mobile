@@ -7,10 +7,13 @@ export const SORT_ACCOUNT_BY_KEY = {
   accountName: 'accountName',
   sortOrder: 'sortOrder',
 };
-export const FLAT = 'flat';
-export const STICKY = 'sticky';
 export const BASE_URL = '';
 export const DAY_IN_MONTH = Array.from({ length: 31 }, (v, k) => k + 1);
+
+export enum HOME_BOTTOM_BAR {
+  FLAT,
+  STICKY,
+}
 
 export const TRANSACTION_LEND_BORROW_NAME = {
   LEND: 'Cho vay',
@@ -55,7 +58,7 @@ export enum VIEW_EXPENSE_INCOME_REPORT_BY {
   MONTH,
   QUARTER,
   YEAR,
-  FREE
+  FREE,
 }
 
 export const MATERIAL_COLOR = [

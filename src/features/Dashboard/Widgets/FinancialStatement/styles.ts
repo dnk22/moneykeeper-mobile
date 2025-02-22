@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
     width: 50,
     top: 30,
     right: 0,
-    padding: 4,
+    padding: 2,
     alignSelf: 'center',
     position: 'absolute',
     borderTopStartRadius: 30,
@@ -68,7 +68,7 @@ export const styles = StyleSheet.create({
   sync: {
     width: 50,
     right: 0,
-    padding: 4,
+    padding: 8,
     paddingHorizontal: 15,
     borderTopStartRadius: 30,
     borderBottomStartRadius: 30,

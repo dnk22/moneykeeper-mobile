@@ -12,7 +12,7 @@ function Settings() {
   const navigation = useNavigation();
   const { colors } = useCustomTheme();
 
-  function onNavigateToScreen(link: any) {
+  function onNavigateToScreen(link: string) {
     navigation.navigate(link);
   }
   return (
@@ -20,25 +20,35 @@ function Settings() {
       <ScrollView style={styles.container}>
         <Text style={styles.title}>Cài đặt</Text>
         {Object.values(settingRoutes).map(({ key, child }) => (
-          <View style={styles.group} key={key}>
+          <View key={key} style={[styles.group, { backgroundColor: colors.surface }]}>
             {child.map(({ link, name, icon }, index) => (
               <TouchableHighlightComponent
+                borderRadius={0}
                 activeOpacity={0.5}
                 key={link}
                 onPress={() => onNavigateToScreen(link)}
-                style={{
-                  backgroundColor: colors.surface,
-                }}
               >
-                <View style={[styles.item, index !== child.length - 1 && styles.itemBorderBottom]}>
-                  <SvgIcon name={icon} preset="settingsIcon" style={styles.itemIcon} />
-                  <Text style={styles.itemText}>{name}</Text>
-                  <SvgIcon
-                    name="forward"
-                    color="gray"
-                    preset="forwardLink"
-                    style={styles.itemNavigation}
-                  />
+                <View style={styles.item}>
+                  <SvgIcon name={icon} preset="settingsIcon" />
+                  <View
+                    style={[
+                      styles.itemTitle,
+                      index !== child.length - 1
+                        ? {
+                            borderBottomWidth: 0.2,
+                            borderBottomColor: colors.divider,
+                          }
+                        : null,
+                    ]}
+                  >
+                    <Text>{name}</Text>
+                    <SvgIcon
+                      name="forward"
+                      color="gray"
+                      preset="forwardLink"
+                      style={styles.itemNavigation}
+                    />
+                  </View>
                 </View>
               </TouchableHighlightComponent>
             ))}

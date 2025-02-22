@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { WIDGET_INIT_LIST } from 'features/Dashboard/constants';
 import { produce } from 'immer';
 import { COLOR_SCHEME } from 'resources/theme/constants';
-import { FLAT, VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constants/index';
+import { HOME_BOTTOM_BAR, VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constants/index';
 import { AccountViewSettingsProps, AppStateProps } from 'utils/types/store.type';
 
 const initialState = {
@@ -19,7 +19,7 @@ const initialState = {
     amount: true,
     description: true,
   },
-  homeBottomBarType: FLAT,
+  homeBottomBarType: HOME_BOTTOM_BAR.FLAT,
   viewCategoryMostAndRecent: VIEW_CATEGORY_FAST_BY_COLUMN.MOST,
   widgetOrder: WIDGET_INIT_LIST,
   theme: {

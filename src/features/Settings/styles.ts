@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
   group: {
     borderRadius: 10,
     marginBottom: 30,
+    backgroundColor: 'red',
   },
   premium: {
     padding: 10,
@@ -31,16 +32,15 @@ const styles = StyleSheet.create({
     top: '50%',
   },
   item: {
-    height: 44,
-    marginLeft: 15,
-    alignItems: 'center',
+    gap: 15,
+    paddingLeft: 15,
     flexDirection: 'row',
+    alignItems: 'center',
   },
-  itemIcon: {
-    marginRight: 10,
-  },
-  itemText: {
-    fontSize: 18,
+  itemTitle: {
+    height: 44,
+    flex: 1,
+    justifyContent: 'center',
   },
   itemNavigation: {
     position: 'absolute',

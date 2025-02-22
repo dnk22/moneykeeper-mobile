@@ -1,57 +1,39 @@
+import React from 'react';
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import { Pressable, View } from 'react-native';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import styles from './styles';
 import Text from 'components/Text';
+import styles from './styles';
 
-type ITabBarProps = {
-  active?: boolean;
+type TabBarProps = {
+  active: boolean;
   options: BottomTabNavigationOptions;
   onPress: () => void;
-  colors: any;
-  style: any;
+  colors: { primary: string };
+  style?: object;
 };
 
-const TabBar = ({ active, options, onPress, colors, style }: ITabBarProps) => {
-  const animatedComponentCircleStyles = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          scale: withTiming(active ? 1 : 0, { duration: 500 }),
-        },
-      ],
-    };
-  });
-
-  const animatedIconContainerStyles = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          scale: withTiming(active ? 1.2 : 1, { duration: 400 }),
-        },
-      ],
-      opacity: withTiming(active ? 1 : 0.5, { duration: 400 }),
-    };
-  });
+const TabBar = ({ active, options, onPress, colors, style }: TabBarProps) => {
+  const animatedIconStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: withTiming(active ? 1.15 : 1, { duration: 300 }) }],
+    opacity: withTiming(active ? 1 : 0.6, { duration: 300 }),
+  }));
 
   return (
     <Pressable onPress={onPress}>
       <View style={styles.component}>
-        <Animated.View
-          style={[
-            styles.itemActive,
-            animatedComponentCircleStyles,
-            { backgroundColor: colors.primary },
-          ]}
-        />
-        <Animated.View style={[styles.icon, animatedIconContainerStyles, style]}>
-          {/* @ts-ignore */}
-          {options.tabBarIcon({ color: !style ? colors.primary : 'white' })}
+        <Animated.View style={[styles.icon, animatedIconStyle, style]}>
+          {options.tabBarIcon &&
+            options.tabBarIcon({
+              focused: active,
+              color: style ? 'white' : colors.primary,
+              size: 18,
+            })}
         </Animated.View>
-        <Text fontSize={10}>{options?.tabBarLabel}</Text>
+        {options.tabBarLabel && <Text fontSize={10}>{options.tabBarLabel}</Text>}
       </View>
     </Pressable>
   );
 };
 
-export default TabBar;
+export default React.memo(TabBar);

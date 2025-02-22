@@ -4,7 +4,6 @@ import { bottomBarStickyHeight } from 'share/dimensions';
 const styles = StyleSheet.create({
   bottomBarContainer: {
     height: bottomBarStickyHeight,
-    borderRadius: 10,
     paddingHorizontal: 10,
   },
   tabBar: {
