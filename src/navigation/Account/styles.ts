@@ -12,8 +12,8 @@ const styles = StyleSheet.create({
   },
   tabBarStyle: {
     borderRadius: 14,
-    height: 42,
-    marginTop: 5,
+    height: 44,
+    marginTop: 10,
     marginHorizontal: 5,
     overflow: 'hidden',
   },
@@ -21,13 +21,9 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
   },
   indicator: {
-    position: 'absolute',
-    zIndex: -1,
-    height: 34,
-    top: 4,
-    borderRadius: 10,
-    width: '48%',
-    left: 4,
+    height: 40,
+    margin: 2,
+    borderRadius: 12,
   },
 });
 

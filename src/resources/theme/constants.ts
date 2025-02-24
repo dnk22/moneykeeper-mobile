@@ -1,13 +1,13 @@
 export const HEADER_TITLE_FONT_SIZE = 20;
 export const BOX_SHADOW = {
-  shadowColor: '#000',
+  shadowColor: 'gray',
   shadowOffset: {
     width: 0,
     height: 0,
   },
   shadowOpacity: 0.1,
   shadowRadius: 2,
-  elevation: 5,
+  elevation: 10,
 };
 export enum COLOR_SCHEME {
   modernBlue,
@@ -21,8 +21,8 @@ export enum THEME_MODE {
 
 export const COMMON_THEME_COLOR = {
   success: '#888888',
-  error: '#FF6B6B',
-  alert: '#FFA500',
+  alert: '#FF6B6B',
+  error: '#FFA500',
 };
 
 export type TBaseTheme = {

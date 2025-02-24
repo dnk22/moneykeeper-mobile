@@ -33,12 +33,12 @@ export const textPresets: TextPresets = StyleSheet.create({
     fontWeight: FONT_WEIGHTS.medium,
   },
   homeTotalBalance: {
-    fontSize: normalize(22),
+    fontSize: normalize(38),
     fontWeight: FONT_WEIGHTS.bold,
   },
   widgetTitle: {
     fontSize: normalize(17),
-    fontWeight: FONT_WEIGHTS.bold,
+    fontWeight: FONT_WEIGHTS.medium,
   },
   widgetViewMore: {
     color: '#00a8e8',
@@ -46,11 +46,11 @@ export const textPresets: TextPresets = StyleSheet.create({
   },
   subTitle: {
     color: 'gray',
-    fontSize: normalize(13),
+    fontSize: normalize(14),
     opacity: 0.7,
   },
   title: {
-    fontSize: normalize(15),
+    // fontSize: normalize(16),
     fontWeight: FONT_WEIGHTS.medium,
   },
   default: {},

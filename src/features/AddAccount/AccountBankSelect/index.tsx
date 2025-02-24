@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import InputSelection from 'components/InputSelection';
 import { BankModel } from 'database/models';
-import { BANK_HOME_LIST, BANK_NAVIGATION } from 'utils/constants/navigation.constant';
+import { ACCOUNT, BANK_HOME_LIST, BANK_NAVIGATION } from 'utils/constants/navigation.constant';
 import { ACCOUNT_CATEGORY_ID, BANK_TYPE } from 'utils/constants';
 import { getBankById } from 'services/api/banks';
 
@@ -44,7 +44,7 @@ function AccountBankSelect({
     }
     navigation.navigate(BANK_NAVIGATION, {
       screen: BANK_HOME_LIST,
-      params: { type: bankType },
+      params: { type: bankType, returnScreen: ACCOUNT },
     });
   };
 

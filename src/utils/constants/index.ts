@@ -3,17 +3,8 @@ export const VIEW_CATEGORY_FAST_BY_COLUMN = {
   MOST: 'useCount',
   RECENT: 'lastUseAt',
 };
-export const SORT_ACCOUNT_BY_KEY = {
-  accountName: 'accountName',
-  sortOrder: 'sortOrder',
-};
 export const BASE_URL = '';
 export const DAY_IN_MONTH = Array.from({ length: 31 }, (v, k) => k + 1);
-
-export enum HOME_BOTTOM_BAR {
-  FLAT,
-  STICKY,
-}
 
 export const TRANSACTION_LEND_BORROW_NAME = {
   LEND: 'Cho vay',

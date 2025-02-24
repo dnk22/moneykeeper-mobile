@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { queryAllAccount } from 'database/querying';
 import FlatList from 'components/FlatList';
-import { TAccount } from 'database/types';
+import { TAccount, TAccountType } from 'database/types';
 import { useCustomTheme } from 'resources/theme';
 import { formatNumber } from 'utils/math';
 import {
@@ -16,8 +16,14 @@ import { ACCOUNT_CATEGORY_ID } from 'utils/constants';
 import { styles } from './styles';
 import IconComponent from 'components/IconComponent';
 import PressableHaptic from 'components/PressableHaptic';
-import SvgIcon from 'components/SvgIcon';
 import RNText from 'components/Text';
+import { AccountType } from 'utils/data';
+
+const ACCOUNT_MIGHT_OPEN = [
+  {
+    name: 'Momo',
+  },
+];
 
 function Wallets({ title }: { title: string }) {
   const { colors } = useCustomTheme();
@@ -54,7 +60,6 @@ function Wallets({ title }: { title: string }) {
     return (
       <PressableHaptic onPress={() => handleOnItemPress(item)}>
         <View style={[styles.item, { backgroundColor: colors.surface }]}>
-          <SvgIcon name="accountBG" width={155} height={100} style={{ position: 'absolute' }} />
           <View style={styles.itemTop}>
             <View style={styles.amountView}>
               <RNText style={styles.title} fontSize={13}>
@@ -69,6 +74,15 @@ function Wallets({ title }: { title: string }) {
           <IconComponent name={item.accountLogo} style={styles.accountIcon} />
         </View>
       </PressableHaptic>
+    );
+  };
+
+  const renderDemoAccount = ({ item }: { item: TAccountType }) => {
+    return (
+      <View style={styles.wallet}>
+        <IconComponent name={item.icon} />
+        <RNText fontSize={12}>{item.name}</RNText>
+      </View>
     );
   };
 
@@ -89,10 +103,10 @@ function Wallets({ title }: { title: string }) {
       {!!!accounts.length && (
         <PressableHaptic onPress={onNavigateAddAccount}>
           <View style={[styles.noData, { backgroundColor: colors.surface }]}>
-            <View style={[styles.addIcon, { backgroundColor: colors.primary }]}>
-              <SvgIcon name="add" color="white" />
-            </View>
-            <RNText fontSize={12}>Bạn chưa có tài khoản nào, thêm mới ngay. </RNText>
+            <FlatList horizontal data={AccountType.slice(0, 3)} renderItem={renderDemoAccount} />
+            <RNText preset="subTitle" numberOfLines={2}>
+              Thêm ví để quản lý tài chính hiệu quả hơn.
+            </RNText>
           </View>
         </PressableHaptic>
       )}

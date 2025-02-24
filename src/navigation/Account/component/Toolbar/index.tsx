@@ -4,7 +4,6 @@ import { View } from 'react-native';
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import { updateAccountViewSettings } from 'store/app/app.slice';
 import { useAppDispatch, useAppSelector } from 'store/index';
-import { SORT_ACCOUNT_BY_KEY } from 'utils/constants';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import CheckboxComponent from 'components/Checkbox';
 import PressableHaptic from 'components/PressableHaptic';
@@ -13,6 +12,7 @@ import RNText from 'components/Text';
 import Switch from 'components/Switch';
 import SvgIcon from 'components/SvgIcon';
 import styles from './styles';
+import { SORT_ACCOUNT_BY_KEY } from 'utils/constants/appSettings';
 
 function Toolbar() {
   const { group, sort, isViewActive } = useAppSelector((state) => selectAccountViewSettings(state));

@@ -89,19 +89,14 @@ const DynamicIsland = forwardRef<DynamicIslandHandle, DynamicIslandProps>(
 
     const onToggle = () => {
       //width
-      widthAnimated.value =
-        widthAnimated.value === init.width ? target.width : init.width;
+      widthAnimated.value = widthAnimated.value === init.width ? target.width : init.width;
       //height
-      heightAnimated.value =
-        heightAnimated.value === init.height ? height : init.height;
+      heightAnimated.value = heightAnimated.value === init.height ? height : init.height;
       //top
-      topAnimated.value =
-        topAnimated.value === marginTop ? topSafeAreaHeight : marginTop;
+      topAnimated.value = topAnimated.value === marginTop ? topSafeAreaHeight : marginTop;
       //borderRadius
       borderRadiusAnimated.value =
-        borderRadiusAnimated.value === init.borderRadius
-          ? target.borderRadius
-          : init.borderRadius;
+        borderRadiusAnimated.value === init.borderRadius ? target.borderRadius : init.borderRadius;
       //container height
       containerHeightAnimated.value =
         containerHeightAnimated.value === init.containerHeight
@@ -111,21 +106,12 @@ const DynamicIsland = forwardRef<DynamicIslandHandle, DynamicIslandProps>(
 
     return (
       <Animated.View
-        style={[
-          styles.container,
-          { width: SCREEN_WIDTH },
-          containerAnimatedStyle,
-        ]}
+        style={[styles.container, { width: SCREEN_WIDTH }, containerAnimatedStyle]}
         onTouchEnd={onToggle}
       >
         <Animated.View
-          style={[
-            styles.popup,
-            { backgroundColor: colors.surface },
-            popupAnimatedStyles,
-          ]}
+          style={[styles.popup, { backgroundColor: colors.surface }, popupAnimatedStyles]}
           onTouchEnd={(e) => {
-            e.preventDefault();
             e.stopPropagation();
           }}
         >
@@ -133,7 +119,7 @@ const DynamicIsland = forwardRef<DynamicIslandHandle, DynamicIslandProps>(
         </Animated.View>
       </Animated.View>
     );
-  }
+  },
 );
 
 export default memo(DynamicIsland, isEqual);

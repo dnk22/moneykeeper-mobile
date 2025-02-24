@@ -37,6 +37,7 @@ export const styles = StyleSheet.create({
   },
   noData: {
     padding: 10,
+    gap: 15,
     borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
@@ -51,5 +52,11 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 8,
     right: 10,
+  },
+  wallet: {
+    backgroundColor: 'red',
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

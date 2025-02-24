@@ -5,6 +5,7 @@ import { BANK_HOME_LIST } from 'utils/constants/navigation.constant';
 export type BankParams = {
   [BANK_HOME_LIST]: {
     type: BANK_TYPE;
+    returnScreen: string;
   };
 };
 

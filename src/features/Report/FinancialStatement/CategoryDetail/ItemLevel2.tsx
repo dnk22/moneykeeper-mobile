@@ -120,7 +120,6 @@ function ItemLevel2({
         {item.categoryName ? (
           <PressableHaptic
             onPress={(e) => {
-              e.preventDefault();
               e.stopPropagation();
             }}
           >

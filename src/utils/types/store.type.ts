@@ -1,10 +1,7 @@
 import { WidgetOrderListProps } from 'features/Dashboard/constants';
 import { COLOR_SCHEME } from 'resources/theme/constants';
-import {
-  HOME_BOTTOM_BAR,
-  SORT_ACCOUNT_BY_KEY,
-  VIEW_CATEGORY_FAST_BY_COLUMN,
-} from 'utils/constants';
+import { VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constants';
+import { HOME_BOTTOM_BAR, SORT_ACCOUNT_BY_KEY } from 'utils/constants/appSettings';
 
 export type AccountViewSettingsProps = {
   sort: keyof typeof SORT_ACCOUNT_BY_KEY;

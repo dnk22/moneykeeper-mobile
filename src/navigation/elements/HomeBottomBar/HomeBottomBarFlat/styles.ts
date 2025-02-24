@@ -5,7 +5,6 @@ const styles = StyleSheet.create({
   tabBar: {
     height: bottomBarFlatHeight,
     borderTopWidth: 1,
-    paddingHorizontal: 5,
   },
   activeBackground: {
     position: 'absolute',
@@ -17,7 +16,7 @@ const styles = StyleSheet.create({
   component: {
     height: 80,
     position: 'relative',
-    width: (SCREEN_WIDTH - 100) / 4,
+    width: SCREEN_WIDTH / 5,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -33,8 +32,8 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   circle: {
-    width: 44,
-    height: 44,
+    width: 48,
+    height: 48,
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',

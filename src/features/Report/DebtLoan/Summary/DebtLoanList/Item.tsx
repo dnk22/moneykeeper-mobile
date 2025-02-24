@@ -81,7 +81,6 @@ function Item({ data, index }: { data: DebtLoanTypes; index: number }) {
           {!!data.value && (
             <PressableHaptic
               onPress={(e) => {
-                e.preventDefault();
                 e.stopPropagation();
               }}
             >

@@ -3,7 +3,8 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { WIDGET_INIT_LIST } from 'features/Dashboard/constants';
 import { produce } from 'immer';
 import { COLOR_SCHEME } from 'resources/theme/constants';
-import { HOME_BOTTOM_BAR, VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constants/index';
+import { HOME_BOTTOM_BAR } from 'utils/constants/appSettings';
+import { VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constants/index';
 import { AccountViewSettingsProps, AppStateProps } from 'utils/types/store.type';
 
 const initialState = {

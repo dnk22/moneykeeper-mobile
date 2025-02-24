@@ -5,7 +5,7 @@ import Accounts from 'features/AccountDashboard';
 import Savings from 'features/Savings';
 import Loading from 'components/Loading';
 import { useCustomTheme } from 'resources/theme';
-import styles from '../styles';
+import styles from '../../styles';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -13,7 +13,7 @@ function AccountTab() {
   const { colors } = useCustomTheme();
   return (
     <Tab.Navigator
-      key={'huhu'}
+      key={'AccountTabbar'}
       screenOptions={{
         lazy: true,
         lazyPlaceholder: () => <Loading style={{ flex: 1 }} />,

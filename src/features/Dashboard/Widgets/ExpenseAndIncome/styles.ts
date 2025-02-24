@@ -1,10 +1,12 @@
 import { StyleSheet } from 'react-native';
+import { BOX_SHADOW } from 'resources/theme/constants';
 
 export const styles = StyleSheet.create({
   container: {
     padding: 10,
     paddingHorizontal: 5,
     borderRadius: 8,
+    ...BOX_SHADOW,
   },
   top: {
     flexDirection: 'row',
@@ -18,8 +20,16 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   noData: {
-    paddingVertical: 20,
+    gap: 30,
+    paddingTop: 20,
     alignItems: 'center',
+  },
+  addTransactionNow: {
+    paddingRight: 5,
+    alignItems: 'center',
+    alignSelf: 'flex-end',
+    flexDirection: 'row',
+    gap: 5,
   },
   row: {
     gap: 15,

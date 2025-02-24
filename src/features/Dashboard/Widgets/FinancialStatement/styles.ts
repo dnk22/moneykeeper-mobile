@@ -6,8 +6,8 @@ export const styles = StyleSheet.create({
     zIndex: 100000,
   },
   top: {
-    paddingHorizontal: 10,
-    paddingBottom: 10,
+    paddingHorizontal: 15,
+    paddingBottom: 8,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -16,12 +16,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingHorizontal: 10,
   },
-  topToolbar: {
-    flexDirection: 'row',
-    gap: 20,
-  },
   widgetCard: {
-    height: 80,
     borderRadius: 10,
     borderTopRightRadius: 30,
     overflow: 'hidden',
@@ -52,12 +47,12 @@ export const styles = StyleSheet.create({
     borderRadius: 30,
   },
   totalBalance: {
-    rowGap: 4,
+    paddingVertical: 2,
     paddingHorizontal: 15,
   },
   leftToolbar: {
     width: 50,
-    top: 30,
+    top: 34,
     right: 0,
     padding: 2,
     alignSelf: 'center',
@@ -68,7 +63,7 @@ export const styles = StyleSheet.create({
   sync: {
     width: 50,
     right: 0,
-    padding: 8,
+    padding: 4,
     paddingHorizontal: 15,
     borderTopStartRadius: 30,
     borderBottomStartRadius: 30,
@@ -76,5 +71,8 @@ export const styles = StyleSheet.create({
   viewTotalDetails: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  notifications: {
+    padding: 3,
   },
 });

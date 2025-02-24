@@ -2,12 +2,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ACCOUNTTAB } from 'utils/constants/navigation.constant';
 import { AccountStackParamList } from 'utils/types/navigation';
 import { useCustomTheme } from 'resources/theme';
-import AccountTab from './tab';
+import CommonStack from 'navigation/CommonStack';
+import Search from 'navigation/elements/Search';
 
 // header custom icon
-import Search from 'navigation/elements/Search';
 import Toolbar from './component/Toolbar';
-import CommonStack from 'navigation/CommonStack';
+import AccountTab from './component/Tab';
 
 //set up routes
 const AccountStack = createNativeStackNavigator<AccountStackParamList>();

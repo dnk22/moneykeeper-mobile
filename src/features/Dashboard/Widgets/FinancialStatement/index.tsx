@@ -7,22 +7,19 @@ import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import { getCurrentBalanceAllAccount, queryGetAllBalance } from 'database/querying';
 import { formatNumber } from 'utils/math';
-import {
-  FINANCE_STATEMENT,
-  NOTIFICATION,
-  WIDGET_SETTINGS,
-} from 'utils/constants/navigation.constant';
+import { FINANCE_STATEMENT, NOTIFICATION } from 'utils/constants/navigation.constant';
 import { getAllTriggerNotifications } from 'share/notifications';
 import { useAppDispatch } from 'store/index';
 import { setViewType } from 'features/Report/FinancialStatement/reducer/financialStatement.slice';
+import { ArrowRight2, NotificationBing, Repeat } from 'iconsax-react-native';
 import { styles } from './styles';
-import SvgIcon from 'components/SvgIcon';
 
 function FinancialStatement() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
   const [currentBalance, setCurrentBalance] = useState(0);
+  const isFocused = useIsFocused();
 
   useFocusEffect(
     useCallback(() => {
@@ -36,14 +33,10 @@ function FinancialStatement() {
 
   const hello = useMemo(() => {
     const currentTime = new Date().getHours();
-    if (currentTime < 12) {
-      return 'Good morning';
-    } else if (currentTime >= 12 && currentTime < 17) {
-      return 'Good afternoon';
-    } else {
-      return 'Good evening';
-    }
-  }, [useIsFocused, new Date()]);
+    if (currentTime < 12) return 'Good morning';
+    if (currentTime < 17) return 'Good afternoon';
+    return 'Good evening';
+  }, [isFocused]);
 
   const onHideMoney = () => {
     queryGetAllBalance();
@@ -58,17 +51,12 @@ function FinancialStatement() {
     <View style={styles.container}>
       <View style={[styles.top, { backgroundColor: colors.primary }]}>
         <RNText preset={'textLarge'} color="white">{`${hello}, Duy!`}</RNText>
-        <View style={styles.topToolbar}>
-          <Pressable onPress={() => onNavigateToScreen(NOTIFICATION)}>
-            <SvgIcon name="bell" color="white" />
-          </Pressable>
-          <Pressable onPress={() => onNavigateToScreen(WIDGET_SETTINGS)}>
-            <SvgIcon name="config" color="white" />
-          </Pressable>
-        </View>
+        <Pressable onPress={() => onNavigateToScreen(NOTIFICATION)} style={styles.notifications}>
+          <NotificationBing size={25} color="white" variant="Broken" />
+        </Pressable>
       </View>
       <View style={[styles.bottom, { backgroundColor: colors.primary }]}>
-        <View style={{ position: 'relative', height: 80 }}>
+        <View style={{ position: 'relative' }}>
           <Pressable onPress={() => onNavigateToScreen(FINANCE_STATEMENT)}>
             <View style={[styles.widgetCard, { backgroundColor: colors.surface }]}>
               <View style={[styles.cardTopOutline, { backgroundColor: colors.primary }]}>
@@ -81,12 +69,12 @@ function FinancialStatement() {
                   <RNText color="gray" fontSize={12}>
                     Xem Chi tiết
                   </RNText>
-                  <SvgIcon name="forward" preset="forwardLink" color="gray" />
+                  <ArrowRight2 size={16} color={colors.text} variant="Broken" />
                 </View>
                 <RNText
                   preset="homeTotalBalance"
                   color={colors.primary}
-                  style={{ maxWidth: '60%' }}
+                  style={{ maxWidth: '80%' }}
                 >
                   {formatNumber(currentBalance, true)}
                 </RNText>
@@ -94,11 +82,11 @@ function FinancialStatement() {
             </View>
           </Pressable>
           <View style={[styles.leftToolbar, { backgroundColor: colors.primary }]}>
-            <View style={[styles.sync, { backgroundColor: colors.surface }]}>
-              <Pressable onPress={onHideMoney}>
-                <SvgIcon name="sync" size={16} />
-              </Pressable>
-            </View>
+            <Pressable onPress={onHideMoney}>
+              <View style={[styles.sync, { backgroundColor: colors.surface }]}>
+                <Repeat color={colors.primary} />
+              </View>
+            </Pressable>
           </View>
         </View>
       </View>

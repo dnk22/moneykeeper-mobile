@@ -15,7 +15,7 @@ import ReportNavigation from 'navigation/Report';
 import DashboardNavigation from 'navigation/Dashboard';
 import SettingsNavigation from 'navigation/Settings';
 import { BottomTabStackList } from 'utils/types/navigation';
-import SvgIcon from 'components/SvgIcon';
+import { Home2, Wallet3, DocumentFilter, ElementPlus, AddCircle } from 'iconsax-react-native';
 
 // set up routes
 const BottomTab = createBottomTabNavigator<BottomTabStackList>();
@@ -30,8 +30,9 @@ function RootNavigation() {
       <BottomTab.Screen
         name={DASHBOARD}
         options={{
-          // @ts-ignore
-          tabBarIcon: ({ color }) => <SvgIcon name="house" color={color} />,
+          tabBarIcon: ({ color, focused }) => (
+            <Home2 size={25} color={color} variant={focused ? 'Bold' : 'Broken'} />
+          ),
           tabBarLabel: 'Tổng quan',
         }}
         component={DashboardNavigation}
@@ -39,8 +40,9 @@ function RootNavigation() {
       <BottomTab.Screen
         name={ACCOUNT}
         options={{
-          // @ts-ignore
-          tabBarIcon: ({ color }) => <SvgIcon name="card" color={color} />,
+          tabBarIcon: ({ color, focused }) => (
+            <Wallet3 size={25} color={color} variant={focused ? 'Bold' : 'Broken'} />
+          ),
           tabBarLabel: 'Tài khoản',
         }}
         component={AccountNavigation}
@@ -48,16 +50,18 @@ function RootNavigation() {
       <BottomTab.Screen
         name={TRANSACTIONS}
         options={{
-          // @ts-ignore
-          tabBarIcon: ({ color }) => <SvgIcon name="add" color={color} />,
+          tabBarIcon: ({ focused }) => (
+            <AddCircle size={26} color="white" variant={focused ? 'Bold' : 'Broken'} />
+          ),
         }}
         component={TransactionNavigation}
       />
       <BottomTab.Screen
         name={REPORT}
         options={{
-          // @ts-ignore
-          tabBarIcon: ({ color }) => <SvgIcon name="report" size={26} color={color} />,
+          tabBarIcon: ({ color, focused }) => (
+            <DocumentFilter size={25} color={color} variant={focused ? 'Bold' : 'Broken'} />
+          ),
           tabBarLabel: 'Báo cáo',
         }}
         component={ReportNavigation}
@@ -65,8 +69,9 @@ function RootNavigation() {
       <BottomTab.Screen
         name={SETTINGS}
         options={{
-          // @ts-ignore
-          tabBarIcon: ({ color }) => <SvgIcon name="more" color={color} />,
+          tabBarIcon: ({ color, focused }) => (
+            <ElementPlus size={25} color={color} variant={focused ? 'Bold' : 'Broken'} />
+          ),
           tabBarLabel: 'Cài đặt',
         }}
         component={SettingsNavigation}

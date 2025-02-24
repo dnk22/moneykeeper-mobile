@@ -27,7 +27,6 @@ function NormalItem({
   const [contact, setContact] = useState(item.contactName);
 
   const onEditContact = (e: GestureResponderEvent) => {
-    e.preventDefault();
     e.stopPropagation();
     if (isEditMode) {
       onSubmitUpdateContact();

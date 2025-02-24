@@ -15,8 +15,7 @@ type TabBarProps = {
 
 const TabBar = ({ active, options, onPress, colors, style }: TabBarProps) => {
   const animatedIconStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: withTiming(active ? 1.15 : 1, { duration: 300 }) }],
-    opacity: withTiming(active ? 1 : 0.6, { duration: 300 }),
+    transform: [{ scale: withTiming(active ? 1.2 : 1, { duration: 300 }) }],
   }));
 
   return (
@@ -27,10 +26,14 @@ const TabBar = ({ active, options, onPress, colors, style }: TabBarProps) => {
             options.tabBarIcon({
               focused: active,
               color: style ? 'white' : colors.primary,
-              size: 18,
+              size: 24,
             })}
         </Animated.View>
-        {options.tabBarLabel && <Text fontSize={10}>{options.tabBarLabel}</Text>}
+        {options.tabBarLabel && (
+          <Text fontSize={12} color={active ? colors.primary : colors.text}>
+            {options.tabBarLabel}
+          </Text>
+        )}
       </View>
     </Pressable>
   );

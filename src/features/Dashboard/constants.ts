@@ -12,7 +12,7 @@ export const WIDGET_IMPORT_LIST = {
 
 export const WIDGET_INIT_LIST = [
   {
-    label: 'Tổng quát chi tiêu',
+    label: 'Tổng quan chi tiêu',
     key: 'expenseAndIncome',
     isActive: true,
   },
