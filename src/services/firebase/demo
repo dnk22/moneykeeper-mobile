@@ -1,0 +1,21 @@
+// import { authService, databaseService } from '@/services/firebase';
+
+// // Authentication
+// const login = async (email: string, password: string) => {
+//   const response = await authService.signInWithEmailAndPassword(email, password);
+//   if (response.error) {
+//     console.error('Login failed:', response.error.message);
+//     return;
+//   }
+//   console.log('Logged in user:', response.data);
+// };
+
+// // Database operations
+// const getData = async () => {
+//   const response = await databaseService.get<YourDataType>('path/to/data');
+//   if (response.error) {
+//     console.error('Failed to fetch data:', response.error.message);
+//     return;
+//   }
+//   console.log('Data:', response.data);
+// };

@@ -1,8 +1,8 @@
-// import * as auth from './auth';
-// import * as database from './database';
-// import * as notification from './notification';
-export const appFirebase = {
-  // auth,
-  // database,
-  // notification,
-};
+export { firebaseApp, firebaseService } from './config';
+export { authService } from './auth';
+export { databaseService } from './database';
+
+// Types
+export type { FirebaseConfig } from './config';
+export type { AuthResponse } from './auth';
+export type { DatabaseResponse } from './database';

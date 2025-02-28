@@ -1,4 +1,4 @@
-import { isNonEmptyString } from './string';
+import { isNonEmptyString } from '../string';
 
 /**
  * Return true, if @param email is valid
