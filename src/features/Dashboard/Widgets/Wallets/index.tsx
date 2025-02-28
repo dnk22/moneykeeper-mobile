@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { queryAllAccount } from 'database/querying';
@@ -18,23 +18,19 @@ import IconComponent from 'components/IconComponent';
 import PressableHaptic from 'components/PressableHaptic';
 import RNText from 'components/Text';
 import { AccountType } from 'utils/data';
-
-const ACCOUNT_MIGHT_OPEN = [
-  {
-    name: 'Momo',
-  },
-];
+// import { fetchBankData } from 'services/api/banks';
 
 function Wallets({ title }: { title: string }) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation<any>();
   const [accounts, setAccount] = useState([]);
 
-  useFocusEffect(
-    useCallback(() => {
-      queryAllAccount({}).then((res) => setAccount(res));
-    }, []),
-  );
+  const fetchBanksData = async () => {
+    // const res = await fetchBankData();
+    console.log('====================================');
+    // console.log(res);
+    console.log('====================================');
+  };
 
   const handleOnItemPress = (account: TAccount) => {
     const { id, accountName, accountTypeId, creditCardLimit } = account;
@@ -89,6 +85,18 @@ function Wallets({ title }: { title: string }) {
   const onNavigateAddAccount = () => {
     navigation.navigate(ADD_ACCOUNT);
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      queryAllAccount({}).then((res) => setAccount(res));
+    }, []),
+  );
+
+  useEffect(() => {
+    if (!accounts.length) {
+      fetchBanksData();
+    }
+  }, []);
 
   return (
     <View style={styles.container}>

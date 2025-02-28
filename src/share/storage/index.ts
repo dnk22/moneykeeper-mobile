@@ -1,7 +1,7 @@
 import { MMKV } from 'react-native-mmkv';
 import { Storage } from 'redux-persist';
 
-const appName = 'Count_Down';
+const appName = 'money_management';
 const AppKey = '7268428d-d814-4eca-8829-3dbe0e2eaa7a';
 
 export const AppStorage = new MMKV({

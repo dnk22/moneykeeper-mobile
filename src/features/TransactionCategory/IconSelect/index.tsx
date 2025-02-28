@@ -10,6 +10,7 @@ const images = Object.entries(transactionCategoryIcon);
 
 function IconSelect() {
   const navigation = useNavigation<TransactionCategoryParamProps<'icon_select'>['navigation']>();
+
   const onIconPress = (iconName: string) => {
     navigation.navigate({
       name: UPDATE_TRANSACTION_CATEGORY,

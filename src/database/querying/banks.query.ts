@@ -7,31 +7,37 @@ import { SQLiteQuery } from '@nozbe/watermelondb/adapters/sqlite';
 const jsonBankData = require('utils/data/banks.default.json');
 
 /** read */
-export const getBanksDataLocal = async ({
+export const queryGetBank = async ({
   type = BANK_TYPE.BANK,
   text = '',
 }: {
-  type: BANK_TYPE;
+  type?: BANK_TYPE;
   text?: string;
 }) => {
-  try {
-    return await database.read(async () => {
-      return await database
-        .get<BankModel>(BANKS)
-        .query(
-          Q.where('type', type.toString()),
-          Q.or(
-            Q.where('shortName', Q.like(`${Q.sanitizeLikeString(text)}%`)),
-            Q.where('bankCode', Q.like(`${Q.sanitizeLikeString(text)}%`)),
-            Q.where('bankName', Q.like(`${Q.sanitizeLikeString(text)}%`)),
-          ),
-        )
-        .fetch();
-    });
-  } catch (error) {
-    console.log(error, 'get count err');
-    return error;
-  }
+  return await database.read(async () => {
+    const baseQuery = Q.where('type', type.toString());
+
+    if (!type && !text) {
+      return await database.get<BankModel>(BANKS).query().fetch();
+    }
+
+    if (!text.trim()) {
+      return await database.get<BankModel>(BANKS).query(baseQuery).fetch();
+    }
+
+    const searchText = Q.sanitizeLikeString(text);
+    return await database
+      .get<BankModel>(BANKS)
+      .query(
+        baseQuery, // Điều kiện bắt buộc
+        Q.or(
+          Q.where('shortName', Q.like(`${searchText}%`)),
+          Q.where('bankCode', Q.like(`${searchText}%`)),
+          Q.where('bankName', Q.like(`${searchText}%`)),
+        ),
+      )
+      .fetch();
+  });
 };
 
 export const getIsBankDataExist = async () => {

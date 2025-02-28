@@ -29,9 +29,9 @@ export type TransactionCategoryParamProps<T extends keyof TransactionCategoryPar
 
 /** transaction category list stack navigation */
 export type TransactionCategoryListParams = {
-  [EXPENSE_CATEGORY]: { idActive?: string; returnScreen: any };
-  [INCOME_CATEGORY]: { idActive?: string; returnScreen: any };
-  [LEND_BORROW]: { idActive?: string; returnScreen: any };
+  [EXPENSE_CATEGORY]: { idActive?: string; returnScreen: any; tabHide?: any };
+  [INCOME_CATEGORY]: { idActive?: string; returnScreen: any; tabHide?: any };
+  [LEND_BORROW]: { idActive?: string; returnScreen: any; tabHide?: any };
 };
 export type TransactionCategoryListParamsProps<T extends keyof TransactionCategoryListParams> =
   MaterialTopTabScreenProps<TransactionCategoryListParams, T>;

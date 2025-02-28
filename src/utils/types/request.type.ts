@@ -22,7 +22,7 @@ export type TGetDebtLoanDetailByPerson = {
 
 //bank
 export type TSearchBankParams = {
-  type: BANK_TYPE;
+  type?: BANK_TYPE;
   text?: string;
 };
 

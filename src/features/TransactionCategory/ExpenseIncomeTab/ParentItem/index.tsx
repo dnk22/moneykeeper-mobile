@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { TTransactionsCategory } from 'database/types';
 import {
   TransactionCategoryContext,
@@ -25,17 +25,15 @@ function ParentItem({ data, disabled }: ParentItemProps) {
   const { colors } = useCustomTheme();
   const { isUpdate } = useContext<any>(TransactionCategoryContext);
   const navigation = useNavigation<any>();
+  const { params } = useRoute();
 
   const onItemCategoryPress = (category: TTransactionsCategory) => {
     if (isUpdate && !disabled) {
       navigation.navigate(UPDATE_TRANSACTION_CATEGORY, { transactionCategoryId: category.id });
       return;
     }
-    navigation.navigate({
-      name: navigation.getParent()?.getState().routes[0].params?.params.returnScreen,
-      params: { categoryId: category.id },
-      merge: true,
-    });
+
+    navigation.popTo(params?.returnScreen, { categoryId: category.id });
   };
 
   return (

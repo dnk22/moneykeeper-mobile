@@ -1,13 +1,17 @@
 /** read  */
-import { getBanksDataLocal, importDefaultBanksData, queryGetBankById } from 'database/querying';
+import { queryGetBank, importDefaultBanksData, queryGetBankById } from 'database/querying';
 import { TSearchBankParams } from 'utils/types/request.type';
 
 export async function fetchBankData({ type, text }: TSearchBankParams) {
-  const res = await getBanksDataLocal({ type, text });
-  if (res) {
-    return res;
-  } else {
-    return [];
+  try {
+    
+  } catch (error) {
+    const res = await queryGetBank({ type, text });
+    if (res) {
+      return res;
+    } else {
+      return [];
+    }
   }
 }
 

@@ -1,10 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ADD_TRANSACTION } from 'utils/constants/navigation.constant';
+import { ADD_TRANSACTION, TRANSACTION_CATEGORY } from 'utils/constants/navigation.constant';
 import { TransactionParamList } from 'utils/types/navigation';
 
 // import route component
 import AddTransactions from 'features/AddTransaction';
 import { useCustomTheme } from 'resources/theme';
+import TransactionCategoryNavigation from 'navigation/TransactionCategory';
 
 //set up routes
 const TransactionStack = createNativeStackNavigator<TransactionParamList>();
@@ -22,6 +23,11 @@ function TransactionNavigation() {
             backgroundColor: colors.primary,
           },
         }}
+      />
+      <TransactionStack.Screen
+        name={TRANSACTION_CATEGORY}
+        options={{ presentation: 'modal' }}
+        component={TransactionCategoryNavigation}
       />
     </TransactionStack.Navigator>
   );

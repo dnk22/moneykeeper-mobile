@@ -19,6 +19,7 @@ import styles from '../styles';
 import PressableHaptic from 'components/PressableHaptic';
 import SvgIcon from 'components/SvgIcon';
 import Loading from 'components/Loading';
+import get from 'lodash/get';
 
 const TabBar = createMaterialTopTabNavigator<TransactionCategoryListParams>();
 
@@ -31,6 +32,8 @@ function TransactionCategoryTaBBar({ navigation, route }: any) {
   const { colors } = useCustomTheme();
   const [isUpdate, setIsUpdate] = useState(false);
   const { params } = route;
+
+  const isTabHide = get(params, 'tabHide', false);
 
   useEffect(() => {
     const routeName = focusedRoute(route);
@@ -92,17 +95,17 @@ function TransactionCategoryTaBBar({ navigation, route }: any) {
             },
           }}
         >
-          {(!params.tabHide || params.tabHide !== INCOME_CATEGORY) && (
+          {(!isTabHide || isTabHide !== INCOME_CATEGORY) && (
             <TabBar.Screen name={INCOME_CATEGORY} options={{ title: 'Danh mục thu' }}>
               {() => <ExpenseIncomeTab type={TRANSACTION_CATEGORY_TYPE.INCOME} />}
             </TabBar.Screen>
           )}
-          {(!params.tabHide || params.tabHide !== EXPENSE_CATEGORY) && (
+          {(!isTabHide || isTabHide !== EXPENSE_CATEGORY) && (
             <TabBar.Screen name={EXPENSE_CATEGORY} options={{ title: 'Danh mục chi' }}>
               {() => <ExpenseIncomeTab type={TRANSACTION_CATEGORY_TYPE.EXPENSE} />}
             </TabBar.Screen>
           )}
-          {!isUpdate && !params.tabHide && (
+          {!isUpdate && !isTabHide && (
             <TabBar.Screen name={LEND_BORROW} options={{ title: 'Vay mượn' }}>
               {() => <LendAndBorrowTab />}
             </TabBar.Screen>
