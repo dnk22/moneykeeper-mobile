@@ -11,7 +11,6 @@ import {
   queryUpdateBalanceTransaction,
 } from 'database/querying';
 import { TTransactions } from 'database/types';
-import { handleError } from 'utils/axios';
 
 const delay = (delayInms) => {
   return new Promise((resolve) => setTimeout(resolve, delayInms));
@@ -231,25 +230,21 @@ export const updateTransactionTransfer = async ({
 
 /** delete */
 export const deleteTransactionById = async (id: string) => {
-  try {
-    return await queryDeleteTransactionById(id).then(async (transaction) => {
-      await queryDeleteBalanceById(transaction.id).then(async () => {
+  return await queryDeleteTransactionById(id).then(async (transaction) => {
+    await queryDeleteBalanceById(transaction.id).then(async () => {
+      await queryCalculateAllBalanceAfterDate({
+        accountId: transaction.accountId,
+        date: new Date(transaction.dateTimeAt).getTime(),
+      });
+      if (transaction.toAccountId) {
         await queryCalculateAllBalanceAfterDate({
-          accountId: transaction.accountId,
+          accountId: transaction.toAccountId,
           date: new Date(transaction.dateTimeAt).getTime(),
         });
-        if (transaction.toAccountId) {
-          await queryCalculateAllBalanceAfterDate({
-            accountId: transaction.toAccountId,
-            date: new Date(transaction.dateTimeAt).getTime(),
-          });
-        }
-      });
-      return {
-        success: true,
-      };
+      }
     });
-  } catch (error) {
-    return handleError({ error });
-  }
+    return {
+      success: true,
+    };
+  });
 };

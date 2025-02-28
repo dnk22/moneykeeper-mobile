@@ -5,7 +5,6 @@ import { BALANCE } from 'database/constants';
 import { Q } from '@nozbe/watermelondb';
 import isEmpty from 'lodash/isEmpty';
 import { SQLiteQuery } from '@nozbe/watermelondb/adapters/sqlite';
-import { handleError } from 'utils/axios';
 
 /** read  */
 export const queryGetLatestBalanceByDate = async (accountId: string, date: number) => {
@@ -41,22 +40,16 @@ export const queryGetCurrentBalance = async (accountId: string) => {
 };
 
 export const queryGetAllBalanceAfterDate = async (accountId: string, date: number) => {
-  try {
-    const query = `SELECT * FROM ${BALANCE}
+  const query = `SELECT * FROM ${BALANCE}
                 WHERE accountId='${accountId}'
                 AND transactionDateAt > ${date}
                 ORDER BY transactionDateAt, _id`;
-    return await database.read(async () => {
-      return await database
-        .get<BalanceModel>(BALANCE)
-        .query(Q.unsafeSqlQuery(query))
-        .unsafeFetchRaw();
-    });
-  } catch (error) {
-    return handleError({
-      error: 'R-ALL-BAL',
-    });
-  }
+  return await database.read(async () => {
+    return await database
+      .get<BalanceModel>(BALANCE)
+      .query(Q.unsafeSqlQuery(query))
+      .unsafeFetchRaw();
+  });
 };
 
 /** create */

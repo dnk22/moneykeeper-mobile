@@ -3,7 +3,7 @@ import WidgetSettings from 'features/Dashboard/WidgetSettings';
 import BlurScreen from 'features/BlurScreen';
 import Toast from 'react-native-toast-message';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NavigationContainer } from '@react-navigation/native';
+import { createNavigationContainerRef, NavigationContainer } from '@react-navigation/native';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import StatusBar from 'components/StatusBar';
@@ -23,54 +23,53 @@ import { RootStackParamList } from 'utils/types/navigation';
 
 //set up routes
 const RootStack = createNativeStackNavigator<RootStackParamList>();
+export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
 function AppNavigators() {
   const appThemeState = useAppSelector((state) => selectAppTheme(state));
   const theme = useAppTheme({ ...appThemeState });
 
   return (
-    <>
-      <NavigationContainer theme={theme}>
-        <BlurScreen />
-        <SafeAreaView
-          style={{ flex: 1, backgroundColor: theme.colors.primary }}
-          edges={['top', 'right', 'left']}
-        >
-          <GestureHandlerRootView style={{ flex: 1 }}>
-            <StatusBar />
-            <BottomSheetModalProvider>
-              <RootStack.Navigator
-                initialRouteName={HOME}
-                screenOptions={{
-                  headerShown: false,
-                  autoHideHomeIndicator: true,
-                }}
-              >
-                <RootStack.Screen name={HOME} component={BottomTabNavigation} />
-                <RootStack.Group screenOptions={{ presentation: 'modal' }}>
-                  <RootStack.Screen name={BANK_NAVIGATION} component={BankNavigation} />
-                  <RootStack.Screen
-                    name={TRANSACTION_CATEGORY}
-                    component={TransactionCategoryNavigation}
-                  />
-                </RootStack.Group>
-                <RootStack.Group screenOptions={{ headerShown: true }}>
-                  <RootStack.Screen
-                    name={WIDGET_SETTINGS}
-                    component={WidgetSettings}
-                    options={{
-                      title: 'Chỉnh sửa DS Widget',
-                      presentation: 'containedModal',
-                    }}
-                  />
-                </RootStack.Group>
-              </RootStack.Navigator>
-            </BottomSheetModalProvider>
-            <Toast />
-          </GestureHandlerRootView>
-        </SafeAreaView>
-      </NavigationContainer>
-    </>
+    <NavigationContainer theme={theme} ref={navigationRef}>
+      <BlurScreen />
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: theme.colors.primary }}
+        edges={['top', 'right', 'left']}
+      >
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <StatusBar />
+          <BottomSheetModalProvider>
+            <RootStack.Navigator
+              initialRouteName={HOME}
+              screenOptions={{
+                headerShown: false,
+                autoHideHomeIndicator: true,
+              }}
+            >
+              <RootStack.Screen name={HOME} component={BottomTabNavigation} />
+              <RootStack.Group screenOptions={{ presentation: 'modal' }}>
+                <RootStack.Screen name={BANK_NAVIGATION} component={BankNavigation} />
+                <RootStack.Screen
+                  name={TRANSACTION_CATEGORY}
+                  component={TransactionCategoryNavigation}
+                />
+              </RootStack.Group>
+              <RootStack.Group screenOptions={{ headerShown: true }}>
+                <RootStack.Screen
+                  name={WIDGET_SETTINGS}
+                  component={WidgetSettings}
+                  options={{
+                    title: 'Chỉnh sửa DS Widget',
+                    presentation: 'containedModal',
+                  }}
+                />
+              </RootStack.Group>
+            </RootStack.Navigator>
+          </BottomSheetModalProvider>
+          <Toast />
+        </GestureHandlerRootView>
+      </SafeAreaView>
+    </NavigationContainer>
   );
 }
 

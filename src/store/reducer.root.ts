@@ -1,6 +1,5 @@
 import { persistReducer } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit';
-import { reduxPersistStorage } from 'share/storage';
 
 import appReducer, { APP_SLICE_NAME } from './app/app.slice';
 import accountReducer, { ACCOUNT_SLICE_NAME } from './account/account.slice';
@@ -11,6 +10,7 @@ import transactionsReducer, { TRANSACTION_SLICE_NAME } from './transactions/tran
 import financialStatementReducer, {
   FINANCE_STATEMENT_SLICE_NAME,
 } from 'features/Report/FinancialStatement/reducer/financialStatement.slice';
+import { reduxPersistStorage } from 'services/storage';
 
 const appPersistConfig = {
   key: 'root',

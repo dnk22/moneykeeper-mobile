@@ -4,7 +4,6 @@ import { BalanceModel, TransactionModel } from 'database/models';
 import { TTransactions } from 'database/types';
 import { Q } from '@nozbe/watermelondb';
 import isEqual from 'lodash/isEqual';
-import { handleError } from 'utils/axios';
 import { TRANSACTION_TYPE } from 'utils/constants';
 
 export type GetTransactionByDate = {
@@ -126,18 +125,11 @@ export const queryRecentTransaction = async (limit: number) => {
  * add new transaction , if success then update useCount in transaction category
  */
 export const queryAddNewTransaction = async (transaction: TTransactions) => {
-  try {
-    return await database.write(async () => {
-      return await database.get<TransactionModel>(TRANSACTIONS).create((item) => {
-        Object.assign(item, transaction);
-      });
+  return await database.write(async () => {
+    return await database.get<TransactionModel>(TRANSACTIONS).create((item) => {
+      Object.assign(item, transaction);
     });
-  } catch (error) {
-    console.log(error, 'error');
-    return handleError({
-      error: 'ADD-TRANS',
-    });
-  }
+  });
 };
 /** update */
 /**

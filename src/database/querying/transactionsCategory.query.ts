@@ -4,7 +4,6 @@ import { TRANSACTION_CATEGORY } from 'database/constants';
 import { TTransactionsCategory } from 'database/types';
 import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constants';
 import { Q } from '@nozbe/watermelondb';
-import { handleError, requestSuccess } from 'utils/axios';
 import { TransactionCategoryData } from 'utils/data/transactionCategory.default';
 import { SQLiteQuery } from '@nozbe/watermelondb/adapters/sqlite';
 
@@ -128,22 +127,32 @@ export const getIsTransactionCategoryDataExist = async () => {
 
 /** create */
 export const queryImportDefaultTransactionCategory = async () => {
-  try {
-    var startTime = performance.now();
-    const isHaveDataInit = await database.read(async () => {
-      return await database
-        .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-        .query()
-        .fetchCount();
-    });
-    if (Boolean(isHaveDataInit)) {
-      return {
-        success: false,
-        data: [],
-      };
-    }
-    const updateStatements: SQLiteQuery[] = TransactionCategoryData.map((record) => {
-      const {
+  var startTime = performance.now();
+  const isHaveDataInit = await database.read(async () => {
+    return await database.get<TransactionCategoryModel>(TRANSACTION_CATEGORY).query().fetchCount();
+  });
+  if (Boolean(isHaveDataInit)) {
+    return {
+      success: false,
+      data: [],
+    };
+  }
+  const updateStatements: SQLiteQuery[] = TransactionCategoryData.map((record) => {
+    const {
+      id,
+      categoryName,
+      categoryType,
+      parentId,
+      description,
+      isSystem,
+      useCount,
+      icon,
+      sortOrder,
+      dictionaryKey,
+    } = record;
+    return [
+      `INSERT INTO ${TRANSACTION_CATEGORY} (id, categoryName, categoryType, parentId, description, isSystem, useCount, icon, sortOrder, dictionaryKey, _changed, _status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
         id,
         categoryName,
         categoryType,
@@ -154,52 +163,32 @@ export const queryImportDefaultTransactionCategory = async () => {
         icon,
         sortOrder,
         dictionaryKey,
-      } = record;
-      return [
-        `INSERT INTO ${TRANSACTION_CATEGORY} (id, categoryName, categoryType, parentId, description, isSystem, useCount, icon, sortOrder, dictionaryKey, _changed, _status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-          id,
-          categoryName,
-          categoryType,
-          parentId,
-          description,
-          isSystem,
-          useCount,
-          icon,
-          sortOrder,
-          dictionaryKey,
-          '',
-          'created',
-        ],
-      ];
+        '',
+        'created',
+      ],
+    ];
+  });
+  return await database.write(async () => {
+    await database.adapter.unsafeExecute({
+      sqls: updateStatements,
     });
-    return await database.write(async () => {
-      await database.adapter.unsafeExecute({
-        sqls: updateStatements,
-      });
-      const res = await database
-        .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-        .query(
-          Q.unsafeSqlQuery(
-            `SELECT id, categoryName FROM ${TRANSACTION_CATEGORY} 
+    const res = await database
+      .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
+      .query(
+        Q.unsafeSqlQuery(
+          `SELECT id, categoryName FROM ${TRANSACTION_CATEGORY} 
             WHERE _status!='deleted' AND categoryName IN (${Object.values(
               TRANSACTION_LEND_BORROW_NAME,
             ).map((item) => `'${item}'`)})`,
-          ),
-        )
-        .unsafeFetchRaw();
-      var endTime = performance.now();
-      console.log(
-        `Import transaction category: ${Number((endTime - startTime) / 1000).toFixed(5)} s`,
-      );
-      return requestSuccess({
-        data: res,
-      });
-    });
-  } catch (error) {
-    console.log('Import transaction category failed: ', error);
-    return handleError({ error });
-  }
+        ),
+      )
+      .unsafeFetchRaw();
+    var endTime = performance.now();
+    console.log(
+      `Import transaction category: ${Number((endTime - startTime) / 1000).toFixed(5)} s`,
+    );
+    return res;
+  });
 };
 
 export const queryAddTransactionCategory = async (tCategory: TTransactionsCategory) => {
@@ -236,22 +225,16 @@ export const queryUpdateTransactionCategory = async ({
 };
 
 export const queryUpdateUseCountTransactionCategory = async (id: string) => {
-  try {
-    const date = new Date();
-    return await database.write(async () => {
-      const transactionCategory = await database
-        .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-        .find(id);
-      return await transactionCategory.update((item) => {
-        item.useCount = item.useCount + 1;
-        item.lastUseAt = date.getTime();
-      });
+  const date = new Date();
+  return await database.write(async () => {
+    const transactionCategory = await database
+      .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
+      .find(id);
+    return await transactionCategory.update((item) => {
+      item.useCount = item.useCount + 1;
+      item.lastUseAt = date.getTime();
     });
-  } catch (error) {
-    return handleError({
-      error: 'UPD-COUNT-TRANS-CAT',
-    });
-  }
+  });
 };
 
 /** delete */

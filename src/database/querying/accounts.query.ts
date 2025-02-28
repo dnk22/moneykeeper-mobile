@@ -4,7 +4,6 @@ import { ACCOUNTS, BALANCE } from 'database/constants';
 import { database } from 'database/index';
 import { Q } from '@nozbe/watermelondb';
 import isEqual from 'lodash/isEqual';
-import { handleError } from 'utils/axios';
 
 export type TGetAllAccounts = {
   isActive?: boolean;
@@ -141,8 +140,9 @@ export const queryDeleteAccountById = async (accountId: string) => {
       return (await database.get<AccountModel>(ACCOUNTS).find(accountId)).markAsDeleted();
     });
   } catch (error) {
-    return handleError({
-      error: 'Xóa tài khoản thất bại!',
+    return Promise.reject({
+      success: false,
+      error: 'Có lỗi trong quá trình xóa tài khoản.',
     });
   }
 };

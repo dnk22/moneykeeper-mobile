@@ -1,0 +1,15 @@
+// import { axiosService } from '@/services/axios';
+// import type { YourDataType } from '@/types';
+
+// const YourComponent = () => {
+//   const fetchData = async () => {
+//     try {
+//       const response = await axiosService.get<YourDataType>('/your-endpoint');
+//       console.log('Data:', response.data);
+//     } catch (error) {
+//       console.error('Error:', error);
+//     }
+//   };
+
+//   // ... rest of your component
+// };

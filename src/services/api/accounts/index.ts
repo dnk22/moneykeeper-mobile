@@ -13,7 +13,6 @@ import {
   queryDeleteAccountById,
 } from 'database/querying';
 import { TAccount } from 'database/types';
-import { handleError } from 'utils/axios';
 
 export async function getAccountData({ ...rest }: TGetAllAccounts) {
   return await queryAllAccount(rest);
@@ -27,28 +26,22 @@ export async function getAccountData({ ...rest }: TGetAllAccounts) {
  * update: after updated, if done => update balance and calculate all openAmount and closingAmount if have record
  */
 export async function updateAccountDB({ id, account }: { id?: string; account: TAccount }) {
-  try {
-    if (id) {
-      delete account.id;
-      return await queryUpdateAccount({ id, account }).then(async ({ isUpdateBalance, data }) => {
-        if (isUpdateBalance) {
-          await queryUpdateBalanceAfterUpdateAccount({ accountData: data });
-          await queryCalculateAllBalanceAfterDate({
-            accountId: data.id,
-            date: 0,
-          });
-        }
-        return id;
-      });
-    } else {
-      return await queryAddAccount(account).then(async (res) => {
-        await queryAddBalanceFromAccount(res);
-        return res.accountId;
-      });
-    }
-  } catch (error) {
-    handleError({
-      error: error,
+  if (id) {
+    delete account.id;
+    return await queryUpdateAccount({ id, account }).then(async ({ isUpdateBalance, data }) => {
+      if (isUpdateBalance) {
+        await queryUpdateBalanceAfterUpdateAccount({ accountData: data });
+        await queryCalculateAllBalanceAfterDate({
+          accountId: data.id,
+          date: 0,
+        });
+      }
+      return id;
+    });
+  } else {
+    return await queryAddAccount(account).then(async (res) => {
+      await queryAddBalanceFromAccount(res);
+      return res.accountId;
     });
   }
 }
