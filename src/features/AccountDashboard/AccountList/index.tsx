@@ -5,8 +5,8 @@ import { TAccount } from 'database/types';
 import debounce from 'lodash/debounce';
 import { useCustomTheme } from 'resources/theme';
 import { groupAccountDataByValue, sortDataByKey } from 'utils/algorithm';
-import { ADD_ACCOUNT } from 'utils/constants/navigation.constant';
 import { useNavigation } from '@react-navigation/native';
+import { ROUTES } from 'navigation/constants/routes';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import { updateAccountViewSettings } from 'store/app/app.slice';
@@ -92,7 +92,7 @@ function AccountList({ onActionPress, account = [], onRefresh }: AccountListProp
       {isViewActive && (
         <PressableHaptic
           style={[styles.createButton, { backgroundColor: colors.primary }]}
-          onPress={() => navigation.navigate(ADD_ACCOUNT)}
+          onPress={() => navigation.navigate(ROUTES.ADD_ACCOUNT)}
         >
           <SvgIcon name="add" size={30} color="white" />
         </PressableHaptic>

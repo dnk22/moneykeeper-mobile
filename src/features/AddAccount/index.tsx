@@ -14,7 +14,7 @@ import SwitchField from 'components/Switch/SwitchField';
 import RNText from 'components/Text';
 import { BankModel } from 'database/models';
 import InputCalculator from 'features/AddTransaction/common/InputCalculator';
-import { ADD_ACCOUNT } from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
 import { AccountType } from 'utils/data';
 import { deleteAccountById, getAccountById, updateAccountDB } from 'services/api/accounts';
 import { showToast } from 'utils/system';
@@ -52,7 +52,7 @@ type ModalType = 'paymentDate' | 'statementDay';
 function AddAccount() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
-  const { params } = useRoute<AccountStackParamListProps<typeof ADD_ACCOUNT>['route']>();
+  const { params } = useRoute<AccountStackParamListProps<typeof ROUTES.ADD_ACCOUNT>['route']>();
   const [isShowModalStatement, setIsShowModalStatement] = useState(false);
   const dispatch = useAppDispatch();
 

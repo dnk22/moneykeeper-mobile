@@ -5,11 +5,7 @@ import { TransactionCategoryParamProps } from 'navigation/types';
 import { useForm } from 'react-hook-form';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactionsCategory } from 'database/types';
-import {
-  ICON_SELECT,
-  PARENT_LIST,
-  UPDATE_TRANSACTION_CATEGORY,
-} from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
 import {
   deleteTransactionCategoryByID,
@@ -28,10 +24,10 @@ function UpdateTransactionCategory() {
   const { colors } = useCustomTheme();
   const navigation =
     useNavigation<
-      TransactionCategoryParamProps<typeof UPDATE_TRANSACTION_CATEGORY>['navigation']
+      TransactionCategoryParamProps<typeof ROUTES.UPDATE_TRANSACTION_CATEGORY>['navigation']
     >();
   const { params } =
-    useRoute<TransactionCategoryParamProps<typeof UPDATE_TRANSACTION_CATEGORY>['route']>();
+    useRoute<TransactionCategoryParamProps<typeof ROUTES.UPDATE_TRANSACTION_CATEGORY>['route']>();
   const [parentGroup, setParentGroup] = useState<TransactionCategoryModel | undefined>(undefined);
   const [isShowSelectParent, setIsShowSelectParent] = useState(true);
 
@@ -80,7 +76,7 @@ function UpdateTransactionCategory() {
   };
 
   const handleOnSelectParent = () => {
-    navigation.navigate(PARENT_LIST, {
+    navigation.navigate(ROUTES.TRANSACTION_CATEGORY_LIST, {
       type: params?.type || getValues('categoryType'),
     });
   };
@@ -106,7 +102,7 @@ function UpdateTransactionCategory() {
   };
 
   const navigateToSelectIcon = () => {
-    navigation.navigate(ICON_SELECT);
+    navigation.navigate(ROUTES.ICON_SELECT);
   };
 
   const onHandleSubmit = (data: TTransactionsCategory) => {

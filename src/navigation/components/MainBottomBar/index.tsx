@@ -1,5 +1,5 @@
 import HomeBottomBarFlat from './HomeBottomBarFlat';
-import HomeBottomBarSticky from './HomeBottomBarSticky';
+// import HomeBottomBarSticky from './HomeBottomBarSticky';
 // import { useEffect, useState } from 'react';
 // import { useAppSelector } from 'store/index';
 // import { selectHomeBottomBarType } from 'store/app/app.selector';

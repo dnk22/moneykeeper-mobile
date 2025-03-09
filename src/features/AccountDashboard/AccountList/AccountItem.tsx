@@ -2,7 +2,7 @@ import React, { View } from 'react-native';
 import { TAccount } from 'database/types';
 
 import { useNavigation } from '@react-navigation/native';
-import { ACCOUNT_NORMAL_DETAIL, ACCOUNT_CREDIT_CARD_DETAIL } from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import IconComponent from 'components/IconComponent';
 import PressableHaptic from 'components/PressableHaptic';
@@ -23,20 +23,20 @@ type ItemProps = {
 function AccountItem({ account, transparentBackground, onActionPress }: ItemProps) {
   const { colors } = useCustomTheme();
   const navigation =
-    useNavigation<AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['navigation']>();
+    useNavigation<AccountStackParamListProps<typeof ROUTES.ACCOUNT_NORMAL_DETAIL>['navigation']>();
 
   const handleOnItemPress = () => {
     const { id, accountName, accountTypeId, creditCardLimit } = account;
     switch (accountTypeId) {
       case ACCOUNT_CATEGORY_ID.CREDITCARD:
-        navigation.navigate(ACCOUNT_CREDIT_CARD_DETAIL, {
+        navigation.navigate(ROUTES.ACCOUNT_CREDIT_CARD_DETAIL, {
           accountId: id,
           accountName,
           creditCardLimit,
         });
         break;
       default:
-        navigation.navigate(ACCOUNT_NORMAL_DETAIL, { accountId: id, accountName });
+        navigation.navigate(ROUTES.ACCOUNT_NORMAL_DETAIL, { accountId: id, accountName });
         break;
     }
   };

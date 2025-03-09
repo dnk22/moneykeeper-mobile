@@ -1,5 +1,5 @@
 import { IconProps } from 'components/SvgIcon/const';
-import { APPEARANCE } from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
 
 interface ISettingsRouteItem {
   link: string;
@@ -19,7 +19,7 @@ export const settingRoutes: ISettingRoutes = {
         icon: 'settings',
       },
       {
-        link: APPEARANCE,
+        link: ROUTES.APPEARANCE,
         name: 'Giao diện',
         icon: 'text',
       },

@@ -3,10 +3,7 @@ import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { TTransactionsCategory } from 'database/types';
-import {
-  TransactionCategoryContext,
-  UPDATE_TRANSACTION_CATEGORY,
-} from 'utils/constants/navigation.constant';
+import { ROUTES, TransactionCategoryContext } from 'navigation/constants/routes';
 import get from 'lodash/get';
 import size from 'lodash/size';
 import ShakeAnimation from 'resources/animations/Shake';
@@ -29,7 +26,9 @@ function ParentItem({ data, disabled }: ParentItemProps) {
 
   const onItemCategoryPress = (category: TTransactionsCategory) => {
     if (isUpdate && !disabled) {
-      navigation.navigate(UPDATE_TRANSACTION_CATEGORY, { transactionCategoryId: category.id });
+      navigation.navigate(ROUTES.UPDATE_TRANSACTION_CATEGORY, {
+        transactionCategoryId: category.id,
+      });
       return;
     }
 

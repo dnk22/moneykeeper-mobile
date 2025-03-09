@@ -3,8 +3,8 @@ import { View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { TTransactionsCategory } from 'database/types';
 import { useCustomTheme } from 'resources/theme';
-import { PARENT_LIST, UPDATE_TRANSACTION_CATEGORY } from 'utils/constants/navigation.constant';
 import { TransactionCategoryParamProps } from 'navigation/types';
+import { ROUTES } from 'navigation/constants/routes';
 import { getParentList } from 'services/api/transactionsCategory';
 import Empty from 'components/Empty';
 import SvgIcon from 'components/SvgIcon';
@@ -15,9 +15,9 @@ import styles from './styles';
 
 function ParentList() {
   const navigation =
-    useNavigation<TransactionCategoryParamProps<typeof PARENT_LIST>['navigation']>();
+    useNavigation<TransactionCategoryParamProps<typeof ROUTES.TRANSACTION_CATEGORY_LIST>['navigation']>();
   const { colors } = useCustomTheme();
-  const { params } = useRoute<TransactionCategoryParamProps<typeof PARENT_LIST>['route']>();
+  const { params } = useRoute<TransactionCategoryParamProps<typeof ROUTES.TRANSACTION_CATEGORY_LIST>['route']>();
   const [data, setData] = useState<any>([]);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ function ParentList() {
 
   const onPress = (item: TTransactionsCategory) => {
     navigation.navigate({
-      name: UPDATE_TRANSACTION_CATEGORY,
+      name: ROUTES.UPDATE_TRANSACTION_CATEGORY,
       params: { parentId: item.id },
       merge: true,
     });

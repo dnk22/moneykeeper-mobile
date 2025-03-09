@@ -1,12 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { APPEARANCE, HOME_SETTINGS } from 'utils/constants/navigation.constant';
-
-// import route component
 import { useCustomTheme } from 'resources/theme';
 import { SettingsParamList } from 'navigation/types';
+import { ROUTES } from 'navigation/constants/routes';
 import Settings from 'features/Settings';
 import Appearance from 'features/Settings/Appearance';
 import CommonStack from './CommonStack';
+import SharedScreens from './SharedStacks';
 
 //set up routes
 const SettingsStack = createNativeStackNavigator<SettingsParamList>();
@@ -16,7 +15,7 @@ function SettingsNavigation() {
 
   return (
     <SettingsStack.Navigator
-      initialRouteName={HOME_SETTINGS}
+      initialRouteName={ROUTES.HOME_SETTINGS}
       screenOptions={{
         headerStyle: {
           backgroundColor: colors.primary,
@@ -25,7 +24,7 @@ function SettingsNavigation() {
       }}
     >
       <SettingsStack.Screen
-        name={HOME_SETTINGS}
+        name={ROUTES.HOME_SETTINGS}
         component={Settings}
         options={{
           title: 'Cài đặt',
@@ -34,15 +33,13 @@ function SettingsNavigation() {
       />
 
       <SettingsStack.Screen
-        name={APPEARANCE}
+        name={ROUTES.APPEARANCE}
         component={Appearance}
         options={{
           title: 'Giao diện',
         }}
       />
-      <SettingsStack.Group>
-        {CommonStack({ Stack: SettingsStack, parentName: 'home_settings' })}
-      </SettingsStack.Group>
+      {SharedScreens({ stack: SettingsStack, screens: 'all' })}
     </SettingsStack.Navigator>
   );
 }

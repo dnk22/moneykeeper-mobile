@@ -1,7 +1,6 @@
 import React, { View } from 'react-native';
 import { TAccount } from 'database/types';
 import { useNavigation } from '@react-navigation/native';
-import { ACCOUNT_NORMAL_DETAIL } from 'utils/constants/navigation.constant';
 import { useCustomTheme } from 'resources/theme';
 import { AccountStackParamListProps } from 'navigation/types';
 import { formatNumber } from 'utils/math';
@@ -10,6 +9,7 @@ import CheckboxComponent from 'components/Checkbox';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import IconComponent from 'components/IconComponent';
 import RNText from 'components/Text';
+import { ROUTES } from 'navigation/constants/routes';
 
 type ItemProps = {
   account: TAccount;
@@ -20,14 +20,14 @@ type ItemProps = {
 function Item({ account, isItemSelected, onItemPress }: ItemProps) {
   const { colors } = useCustomTheme();
   const navigation =
-    useNavigation<AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['navigation']>();
+    useNavigation<AccountStackParamListProps<typeof ROUTES.ACCOUNT_NORMAL_DETAIL>['navigation']>();
 
   const handleOnItemPress = () => {
     if (onItemPress) {
       onItemPress(account);
     } else {
       const { id, accountName } = account;
-      navigation.navigate(ACCOUNT_NORMAL_DETAIL, { accountId: id, accountName });
+      navigation.navigate(ROUTES.ACCOUNT_NORMAL_DETAIL, { accountId: id, accountName });
     }
   };
 

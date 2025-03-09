@@ -1,10 +1,10 @@
-import { memo, useCallback } from 'react';
+import { memo } from 'react';
 import { Platform, View } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import TabBar from './TabBar';
 import isEqual from 'react-fast-compare';
 import { useCustomTheme } from 'resources/theme';
+import TabBar from './TabBar';
 import styles from './styles';
 
 const HomeBottomBarFlat = ({
@@ -40,9 +40,16 @@ const HomeBottomBarFlat = ({
                 ]
               : undefined;
 
-          const navigate = useCallback(() => {
-            if (!isFocused) navigation.navigate(route.name);
-          }, [isFocused, navigation]);
+          const navigate = () => {
+            const event = navigation.emit({
+              type: 'tabPress',
+              target: route.key,
+              canPreventDefault: true,
+            });
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate(route.name);
+            }
+          };
 
           return (
             <TabBar

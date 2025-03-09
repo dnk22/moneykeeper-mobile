@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { BANK_HOME_LIST } from 'utils/constants/navigation.constant';
 import { BankParams } from 'navigation/types';
+import { ROUTES } from 'navigation/constants/routes';
 
 // import route component
 import BankList from 'features/BankList';
@@ -11,9 +11,9 @@ const TransactionStack = createNativeStackNavigator<BankParams>();
 
 function BankNavigation() {
   return (
-    <TransactionStack.Navigator initialRouteName={BANK_HOME_LIST}>
+    <TransactionStack.Navigator initialRouteName={ROUTES.BANK_HOME_LIST}>
       <TransactionStack.Screen
-        name={BANK_HOME_LIST}
+        name={ROUTES.BANK_HOME_LIST}
         component={BankList}
         options={({ route }) => ({
           title: route.params?.type !== BANK_TYPE.BANK ? 'Nhà cung cấp' : 'Ngân hàng',

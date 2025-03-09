@@ -1,10 +1,10 @@
-import { DASHBOARDHOME, NOTIFICATION } from 'utils/constants/navigation.constant';
 import { CommonStackParamsList } from './common';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ROUTES } from 'navigation/constants/routes';
 
 export type DashboardParamList = CommonStackParamsList & {
-  [DASHBOARDHOME]: undefined;
-  [NOTIFICATION]: undefined;
+  [ROUTES.DASHBOARD_HOME]: undefined;
+  [ROUTES.NOTIFICATION]: undefined;
 };
 
 export type DashboardStackParamListProps<T extends keyof DashboardParamList> =

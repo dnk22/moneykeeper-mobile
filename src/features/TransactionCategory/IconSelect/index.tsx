@@ -2,8 +2,8 @@ import { Image, ScrollView, View } from 'react-native';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import * as transactionCategoryIcon from 'assets/images/transactionCategory';
 import { useNavigation } from '@react-navigation/native';
-import { UPDATE_TRANSACTION_CATEGORY } from 'utils/constants/navigation.constant';
 import { TransactionCategoryParamProps } from 'navigation/types';
+import { ROUTES } from 'navigation/constants/routes';
 import styles from './styles';
 
 const images = Object.entries(transactionCategoryIcon);
@@ -13,7 +13,7 @@ function IconSelect() {
 
   const onIconPress = (iconName: string) => {
     navigation.navigate({
-      name: UPDATE_TRANSACTION_CATEGORY,
+      name: ROUTES.UPDATE_TRANSACTION_CATEGORY,
       params: { icon: iconName },
       merge: true,
     });

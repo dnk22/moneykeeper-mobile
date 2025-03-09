@@ -2,40 +2,35 @@ import React from 'react';
 import { View, ScrollView, SafeAreaView } from 'react-native';
 import { selectReportViewSettings } from 'store/app/app.selector';
 import { useAppSelector } from 'store/index';
-import {
-  CONTACT_REPORT,
-  DEBT_LOAN_REPORT,
-  EXPENSE_INCOME_ANALYZE,
-  EXPENSE_INCOME_REPORT,
-  FINANCE_STATEMENT,
-} from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
+
 import Card from './Card';
 import styles from './styles';
 
 const data = [
   {
     name: 'Tổng quan tài sản',
-    link: FINANCE_STATEMENT,
+    link: ROUTES.FINANCE_STATEMENT,
     icon: 'statementReport',
   },
   {
     name: 'Thu & Chi',
-    link: EXPENSE_INCOME_REPORT,
+    link: ROUTES.EXPENSE_INCOME_REPORT,
     icon: 'expenseIncomeReport',
   },
   {
     name: 'Phân tích thu & chi',
-    link: EXPENSE_INCOME_ANALYZE,
+    link: ROUTES.EXPENSE_INCOME_ANALYZE,
     icon: 'expenseIncomeAnalyzeReport',
   },
   {
     name: 'Theo dõi vay nợ',
-    link: DEBT_LOAN_REPORT,
+    link: ROUTES.DEBT_LOAN_REPORT,
     icon: 'debtLoanReport',
   },
   {
     name: 'Danh bạ thu/chi',
-    link: CONTACT_REPORT,
+    link: ROUTES.CONTACT_REPORT,
     icon: 'contactBookReport',
   },
 ];

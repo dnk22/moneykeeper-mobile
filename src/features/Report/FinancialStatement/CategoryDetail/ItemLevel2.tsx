@@ -13,12 +13,7 @@ import {
   TRANSACTION_LEND_BORROW_NAME,
 } from 'utils/constants';
 import { MenuAction, MenuView, NativeActionEvent } from '@react-native-menu/menu';
-import {
-  ACCOUNT_CREDIT_CARD_DETAIL,
-  ACCOUNT_NORMAL_DETAIL,
-  CREATE_TRANSACTION_FROM_ACCOUNT,
-  DEBT_LOAN_REPORT_DETAIL,
-} from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
 import { dataLevelProps } from '../types';
 import styles from './styles';
 import { useAppSelector } from 'store/index';
@@ -55,7 +50,7 @@ function ItemLevel2({
 
   const onNavigationToAccount = () => {
     if (item.relatedPerson) {
-      navigation.navigate(DEBT_LOAN_REPORT_DETAIL, {
+      navigation.navigate(ROUTES.DEBT_LOAN_REPORT_DETAIL, {
         personName: item.relatedPerson,
         type: item.categoryType,
       });
@@ -63,14 +58,14 @@ function ItemLevel2({
       const { id, accountName, accountTypeId } = item;
       switch (accountTypeId) {
         case ACCOUNT_CATEGORY_ID.CREDITCARD:
-          navigation.navigate(ACCOUNT_CREDIT_CARD_DETAIL, {
+          navigation.navigate(ROUTES.ACCOUNT_CREDIT_CARD_DETAIL, {
             accountId: id,
             accountName,
             creditCardLimit: 90000,
           });
           break;
         default:
-          navigation.navigate(ACCOUNT_NORMAL_DETAIL, { accountId: id, accountName });
+          navigation.navigate(ROUTES.ACCOUNT_NORMAL_DETAIL, { accountId: id, accountName });
           break;
       }
     }
@@ -87,7 +82,7 @@ function ItemLevel2({
     const categoryId = Object.keys(lendBorrowData).find(
       (key) => lendBorrowData[key] === categoryNameTarget,
     );
-    navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, {
+    navigation.navigate(ROUTES.CREATE_TRANSACTION_FROM_ACCOUNT, {
       amount: +event,
       categoryId,
       relatedPerson: item.relatedPerson,

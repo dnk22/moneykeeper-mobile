@@ -10,10 +10,8 @@ import {
 } from 'utils/constants';
 import { formatNumber } from 'utils/math';
 import { DebtLoanTypes } from 'utils/types';
-import {
-  CREATE_TRANSACTION_FROM_ACCOUNT,
-  DEBT_LOAN_REPORT_DETAIL,
-} from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
+
 import { useCustomTheme } from 'resources/theme';
 import { MenuAction, MenuView, NativeActionEvent } from '@react-native-menu/menu';
 import { useAppSelector } from 'store/index';
@@ -25,7 +23,7 @@ import styles from './styles';
 
 function Item({ data, index }: { data: DebtLoanTypes; index: number }) {
   const navigation =
-    useNavigation<ReportParamListProps<typeof DEBT_LOAN_REPORT_DETAIL>['navigation']>();
+    useNavigation<ReportParamListProps<typeof ROUTES.DEBT_LOAN_REPORT_DETAIL>['navigation']>();
   const { colors } = useCustomTheme();
   const lendBorrowData = useAppSelector((state) => selectLendBorrowData(state));
 
@@ -41,7 +39,7 @@ function Item({ data, index }: { data: DebtLoanTypes; index: number }) {
   ];
 
   const onNavigationToDebtLoanDetail = () => {
-    navigation.navigate(DEBT_LOAN_REPORT_DETAIL, {
+    navigation.navigate(ROUTES.DEBT_LOAN_REPORT_DETAIL, {
       personName: data.relatedPerson,
       type: data.categoryType,
     });
@@ -55,7 +53,7 @@ function Item({ data, index }: { data: DebtLoanTypes; index: number }) {
     const categoryId = Object.keys(lendBorrowData).find(
       (key) => lendBorrowData[key] === categoryNameTarget,
     );
-    navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, {
+    navigation.navigate(ROUTES.CREATE_TRANSACTION_FROM_ACCOUNT, {
       amount: +event,
       categoryId,
       relatedPerson: data.relatedPerson,

@@ -3,10 +3,7 @@ import { View } from 'react-native';
 import RNText from 'components/Text';
 import FlatListComponent from 'components/FlatList';
 import { useFocusEffect } from '@react-navigation/native';
-import {
-  CREATE_TRANSACTION_FROM_ACCOUNT,
-  DEBT_LOAN_REPORT_DETAIL,
-} from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes'; 
 import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constants';
 import { queryGetDebtLoanDetailByPerson } from 'database/querying';
 import { TGetDebtLoanDetailByPerson } from 'utils/types/request.type';
@@ -27,8 +24,8 @@ export default function DebtLoanDetail({
   navigation,
   route,
 }: {
-  navigation: ReportParamListProps<typeof DEBT_LOAN_REPORT_DETAIL>['navigation'];
-  route: ReportParamListProps<typeof DEBT_LOAN_REPORT_DETAIL>['route'];
+  navigation: ReportParamListProps<typeof ROUTES.DEBT_LOAN_REPORT_DETAIL>['navigation'];
+  route: ReportParamListProps<typeof ROUTES.DEBT_LOAN_REPORT_DETAIL>['route'];
 }) {
   const {
     params: { personName, type },
@@ -85,7 +82,7 @@ export default function DebtLoanDetail({
     const categoryId = Object.keys(lendBorrowData).find(
       (key) => lendBorrowData[key] === categoryNameTarget,
     );
-    navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, {
+    navigation.navigate(ROUTES.CREATE_TRANSACTION_FROM_ACCOUNT, {
       amount: +remain,
       categoryId,
       relatedPerson: personName,

@@ -6,12 +6,7 @@ import FlatList from 'components/FlatList';
 import { TAccount, TAccountType } from 'database/types';
 import { useCustomTheme } from 'resources/theme';
 import { formatNumber } from 'utils/math';
-import {
-  ACCOUNT,
-  ACCOUNT_CREDIT_CARD_DETAIL,
-  ACCOUNT_NORMAL_DETAIL,
-  ADD_ACCOUNT,
-} from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constants';
 import { styles } from './styles';
 import IconComponent from 'components/IconComponent';
@@ -36,15 +31,14 @@ function Wallets({ title }: { title: string }) {
     const { id, accountName, accountTypeId, creditCardLimit } = account;
     switch (accountTypeId) {
       case ACCOUNT_CATEGORY_ID.CREDITCARD:
-        navigation.navigate(ACCOUNT_CREDIT_CARD_DETAIL, {
+        navigation.navigate(ROUTES.ACCOUNT_CREDIT_CARD_DETAIL, {
           accountId: id,
           accountName,
           creditCardLimit,
         });
         break;
       default:
-        navigation.navigate(ACCOUNT);
-        navigation.navigate(ACCOUNT_NORMAL_DETAIL, {
+        navigation.navigate(ROUTES.ACCOUNT_NORMAL_DETAIL, {
           accountId: id,
           accountName,
         });
@@ -83,7 +77,7 @@ function Wallets({ title }: { title: string }) {
   };
 
   const onNavigateAddAccount = () => {
-    navigation.navigate(ADD_ACCOUNT);
+    navigation.navigate(ROUTES.ADD_ACCOUNT);
   };
 
   useFocusEffect(
@@ -103,7 +97,7 @@ function Wallets({ title }: { title: string }) {
       <View style={styles.header}>
         <RNText preset="widgetTitle">{title}</RNText>
         {!!accounts.length && (
-          <PressableHaptic onPress={() => navigation.navigate(ACCOUNT)}>
+          <PressableHaptic onPress={() => navigation.navigate(ROUTES.ACCOUNT)}>
             <RNText preset="widgetViewMore">Xem tất cả</RNText>
           </PressableHaptic>
         )}

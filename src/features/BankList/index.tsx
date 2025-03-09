@@ -3,8 +3,8 @@ import { View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { TBank } from 'database/types';
 import { BANK_TYPE } from 'utils/constants';
-import { ADD_ACCOUNT, BANK_HOME_LIST } from 'utils/constants/navigation.constant';
 import { fetchBankData } from 'services/api/banks';
+import { ROUTES } from 'navigation/constants/routes';
 import { BankParamsProps } from 'navigation/types';
 // import FastImage from 'react-native-fast-image';
 // import * as BankIcon from 'assets/images/banks';
@@ -16,7 +16,7 @@ import RNText from 'components/Text';
 import styles from './styles';
 
 function BankList() {
-  const { params } = useRoute<BankParamsProps<typeof BANK_HOME_LIST>['route']>();
+  const { params } = useRoute<BankParamsProps<typeof ROUTES.BANK_HOME_LIST>['route']>();
   const navigation = useNavigation<any>();
 
   const [banks, setBanks] = useState<any>([]);
@@ -34,7 +34,7 @@ function BankList() {
 
   const onItemPress = (item: TBank) => {
     navigation.navigate({
-      name: ADD_ACCOUNT,
+      name: ROUTES.ADD_ACCOUNT,
       params: { bankId: item.id },
       merge: true,
     });

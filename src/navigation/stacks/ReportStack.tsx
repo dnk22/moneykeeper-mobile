@@ -1,13 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { EXPENSE_INCOME_REPORT, HOME_REPORT } from 'utils/constants/navigation.constant';
 import ExpenseIncomeReport from 'features/Report/ExpenseIncome';
 import HomeReport from 'features/Report';
 import { useCustomTheme } from 'resources/theme';
-
-// import route component
+import { ROUTES } from 'navigation/constants/routes';
 // import ChangeView from './ChangeView';
 import { ReportParamList } from 'navigation/types';
-import CommonStack from './CommonStack';
+import SharedScreens from './SharedStacks';
 
 //set up routes
 const ReportStack = createNativeStackNavigator<ReportParamList>();
@@ -17,7 +15,7 @@ function ReportNavigation() {
 
   return (
     <ReportStack.Navigator
-      initialRouteName={HOME_REPORT}
+      initialRouteName={ROUTES.HOME_REPORT}
       screenOptions={{
         headerStyle: {
           backgroundColor: colors.primary,
@@ -26,7 +24,7 @@ function ReportNavigation() {
       }}
     >
       <ReportStack.Screen
-        name={HOME_REPORT}
+        name={ROUTES.HOME_REPORT}
         component={HomeReport}
         options={{
           title: 'Phân tích và báo cáo',
@@ -35,15 +33,13 @@ function ReportNavigation() {
       />
 
       <ReportStack.Screen
-        name={EXPENSE_INCOME_REPORT}
+        name={ROUTES.EXPENSE_INCOME_REPORT}
         component={ExpenseIncomeReport}
         options={{
           title: 'Thu & Chi',
         }}
       />
-      <ReportStack.Group>
-        {CommonStack({ Stack: ReportStack, parentName: 'HOME_REPORT' })}
-      </ReportStack.Group>
+      {SharedScreens({ stack: ReportStack, screens: 'all' })}
     </ReportStack.Navigator>
   );
 }

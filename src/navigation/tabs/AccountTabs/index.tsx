@@ -1,6 +1,5 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { SAVINGS, WALLET } from 'utils/constants/navigation.constant';
-
+import { ROUTES } from 'navigation/constants/routes';
 import Accounts from 'features/AccountDashboard';
 import Savings from 'features/Savings';
 import Loading from 'components/Loading';
@@ -13,7 +12,7 @@ function AccountTab() {
   const { colors } = useCustomTheme();
   return (
     <Tab.Navigator
-      key={'AccountTabbar'}
+      key={ROUTES.ACCOUNT_TAB}
       screenOptions={{
         lazy: true,
         lazyPlaceholder: () => <Loading style={{ flex: 1 }} />,
@@ -26,16 +25,16 @@ function AccountTab() {
       }}
     >
       <Tab.Screen
-        name={WALLET}
+        name={ROUTES.WALLET}
         options={{
           title: 'Ví Tiền',
         }}
-        key={WALLET}
+        key={ROUTES.WALLET}
         component={Accounts}
       />
       <Tab.Screen
-        key={SAVINGS}
-        name={SAVINGS}
+        key={ROUTES.SAVINGS}
+        name={ROUTES.SAVINGS}
         options={{ title: 'Sổ Tiết kiệm' }}
         component={Savings}
       />

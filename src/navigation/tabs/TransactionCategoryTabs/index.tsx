@@ -1,12 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native';
-import {
-  EXPENSE_CATEGORY,
-  INCOME_CATEGORY,
-  LEND_BORROW,
-  TransactionCategoryContext,
-  UPDATE_TRANSACTION_CATEGORY,
-} from 'utils/constants/navigation.constant';
+import { ROUTES, TransactionCategoryContext } from 'navigation/constants/routes';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useCustomTheme } from 'resources/theme';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
@@ -24,8 +18,8 @@ import styles from './styles';
 const TabBar = createMaterialTopTabNavigator<TransactionCategoryListParams>();
 
 const mapTransactionCategoryType = {
-  [EXPENSE_CATEGORY]: TRANSACTION_CATEGORY_TYPE.EXPENSE,
-  [INCOME_CATEGORY]: TRANSACTION_CATEGORY_TYPE.INCOME,
+  [ROUTES.EXPENSE_CATEGORY]: TRANSACTION_CATEGORY_TYPE.EXPENSE,
+  [ROUTES.INCOME_CATEGORY]: TRANSACTION_CATEGORY_TYPE.INCOME,
 };
 
 function TransactionCategoryTaBBar({ navigation, route }: any) {
@@ -38,9 +32,9 @@ function TransactionCategoryTaBBar({ navigation, route }: any) {
   useEffect(() => {
     const routeName = focusedRoute(route);
     const mapTitle: Record<string, string> = {
-      [INCOME_CATEGORY]: 'Danh Mục Thu',
-      [EXPENSE_CATEGORY]: 'Danh Mục Chi',
-      [LEND_BORROW]: 'Danh Mục Vay Mượn',
+      [ROUTES.INCOME_CATEGORY]: 'Danh Mục Thu',
+      [ROUTES.EXPENSE_CATEGORY]: 'Danh Mục Chi',
+      [ROUTES.LEND_BORROW]: 'Danh Mục Vay Mượn',
     };
     navigation.setOptions({
       headerTitle: mapTitle[routeName],
@@ -48,7 +42,7 @@ function TransactionCategoryTaBBar({ navigation, route }: any) {
         <TransactionCategoryHeaderRight
           isUpdateMode={isUpdate}
           onPress={onHeaderButtonPress}
-          show={routeName !== LEND_BORROW}
+          show={routeName !== ROUTES.LEND_BORROW}
         />
       ),
     });
@@ -59,20 +53,22 @@ function TransactionCategoryTaBBar({ navigation, route }: any) {
   };
 
   const focusedRoute = useCallback(
-    (route: any) => getFocusedRouteNameFromRoute(route) ?? EXPENSE_CATEGORY,
+    (route: any) => getFocusedRouteNameFromRoute(route) ?? ROUTES.EXPENSE_CATEGORY,
     [route],
   );
 
   const handleOnNavigateToScreenAdd = () => {
-    navigation.navigate(UPDATE_TRANSACTION_CATEGORY, {
-      type: mapTransactionCategoryType[getFocusedRouteNameFromRoute(route)],
+    navigation.navigate(ROUTES.UPDATE_TRANSACTION_CATEGORY, {
+      type: mapTransactionCategoryType[
+        getFocusedRouteNameFromRoute(route) ?? ROUTES.EXPENSE_CATEGORY
+      ],
     });
   };
 
   return (
     <TransactionCategoryContext.Provider value={{ isUpdate }}>
       <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface }}>
-        {focusedRoute(route) !== LEND_BORROW && isUpdate && (
+        {focusedRoute(route) !== ROUTES.LEND_BORROW && isUpdate && (
           <PressableHaptic
             style={[styles.addIcon, { backgroundColor: colors.primary }]}
             onPress={handleOnNavigateToScreenAdd}
@@ -81,7 +77,7 @@ function TransactionCategoryTaBBar({ navigation, route }: any) {
           </PressableHaptic>
         )}
         <TabBar.Navigator
-          initialRouteName={EXPENSE_CATEGORY}
+          initialRouteName={ROUTES.EXPENSE_CATEGORY}
           tabBarPosition="bottom"
           screenOptions={{
             tabBarPressOpacity: 0.8,
@@ -95,18 +91,18 @@ function TransactionCategoryTaBBar({ navigation, route }: any) {
             },
           }}
         >
-          {(!isTabHide || isTabHide !== INCOME_CATEGORY) && (
-            <TabBar.Screen name={INCOME_CATEGORY} options={{ title: 'Danh mục thu' }}>
+          {(!isTabHide || isTabHide !== ROUTES.INCOME_CATEGORY) && (
+            <TabBar.Screen name={ROUTES.INCOME_CATEGORY} options={{ title: 'Danh mục thu' }}>
               {() => <ExpenseIncomeTab type={TRANSACTION_CATEGORY_TYPE.INCOME} />}
             </TabBar.Screen>
           )}
-          {(!isTabHide || isTabHide !== EXPENSE_CATEGORY) && (
-            <TabBar.Screen name={EXPENSE_CATEGORY} options={{ title: 'Danh mục chi' }}>
+          {(!isTabHide || isTabHide !== ROUTES.EXPENSE_CATEGORY) && (
+            <TabBar.Screen name={ROUTES.EXPENSE_CATEGORY} options={{ title: 'Danh mục chi' }}>
               {() => <ExpenseIncomeTab type={TRANSACTION_CATEGORY_TYPE.EXPENSE} />}
             </TabBar.Screen>
           )}
           {!isUpdate && !isTabHide && (
-            <TabBar.Screen name={LEND_BORROW} options={{ title: 'Vay mượn' }}>
+            <TabBar.Screen name={ROUTES.LEND_BORROW} options={{ title: 'Vay mượn' }}>
               {() => <LendAndBorrowTab />}
             </TabBar.Screen>
           )}

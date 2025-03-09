@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
-import { ACCOUNT_CREDIT_CARD_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
 import { AccountStackParamListProps } from 'navigation/types';
 import ButtonText from 'navigation/components/ButtonText';
 import { useAppSelector } from 'store/index';
@@ -17,8 +17,8 @@ import SvgIcon from 'components/SvgIcon';
 import styles from './styles';
 
 type CreditCardAccountProps = {
-  navigation: AccountStackParamListProps<typeof ACCOUNT_CREDIT_CARD_DETAIL>['navigation'];
-  route: AccountStackParamListProps<typeof ACCOUNT_CREDIT_CARD_DETAIL>['route'];
+  navigation: AccountStackParamListProps<typeof ROUTES.ACCOUNT_CREDIT_CARD_DETAIL>['navigation'];
+  route: AccountStackParamListProps<typeof ROUTES.ACCOUNT_CREDIT_CARD_DETAIL>['route'];
 };
 
 function CreditCardAccount({ navigation, route }: CreditCardAccountProps) {
@@ -37,7 +37,7 @@ function CreditCardAccount({ navigation, route }: CreditCardAccountProps) {
         isSelectMode ? (
           <ButtonText title="Xóa" onPress={onHandleDeleteMultiTransaction} />
         ) : (
-         <HeaderBarConfig onPressSelectMode={onHandleSelectMode} />
+          <HeaderBarConfig onPressSelectMode={onHandleSelectMode} />
         ),
     });
   }, [isSelectMode]);
@@ -53,7 +53,7 @@ function CreditCardAccount({ navigation, route }: CreditCardAccountProps) {
   };
 
   const handleOnCreateTransaction = () => {
-    navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, { accountId: params?.accountId });
+    navigation.navigate(ROUTES.CREATE_TRANSACTION_FROM_ACCOUNT, { accountId: params?.accountId });
   };
 
   const onRefreshData = () => {

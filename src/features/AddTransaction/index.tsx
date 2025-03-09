@@ -6,7 +6,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { TransactionParamListProps } from 'navigation/types';
 import { FormProvider, useForm } from 'react-hook-form';
 import { TTransactions } from 'database/types';
-import { ADD_TRANSACTION } from 'utils/constants/navigation.constant';
 import { getTransactionById } from 'services/api/transactions';
 import { getFirstAccount } from 'services/api/accounts';
 import { useAppSelector } from 'store/index';
@@ -19,11 +18,12 @@ import ExpenseAndIncome from './ExpenseAndIncome';
 import Transfer from './Transfer';
 import Adjustment from './Adjustment';
 import { defaultValues } from './constant';
+import { ROUTES } from 'navigation/constants/routes';
 import styles from './styles';
 
 type AddTransactionsProps = {
-  navigation: TransactionParamListProps<typeof ADD_TRANSACTION>['navigation'];
-  route: TransactionParamListProps<typeof ADD_TRANSACTION>['route'];
+  navigation: TransactionParamListProps<typeof ROUTES.ADD_TRANSACTION>['navigation'];
+  route: TransactionParamListProps<typeof ROUTES.ADD_TRANSACTION>['route'];
 };
 function AddTransactions({ navigation, route }: AddTransactionsProps) {
   const { params, name: routerName } = route;
@@ -155,7 +155,7 @@ function AddTransactions({ navigation, route }: AddTransactionsProps) {
 
   const onSubmitSuccess = () => {
     // navigate to previous screen
-    if (navigation.canGoBack() && routerName !== ADD_TRANSACTION) {
+    if (navigation.canGoBack() && routerName !== ROUTES.ADD_TRANSACTION) {
       navigation.goBack();
       return;
     }

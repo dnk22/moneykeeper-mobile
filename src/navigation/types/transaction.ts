@@ -1,10 +1,10 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TRANSACTION_TYPE } from 'utils/constants';
-import { ADD_TRANSACTION } from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
 
 /** transaction stack navigation */
 export type TransactionParamList = {
-  [ADD_TRANSACTION]: {
+  [ROUTES.ADD_TRANSACTION]: {
     transactionId?: string;
     categoryId?: string;
     accountId?: string;

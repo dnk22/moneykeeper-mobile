@@ -7,10 +7,8 @@ import TouchableHighlightComponent from 'components/TouchableHighlight';
 import IconComponent from 'components/IconComponent';
 import { useNavigation } from '@react-navigation/native';
 import { AccountStackParamListProps } from 'navigation/types';
-import {
-  ACCOUNT_NORMAL_DETAIL,
-  CREATE_TRANSACTION_FROM_ACCOUNT,
-} from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
+
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
 import { deleteTransactionById } from 'services/api/transactions';
@@ -32,11 +30,11 @@ function TransactionItem({
   const dispatch = useAppDispatch();
   const tapPosition = useRef<number>(0);
   const navigation =
-    useNavigation<AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['navigation']>();
+    useNavigation<AccountStackParamListProps<typeof ROUTES.ACCOUNT_NORMAL_DETAIL>['navigation']>();
 
   const onTransactionItemPress = (e: any) => {
     if (e.nativeEvent.locationX === tapPosition.current) {
-      navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, { transactionId: data?.id });
+      navigation.navigate(ROUTES.CREATE_TRANSACTION_FROM_ACCOUNT, { transactionId: data?.id });
     }
   };
 

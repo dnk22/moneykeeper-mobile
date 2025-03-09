@@ -6,13 +6,13 @@ import { useNavigation } from '@react-navigation/native';
 import { getExpenseIncomeInRangeDate } from 'database/querying';
 import { formatNumber } from 'utils/math';
 import { MATERIAL_COLOR } from 'utils/constants';
-import { EXPENSE_INCOME_DETAIL, TRANSACTIONS } from 'utils/constants/navigation.constant';
 import PressableHaptic from 'components/PressableHaptic';
 import SvgIcon from 'components/SvgIcon';
 import ProgressLineChart from 'components/ProgressLineChart';
 import RNText from 'components/Text';
 import { styles } from './styles';
 import { AddSquare } from 'iconsax-react-native';
+import { ROUTES } from 'navigation/constants/routes';
 
 const dateViewSelect = [
   { title: 'Hôm nay', id: 'now' },
@@ -75,12 +75,12 @@ function ExpenseAndIncome({ title }: { title: string }) {
 
   const onNavigationToReport = () => {
     if (data.categoryGroup.length) {
-      navigation.navigate(EXPENSE_INCOME_DETAIL, { dateView: renderMenuTitle });
+      navigation.navigate(ROUTES.EXPENSE_INCOME_DETAIL, { dateView: renderMenuTitle });
     }
   };
 
   const onAddTransactionNow = () => {
-    navigation.navigate(TRANSACTIONS);
+    navigation.navigate(ROUTES.TRANSACTIONS);
   };
 
   return (

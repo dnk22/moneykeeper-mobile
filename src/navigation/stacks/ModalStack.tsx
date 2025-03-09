@@ -1,11 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ModalStackParamList } from 'navigation/types/modalStack';
-import {
-  BANK_NAVIGATION,
-  TRANSACTION_CATEGORY,
-  WIDGET_SETTINGS,
-} from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
 import WidgetSettings from 'features/Dashboard/WidgetSettings';
 import BankNavigation from './BankStack';
 import TransactionCategoryNavigation from './TransactionCategoryStack';
@@ -20,10 +16,13 @@ export default function ModalStackScreen() {
         presentation: 'modal',
       }}
     >
-      <ModalStack.Screen name={BANK_NAVIGATION} component={BankNavigation} />
-      <ModalStack.Screen name={TRANSACTION_CATEGORY} component={TransactionCategoryNavigation} />
+      <ModalStack.Screen name={ROUTES.BANK_NAVIGATION} component={BankNavigation} />
       <ModalStack.Screen
-        name={WIDGET_SETTINGS}
+        name={ROUTES.TRANSACTION_CATEGORY}
+        component={TransactionCategoryNavigation}
+      />
+      <ModalStack.Screen
+        name={ROUTES.WIDGET_SETTINGS}
         component={WidgetSettings}
         options={{
           title: 'Chỉnh sửa DS Widget',

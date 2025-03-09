@@ -1,10 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
-import {
-  ACCOUNT_NORMAL_DETAIL,
-  CREATE_TRANSACTION_FROM_ACCOUNT,
-} from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
 import { AccountStackParamListProps } from 'navigation/types';
 import ButtonText from 'navigation/components/ButtonText';
 import Summary from './Summary';
@@ -15,8 +12,8 @@ import PressableHaptic from 'components/PressableHaptic';
 import SvgIcon from 'components/SvgIcon';
 
 type NormalAccountProps = {
-  navigation: AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['navigation'];
-  route: AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['route'];
+  navigation: AccountStackParamListProps<typeof ROUTES.ACCOUNT_NORMAL_DETAIL>['navigation'];
+  route: AccountStackParamListProps<typeof ROUTES.ACCOUNT_NORMAL_DETAIL>['route'];
 };
 
 function NormalAccount({ navigation, route }: NormalAccountProps) {
@@ -42,7 +39,7 @@ function NormalAccount({ navigation, route }: NormalAccountProps) {
   };
 
   const handleOnCreateTransaction = () => {
-    navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, { accountId: params?.accountId });
+    navigation.navigate(ROUTES.CREATE_TRANSACTION_FROM_ACCOUNT, { accountId: params?.accountId });
   };
 
   return (

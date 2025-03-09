@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Loading from 'components/Loading';
 import { useCustomTheme } from 'resources/theme';
-import { DEBT, LOAN } from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
 import DebtLoanSummary from './Summary';
 import styles from './styles';
 
@@ -26,14 +26,14 @@ function DebtLoanReport() {
         }}
       >
         <Tab.Screen
-          name={LOAN}
+          name={ROUTES.LOAN}
           options={{
             title: 'Cho vay',
           }}
         >
           {(props) => <DebtLoanSummary isDebt {...props} />}
         </Tab.Screen>
-        <Tab.Screen name={DEBT} options={{ title: 'Khoản nợ' }}>
+        <Tab.Screen name={ROUTES.DEBT} options={{ title: 'Khoản nợ' }}>
           {(props) => <DebtLoanSummary {...props} />}
         </Tab.Screen>
       </Tab.Navigator>

@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { BANK_TYPE } from 'utils/constants';
-import { BANK_HOME_LIST } from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
 
 export type BankParams = {
-  [BANK_HOME_LIST]: {
+  [ROUTES.BANK_HOME_LIST]: {
     type: BANK_TYPE;
     returnScreen: string;
   };

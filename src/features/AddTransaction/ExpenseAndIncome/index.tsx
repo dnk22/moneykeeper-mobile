@@ -3,15 +3,7 @@ import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions, TTransactionsCategory } from 'database/types';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
-import {
-  ADD_TRANSACTION,
-  CREATE_TRANSACTION_FROM_ACCOUNT,
-  EXPENSE_CATEGORY,
-  INCOME_CATEGORY,
-  LEND_BORROW,
-  TRANSACTION_CATEGORY,
-  TRANSACTION_CATEGORY_LIST,
-} from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
 import { TransactionParamListProps } from 'navigation/types';
 import HeaderIcon from 'navigation/components/HeaderIcon';
 import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constants';
@@ -39,9 +31,9 @@ import styles from '../styles.common';
 function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
   const { colors } = useCustomTheme();
   const navigation =
-    useNavigation<TransactionParamListProps<typeof ADD_TRANSACTION>['navigation']>();
+    useNavigation<TransactionParamListProps<typeof ROUTES.ADD_TRANSACTION>['navigation']>();
   const { name: routerName } =
-    useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
+    useRoute<TransactionParamListProps<typeof ROUTES.ADD_TRANSACTION>['route']>();
   const lendBorrowData = useAppSelector((state) => selectLendBorrowData(state));
   const { control, handleSubmit, setValue, getValues, watch, reset } = useFormContext<any>();
 
@@ -59,7 +51,7 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
 
   useFocusEffect(
     useCallback(() => {
-      if (routerName === CREATE_TRANSACTION_FROM_ACCOUNT && !params?.transactionId) {
+      if (routerName === ROUTES.CREATE_TRANSACTION_FROM_ACCOUNT && !params?.transactionId) {
         setValue('dateTimeAt', new Date());
       }
     }, [routerName, params?.transactionId]),
@@ -102,18 +94,18 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
 
   const handleOnCategoryPress = (item?: TTransactionsCategory) => {
     const { transactionType } = getValues();
-    let screenTarget = EXPENSE_CATEGORY;
+    let screenTarget = ROUTES.EXPENSE_CATEGORY;
     if (Object.values(TRANSACTION_LEND_BORROW_NAME).includes(item?.categoryName)) {
-      screenTarget = LEND_BORROW;
+      screenTarget = ROUTES.LEND_BORROW;
     } else {
       const mapScreen: any = {
-        [TRANSACTION_TYPE.EXPENSE]: EXPENSE_CATEGORY,
-        [TRANSACTION_TYPE.INCOME]: INCOME_CATEGORY,
+        [TRANSACTION_TYPE.EXPENSE]: ROUTES.EXPENSE_CATEGORY,
+        [TRANSACTION_TYPE.INCOME]: ROUTES.INCOME_CATEGORY,
       };
       screenTarget = mapScreen[transactionType];
     }
-    navigation.navigate(TRANSACTION_CATEGORY, {
-      screen: TRANSACTION_CATEGORY_LIST,
+    navigation.navigate(ROUTES.TRANSACTION_CATEGORY, {
+      screen: ROUTES.TRANSACTION_CATEGORY_LIST,
       params: {
         screen: screenTarget,
         params: {

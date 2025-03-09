@@ -1,12 +1,12 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { DASHBOARDHOME, NOTIFICATION } from 'utils/constants/navigation.constant';
 import { DashboardParamList } from 'navigation/types';
 import { useCustomTheme } from 'resources/theme';
+import { ROUTES } from 'navigation/constants/routes';
 
 // import route component
 import Dashboard from 'features/Dashboard';
 import Notification from 'features/Notification';
-import CommonStack from '../stacks/CommonStack';
+import SharedScreens from './SharedStacks';
 
 //set up routes
 const TransactionStack = createNativeStackNavigator<DashboardParamList>();
@@ -16,7 +16,7 @@ function DashboardNavigation() {
 
   return (
     <TransactionStack.Navigator
-      initialRouteName={DASHBOARDHOME}
+      initialRouteName={ROUTES.DASHBOARD_HOME}
       screenOptions={{
         headerStyle: {
           backgroundColor: colors.primary,
@@ -25,16 +25,17 @@ function DashboardNavigation() {
       }}
     >
       <TransactionStack.Screen
-        name={DASHBOARDHOME}
+        name={ROUTES.DASHBOARD_HOME}
         component={Dashboard}
         options={{ headerShown: false }}
       />
       <TransactionStack.Screen
-        name={NOTIFICATION}
+        name={ROUTES.NOTIFICATION}
         component={Notification}
         options={{ title: 'Thông báo' }}
       />
-      <TransactionStack.Group>{CommonStack({ Stack: TransactionStack })}</TransactionStack.Group>
+      {/* Shared screens */}
+      {SharedScreens({ stack: TransactionStack, screens: 'all' })}
     </TransactionStack.Navigator>
   );
 }

@@ -1,21 +1,15 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { ROUTES } from 'navigation/constants/routes';
 import { AccountStackParamList } from './account';
 import { TransactionParamList } from './transaction';
-import {
-  DASHBOARD,
-  ACCOUNT,
-  TRANSACTIONS,
-  REPORT,
-  SETTINGS,
-} from 'utils/constants/navigation.constant';
 
 export type MainTabStackParamsList = {
-  [DASHBOARD]: undefined;
-  [ACCOUNT]: NavigatorScreenParams<AccountStackParamList>;
-  [TRANSACTIONS]: NavigatorScreenParams<TransactionParamList>;
-  [REPORT]: undefined;
-  [SETTINGS]: undefined;
+  [ROUTES.DASHBOARD]: undefined;
+  [ROUTES.ACCOUNT]: NavigatorScreenParams<AccountStackParamList>;
+  [ROUTES.TRANSACTIONS]: NavigatorScreenParams<TransactionParamList>;
+  [ROUTES.REPORT]: undefined;
+  [ROUTES.SETTINGS]: undefined;
 };
 export type BottomTabStackListProps<T extends keyof MainTabStackParamsList> = BottomTabScreenProps<
   MainTabStackParamsList,

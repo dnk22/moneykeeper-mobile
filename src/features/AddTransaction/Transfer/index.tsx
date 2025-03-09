@@ -3,12 +3,12 @@ import { Pressable, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
 import { useFormContext } from 'react-hook-form';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import HeaderIcon from 'navigation/components/HeaderIcon';
 import { deleteTransactionById, updateTransactionTransfer } from 'services/api/transactions';
 import { showToast } from 'utils/system';
 import { TransactionParamListProps } from 'navigation/types';
-import { ADD_TRANSACTION } from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
 import MoreDetail from '../common/MoreDetail';
 import AccountSelect from '../common/AccountSelect';
 import Fee from '../common/Fee';
@@ -26,7 +26,7 @@ import RNText from 'components/Text';
 function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
   const { colors } = useCustomTheme();
   const navigation =
-    useNavigation<TransactionParamListProps<typeof ADD_TRANSACTION>['navigation']>();
+    useNavigation<TransactionParamListProps<typeof ROUTES.ADD_TRANSACTION>['navigation']>();
   const { control, handleSubmit, setValue, watch, reset, getValues } = useFormContext<any>();
 
   // Use `setOptions` to update the button that submit form

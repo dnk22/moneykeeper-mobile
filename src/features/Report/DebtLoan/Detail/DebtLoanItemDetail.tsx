@@ -6,9 +6,9 @@ import { useCustomTheme } from 'resources/theme';
 import { MATERIAL_COLOR } from 'utils/constants';
 import { formatNumber } from 'utils/math';
 import { useNavigation } from '@react-navigation/native';
-import { CREATE_TRANSACTION_FROM_ACCOUNT } from 'utils/constants/navigation.constant';
-import styles from './styles';
 import IconComponent from 'components/IconComponent';
+import { ROUTES } from 'navigation/constants/routes';
+import styles from './styles';
 
 function DebtLoanItemDetail({
   item,
@@ -24,7 +24,7 @@ function DebtLoanItemDetail({
   const randomNumber = Math.floor(Math.random() * 50) + 1;
 
   const onNavigationToTransactionDetail = (transactionId: string) => {
-    navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, {
+    navigation.navigate(ROUTES.CREATE_TRANSACTION_FROM_ACCOUNT, {
       transactionId,
     });
   };

@@ -3,10 +3,8 @@ import { Alert, View } from 'react-native';
 import isEqual from 'react-fast-compare';
 import { useNavigation } from '@react-navigation/native';
 import { AccountStackParamListProps } from 'navigation/types';
-import {
-  ACCOUNT_NORMAL_DETAIL,
-  CREATE_TRANSACTION_FROM_ACCOUNT,
-} from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
+
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
 import { deleteTransactionById } from 'services/api/transactions';
@@ -30,12 +28,12 @@ function TransactionItem({
   const { colors } = useCustomTheme();
   const tapPosition = useRef<number>(0);
   const navigation =
-    useNavigation<AccountStackParamListProps<typeof ACCOUNT_NORMAL_DETAIL>['navigation']>();
+    useNavigation<AccountStackParamListProps<typeof ROUTES.ACCOUNT_NORMAL_DETAIL>['navigation']>();
   const { onRefreshData } = useContext(TransactionHistoryContext);
 
   const onTransactionItemPress = (e: any) => {
     if (e.nativeEvent.locationX === tapPosition.current) {
-      navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, { transactionId: data?.id });
+      navigation.navigate(ROUTES.CREATE_TRANSACTION_FROM_ACCOUNT, { transactionId: data?.id });
     }
   };
 

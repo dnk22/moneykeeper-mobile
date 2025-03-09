@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import InputSelection from 'components/InputSelection';
 import { BankModel } from 'database/models';
-import { ACCOUNT, BANK_HOME_LIST, BANK_NAVIGATION } from 'utils/constants/navigation.constant';
 import { ACCOUNT_CATEGORY_ID, BANK_TYPE } from 'utils/constants';
 import { getBankById } from 'services/api/banks';
+import { ROUTES } from 'navigation/constants/routes';
 
 type AccountBankSelectProps = {
   accountType: ACCOUNT_CATEGORY_ID;
@@ -42,9 +42,9 @@ function AccountBankSelect({
       default:
         break;
     }
-    navigation.navigate(BANK_NAVIGATION, {
-      screen: BANK_HOME_LIST,
-      params: { type: bankType, returnScreen: ACCOUNT },
+    navigation.navigate(ROUTES.BANK_NAVIGATION, {
+      screen: ROUTES.BANK_HOME_LIST,
+      params: { type: bankType, returnScreen: ROUTES.ADD_ACCOUNT },
     });
   };
 

@@ -1,20 +1,17 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import {
-  BANK_NAVIGATION,
-  TRANSACTION_CATEGORY,
-  WIDGET_SETTINGS,
-} from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
+
 import { BankParams } from './bank';
 import { TransactionCategoryParams } from './transactionCategory';
 
 export type ModalStackParamList = {
-  [BANK_NAVIGATION]: NavigatorScreenParams<BankParams>;
-  [TRANSACTION_CATEGORY]: NavigatorScreenParams<TransactionCategoryParams>;
-  [WIDGET_SETTINGS]: undefined;
+  [ROUTES.BANK_NAVIGATION]: NavigatorScreenParams<BankParams>;
+  [ROUTES.TRANSACTION_CATEGORY]: NavigatorScreenParams<TransactionCategoryParams>;
+  [ROUTES.WIDGET_SETTINGS]: undefined;
 };
 
-export type BankParamsProps<T extends keyof ModalStackParamList> = NativeStackScreenProps<
+export type ModalStackParamsProps<T extends keyof ModalStackParamList> = NativeStackScreenProps<
   ModalStackParamList,
   T
 >;

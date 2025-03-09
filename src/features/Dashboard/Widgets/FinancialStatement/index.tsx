@@ -7,12 +7,12 @@ import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import { getCurrentBalanceAllAccount, queryGetAllBalance } from 'database/querying';
 import { formatNumber } from 'utils/math';
-import { FINANCE_STATEMENT, NOTIFICATION } from 'utils/constants/navigation.constant';
 import { getAllTriggerNotifications } from 'share/notifications';
 import { useAppDispatch } from 'store/index';
 import { setViewType } from 'features/Report/FinancialStatement/reducer/financialStatement.slice';
 import { ArrowRight2, NotificationBing, Repeat } from 'iconsax-react-native';
 import { styles } from './styles';
+import { ROUTES } from 'navigation/constants/routes';
 
 function FinancialStatement() {
   const { colors } = useCustomTheme();
@@ -51,13 +51,13 @@ function FinancialStatement() {
     <View style={styles.container}>
       <View style={[styles.top, { backgroundColor: colors.primary }]}>
         <RNText preset={'textLarge'} color="white">{`${hello}, Duy!`}</RNText>
-        <Pressable onPress={() => onNavigateToScreen(NOTIFICATION)} style={styles.notifications}>
+        <Pressable onPress={() => onNavigateToScreen(ROUTES.NOTIFICATION)} style={styles.notifications}>
           <NotificationBing size={25} color="white" variant="Broken" />
         </Pressable>
       </View>
       <View style={[styles.bottom, { backgroundColor: colors.primary }]}>
         <View style={{ position: 'relative' }}>
-          <Pressable onPress={() => onNavigateToScreen(FINANCE_STATEMENT)}>
+          <Pressable onPress={() => onNavigateToScreen(ROUTES.FINANCE_STATEMENT)}>
             <View style={[styles.widgetCard, { backgroundColor: colors.surface }]}>
               <View style={[styles.cardTopOutline, { backgroundColor: colors.primary }]}>
                 <View style={[styles.cardTop, { backgroundColor: colors.surface }]}>

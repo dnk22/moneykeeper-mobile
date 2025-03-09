@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ADD_TRANSACTION } from 'utils/constants/navigation.constant';
 import { TransactionParamList } from 'navigation/types';
+import { ROUTES } from 'navigation/constants/routes';
 
 // import route component
 import AddTransactions from 'features/AddTransaction';
@@ -13,9 +13,9 @@ function TransactionNavigation() {
   const { colors } = useCustomTheme();
 
   return (
-    <TransactionStack.Navigator initialRouteName={ADD_TRANSACTION}>
+    <TransactionStack.Navigator initialRouteName={ROUTES.ADD_TRANSACTION}>
       <TransactionStack.Screen
-        name={ADD_TRANSACTION}
+        name={ROUTES.ADD_TRANSACTION}
         component={AddTransactions}
         options={{
           headerStyle: {

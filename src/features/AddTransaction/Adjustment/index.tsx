@@ -10,13 +10,7 @@ import { showToast } from 'utils/system';
 import { formatNumber } from 'utils/math';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
 import { TransactionParamListProps } from 'navigation/types';
-import {
-  ADD_TRANSACTION,
-  EXPENSE_CATEGORY,
-  INCOME_CATEGORY,
-  TRANSACTION_CATEGORY,
-  TRANSACTION_CATEGORY_LIST,
-} from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
 import { queryGetCurrentBalance } from 'database/querying';
 import MoreDetail from '../common/MoreDetail';
 import AccountSelect from '../common/AccountSelect';
@@ -37,9 +31,9 @@ function Adjustment({ params, onSubmitSuccess }: AddTransactionType) {
   const { colors } = useCustomTheme();
   const prevCategoryType = useRef<TTransactionsCategory>(null);
   const navigation =
-    useNavigation<TransactionParamListProps<typeof ADD_TRANSACTION>['navigation']>();
+    useNavigation<TransactionParamListProps<typeof ROUTES.ADD_TRANSACTION>['navigation']>();
   const { name: routerName } =
-    useRoute<TransactionParamListProps<typeof ADD_TRANSACTION>['route']>();
+    useRoute<TransactionParamListProps<typeof ROUTES.ADD_TRANSACTION>['route']>();
   const { control, handleSubmit, setValue, watch, getValues, reset } = useFormContext<any>();
   const [latestCurrentBalance, setLatestCurrentBalance] = useState(0);
 
@@ -114,10 +108,10 @@ function Adjustment({ params, onSubmitSuccess }: AddTransactionType) {
   };
 
   const handleOnCategoryPress = () => {
-    navigation.navigate(TRANSACTION_CATEGORY, {
-      screen: TRANSACTION_CATEGORY_LIST,
+    navigation.navigate(ROUTES.TRANSACTION_CATEGORY, {
+      screen: ROUTES.TRANSACTION_CATEGORY_LIST,
       params: {
-        screen: differenceValue <= 0 ? EXPENSE_CATEGORY : INCOME_CATEGORY,
+        screen: differenceValue <= 0 ? ROUTES.EXPENSE_CATEGORY : ROUTES.INCOME_CATEGORY,
         params: { idActive: getValues('categoryId'), returnScreen: routerName },
         tabHide: differenceValue <= 0 ? INCOME_CATEGORY : EXPENSE_CATEGORY,
       },

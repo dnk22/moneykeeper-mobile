@@ -2,7 +2,7 @@ import { IModalComponentProps } from 'components/Modal';
 import { Alert, View } from 'react-native';
 import { TAccount } from 'database/types';
 import { useNavigation } from '@react-navigation/native';
-import { ADD_ACCOUNT, CREATE_TRANSACTION_FROM_ACCOUNT } from 'utils/constants/navigation.constant';
+import { ROUTES } from 'navigation/constants/routes';
 import { changeAccountStatusById, deleteAccountById } from 'services/api/accounts';
 import { TRANSACTION_TYPE } from 'utils/constants';
 import { useAppDispatch } from 'store/index';
@@ -35,25 +35,25 @@ function ItemSettingsModal({
   const onItemPress = (type: string) => {
     switch (type) {
       case TRANSFER:
-        navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, {
+        navigation.navigate(ROUTES.CREATE_TRANSACTION_FROM_ACCOUNT, {
           accountId: account.id,
           transactionType: TRANSACTION_TYPE.TRANSFER,
         });
         break;
       case ADJUSTMENT:
-        navigation.navigate(CREATE_TRANSACTION_FROM_ACCOUNT, {
+        navigation.navigate(ROUTES.CREATE_TRANSACTION_FROM_ACCOUNT, {
           accountId: account.id,
           transactionType: TRANSACTION_TYPE.ADJUSTMENT,
         });
         break;
       case EDIT:
-        navigation.navigate(ADD_ACCOUNT, { accountId: account.id });
+        navigation.navigate(ROUTES.ADD_ACCOUNT, { accountId: account.id });
         break;
       case DELETE:
         onConfirmDelete();
         break;
       default:
-        if (account) {
+        if (account?.id) {
           changeAccountStatusById(account.id).then(() => onActionPressDone());
         }
         break;
@@ -65,7 +65,7 @@ function ItemSettingsModal({
     account?.id &&
       deleteAccountById(account.id)
         .then(() => {
-          dispatch(removeAccountStatement(account?.id));
+          account?.id && dispatch(removeAccountStatement(account?.id));
           onToggleModal();
           onActionPressDone();
           showToast({
