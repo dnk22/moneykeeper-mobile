@@ -26,7 +26,7 @@ import {
   updateAccountNotification,
   updateAccountStatement,
 } from 'store/account/account.slice';
-import { AccountStackParamListProps } from 'utils/types/navigation';
+import { AccountStackParamListProps } from 'navigation/types';
 import Notifications from './Notifications';
 import StatementModalPicker from './StatementModalPicker';
 import AccountTypeSelect from './AccountTypeSelect';

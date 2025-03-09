@@ -13,7 +13,7 @@ import TransactionNavigation from '../stacks/TransactionStack';
 import ReportNavigation from '../stacks/ReportStack';
 import DashboardNavigation from '../stacks/DashboardStack';
 import SettingsNavigation from '../stacks/SettingsStack';
-import { MainTabStackParamsList } from 'utils/types/navigation';
+import { MainTabStackParamsList } from 'navigation/types';
 import { Home2, Wallet3, DocumentFilter, ElementPlus, AddCircle } from 'iconsax-react-native';
 import MainBottomBar from 'navigation/components/MainBottomBar';
 

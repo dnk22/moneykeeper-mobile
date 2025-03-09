@@ -2,7 +2,7 @@ import { memo, useContext, useRef } from 'react';
 import { Alert, View } from 'react-native';
 import isEqual from 'react-fast-compare';
 import { useNavigation } from '@react-navigation/native';
-import { AccountStackParamListProps } from 'utils/types/navigation';
+import { AccountStackParamListProps } from 'navigation/types';
 import {
   ACCOUNT_NORMAL_DETAIL,
   CREATE_TRANSACTION_FROM_ACCOUNT,

@@ -11,7 +11,7 @@ import SvgIcon from 'components/SvgIcon';
 import { useCustomTheme } from 'resources/theme';
 import { formatNumber } from 'utils/math';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constants';
-import { AccountStackParamListProps } from 'utils/types/navigation';
+import { AccountStackParamListProps } from 'navigation/types';
 import styles from './styles';
 
 type ItemProps = {

@@ -6,7 +6,7 @@ import { useCustomTheme } from 'resources/theme';
 
 // import route component
 // import ChangeView from './ChangeView';
-import { ReportParamList } from 'utils/types/navigation';
+import { ReportParamList } from 'navigation/types';
 import CommonStack from './CommonStack';
 
 //set up routes

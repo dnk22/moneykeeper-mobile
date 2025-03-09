@@ -3,7 +3,7 @@ import { APPEARANCE, HOME_SETTINGS } from 'utils/constants/navigation.constant';
 
 // import route component
 import { useCustomTheme } from 'resources/theme';
-import { SettingsParamList } from 'utils/types/navigation';
+import { SettingsParamList } from 'navigation/types';
 import Settings from 'features/Settings';
 import Appearance from 'features/Settings/Appearance';
 import CommonStack from './CommonStack';

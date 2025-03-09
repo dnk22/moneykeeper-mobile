@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ACCOUNTTAB } from 'utils/constants/navigation.constant';
-import { AccountStackParamList } from 'utils/types/navigation';
+import { AccountStackParamList } from 'navigation/types';
 import { useCustomTheme } from 'resources/theme';
 import CommonStack from '../stacks/CommonStack';
 

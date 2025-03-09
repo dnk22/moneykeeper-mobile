@@ -9,7 +9,7 @@ import { deleteTransactionById, updateTransaction } from 'services/api/transacti
 import { showToast } from 'utils/system';
 import { formatNumber } from 'utils/math';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
-import { TransactionParamListProps } from 'utils/types/navigation';
+import { TransactionParamListProps } from 'navigation/types';
 import {
   ADD_TRANSACTION,
   EXPENSE_CATEGORY,

@@ -10,7 +10,7 @@ import {
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useCustomTheme } from 'resources/theme';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import { TransactionCategoryListParams } from 'utils/types/navigation';
+import { TransactionCategoryListParams } from 'navigation/types';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
 import LendAndBorrowTab from 'features/TransactionCategory/LendAndBorrowTab';
 import ExpenseIncomeTab from 'features/TransactionCategory/ExpenseIncomeTab';

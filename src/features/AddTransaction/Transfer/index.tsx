@@ -7,7 +7,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import HeaderIcon from 'navigation/components/HeaderIcon';
 import { deleteTransactionById, updateTransactionTransfer } from 'services/api/transactions';
 import { showToast } from 'utils/system';
-import { TransactionParamListProps } from 'utils/types/navigation';
+import { TransactionParamListProps } from 'navigation/types';
 import { ADD_TRANSACTION } from 'utils/constants/navigation.constant';
 import MoreDetail from '../common/MoreDetail';
 import AccountSelect from '../common/AccountSelect';

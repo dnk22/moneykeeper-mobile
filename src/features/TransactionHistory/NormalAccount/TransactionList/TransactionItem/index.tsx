@@ -6,7 +6,7 @@ import SwipeableComponent from 'components/SwipeableComponent';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import IconComponent from 'components/IconComponent';
 import { useNavigation } from '@react-navigation/native';
-import { AccountStackParamListProps } from 'utils/types/navigation';
+import { AccountStackParamListProps } from 'navigation/types';
 import {
   ACCOUNT_NORMAL_DETAIL,
   CREATE_TRANSACTION_FROM_ACCOUNT,

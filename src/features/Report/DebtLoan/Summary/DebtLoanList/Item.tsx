@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import RNText from 'components/Text';
 
-import { ReportParamListProps } from 'utils/types/navigation';
+import { ReportParamListProps } from 'navigation/types';
 import {
   MATERIAL_COLOR,
   TRANSACTION_CATEGORY_TYPE,

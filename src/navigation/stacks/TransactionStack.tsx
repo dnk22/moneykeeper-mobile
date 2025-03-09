@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ADD_TRANSACTION } from 'utils/constants/navigation.constant';
-import { TransactionParamList } from 'utils/types/navigation';
+import { TransactionParamList } from 'navigation/types';
 
 // import route component
 import AddTransactions from 'features/AddTransaction';

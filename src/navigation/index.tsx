@@ -10,7 +10,7 @@ import { useAppTheme } from 'resources/theme';
 import { useAppSelector } from 'store/index';
 import { selectAppTheme } from 'store/app/app.selector';
 import { MAIN, MODAL_STACK } from 'utils/constants/navigation.constant';
-import { RootStackParamList } from 'utils/types/navigation';
+import { RootStackParamList } from 'navigation/types';
 import MainBottomTabs from './tabs/MainBottomTabs';
 import ModalStackScreen from './stacks/ModalStack';
 import { navigationRef } from './helpers/navigate';

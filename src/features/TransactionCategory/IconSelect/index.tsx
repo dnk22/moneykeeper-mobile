@@ -3,7 +3,7 @@ import TouchableHighlightComponent from 'components/TouchableHighlight';
 import * as transactionCategoryIcon from 'assets/images/transactionCategory';
 import { useNavigation } from '@react-navigation/native';
 import { UPDATE_TRANSACTION_CATEGORY } from 'utils/constants/navigation.constant';
-import { TransactionCategoryParamProps } from 'utils/types/navigation';
+import { TransactionCategoryParamProps } from 'navigation/types';
 import styles from './styles';
 
 const images = Object.entries(transactionCategoryIcon);

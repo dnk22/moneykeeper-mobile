@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ModalStackParamList } from 'utils/types/navigation/modalStack';
+import { ModalStackParamList } from 'navigation/types/modalStack';
 import {
   BANK_NAVIGATION,
   TRANSACTION_CATEGORY,

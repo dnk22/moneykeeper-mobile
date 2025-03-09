@@ -5,7 +5,7 @@ import { TBank } from 'database/types';
 import { BANK_TYPE } from 'utils/constants';
 import { ADD_ACCOUNT, BANK_HOME_LIST } from 'utils/constants/navigation.constant';
 import { fetchBankData } from 'services/api/banks';
-import { BankParamsProps } from 'utils/types/navigation';
+import { BankParamsProps } from 'navigation/types';
 // import FastImage from 'react-native-fast-image';
 // import * as BankIcon from 'assets/images/banks';
 import IconComponent from 'components/IconComponent';

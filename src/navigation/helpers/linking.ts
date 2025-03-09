@@ -1,6 +1,6 @@
 // Trong AppNavigators.tsx
 import { LinkingOptions } from '@react-navigation/native';
-import { RootStackParamList } from 'utils/types/navigation';
+import { RootStackParamList } from 'navigation/types';
 
 const linking: LinkingOptions<RootStackParamList> = {
   prefixes: ['moneykeeper://', 'https://moneykeeper.app'],

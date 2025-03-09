@@ -12,7 +12,7 @@ import {
   TRANSACTION_CATEGORY,
   TRANSACTION_CATEGORY_LIST,
 } from 'utils/constants/navigation.constant';
-import { TransactionParamListProps } from 'utils/types/navigation';
+import { TransactionParamListProps } from 'navigation/types';
 import HeaderIcon from 'navigation/components/HeaderIcon';
 import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constants';
 import { deleteTransactionById, updateTransaction } from 'services/api/transactions';

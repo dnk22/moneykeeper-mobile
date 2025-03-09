@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { ACCOUNT_CREDIT_CARD_DETAIL, CREATE_TRANSACTION_FROM_ACCOUNT } from 'utils/constants/navigation.constant';
-import { AccountStackParamListProps } from 'utils/types/navigation';
+import { AccountStackParamListProps } from 'navigation/types';
 import ButtonText from 'navigation/components/ButtonText';
 import { useAppSelector } from 'store/index';
 import { selectAccountStatementList } from 'store/account/account.selector';

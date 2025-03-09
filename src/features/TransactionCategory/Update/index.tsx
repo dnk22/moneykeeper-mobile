@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { TransactionCategoryParamProps } from 'utils/types/navigation';
+import { TransactionCategoryParamProps } from 'navigation/types';
 import { useForm } from 'react-hook-form';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactionsCategory } from 'database/types';

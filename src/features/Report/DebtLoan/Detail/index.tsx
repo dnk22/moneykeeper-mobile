@@ -13,7 +13,7 @@ import { TGetDebtLoanDetailByPerson } from 'utils/types/request.type';
 import { formatNumber } from 'utils/math';
 import { useCustomTheme } from 'resources/theme';
 import { showToast } from 'utils/system';
-import { ReportParamListProps } from 'utils/types/navigation';
+import { ReportParamListProps } from 'navigation/types';
 import { formatDateLocal } from 'utils/date';
 import { useAppSelector } from 'store/index';
 import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';

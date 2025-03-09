@@ -10,7 +10,7 @@ import { HEADER_TITLE_FONT_SIZE } from 'resources/theme/constants';
 import UpdateTransactionCategory from 'features/TransactionCategory/Update';
 import ParentList from 'features/TransactionCategory/ParentList';
 import IconSelect from 'features/TransactionCategory/IconSelect';
-import { TransactionCategoryParams } from 'utils/types/navigation';
+import { TransactionCategoryParams } from 'navigation/types';
 import TransactionCategoryHeaderRight from 'navigation/components/TransactionCategoryHeaderRight';
 
 //set up routes
