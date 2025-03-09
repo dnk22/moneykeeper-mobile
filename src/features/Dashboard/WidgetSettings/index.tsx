@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import HeaderIcon from 'navigation/elements/HeaderIcon';
+import HeaderIcon from 'navigation/components/HeaderIcon';
 import { useCustomTheme } from 'resources/theme';
 import DraggableFlatList, {
   RenderItemParams,

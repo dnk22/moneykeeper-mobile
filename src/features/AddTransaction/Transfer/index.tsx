@@ -4,7 +4,7 @@ import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
 import { useFormContext } from 'react-hook-form';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import HeaderIcon from 'navigation/elements/HeaderIcon';
+import HeaderIcon from 'navigation/components/HeaderIcon';
 import { deleteTransactionById, updateTransactionTransfer } from 'services/api/transactions';
 import { showToast } from 'utils/system';
 import { TransactionParamListProps } from 'utils/types/navigation';

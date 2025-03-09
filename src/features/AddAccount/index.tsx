@@ -5,7 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useForm } from 'react-hook-form';
 import { TAccountType, TAccount } from 'database/types';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import HeaderIcon from 'navigation/elements/HeaderIcon';
+import HeaderIcon from 'navigation/components/HeaderIcon';
 import Collapsible from 'react-native-collapsible';
 import SvgIcon from 'components/SvgIcon';
 import InputField from 'components/InputField';

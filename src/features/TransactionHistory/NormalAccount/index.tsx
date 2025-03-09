@@ -6,7 +6,7 @@ import {
   CREATE_TRANSACTION_FROM_ACCOUNT,
 } from 'utils/constants/navigation.constant';
 import { AccountStackParamListProps } from 'utils/types/navigation';
-import ButtonText from 'navigation/elements/ButtonText';
+import ButtonText from 'navigation/components/ButtonText';
 import Summary from './Summary';
 import TransactionList from './TransactionList';
 import HeaderBarConfig from '../HeaderBarConfig';

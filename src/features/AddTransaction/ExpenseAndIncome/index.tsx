@@ -13,7 +13,7 @@ import {
   TRANSACTION_CATEGORY_LIST,
 } from 'utils/constants/navigation.constant';
 import { TransactionParamListProps } from 'utils/types/navigation';
-import HeaderIcon from 'navigation/elements/HeaderIcon';
+import HeaderIcon from 'navigation/components/HeaderIcon';
 import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constants';
 import { deleteTransactionById, updateTransaction } from 'services/api/transactions';
 import { useFormContext } from 'react-hook-form';

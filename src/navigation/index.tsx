@@ -1,33 +1,26 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import WidgetSettings from 'features/Dashboard/WidgetSettings';
 import BlurScreen from 'features/BlurScreen';
 import Toast from 'react-native-toast-message';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { createNavigationContainerRef, NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import StatusBar from 'components/StatusBar';
 import { useAppTheme } from 'resources/theme';
 import { useAppSelector } from 'store/index';
 import { selectAppTheme } from 'store/app/app.selector';
-import {
-  BANK_NAVIGATION,
-  HOME,
-  TRANSACTION_CATEGORY,
-  WIDGET_SETTINGS,
-} from 'utils/constants/navigation.constant';
-import TransactionCategoryNavigation from './TransactionCategory';
-import BottomTabNavigation from './BottomTab';
-import BankNavigation from './Bank';
+import { MAIN, MODAL_STACK } from 'utils/constants/navigation.constant';
 import { RootStackParamList } from 'utils/types/navigation';
+import MainBottomTabs from './tabs/MainBottomTabs';
+import ModalStackScreen from './stacks/ModalStack';
+import { navigationRef } from './helpers/navigate';
 
 //set up routes
 const RootStack = createNativeStackNavigator<RootStackParamList>();
-export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
 function AppNavigators() {
   const appThemeState = useAppSelector((state) => selectAppTheme(state));
-  const theme = useAppTheme({ ...appThemeState });
+  const theme = useAppTheme(appThemeState);
 
   return (
     <NavigationContainer theme={theme} ref={navigationRef}>
@@ -40,30 +33,21 @@ function AppNavigators() {
           <StatusBar />
           <BottomSheetModalProvider>
             <RootStack.Navigator
-              initialRouteName={HOME}
+              initialRouteName={MAIN}
               screenOptions={{
                 headerShown: false,
                 autoHideHomeIndicator: true,
               }}
             >
-              <RootStack.Screen name={HOME} component={BottomTabNavigation} />
-              <RootStack.Group screenOptions={{ presentation: 'modal' }}>
-                <RootStack.Screen name={BANK_NAVIGATION} component={BankNavigation} />
-                <RootStack.Screen
-                  name={TRANSACTION_CATEGORY}
-                  component={TransactionCategoryNavigation}
-                />
-              </RootStack.Group>
-              <RootStack.Group screenOptions={{ headerShown: true }}>
-                <RootStack.Screen
-                  name={WIDGET_SETTINGS}
-                  component={WidgetSettings}
-                  options={{
-                    title: 'Chỉnh sửa DS Widget',
-                    presentation: 'containedModal',
-                  }}
-                />
-              </RootStack.Group>
+              <RootStack.Screen name={MAIN} component={MainBottomTabs} />
+              <RootStack.Screen
+                name={MODAL_STACK}
+                component={ModalStackScreen}
+                options={{
+                  headerShown: false,
+                  presentation: 'modal',
+                }}
+              />
             </RootStack.Navigator>
           </BottomSheetModalProvider>
           <Toast />
