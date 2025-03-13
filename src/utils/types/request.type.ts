@@ -1,4 +1,5 @@
-import { BANK_TYPE, TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constants';
+import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constants';
+import { BANK_TYPE } from 'utils/constants/account';
 
 //common
 

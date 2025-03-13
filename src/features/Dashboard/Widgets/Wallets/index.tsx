@@ -2,60 +2,63 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { queryAllAccount } from 'database/querying';
-import FlatList from 'components/FlatList';
-import { TAccount, TAccountType } from 'database/types';
-import { useCustomTheme } from 'resources/theme';
-import { formatNumber } from 'utils/math';
-import { ROUTES } from 'navigation/constants/routes';
-import { ACCOUNT_CATEGORY_ID } from 'utils/constants';
-import { styles } from './styles';
-import IconComponent from 'components/IconComponent';
 import PressableHaptic from 'components/PressableHaptic';
+import IconComponent from 'components/IconComponent';
 import RNText from 'components/Text';
-import { AccountType } from 'utils/data';
-// import { fetchBankData } from 'services/api/banks';
+import { ROUTES } from 'navigation/constants/routes';
+import { formatNumber } from 'utils/math';
+import { useCustomTheme } from 'resources/theme';
+import { FlatList } from 'react-native-gesture-handler';
+import DemoAccount from './DemoAccount';
+import styles from './styles';
+
+// Định nghĩa kiểu dữ liệu cho account
+interface Account {
+  _id: string;
+  accountName: string;
+  accountType: string;
+  closingAmount?: number;
+  accountLogo?: string;
+}
 
 function Wallets({ title }: { title: string }) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation<any>();
-  const [accounts, setAccount] = useState([]);
+  const [accounts, setAccount] = useState<Account[]>([]);
 
   const fetchBanksData = async () => {
-    // const res = await fetchBankData();
-    console.log('====================================');
-    // console.log(res);
-    console.log('====================================');
-  };
-
-  const handleOnItemPress = (account: TAccount) => {
-    const { id, accountName, accountTypeId, creditCardLimit } = account;
-    switch (accountTypeId) {
-      case ACCOUNT_CATEGORY_ID.CREDITCARD:
-        navigation.navigate(ROUTES.ACCOUNT_CREDIT_CARD_DETAIL, {
-          accountId: id,
-          accountName,
-          creditCardLimit,
-        });
-        break;
-      default:
-        navigation.navigate(ROUTES.ACCOUNT_NORMAL_DETAIL, {
-          accountId: id,
-          accountName,
-        });
-        break;
+    try {
+      // Giả lập fetch data
+      return [];
+    } catch (e) {
+      return [];
     }
   };
 
-  const renderItem = ({ item }: { item: TAccount }) => {
+  const handleOnItemPress = (account: Account) => {
+    if (account.accountType === 'normal') {
+      navigation.navigate(ROUTES.ACCOUNT_NORMAL_DETAIL, {
+        accountId: account._id,
+        accountName: account.accountName,
+      });
+    } else {
+      navigation.navigate(ROUTES.ACCOUNT_CREDIT_CARD_DETAIL, {
+        accountId: account._id,
+        accountName: account.accountName,
+      });
+    }
+  };
+
+  const renderItem = ({ item }: { item: Account }) => {
     return (
       <PressableHaptic onPress={() => handleOnItemPress(item)}>
         <View style={[styles.item, { backgroundColor: colors.surface }]}>
-          <View style={styles.itemTop}>
-            <View style={styles.amountView}>
-              <RNText style={styles.title} fontSize={13}>
+          <View style={styles.topItem}>
+            <View>
+              <RNText style={styles.label} fontSize={10} preset="caption">
                 Số dư:
               </RNText>
-              <RNText style={styles.amount}>{formatNumber(item.closingAmount, true)}</RNText>
+              <RNText style={styles.amount}>{formatNumber(item.closingAmount || 0, true)}</RNText>
             </View>
           </View>
           <RNText style={styles.title} fontSize={12}>
@@ -67,22 +70,9 @@ function Wallets({ title }: { title: string }) {
     );
   };
 
-  const renderDemoAccount = ({ item }: { item: TAccountType }) => {
-    return (
-      <View style={styles.wallet}>
-        <IconComponent name={item.icon} />
-        <RNText fontSize={12}>{item.name}</RNText>
-      </View>
-    );
-  };
-
-  const onNavigateAddAccount = () => {
-    navigation.navigate(ROUTES.ADD_ACCOUNT);
-  };
-
   useFocusEffect(
     useCallback(() => {
-      queryAllAccount({}).then((res) => setAccount(res));
+      queryAllAccount({}).then((res: any) => setAccount(res));
     }, []),
   );
 
@@ -102,18 +92,16 @@ function Wallets({ title }: { title: string }) {
           </PressableHaptic>
         )}
       </View>
+
       {!!!accounts.length && (
-        <PressableHaptic onPress={onNavigateAddAccount}>
-          <View style={[styles.noData, { backgroundColor: colors.surface }]}>
-            <FlatList horizontal data={AccountType.slice(0, 3)} renderItem={renderDemoAccount} />
-            <RNText preset="subTitle" numberOfLines={2}>
-              Thêm ví để quản lý tài chính hiệu quả hơn.
-            </RNText>
-          </View>
-        </PressableHaptic>
+        <View style={[styles.noData, { backgroundColor: colors.surface }]}>
+          <DemoAccount colors={colors} />
+        </View>
       )}
+
       {!!accounts.length && <FlatList horizontal data={accounts} renderItem={renderItem} />}
     </View>
   );
 }
+
 export default Wallets;

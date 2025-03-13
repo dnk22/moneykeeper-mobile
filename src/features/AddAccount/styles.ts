@@ -55,6 +55,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 10,
   },
+  saveButton: {
+    width: 50,
+    alignItems: 'flex-end',
+    paddingRight: 10,
+  },
 });
 
 export default styles;

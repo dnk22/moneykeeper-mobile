@@ -1,51 +1,40 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, Pressable, View } from 'react-native';
-import { useCustomTheme } from 'resources/theme';
+import { Alert, Button, Pressable, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useForm } from 'react-hook-form';
-import { TAccountType, TAccount } from 'database/types';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import HeaderIcon from 'navigation/components/HeaderIcon';
+import { useForm } from 'react-hook-form';
 import Collapsible from 'react-native-collapsible';
+import InputCalculator from 'features/AddTransaction/common/InputCalculator';
+
+import { TAccountType, TAccount } from 'database/types';
+import { useCustomTheme } from 'resources/theme';
+import { BankModel } from 'database/models';
+import { ROUTES } from 'navigation/constants/routes';
+import { deleteAccountById, getAccountById, updateAccountDB } from 'services/api/accounts';
+import { showToast } from 'utils/system';
+
 import SvgIcon from 'components/SvgIcon';
 import InputField from 'components/InputField';
 import FormAction from 'components/common/FormAction';
 import SwitchField from 'components/Switch/SwitchField';
 import RNText from 'components/Text';
-import { BankModel } from 'database/models';
-import InputCalculator from 'features/AddTransaction/common/InputCalculator';
-import { ROUTES } from 'navigation/constants/routes';
-import { AccountType } from 'utils/data';
-import { deleteAccountById, getAccountById, updateAccountDB } from 'services/api/accounts';
-import { showToast } from 'utils/system';
-import get from 'lodash/get';
-import { ACCOUNT_CATEGORY_ID } from 'utils/constants';
-import { useAppDispatch } from 'store/index';
+import {
+  ADD_ACCOUNT_DEFAULT_VALUES,
+  ACCOUNT_CATEGORY_ID,
+  ACCOUNT_TYPE_LIST,
+} from 'utils/constants/account';
 import {
   removeAccountStatement,
   updateAccountNotification,
   updateAccountStatement,
 } from 'store/account/account.slice';
+import { useAppDispatch } from 'store/index';
 import { AccountStackParamListProps } from 'navigation/types';
 import Notifications from './Notifications';
 import StatementModalPicker from './StatementModalPicker';
 import AccountTypeSelect from './AccountTypeSelect';
 import AccountBankSelect from './AccountBankSelect';
 import styles from './styles';
-
-const defaultValues = {
-  accountName: '',
-  initialAmount: 0,
-  creditCardLimit: 0,
-  creditCardIsReminder: false,
-  creditCardStatementDay: 5,
-  creditCardDayAfterStatement: 15,
-  creditCardReminderList: '',
-  excludeReport: false,
-  isActive: true,
-  currency: 'vnd',
-  descriptions: '',
-};
 
 type ModalType = 'paymentDate' | 'statementDay';
 
@@ -62,7 +51,7 @@ function AddAccount() {
   const isModalType = useRef<ModalType>('statementDay');
 
   // state from store
-  const ACCOUNT_NOT_SHOW_BANK = [AccountType[0].id, AccountType[5].id];
+  const ACCOUNT_NOT_SHOW_BANK = [ACCOUNT_TYPE_LIST[0].id, ACCOUNT_TYPE_LIST[5].id];
 
   const {
     control,
@@ -74,22 +63,22 @@ function AddAccount() {
     formState: { errors },
   } = useForm<TAccount>({
     defaultValues: {
-      ...defaultValues,
-      accountTypeId: AccountType[0].id,
-      accountTypeName: AccountType[0].name,
+      ...ADD_ACCOUNT_DEFAULT_VALUES,
+      accountTypeId: ACCOUNT_TYPE_LIST[0].id,
+      accountTypeName: ACCOUNT_TYPE_LIST[0].name,
     },
   });
 
-  const isCreditCard = useMemo(
-    () => watch('accountTypeId') === AccountType[2].id,
-    [watch('accountTypeId')],
-  );
+  const isCreditCard = watch('accountTypeId') === ACCOUNT_TYPE_LIST[2].id;
+
   const currentAccountType = useMemo(() => watch('accountTypeId'), [watch('accountTypeId')]);
 
   // Use `setOptions` to update account
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <HeaderIcon onPress={handleSubmit(onHandleSubmit)} />,
+      headerRight: () => (
+        <Button title="Lưu" onPress={handleSubmit(onHandleSubmit)} color="white" />
+      ),
     });
   }, []);
 
@@ -163,9 +152,9 @@ function AddAccount() {
     const requestData = {
       ...data,
       initialAmount:
-        data.accountTypeId !== ACCOUNT_CATEGORY_ID.CREDITCARD ? +get(data, 'initialAmount', 0) : 0,
-      creditCardLimit: +get(data, 'creditCardLimit', 0),
-      accountLogo: bankLogo.current || AccountType[getValues('accountTypeId')].icon,
+        data.accountTypeId !== ACCOUNT_CATEGORY_ID.CREDITCARD ? +data?.initialAmount : 0,
+      creditCardLimit: +data?.creditCardLimit || 0,
+      accountLogo: bankLogo.current || ACCOUNT_TYPE_LIST[getValues('accountTypeId')].icon,
       creditCardReminderList: data.creditCardIsReminder ? data.creditCardReminderList : '',
     };
     updateAccountDB({ id: params?.accountId, account: requestData })
@@ -289,7 +278,7 @@ function AddAccount() {
         </View>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <AccountTypeSelect
-            value={AccountType[currentAccountType]}
+            value={ACCOUNT_TYPE_LIST[currentAccountType]}
             onValueChange={onAccountTypeChange}
           />
           {!ACCOUNT_NOT_SHOW_BANK.includes(watch('accountTypeId')) && (

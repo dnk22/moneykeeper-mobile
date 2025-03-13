@@ -5,7 +5,7 @@ import { RouteKeys } from 'navigation/constants/routes';
 
 interface SharedScreensProps {
   stack: any;
-  screens: Partial<RouteKeys[]> | 'all';
+  screens: Pick<RouteKeys, keyof RouteKeys>[] | 'all';
 }
 
 export default function SharedScreens({ stack: Stack, screens = 'all' }: SharedScreensProps) {

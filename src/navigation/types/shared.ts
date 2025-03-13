@@ -1,11 +1,13 @@
 import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constants';
 import { ROUTES } from 'navigation/constants/routes';
 
-export type CommonStackParamsList = {
+export type SharedStackParamsList = {
   [ROUTES.ADD_ACCOUNT]: {
     accountId?: string;
     bankId?: string;
     toAccountId?: string;
+    accountTypeId?: string;
+    accountName?: string;
   };
   [ROUTES.FINANCE_STATEMENT]: undefined;
   [ROUTES.EXPENSE_INCOME_DETAIL]: {

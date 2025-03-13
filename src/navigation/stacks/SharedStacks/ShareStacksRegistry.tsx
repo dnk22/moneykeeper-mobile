@@ -1,4 +1,4 @@
-import { CommonStackParamsList } from 'navigation/types';
+import { SharedStackParamsList } from 'navigation/types';
 import { ROUTES } from 'navigation/constants/routes';
 import { ScreenRegistry } from './registry';
 
@@ -12,7 +12,7 @@ import FinancialStatement from 'features/Report/FinancialStatement';
 import DebtLoanReport from 'features/Report/DebtLoan';
 import DebtLoanDetail from 'features/Report/DebtLoan/Detail';
 
-export const sharedScreenRegistry = new ScreenRegistry<CommonStackParamsList>()
+export const sharedScreenRegistry = new ScreenRegistry<SharedStackParamsList>()
   .register(ROUTES.ADD_ACCOUNT, {
     component: AddAccount,
     options: ({ route }) => ({

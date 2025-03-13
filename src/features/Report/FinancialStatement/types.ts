@@ -1,4 +1,5 @@
-import { ACCOUNT_CATEGORY_ID, TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
+import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
+import { ACCOUNT_CATEGORY_ID } from 'utils/constants/account';
 
 export type dataLevelProps = {
   id?: string;

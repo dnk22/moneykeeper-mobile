@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { TBank } from 'database/types';
-import { BANK_TYPE } from 'utils/constants';
 import { fetchBankData } from 'services/api/banks';
 import { ROUTES } from 'navigation/constants/routes';
 import { BankParamsProps } from 'navigation/types';
@@ -13,6 +12,7 @@ import TouchableHighlightComponent from 'components/TouchableHighlight';
 import InputSearch from 'components/InputSearch';
 import FlatListComponent from 'components/FlatList';
 import RNText from 'components/Text';
+import { BANK_TYPE } from 'utils/constants/account';
 import styles from './styles';
 
 function BankList() {

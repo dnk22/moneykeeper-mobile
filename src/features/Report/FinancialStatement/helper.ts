@@ -1,4 +1,4 @@
-import { AccountTypeLogo } from 'utils/data';
+import { ACCOUNT_TYPE_LOGO } from 'utils/constants/account';
 import { dataLevelProps } from './types';
 
 export function convertFinancialData(data: any, isOwnedViewType: boolean) {
@@ -12,7 +12,7 @@ export function convertFinancialData(data: any, isOwnedViewType: boolean) {
     }
     const value = isOwnedViewType ? item.value : Math.abs(item.value);
     groupedData[item['accountTypeName']].accountName = item['accountTypeName'];
-    groupedData[item['accountTypeName']].logo = AccountTypeLogo[item.accountTypeId];
+    groupedData[item['accountTypeName']].logo = ACCOUNT_TYPE_LOGO[item.accountTypeId];
     groupedData[item['accountTypeName']].value = groupedData[item['accountTypeName']].value +=
       value || 0;
     groupedData[item['accountTypeName']].data.push(item);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import InputSelection from 'components/InputSelection';
 import { BankModel } from 'database/models';
-import { ACCOUNT_CATEGORY_ID, BANK_TYPE } from 'utils/constants';
+import { ACCOUNT_CATEGORY_ID, BANK_TYPE } from 'utils/constants/account';
 import { getBankById } from 'services/api/banks';
 import { ROUTES } from 'navigation/constants/routes';
 

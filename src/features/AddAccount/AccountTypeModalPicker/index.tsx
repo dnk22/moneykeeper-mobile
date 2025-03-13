@@ -9,7 +9,7 @@ import TouchableHighlightComponent from 'components/TouchableHighlight';
 import IconComponent from 'components/IconComponent';
 import { IModalComponentProps } from 'components/Modal';
 import { TAccountType } from 'database/types';
-import { AccountType } from 'utils/data';
+import { ACCOUNT_TYPE_LIST } from 'utils/constants/account';
 import styles from './styles';
 
 type AccountTypeModalPickerProps = IModalComponentProps & {
@@ -57,7 +57,7 @@ function AccountTypeModalPicker({
       onToggleModal={onToggleModal}
       title="Chọn loại tài khoản"
     >
-      <FlatListComponent data={AccountType} renderItem={renderItem} />
+      <FlatListComponent data={ACCOUNT_TYPE_LIST} renderItem={renderItem} />
     </ModalComponent>
   );
 }

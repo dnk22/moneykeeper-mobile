@@ -35,7 +35,7 @@ function DashboardNavigation() {
         options={{ title: 'Thông báo' }}
       />
       {/* Shared screens */}
-      {SharedScreens({ stack: TransactionStack, screens: 'all' })}
+      {SharedScreens({ stack: TransactionStack, screens: [ROUTES.ADD_ACCOUNT] })}
     </TransactionStack.Navigator>
   );
 }

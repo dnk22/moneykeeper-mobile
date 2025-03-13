@@ -8,7 +8,6 @@ import { useNavigation } from '@react-navigation/native';
 import { formatNumber } from 'utils/math';
 import {
   MATERIAL_COLOR,
-  ACCOUNT_CATEGORY_ID,
   TRANSACTION_CATEGORY_TYPE,
   TRANSACTION_LEND_BORROW_NAME,
 } from 'utils/constants';
@@ -18,6 +17,7 @@ import { dataLevelProps } from '../types';
 import styles from './styles';
 import { useAppSelector } from 'store/index';
 import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';
+import { ACCOUNT_CATEGORY_ID } from 'utils/constants/account';
 
 function ItemLevel2({
   item,

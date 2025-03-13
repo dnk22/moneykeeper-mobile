@@ -15,10 +15,11 @@ import {
   startOfQuarter,
   startOfYear,
 } from 'date-fns';
-import { ACCOUNT_CATEGORY_ID, TRANSACTION_TYPE } from 'utils/constants';
+import { TRANSACTION_TYPE } from 'utils/constants';
 import get from 'lodash/get';
 import { DebtLoanTypes } from 'utils/types';
 import { TGetDebtLoanDetailByPerson } from 'utils/types/request.type';
+import { ACCOUNT_CATEGORY_ID } from 'utils/constants/account';
 
 const debtLoanCategory = `(
   '${TRANSACTION_LEND_BORROW_NAME.BORROW}', 

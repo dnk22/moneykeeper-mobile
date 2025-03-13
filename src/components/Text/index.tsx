@@ -22,6 +22,7 @@ function RNText({
   style,
   preset = 'default',
   numberOfLines = 1,
+  ellipsizeMode = 'tail',
   ...props
 }: TTextProps) {
   const { colors } = useCustomTheme();
@@ -34,7 +35,7 @@ function RNText({
     <Text
       allowFontScaling={false}
       style={[style, { color: textColor, fontSize: textSize }, textPresets[preset]]}
-      ellipsizeMode="tail"
+      ellipsizeMode={ellipsizeMode}
       numberOfLines={numberOfLines}
       {...props}
     >
