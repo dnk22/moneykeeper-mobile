@@ -4,6 +4,7 @@ import { MainTabStackParamsList } from './mainTab';
 import { ModalStackParamList } from './modalStack';
 
 export type RootStackParamList = {
+  [ROUTES.AUTH]: undefined;
   [ROUTES.MAIN]: NavigatorScreenParams<MainTabStackParamsList>;
   [ROUTES.MODAL_STACK]: NavigatorScreenParams<ModalStackParamList>;
 };

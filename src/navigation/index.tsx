@@ -13,8 +13,8 @@ import { RootStackParamList } from 'navigation/types';
 import { ROUTES } from 'navigation/constants/routes';
 import MainBottomTabs from './tabs/MainBottomTabs';
 import ModalStackScreen from './stacks/ModalStack';
-import { navigationRef } from './helpers/navigate';
-
+import AuthNavigator from './stacks/AuthStack';
+import navigation from 'navigation/helpers/navigate';
 //set up routes
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -23,7 +23,7 @@ function AppNavigators() {
   const theme = useAppTheme(appThemeState);
 
   return (
-    <NavigationContainer theme={theme} ref={navigationRef}>
+    <NavigationContainer theme={theme} ref={navigation.navigationRef}>
       <BlurScreen />
       <SafeAreaView
         style={{ flex: 1, backgroundColor: theme.colors.primary }}
@@ -39,6 +39,7 @@ function AppNavigators() {
                 autoHideHomeIndicator: true,
               }}
             >
+              <RootStack.Screen name={ROUTES.AUTH} component={AuthNavigator} />
               <RootStack.Screen name={ROUTES.MAIN} component={MainBottomTabs} />
               <RootStack.Screen
                 name={ROUTES.MODAL_STACK}

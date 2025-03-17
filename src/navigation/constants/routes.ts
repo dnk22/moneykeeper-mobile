@@ -6,6 +6,13 @@ export const ROUTES = {
   MAIN: 'main',
   MODAL_STACK: 'modal_stack',
 
+  // Auth Screen constants
+  AUTH: 'auth',
+  SIGN_IN: 'login',
+  SIGN_UP: 'register',
+  FORGOT_PASSWORD: 'forgotPassword',
+  RESET_PASSWORD: 'resetPassword',
+
   // Dashboard screen constants
   DASHBOARD: 'dashboard',
   DASHBOARD_HOME: 'dashboardHome',
@@ -64,7 +71,7 @@ export const ROUTES = {
   DEBT: 'debt',
   LOAN: 'loan',
   CONTACT_REPORT: 'contactReport',
-} as const;
+};
 
 export type RouteKeys = keyof typeof ROUTES;
 export type RouteValues = (typeof ROUTES)[RouteKeys];

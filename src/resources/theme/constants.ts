@@ -23,6 +23,7 @@ export const COMMON_THEME_COLOR = {
   success: '#888888',
   alert: '#FF6B6B',
   error: '#FFA500',
+  link: '#4D81E7',
 };
 
 export type TBaseTheme = {
@@ -34,5 +35,6 @@ export type TBaseTheme = {
     success: string;
     surface: string;
     alert: string;
+    link: string;
   };
 };

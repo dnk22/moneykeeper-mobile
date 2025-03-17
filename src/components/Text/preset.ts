@@ -6,8 +6,8 @@ type TextPresets = {
 };
 
 const FONT_SIZES = {
-  xxSmall: normalize(9),
-  xSmall: normalize(11),
+  xxSmall: normalize(10),
+  xSmall: normalize(12),
   small: normalize(14),
   medium: normalize(16),
   large: normalize(18),

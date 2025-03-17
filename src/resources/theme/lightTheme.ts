@@ -16,8 +16,8 @@ const lightMode: Record<COLOR_SCHEME, any> = {
   // xanh năng động
   [COLOR_SCHEME.modernBlue]: {
     ...baseColor,
-    primary: '#4A90E2',
-    primaryVariant: '#5A9BEF',
+    primary: '#2567E8',
+    primaryVariant: '#4A90E2',
     background: '#F5F7FA',
   },
   // xanh thanh lịch

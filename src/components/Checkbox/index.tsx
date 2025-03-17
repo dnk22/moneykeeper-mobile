@@ -22,7 +22,7 @@ const CheckboxComponent = ({
   style,
   size = 20,
   type = 'radio',
-  color,
+  color = 'gray',
   check = false,
   disabled = false,
   onPress,

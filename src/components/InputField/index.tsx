@@ -1,6 +1,7 @@
 import React, { memo, forwardRef } from 'react';
-import { StyleProp, TextInput, TextInputProps, TextStyle } from 'react-native';
+import { StyleProp, TextInput, TextInputProps, TextStyle, View } from 'react-native';
 import { Control, RegisterOptions, useController } from 'react-hook-form';
+import RNText from 'components/Text';
 import isEqual from 'react-fast-compare';
 import { useCustomTheme } from 'resources/theme';
 import stylesInline from './styles';
@@ -14,10 +15,11 @@ export interface IInputField extends TextInputProps {
   >;
   style?: StyleProp<TextStyle>;
   clearButtonMode?: 'never' | 'while-editing' | 'unless-editing' | 'always';
+  label?: string;
 }
 
 const InputField = forwardRef<TextInput, IInputField>(function InputField(
-  { name, control, rules, style, clearButtonMode = 'always', ...rest },
+  { name, control, rules, style, clearButtonMode = 'always', label, ...rest },
   ref,
 ) {
   const { colors } = useCustomTheme();
@@ -31,18 +33,25 @@ const InputField = forwardRef<TextInput, IInputField>(function InputField(
   });
 
   return (
-    <TextInput
-      ref={ref}
-      value={value}
-      autoCorrect={false}
-      allowFontScaling={false}
-      placeholderTextColor={error ? colors.error : colors.textSecondary}
-      style={[stylesInline.input, style, { color: colors.text }]}
-      onChangeText={onChange}
-      onBlur={onBlur}
-      clearButtonMode={clearButtonMode}
-      {...rest}
-    />
+    <View>
+      {label && (
+        <RNText style={stylesInline.label} fontSize={12} color={colors.textSecondary}>
+          {label}
+        </RNText>
+      )}
+      <TextInput
+        ref={ref}
+        value={value}
+        autoCorrect={false}
+        allowFontScaling={false}
+        placeholderTextColor={colors.textSecondary}
+        style={[stylesInline.input, style, { color: colors.text }]}
+        onChangeText={onChange}
+        onBlur={onBlur}
+        clearButtonMode={clearButtonMode}
+        {...rest}
+      />
+    </View>
   );
 });
 

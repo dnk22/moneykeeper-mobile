@@ -1,7 +1,8 @@
 import { AxiosError, AxiosInstance, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
 import { authService } from './auth';
 import { ApiError, ApiResponse, ErrorResponse, RefreshTokenResponse } from './types';
-import { navigationRef } from 'navigation/index';
+import { navigationRef } from 'navigation/helpers/navigate';
+import { ROUTES } from 'navigation/constants/routes';
 
 export class InterceptorService {
   private refreshTokenRequest: Promise<RefreshTokenResponse> | null = null;
@@ -121,7 +122,7 @@ export class InterceptorService {
   private handleRefreshTokenError(): void {
     authService.clearTokens();
     if (navigationRef.isReady()) {
-      navigationRef.navigate('Login');
+      navigationRef.navigate(ROUTES.AUTH);
     }
   }
 

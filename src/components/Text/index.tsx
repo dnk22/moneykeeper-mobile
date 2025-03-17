@@ -7,7 +7,9 @@ import { textPresets } from './preset';
 
 export interface TTextProps extends TextProps {
   text?: string;
-  children?: string | number;
+  children?: string | number | React.ReactNode;
+  numberOfLines?: number;
+  ellipsizeMode?: 'head' | 'middle' | 'tail' | 'clip';
   color?: string;
   style?: StyleProp<TextStyle>;
   fontSize?: number;
