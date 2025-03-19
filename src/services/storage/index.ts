@@ -6,8 +6,8 @@ class StorageService {
 
   private constructor() {
     this.storage = new MMKV({
-      id: 'app-storage',
-      encryptionKey: 'your-encryption-key'
+      id: 'money-keeper-storage',
+      encryptionKey: process.env.MMKV_ENCRYPTION_KEY,
     });
   }
 
@@ -63,5 +63,5 @@ export const reduxPersistStorage = {
   },
   length: 0,
   clear: () => {},
-  key: (_index: number) => null
+  key: (_index: number) => null,
 };

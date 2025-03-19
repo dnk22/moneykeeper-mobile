@@ -1,5 +1,5 @@
 import { Model } from '@nozbe/watermelondb';
-import { field, text, date, readonly } from '@nozbe/watermelondb/decorators';
+import { field, text } from '@nozbe/watermelondb/decorators';
 import { BANKS } from 'database/constants';
 
 export default class BankModel extends Model {

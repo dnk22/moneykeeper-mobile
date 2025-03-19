@@ -112,6 +112,7 @@ export type TBank = {
   icon: string;
   isSystem: boolean;
   isWallet?: boolean;
+  type?: string;
 };
 
 export type TContact = {

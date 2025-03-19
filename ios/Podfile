@@ -12,6 +12,15 @@ node_require('react-native-permissions/scripts/setup.rb')
 
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
+use_modular_headers!
+use_frameworks! :linkage => :static
+$RNFirebaseAsStaticFramework = true
+
+# linkage = ENV['USE_FRAMEWORKS']
+# if linkage != nil
+#   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+#   use_frameworks! :linkage => linkage.to_sym
+# end
 
 # ⬇️ uncomment wanted permissions
 setup_permissions([
@@ -25,11 +34,6 @@ setup_permissions([
   'Reminders',
 ])
 
-linkage = ENV['USE_FRAMEWORKS']
-if linkage != nil
-  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-  use_frameworks! :linkage => linkage.to_sym
-end
 
 target 'moneykeeper' do
   config = use_native_modules!
@@ -49,14 +53,18 @@ target 'moneykeeper' do
   # pod 'React-jsi', path: '../node_modules/react-native/ReactCommon/jsi', modular_headers: true
 
   # WatermelonDB dependency
-  pod 'simdjson', path: '../node_modules/@nozbe/simdjson', modular_headers: true
+  pod 'simdjson', path: '../node_modules/@nozbe/simdjson'
   
   # @react-native-menu/menu (fabric+swift requirements)
-  pod 'React-Fabric', :modular_headers => true, :path => '../node_modules/react-native/ReactCommon'
-  pod 'React-graphics', :modular_headers => true, :path => '../node_modules/react-native/ReactCommon/react/renderer/graphics'
-  pod 'React-utils', :modular_headers => true, :path => '../node_modules/react-native/ReactCommon/react/utils'
-  pod 'React-debug', :modular_headers => true, :path => '../node_modules/react-native/ReactCommon/react/debug'
-  
+  pod 'React-Fabric', :path => '../node_modules/react-native/ReactCommon'
+  pod 'React-graphics', :path => '../node_modules/react-native/ReactCommon/react/renderer/graphics'
+  pod 'React-utils', :path => '../node_modules/react-native/ReactCommon/react/utils'
+  pod 'React-debug', :path => '../node_modules/react-native/ReactCommon/react/debug'
+
+  # Firebase
+  pod 'RNFBAuth', :path => '../node_modules/@react-native-firebase/auth'
+  pod 'RNFBDatabase', :path => '../node_modules/@react-native-firebase/database'
+
   target 'moneykeeperTests' do
     inherit! :complete
     # Pods for testing

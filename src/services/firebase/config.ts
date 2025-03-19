@@ -1,5 +1,4 @@
 import { initializeApp, getApp, getApps } from '@react-native-firebase/app';
-import { FirebaseApp } from '@react-native-firebase/app';
 
 export interface FirebaseConfig {
   apiKey: string;
@@ -35,7 +34,7 @@ const configs: Record<string, FirebaseConfig> = {
 
 class FirebaseService {
   private static instance: FirebaseService;
-  private app: FirebaseApp;
+  private app: typeof getApp;
   private environment: string;
 
   private constructor() {
@@ -50,16 +49,16 @@ class FirebaseService {
     return FirebaseService.instance;
   }
 
-  private initializeFirebase(): FirebaseApp {
+  private initializeFirebase(): typeof getApp {
     try {
       const config = configs[this.environment];
-      
+
       // Validate config
       this.validateConfig(config);
 
       // Initialize Firebase if not already initialized
       if (getApps().length === 0) {
-        return initializeApp(config);
+        return initializeApp(config, process.env.FIREBASE_APP_ID);
       }
 
       return getApp();
@@ -70,15 +69,24 @@ class FirebaseService {
   }
 
   private validateConfig(config: FirebaseConfig): void {
-    const requiredFields = ['apiKey', 'authDomain', 'projectId', 'storageBucket', 'messagingSenderId', 'appId'];
-    const missingFields = requiredFields.filter(field => !config[field as keyof FirebaseConfig]);
+    const requiredFields = [
+      'apiKey',
+      'authDomain',
+      'projectId',
+      'storageBucket',
+      'messagingSenderId',
+      'appId',
+    ];
+    const missingFields = requiredFields.filter((field) => !config[field as keyof FirebaseConfig]);
 
     if (missingFields.length > 0) {
-      throw new Error(`Missing required Firebase configuration fields: ${missingFields.join(', ')}`);
+      throw new Error(
+        `Missing required Firebase configuration fields: ${missingFields.join(', ')}`,
+      );
     }
   }
 
-  public getFirebaseApp(): FirebaseApp {
+  public getFirebaseApp(): typeof getApp {
     return this.app;
   }
 
@@ -88,4 +96,4 @@ class FirebaseService {
 }
 
 export const firebaseService = FirebaseService.getInstance();
-export const firebaseApp = firebaseService.getFirebaseApp(); 
+export const firebaseApp = firebaseService.getFirebaseApp();

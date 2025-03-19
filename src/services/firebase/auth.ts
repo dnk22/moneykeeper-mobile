@@ -1,7 +1,42 @@
 /**
- * remove this line when use
+ * TODO Summary:
+ * 1. Authentication Methods:
+ *    - [x] Email/Password Sign In
+ *    - [ ] Email/Password Sign Up
+ *    - [ ] Google Sign In
+ *    - [ ] Apple Sign In
+ *    - [x] Sign Out
+ *
+ * 2. Password Management:
+ *    - [x] Reset Password
+ *    - [ ] Change Password
+ *    - [ ] Update Email
+ *    - [ ] Email Verification
+ *
+ * 3. Profile Management:
+ *    - [x] Update Profile
+ *    - [ ] Delete Account
+ *    - [ ] Link Authentication Methods
+ *    - [ ] Unlink Authentication Methods
+ *
+ * 4. Session Management:
+ *    - [x] Get Current User
+ *    - [x] Auth State Listener
+ *    - [ ] Session Timeout
+ *    - [ ] Force Sign Out
+ *
+ * 5. Error Handling:
+ *    - [x] Basic Error Types
+ *    - [ ] Detailed Error Messages
+ *    - [ ] Rate Limiting
+ *    - [ ] Retry Logic
+ *
+ * 6. Security Features:
+ *    - [ ] Multi-Factor Authentication
+ *    - [ ] Account Lockout
+ *    - [ ] Security Logs
+ *    - [ ] IP Tracking
  */
-export {};
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { firebaseApp } from './config';
 
@@ -34,13 +69,10 @@ class AuthService {
 
   public async signInWithEmailAndPassword(
     email: string,
-    password: string
+    password: string,
   ): Promise<AuthResponse<FirebaseAuthTypes.UserCredential>> {
     try {
-      const userCredential = await this.auth.signInWithEmailAndPassword(
-        email,
-        password
-      );
+      const userCredential = await this.auth.signInWithEmailAndPassword(email, password);
       return { data: userCredential, error: null };
     } catch (error: any) {
       return {
@@ -62,9 +94,7 @@ class AuthService {
     }
   }
 
-  public onAuthStateChanged(
-    callback: (user: FirebaseAuthTypes.User | null) => void
-  ): () => void {
+  public onAuthStateChanged(callback: (user: FirebaseAuthTypes.User | null) => void): () => void {
     return this.auth.onAuthStateChanged(callback);
   }
 
@@ -85,7 +115,7 @@ class AuthService {
   }
 
   public async updateProfile(
-    profile: Partial<FirebaseAuthTypes.UpdateProfile>
+    profile: Partial<FirebaseAuthTypes.UpdateProfile>,
   ): Promise<AuthResponse<void>> {
     try {
       const user = this.getCurrentUser();
