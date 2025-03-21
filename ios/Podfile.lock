@@ -1864,6 +1864,27 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - RNKeychain (9.2.3):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - RNNotifee (9.1.2):
     - React-Core
     - RNNotifee/NotifeeCore (= 9.1.2)
@@ -2183,6 +2204,7 @@ DEPENDENCIES:
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - "RNFBDatabase (from `../node_modules/@react-native-firebase/database`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNKeychain (from `../node_modules/react-native-keychain`)
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
@@ -2378,6 +2400,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/database"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNKeychain:
+    :path: "../node_modules/react-native-keychain"
   RNNotifee:
     :path: "../node_modules/@notifee/react-native"
   RNPermissions:
@@ -2494,6 +2518,7 @@ SPEC CHECKSUMS:
   RNFBAuth: 6a452581dfe300754011203b4a10cb1d2d177b60
   RNFBDatabase: cad11d1e5633bf5391a37c6daf72e2ff908af00e
   RNGestureHandler: 598e45cedb905b157e9764acbef0b5e365693451
+  RNKeychain: 3de1ddaaf036ca336eabe3b684c87bf5a218acb3
   RNNotifee: bc20a5e3d581f629db988075944fdd944d363dfe
   RNPermissions: e496b6fe32bb244ef4e815b36ee88aceb3a0b517
   RNReactNativeHapticFeedback: 2db53cf1075a3046227b8131a5cba84f25abccdc

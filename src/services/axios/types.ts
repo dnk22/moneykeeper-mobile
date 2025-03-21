@@ -3,7 +3,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 export interface ApiResponse<T = any> {
   data: T;
   status: number;
-  message: string;
+  message?: string;
 }
 
 export interface ErrorResponse {
@@ -13,12 +13,8 @@ export interface ErrorResponse {
   errors?: Record<string, string[]>;
 }
 
-export interface RefreshTokenResponse {
-  access_token: string;
-  refresh_token: string;
-}
-
 export type ApiError = AxiosError<ErrorResponse>;
+
 export type ApiSuccess<T> = AxiosResponse<ApiResponse<T>>;
 
 export interface RetryConfig {
@@ -26,4 +22,4 @@ export interface RetryConfig {
   retryCount: number;
   retryDelay: number;
   shouldRetry: (error: ApiError) => boolean;
-} 
+}

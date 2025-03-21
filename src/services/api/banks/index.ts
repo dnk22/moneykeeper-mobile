@@ -1,5 +1,5 @@
 /** read  */
-import { queryGetBank, importDefaultBanksData, queryGetBankById } from 'database/querying';
+import { queryGetBank, queryGetBankById } from 'database/querying';
 import { TSearchBankParams } from 'utils/types/request.type';
 
 export async function fetchBankData({ type, text }: TSearchBankParams) {

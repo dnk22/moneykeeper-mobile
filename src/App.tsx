@@ -12,6 +12,7 @@ import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-c
 import { persistor, store } from './store';
 import { FirebaseDataSource } from 'services/firebase/appInit';
 import AppInitService from 'services/initialization';
+import { AuthProvider } from 'services/auth/AuthProvider';
 
 LogBox.ignoreAllLogs();
 
@@ -41,7 +42,9 @@ const App = () => {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-          <AppNavigators />
+          <AuthProvider>
+            <AppNavigators />
+          </AuthProvider>
         </SafeAreaProvider>
       </PersistGate>
     </Provider>

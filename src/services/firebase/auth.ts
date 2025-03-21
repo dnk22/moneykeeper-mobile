@@ -2,7 +2,7 @@
  * TODO Summary:
  * 1. Authentication Methods:
  *    - [x] Email/Password Sign In
- *    - [ ] Email/Password Sign Up
+ *    - [x] Email/Password Sign Up
  *    - [ ] Google Sign In
  *    - [ ] Apple Sign In
  *    - [x] Sign Out
@@ -37,8 +37,7 @@
  *    - [ ] Security Logs
  *    - [ ] IP Tracking
  */
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import { firebaseApp } from './config';
+import { FirebaseAuthTypes, getAuth } from '@react-native-firebase/auth';
 
 export class AuthError extends Error {
   constructor(public code: string, message: string) {
@@ -52,66 +51,27 @@ export interface AuthResponse<T> {
   error: AuthError | null;
 }
 
-class AuthService {
-  private static instance: AuthService;
+class FireBaseAuthService {
+  private static instance: FireBaseAuthService;
   private auth: FirebaseAuthTypes.Module;
 
   private constructor() {
-    this.auth = auth(firebaseApp);
+    this.auth = getAuth();
   }
 
-  public static getInstance(): AuthService {
-    if (!AuthService.instance) {
-      AuthService.instance = new AuthService();
+  public static getInstance(): FireBaseAuthService {
+    if (!FireBaseAuthService.instance) {
+      FireBaseAuthService.instance = new FireBaseAuthService();
     }
-    return AuthService.instance;
-  }
-
-  public async signInWithEmailAndPassword(
-    email: string,
-    password: string,
-  ): Promise<AuthResponse<FirebaseAuthTypes.UserCredential>> {
-    try {
-      const userCredential = await this.auth.signInWithEmailAndPassword(email, password);
-      return { data: userCredential, error: null };
-    } catch (error: any) {
-      return {
-        data: null,
-        error: new AuthError(error.code || 'unknown', error.message),
-      };
-    }
-  }
-
-  public async signOut(): Promise<AuthResponse<void>> {
-    try {
-      await this.auth.signOut();
-      return { data: undefined, error: null };
-    } catch (error: any) {
-      return {
-        data: null,
-        error: new AuthError(error.code || 'unknown', error.message),
-      };
-    }
-  }
-
-  public onAuthStateChanged(callback: (user: FirebaseAuthTypes.User | null) => void): () => void {
-    return this.auth.onAuthStateChanged(callback);
+    return FireBaseAuthService.instance;
   }
 
   public getCurrentUser(): FirebaseAuthTypes.User | null {
     return this.auth.currentUser;
   }
 
-  public async resetPassword(email: string): Promise<AuthResponse<void>> {
-    try {
-      await this.auth.sendPasswordResetEmail(email);
-      return { data: undefined, error: null };
-    } catch (error: any) {
-      return {
-        data: null,
-        error: new AuthError(error.code || 'unknown', error.message),
-      };
-    }
+  public onAuthStateChanged(callback: (user: FirebaseAuthTypes.User | null) => void): () => void {
+    return this.auth.onAuthStateChanged(callback);
   }
 
   public async updateProfile(
@@ -131,6 +91,90 @@ class AuthService {
       };
     }
   }
+
+  // Authentication Methods
+  public async signInWithEmailAndPassword(
+    email: string,
+    password: string,
+  ): Promise<AuthResponse<FirebaseAuthTypes.UserCredential>> {
+    try {
+      const userCredential = await this.auth.signInWithEmailAndPassword(email, password);
+      return { data: userCredential, error: null };
+    } catch (error: any) {
+      return {
+        data: null,
+        error: new AuthError(error.code || 'unknown', error.message),
+      };
+    }
+  }
+
+  public async signUpWithEmailAndPassword(
+    email: string,
+    password: string,
+    displayName?: string,
+  ): Promise<AuthResponse<FirebaseAuthTypes.UserCredential>> {
+    try {
+      const userCredential = await this.auth.createUserWithEmailAndPassword(email, password);
+
+      // If displayName is provided, update the user profile
+      if (displayName && userCredential.user) {
+        await userCredential.user.updateProfile({ displayName });
+      }
+
+      // Send email verification
+      await userCredential.user?.sendEmailVerification();
+
+      return { data: userCredential, error: null };
+    } catch (error: any) {
+      return {
+        data: null,
+        error: new AuthError(
+          error.code || 'unknown',
+          this.getSignUpErrorMessage(error.code) || error.message,
+        ),
+      };
+    }
+  }
+
+  private getSignUpErrorMessage(errorCode: string): string {
+    switch (errorCode) {
+      case 'auth/email-already-in-use':
+        return 'Email này đã được sử dụng bởi tài khoản khác';
+      case 'auth/invalid-email':
+        return 'Email không hợp lệ';
+      case 'auth/operation-not-allowed':
+        return 'Đăng ký bằng email/password chưa được kích hoạt';
+      case 'auth/weak-password':
+        return 'Mật khẩu cần có ít nhất 6 ký tự';
+      default:
+        return 'Đã có lỗi xảy ra khi đăng ký';
+    }
+  }
+
+  public async signOut(): Promise<AuthResponse<void>> {
+    try {
+      await this.auth.signOut();
+      return { data: undefined, error: null };
+    } catch (error: any) {
+      return {
+        data: null,
+        error: new AuthError(error.code || 'unknown', error.message),
+      };
+    }
+  }
+  // end Authentication Methods
+
+  public async resetPassword(email: string): Promise<AuthResponse<void>> {
+    try {
+      await this.auth.sendPasswordResetEmail(email);
+      return { data: undefined, error: null };
+    } catch (error: any) {
+      return {
+        data: null,
+        error: new AuthError(error.code || 'unknown', error.message),
+      };
+    }
+  }
 }
 
-export const authService = AuthService.getInstance();
+export const fireBaseAuthService = FireBaseAuthService.getInstance();

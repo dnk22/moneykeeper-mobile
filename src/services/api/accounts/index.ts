@@ -13,9 +13,26 @@ import {
   queryDeleteAccountById,
 } from 'database/querying';
 import { TAccount } from 'database/types';
+import { ApiResponse } from 'services/axios';
+import { showToast } from 'utils/system';
 
-export async function getAccountData({ ...rest }: TGetAllAccounts) {
-  return await queryAllAccount(rest);
+export async function fetchAccountList(
+  payload: TGetAllAccounts = {},
+): Promise<ApiResponse<TAccount[]>> {
+  try {
+    return {
+      status: 200,
+      data: await queryAllAccount(payload),
+    };
+  } catch (error) {
+    showToast({
+      type: 'info',
+    });
+    return {
+      status: 200,
+      data: [],
+    };
+  }
 }
 
 /**

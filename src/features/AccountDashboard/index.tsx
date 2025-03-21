@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { TAccount } from 'database/types';
 import RNText from 'components/Text';
-import { getAccountData } from 'services/api/accounts';
+import { fetchAccountList } from 'services/api/accounts';
 import { formatNumber } from 'utils/math';
 import ItemSettingsModal from './ItemSettingsModal';
 import AccountList from './AccountList';
@@ -16,13 +16,9 @@ function Accounts() {
 
   useFocusEffect(
     useCallback(() => {
-      fetchListAccount();
+      fetchAccountList().then(({ data }) => setAccountData(data));
     }, []),
   );
-
-  const fetchListAccount = () => {
-    getAccountData({}).then((res) => setAccountData(res));
-  };
 
   const onToggleModal = () => {
     setIsShowItemSettingsModal(!isShowItemSettingsModal);
@@ -35,7 +31,7 @@ function Accounts() {
 
   const getTotalMoneyInAllAccount = useMemo(() => {
     return accountData.reduce(
-      (accumulator, currentValue) => (accumulator += +currentValue?.closingAmount),
+      (accumulator, currentValue) => (accumulator += +(currentValue?.closingAmount || 0)),
       0,
     );
   }, [accountData]);
@@ -46,11 +42,11 @@ function Accounts() {
         isVisible={isShowItemSettingsModal}
         onToggleModal={onToggleModal}
         account={currentAccountPressed.current}
-        onActionPressDone={fetchListAccount}
+        onActionPressDone={fetchAccountList}
       />
       <View style={styles.container}>
         <View style={styles.totalBalance}>
-          <RNText style={styles.totalCurrency}>{`Tổng tiền: ${formatNumber(
+          <RNText style={styles.totalCurrency}>{`Tổng: ${formatNumber(
             getTotalMoneyInAllAccount,
             true,
           )}`}</RNText>
@@ -58,7 +54,7 @@ function Accounts() {
         <AccountList
           account={accountData}
           onActionPress={onActionPress}
-          onRefresh={fetchListAccount}
+          onRefresh={fetchAccountList}
         />
       </View>
     </>

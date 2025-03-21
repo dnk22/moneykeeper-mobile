@@ -1,8 +1,8 @@
-import { AxiosError, AxiosInstance, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
-import { authService } from './auth';
-import { ApiError, ApiResponse, ErrorResponse, RefreshTokenResponse } from './types';
-import { navigationRef } from 'navigation/helpers/navigate';
+import navigationRef from 'navigation/helpers/navigate';
 import { ROUTES } from 'navigation/constants/routes';
+import { AxiosError, AxiosInstance, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
+import { ApiError, ApiResponse, ErrorResponse } from './types';
+import { authService, RefreshTokenResponse } from 'services/auth';
 
 export class InterceptorService {
   private refreshTokenRequest: Promise<RefreshTokenResponse> | null = null;

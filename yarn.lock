@@ -9533,6 +9533,7 @@ __metadata:
     react-native-haptic-feedback: ^2.3.3
     react-native-ios-context-menu: 1.15.3
     react-native-keyboard-aware-scroll-view: ^0.9.5
+    react-native-keychain: ^9.2.3
     react-native-linear-gradient: ^2.8.3
     react-native-mmkv: ^3.1.0
     react-native-modal: ^13.0.1
@@ -10694,6 +10695,13 @@ __metadata:
   peerDependencies:
     react-native: ">=0.48.4"
   checksum: 5eec2aedb886213dfed4c8428a443b565dce80ba9fcf5897171e4c8829d4dd64c5011ac004d93f29adfc83ad6f88c2838d1a5b45255dc4a49bd1c0a169245800
+  languageName: node
+  linkType: hard
+
+"react-native-keychain@npm:^9.2.3":
+  version: 9.2.3
+  resolution: "react-native-keychain@npm:9.2.3"
+  checksum: 2a5bef250efdf0aef4f13cab0f24eab127bfb52ad88f9475ff0eab199d4f0ca4807bb5f22e8a3b89978e8e8573c274c6284ec6aa9ab182382edfe20af76802ff
   languageName: node
   linkType: hard
 
