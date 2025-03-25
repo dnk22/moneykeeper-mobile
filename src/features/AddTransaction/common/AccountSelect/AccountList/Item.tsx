@@ -2,7 +2,7 @@ import React, { View } from 'react-native';
 import { TAccount } from 'database/types';
 import { useNavigation } from '@react-navigation/native';
 import { useCustomTheme } from 'resources/theme';
-import { AccountStackParamListProps } from 'navigation/types';
+import { AccountStackNavigationProps } from 'navigation/types';
 import { formatNumber } from 'utils/math';
 import styles from './styles';
 import CheckboxComponent from 'components/Checkbox';
@@ -19,8 +19,7 @@ type ItemProps = {
 
 function Item({ account, isItemSelected, onItemPress }: ItemProps) {
   const { colors } = useCustomTheme();
-  const navigation =
-    useNavigation<AccountStackParamListProps<typeof ROUTES.ACCOUNT_NORMAL_DETAIL>['navigation']>();
+  const navigation = useNavigation<AccountStackNavigationProps>();
 
   const handleOnItemPress = () => {
     if (onItemPress) {

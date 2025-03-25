@@ -5,7 +5,7 @@ import { BANKS } from 'database/constants';
 import { BANK_TYPE } from 'utils/constants/account';
 
 /** read */
-export const queryGetBank = async ({
+export const queryGetAllBank = async ({
   type = BANK_TYPE.BANK,
   text = '',
 }: {
@@ -16,11 +16,11 @@ export const queryGetBank = async ({
     const baseQuery = Q.where('type', type.toString());
 
     if (!type && !text) {
-      return await database.get<BankModel>(BANKS).query().fetch();
+      return await database.get<BankModel>(BANKS).query().unsafeFetchRaw();
     }
 
     if (!text.trim()) {
-      return await database.get<BankModel>(BANKS).query(baseQuery).fetch();
+      return await database.get<BankModel>(BANKS).query(baseQuery).unsafeFetchRaw();
     }
 
     const searchText = Q.sanitizeLikeString(text);
@@ -34,7 +34,7 @@ export const queryGetBank = async ({
           Q.where('bankName', Q.like(`${searchText}%`)),
         ),
       )
-      .fetch();
+      .unsafeFetchRaw();
   });
 };
 
@@ -49,13 +49,9 @@ export const getIsBankDataExist = async () => {
 };
 
 export const queryGetBankById = async (id: string) => {
-  try {
-    return await database.read(async () => {
-      return await database.get<BankModel>(BANKS).find(id);
-    });
-  } catch (error) {
-    console.log(error, 'get bank by id err');
-  }
+  return await database.read(async () => {
+    return await database.get<BankModel>(BANKS).find(id);
+  });
 };
 
 /** create */

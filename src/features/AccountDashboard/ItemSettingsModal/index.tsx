@@ -3,7 +3,7 @@ import { Alert, View } from 'react-native';
 import { TAccount } from 'database/types';
 import { useNavigation } from '@react-navigation/native';
 import { ROUTES } from 'navigation/constants/routes';
-import { changeAccountStatusById, deleteAccountById } from 'services/api/accounts';
+import { changeAccountStatusById, requestDeleteAccount } from 'services/api/accounts';
 import { TRANSACTION_TYPE } from 'utils/constants';
 import { useAppDispatch } from 'store/index';
 import { removeAccountStatement } from 'store/account/account.slice';
@@ -31,6 +31,40 @@ function ItemSettingsModal({
   const navigation = useNavigation<any>();
   const isAccountDisable = !account?.isActive;
   const dispatch = useAppDispatch();
+
+  const onOk = () => {
+    if (account?.id) {
+      requestDeleteAccount(account.id)
+        .then(() => {
+          dispatch(removeAccountStatement(account.id));
+          onToggleModal();
+          onActionPressDone();
+          showToast({
+            type: 'success',
+            text2: 'Xóa tài khoản thành công',
+          });
+        })
+        .catch(({ error }) => {
+          showToast({
+            type: 'error',
+            text2: error,
+          });
+        });
+    }
+  };
+
+  const onConfirmDelete = () =>
+    Alert.alert(
+      `Xóa ${account?.accountName}`,
+      'Xóa tài khoản đồng này nghĩa với việc tất cả các ghi chép của tài khoản này và các tài khoản liên quan sẽ bị xóa theo, HÃY CẨN THẬN!',
+      [
+        {
+          text: 'Hủy bỏ',
+          style: 'cancel',
+        },
+        { text: 'Đồng ý', style: 'destructive', onPress: () => onOk() },
+      ],
+    );
 
   const onItemPress = (type: string) => {
     switch (type) {
@@ -60,39 +94,6 @@ function ItemSettingsModal({
     }
     if (type !== DELETE) onToggleModal();
   };
-
-  const onOk = () => {
-    account?.id &&
-      deleteAccountById(account.id)
-        .then(() => {
-          account?.id && dispatch(removeAccountStatement(account?.id));
-          onToggleModal();
-          onActionPressDone();
-          showToast({
-            type: 'success',
-            text2: 'Xóa tài khoản thành công',
-          });
-        })
-        .catch(({ error }) => {
-          showToast({
-            type: 'error',
-            text2: error,
-          });
-        });
-  };
-
-  const onConfirmDelete = () =>
-    Alert.alert(
-      `Xóa ${account?.accountName}`,
-      'Xóa tài khoản đồng này nghĩa với việc tất cả các ghi chép của tài khoản này và các tài khoản liên quan sẽ bị xóa theo, HÃY CẨN THẬN!',
-      [
-        {
-          text: 'Hủy bỏ',
-          style: 'cancel',
-        },
-        { text: 'Đồng ý', style: 'destructive', onPress: () => onOk() },
-      ],
-    );
 
   return (
     <ModalComponent

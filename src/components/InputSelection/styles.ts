@@ -5,7 +5,10 @@ const styles = StyleSheet.create({
     height: 55,
     flexDirection: 'row',
     alignItems: 'center',
-    columnGap: 10,
+  },
+  itemIcon: {
+    width: 30,
+    height: 30,
   },
   groupContent: {
     flex: 1,
@@ -22,7 +25,7 @@ const styles = StyleSheet.create({
   },
   value: {
     height: '80%',
-    maxWidth: '85%',
+    maxWidth: '90%',
     padding: 5,
     paddingHorizontal: 10,
     borderRadius: 10,
@@ -30,6 +33,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     columnGap: 10,
+  },
+  inputField: {
+    display: 'none',
+  },
+  content: {
+    maxWidth: '90%',
   },
 });
 

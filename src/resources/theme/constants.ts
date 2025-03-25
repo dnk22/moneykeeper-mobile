@@ -21,8 +21,8 @@ export enum THEME_MODE {
 
 export const COMMON_THEME_COLOR = {
   success: '#888888',
-  alert: '#FF6B6B',
-  error: '#FFA500',
+  error: '#FF6B6B',
+  alert: '#FFA500',
   link: '#4D81E7',
 };
 

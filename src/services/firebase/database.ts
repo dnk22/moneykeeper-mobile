@@ -19,7 +19,7 @@ class DatabaseService {
   private constructor() {
     this.database = getDatabase();
     // Enable persistence for offline capabilities
-    this.database.setPersistenceEnabled(true);
+    this.database.setPersistenceEnabled(false);
   }
 
   public static getInstance(): DatabaseService {
@@ -33,7 +33,6 @@ class DatabaseService {
     try {
       const snapshot = await this.database.ref(path).once('value');
       const data = snapshot.val() as T;
-
       return { data, error: null };
     } catch (error: any) {
       return {

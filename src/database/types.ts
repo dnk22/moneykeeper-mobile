@@ -100,8 +100,7 @@ export type TAccount = {
 export type TAccountType = {
   id: ACCOUNT_CATEGORY_ID;
   name: string;
-  value: string;
-  icon: IconProps | any;
+  icon: string;
 };
 
 export type TBank = {

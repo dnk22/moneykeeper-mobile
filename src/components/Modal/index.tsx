@@ -22,7 +22,7 @@ const ModalComponent = ({
   isVisible,
   style,
   children,
-  backdropColor = '#6e768142',
+  backdropColor,
   animationInTiming = 400,
   animationOutTiming = 400,
   animationIn = 'slideInUp',
@@ -47,7 +47,7 @@ const ModalComponent = ({
     if (!title && !isShowClose) return null;
 
     return (
-      <View style={styles.header}>
+      <View style={[styles.header, styles.headerBorder, { borderBottomColor: colors.divider }]}>
         {title && <RNText preset="modalTitle">{title}</RNText>}
         {isShowClose && (
           <TouchableOpacity style={styles.modalAction} onPress={onToggleModal}>
@@ -57,21 +57,27 @@ const ModalComponent = ({
       </View>
     );
   }, [title, isShowClose, onToggleModal]);
+  
 
   return (
     <Modal
       isVisible={isVisible}
       backdropColor={backdropColor}
       style={[styles.modal, style]}
-      onBackdropPress={onHandleBackdropPress}
+      useNativeDriver
+      hideModalContentWhileAnimating
+      backdropTransitionOutTiming={0}
+      useNativeDriverForBackdrop
       animationInTiming={animationInTiming}
       animationOutTiming={animationOutTiming}
       animationIn={animationIn}
       animationOut={animationOut}
-      useNativeDriver
+      onBackdropPress={onHandleBackdropPress}
       {...rest}
     >
-      <View style={[styles.modalView, { backgroundColor: colors.surface, height }, styleDefaultContent]}>
+      <View
+        style={[styles.modalView, { backgroundColor: colors.surface, height }, styleDefaultContent]}
+      >
         {headerComponent}
         {children}
       </View>

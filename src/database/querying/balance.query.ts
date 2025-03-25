@@ -1,10 +1,14 @@
-import { TAccount, TBalance, TTransactions } from 'database/types';
+import { TAccount, TBalance } from 'database/types';
 import { database } from 'database/index';
 import { BalanceModel, TransactionModel } from 'database/models';
 import { BALANCE } from 'database/constants';
 import { Q } from '@nozbe/watermelondb';
 import isEmpty from 'lodash/isEmpty';
 import { SQLiteQuery } from '@nozbe/watermelondb/adapters/sqlite';
+
+const handleError = ({ error }) => {
+  return Promise.reject(error);
+};
 
 /** read  */
 export const queryGetLatestBalanceByDate = async (accountId: string, date: number) => {
@@ -191,7 +195,6 @@ export const queryCalculateAllBalanceAfterDate = async ({
       return true;
     });
   } catch (error) {
-    console.log(error);
     return handleError({
       error: 'UPD-BAL-ONE',
     });

@@ -46,8 +46,8 @@ export default class AccountModel extends Model {
 
   async markAsDeleted() {
     // delete all transaction and balance record related
+    await super.markAsDeleted();
     await this.balance.destroyAllPermanently();
     await this.financeTransaction.destroyAllPermanently();
-    await super.markAsDeleted();
   }
 }

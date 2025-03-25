@@ -1,22 +1,36 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { TAccount } from 'database/types';
 import RNText from 'components/Text';
-import { fetchAccountList } from 'services/api/accounts';
 import { formatNumber } from 'utils/math';
+import { TAccount } from 'database/types';
+import { queryAllAccount } from 'database/querying';
 import ItemSettingsModal from './ItemSettingsModal';
 import AccountList from './AccountList';
 import styles from './styles';
+import { showToast } from 'utils/system';
 
 function Accounts() {
   const currentAccountPressed = useRef<TAccount | any>(null);
   const [isShowItemSettingsModal, setIsShowItemSettingsModal] = useState(false);
   const [accountData, setAccountData] = useState<TAccount[]>([]);
 
+  const getAccounts = () => {
+    queryAllAccount()
+      .then((data) => {
+        setAccountData(data);
+      })
+      .catch((err) => {
+        showToast({
+          type: 'error',
+          text2: err,
+        });
+      });
+  };
+
   useFocusEffect(
     useCallback(() => {
-      fetchAccountList().then(({ data }) => setAccountData(data));
+      getAccounts();
     }, []),
   );
 
@@ -42,7 +56,7 @@ function Accounts() {
         isVisible={isShowItemSettingsModal}
         onToggleModal={onToggleModal}
         account={currentAccountPressed.current}
-        onActionPressDone={fetchAccountList}
+        onActionPressDone={getAccounts}
       />
       <View style={styles.container}>
         <View style={styles.totalBalance}>
@@ -51,11 +65,7 @@ function Accounts() {
             true,
           )}`}</RNText>
         </View>
-        <AccountList
-          account={accountData}
-          onActionPress={onActionPress}
-          onRefresh={fetchAccountList}
-        />
+        <AccountList account={accountData} onActionPress={onActionPress} onRefresh={getAccounts} />
       </View>
     </>
   );

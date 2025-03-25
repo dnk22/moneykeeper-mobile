@@ -1,5 +1,5 @@
 import React, { memo, forwardRef } from 'react';
-import { StyleProp, TextInput, TextInputProps, TextStyle, View } from 'react-native';
+import { StyleProp, TextInput, TextInputProps, TextStyle } from 'react-native';
 import { Control, RegisterOptions, useController } from 'react-hook-form';
 import RNText from 'components/Text';
 import isEqual from 'react-fast-compare';
@@ -25,7 +25,7 @@ const InputField = forwardRef<TextInput, IInputField>(function InputField(
   const { colors } = useCustomTheme();
   const {
     field: { value, onChange, onBlur },
-    fieldState: { error },
+    fieldState: { invalid },
   } = useController({
     name,
     control,
@@ -33,7 +33,7 @@ const InputField = forwardRef<TextInput, IInputField>(function InputField(
   });
 
   return (
-    <View>
+    <>
       {label && (
         <RNText style={stylesInline.label} fontSize={12} color={colors.textSecondary}>
           {label}
@@ -44,14 +44,14 @@ const InputField = forwardRef<TextInput, IInputField>(function InputField(
         value={value}
         autoCorrect={false}
         allowFontScaling={false}
-        placeholderTextColor={colors.textSecondary}
+        placeholderTextColor={!invalid ? colors.textSecondary : colors.error}
         style={[stylesInline.input, style, { color: colors.text }]}
         onChangeText={onChange}
         onBlur={onBlur}
         clearButtonMode={clearButtonMode}
         {...rest}
       />
-    </View>
+    </>
   );
 });
 

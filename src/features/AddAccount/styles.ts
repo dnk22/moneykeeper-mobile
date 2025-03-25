@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   group: {
-    borderRadius: 10,
+    borderRadius: 8,
     padding: 5,
     paddingHorizontal: 10,
     marginBottom: 10,
@@ -32,9 +32,9 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   formInput: {
+    flex: 1,
     height: 50,
     fontSize: 20,
-    width: '100%',
   },
   subText: {
     opacity: 0.5,
@@ -44,9 +44,8 @@ const styles = StyleSheet.create({
     width: 55,
     alignItems: 'center',
     marginRight: 10,
-    backgroundColor: '#e8e9eb',
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 8,
   },
   itemNotification: {
     height: 40,

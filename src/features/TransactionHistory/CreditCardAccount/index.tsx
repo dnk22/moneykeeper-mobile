@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { ROUTES } from 'navigation/constants/routes';
-import { AccountStackParamListProps } from 'navigation/types';
+import { AccountStackNavigationProps, AccountStackRouteProps } from 'navigation/types';
 import ButtonText from 'navigation/components/ButtonText';
 import { useAppSelector } from 'store/index';
 import { selectAccountStatementList } from 'store/account/account.selector';
@@ -17,8 +17,8 @@ import SvgIcon from 'components/SvgIcon';
 import styles from './styles';
 
 type CreditCardAccountProps = {
-  navigation: AccountStackParamListProps<typeof ROUTES.ACCOUNT_CREDIT_CARD_DETAIL>['navigation'];
-  route: AccountStackParamListProps<typeof ROUTES.ACCOUNT_CREDIT_CARD_DETAIL>['route'];
+  navigation: AccountStackNavigationProps;
+  route: AccountStackRouteProps<typeof ROUTES.ACCOUNT_CREDIT_CARD_DETAIL>;
 };
 
 function CreditCardAccount({ navigation, route }: CreditCardAccountProps) {

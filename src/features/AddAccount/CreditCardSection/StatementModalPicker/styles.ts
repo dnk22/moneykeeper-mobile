@@ -2,11 +2,14 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   header: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 1,
     paddingBottom: 10,
+  },
+  doneText: {
+    fontWeight: '700',
   },
 });
 

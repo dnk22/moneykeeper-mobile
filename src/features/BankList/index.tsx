@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { TBank } from 'database/types';
-import { fetchBankData } from 'services/api/banks';
+import { fetchBankList } from 'services/api/banks';
 import { ROUTES } from 'navigation/constants/routes';
-import { BankParamsProps } from 'navigation/types';
-// import FastImage from 'react-native-fast-image';
-// import * as BankIcon from 'assets/images/banks';
-import IconComponent from 'components/IconComponent';
+import { AccountStackNavigationProps, BankStackRouteProps } from 'navigation/types';
+import FastImage from 'react-native-fast-image';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import InputSearch from 'components/InputSearch';
 import FlatListComponent from 'components/FlatList';
@@ -16,26 +14,25 @@ import { BANK_TYPE } from 'utils/constants/account';
 import styles from './styles';
 
 function BankList() {
-  const { params } = useRoute<BankParamsProps<typeof ROUTES.BANK_HOME_LIST>['route']>();
-  const navigation = useNavigation<any>();
-
+  const { params } = useRoute<BankStackRouteProps<typeof ROUTES.BANK_HOME_LIST>>();
+  const navigation = useNavigation<AccountStackNavigationProps>();
   const [banks, setBanks] = useState<any>([]);
+
   const inputSearchPlaceHolder =
     params?.type === BANK_TYPE.WALLET ? 'Nhập tên nhà cung cấp' : 'Nhập tên ngân hàng';
 
-  useEffect(() => {
-    fetchBanksData();
-  }, []);
-
   const fetchBanksData = async (text?: string) => {
-    const res = await fetchBankData({ type: params?.type, text });
-    setBanks(res);
+    const { data = [] } = await fetchBankList({ type: params?.type, text });
+    setBanks(data);
   };
 
+  useEffect(() => {
+    fetchBanksData();
+  }, [params]);
+
   const onItemPress = (item: TBank) => {
-    navigation.navigate({
-      name: ROUTES.ADD_ACCOUNT,
-      params: { bankId: item.id },
+    navigation.popTo(params.returnScreen, {
+      bankId: item.id,
       merge: true,
     });
   };
@@ -45,13 +42,11 @@ function BankList() {
       <TouchableHighlightComponent onPress={() => onItemPress(item)}>
         <View style={styles.item}>
           <View style={styles.itemContent}>
-            <IconComponent name={item.icon} size={40} />
+            <FastImage source={{ uri: item.icon }} style={styles.itemIcon} />
             <View>
-              <RNText fontSize={16}>{item.shortName || item.bankName}</RNText>
+              <RNText fontSize={18}>{item.shortName || item.bankName}</RNText>
               {params?.type === BANK_TYPE.BANK && (
-                <RNText fontSize={14} style={[styles.subTitle]}>
-                  {item.bankName}
-                </RNText>
+                <RNText preset="subTitle">{item.bankName}</RNText>
               )}
             </View>
           </View>
@@ -60,13 +55,9 @@ function BankList() {
     );
   };
 
-  const onInputChange = (text: string) => {
-    fetchBanksData(text);
-  };
-
   return (
     <View style={styles.body}>
-      <InputSearch placeholder={inputSearchPlaceHolder} onChangeText={onInputChange} />
+      <InputSearch placeholder={inputSearchPlaceHolder} onChangeText={fetchBanksData} />
       <View style={styles.list}>
         <FlatListComponent data={banks} renderItem={renderItem} />
       </View>

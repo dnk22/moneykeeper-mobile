@@ -7,8 +7,7 @@ import { ROUTES } from 'navigation/constants/routes';
 import AccountTab from 'navigation/tabs/AccountTabs';
 import Toolbar from 'navigation/components/AccountToolbar';
 import Search from 'navigation/components/Search';
-// import SharedScreens from './SharedStacks';
-import AddAccount from 'features/AddAccount';
+import SharedScreens from './SharedStacks';
 
 //set up routes
 const AccountStack = createNativeStackNavigator<AccountStackParamList>();
@@ -35,14 +34,7 @@ function AccountNavigation() {
         }}
         component={AccountTab}
       />
-      <AccountStack.Screen
-        name={ROUTES.ADD_ACCOUNT}
-        options={({ route }) => ({
-          title: route.params?.accountId ? 'Sửa tài khoản' : 'Thêm tài khoản',
-        })}
-        component={AddAccount}
-      />
-      {/* {SharedScreens({ stack: AccountStack, screens: 'all' })} */}
+      {SharedScreens({ stack: AccountStack, screens: 'all' })}
     </AccountStack.Navigator>
   );
 }

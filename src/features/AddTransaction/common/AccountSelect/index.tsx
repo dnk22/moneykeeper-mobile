@@ -4,13 +4,13 @@ import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import { useFormContext } from 'react-hook-form';
 import { useFocusEffect } from '@react-navigation/native';
-import { getAccountById } from 'services/api/accounts';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { TAccount } from 'database/types';
 import { showToast } from 'utils/system';
 import AccountList from './AccountList';
 import InputSelection from 'components/InputSelection';
 import BottomSheet from 'components/BottomSheetModal';
+import { queryAccountById } from 'database/querying';
 
 type AccountProp = {
   accountLogo: string;
@@ -62,7 +62,7 @@ function AccountSelect({
       return false;
     }
     try {
-      const account = await getAccountById(getValues(name), false);
+      const account = await queryAccountById(getValues(name), ['accountLogo, accountName']);
       if (isEmpty(account)) {
         resetAccountState();
         return false;

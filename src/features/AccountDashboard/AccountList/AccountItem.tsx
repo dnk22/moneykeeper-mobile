@@ -10,7 +10,7 @@ import RNText from 'components/Text';
 import SvgIcon from 'components/SvgIcon';
 import { useCustomTheme } from 'resources/theme';
 import { formatNumber } from 'utils/math';
-import { AccountStackParamListProps } from 'navigation/types';
+import { AccountStackNavigationProps } from 'navigation/types';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constants/account';
 import styles from './styles';
 
@@ -22,8 +22,7 @@ type ItemProps = {
 
 function AccountItem({ account, transparentBackground, onActionPress }: ItemProps) {
   const { colors } = useCustomTheme();
-  const navigation =
-    useNavigation<AccountStackParamListProps<typeof ROUTES.ACCOUNT_NORMAL_DETAIL>['navigation']>();
+  const navigation = useNavigation<AccountStackNavigationProps>();
 
   const handleOnItemPress = () => {
     const { id, accountName, accountTypeId, creditCardLimit } = account;

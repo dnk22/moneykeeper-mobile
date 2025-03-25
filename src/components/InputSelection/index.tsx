@@ -1,88 +1,90 @@
-import { memo, useMemo } from 'react';
-import isEqual from 'react-fast-compare';
+import { memo } from 'react';
 import { Pressable, View } from 'react-native';
 import RNText from 'components/Text';
-import { Control } from 'react-hook-form';
 import SvgIcon from 'components/SvgIcon';
 import PressableHaptic from 'components/PressableHaptic';
+import InputField from 'components/InputField';
+import isEqual from 'react-fast-compare';
 import { useCustomTheme } from 'resources/theme';
-import IconComponent from 'components/IconComponent';
-import Form from './FORM';
+import FastImage from 'react-native-fast-image';
 import styles from './styles';
 
 type SelectedProps = {
-  title?: string;
+  fieldName?: string;
+  displayValue?: string;
+  formMethods?: any;
+  placeholder?: string;
   subTitle?: string;
-  isShowSubTitle?: boolean;
   icon?: string;
   defaultIcon?: string;
   onSelect?: () => void;
-  value?: string;
   onDelete?: () => void;
   required?: boolean;
-  name?: string;
-  control?: Control<any, any>;
-  error?: any;
 };
 
-function Selected({
-  title = '',
-  subTitle = '',
-  isShowSubTitle = false,
-  icon,
-  defaultIcon = 'unknown',
-  onSelect,
-  value,
-  onDelete,
-  required = false,
-  name,
-  control,
-  error,
-}: SelectedProps) {
-  const { colors } = useCustomTheme();
-  const isError = useMemo(() => error && !Boolean(value), [error, value]);
+const unknownIcon = require('assets/images/default/unknown.png');
 
-  const renderValue = useMemo(() => {
-    if (value && !required) {
-      return (
-        <View style={[styles.value, { backgroundColor: colors.background }]}>
-          <RNText numberOfLines={1} style={{ maxWidth: '90%' }}>
-            {value}
-          </RNText>
-          <Pressable onPress={onDelete}>
-            <SvgIcon name="closeCircle" size={20} color="gray" />
-          </Pressable>
-        </View>
-      );
-    }
-    return (
-      <RNText
-        style={{
-          maxWidth: '90%',
-          fontWeight: isError ? 'bold' : '500',
-          opacity: value || isError ? 1 : 0.6,
-        }}
-        numberOfLines={1}
-        color={isError ? 'red' : undefined}
-      >
-        {value || title}
-      </RNText>
-    );
-  }, [value, required, title, isError, colors.background, onDelete]);
+function Selected({
+  fieldName,
+  displayValue,
+  formMethods,
+  placeholder = '',
+  subTitle = '',
+  icon,
+  defaultIcon,
+  onSelect,
+  onDelete,
+  required,
+}: SelectedProps) {
+  const { control, getFieldState, formState } = formMethods;
+  const { colors } = useCustomTheme();
+  const iconUri = typeof icon === 'string' ? { uri: icon } : icon;
+  const defaultIconUrl = typeof defaultIcon === 'string' ? { uri: defaultIcon } : defaultIcon;
+  const isShowOptional = !required && displayValue;
+  const isError = required && getFieldState(fieldName, formState)?.invalid;
 
   return (
     <>
-      {name && <Form name={name} control={control} rules={{ required }} />}
+      {fieldName && (
+        <InputField
+          name={fieldName}
+          control={control}
+          rules={{ required }}
+          style={styles.inputField}
+        />
+      )}
       <PressableHaptic style={styles.itemGroup} onPress={onSelect}>
-        <IconComponent name={icon || defaultIcon} style={{ opacity: !icon ? 0.6 : 1 }} />
+        <FastImage
+          defaultSource={unknownIcon}
+          source={iconUri || defaultIconUrl}
+          style={styles.itemIcon}
+        />
         <View style={styles.groupContent}>
           <View style={styles.title}>
-            {value && isShowSubTitle && (
+            {displayValue && subTitle && (
               <RNText fontSize={10} preset="subTitle">
                 {subTitle}
               </RNText>
             )}
-            {renderValue}
+            <View
+              style={[
+                styles.value,
+                isShowOptional && { backgroundColor: colors.background, marginLeft: 5 },
+              ]}
+            >
+              <RNText
+                numberOfLines={1}
+                color={isError ? colors.error : colors.text}
+                style={[styles.content, { fontWeight: displayValue ? '500' : undefined }]}
+              >
+                {displayValue || placeholder}
+              </RNText>
+              {isShowOptional && (
+                <Pressable onPress={onDelete}>
+                  <SvgIcon name="closeCircle" size={20} color="gray" />
+                </Pressable>
+              )}
+            </View>
           </View>
           <SvgIcon name="forward" preset="forwardLink" style={styles.iconForward} />
         </View>

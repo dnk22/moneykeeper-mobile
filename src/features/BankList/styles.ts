@@ -25,8 +25,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     columnGap: 10,
   },
-  subTitle: {
-    opacity: 0.5,
+  itemIcon: {
+    width: 28,
+    height: 28,
   },
   list: {
     height: '90%',

@@ -2,15 +2,14 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   modal: {
-    marginHorizontal: 5,
+    margin: 0,
     justifyContent: 'flex-end',
   },
   modalView: {
     flexDirection: 'column',
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
-    borderRadius: 15,
+    borderRadius: 8,
     padding: 10,
+    paddingBottom: 40,
   },
   modalAction: {
     alignItems: 'flex-end',
@@ -19,6 +18,11 @@ export const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    padding: 5,
+    paddingBottom: 10,
     marginBottom: 10,
+  },
+  headerBorder: {
+    borderBottomWidth: 0.5,
   },
 });

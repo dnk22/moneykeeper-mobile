@@ -5,7 +5,19 @@ import { ROUTES } from 'navigation/constants/routes';
 /** account stack navigation */
 export type AccountStackParamList = SharedStackParamsList & {
   [ROUTES.ACCOUNT_TAB]: undefined;
+  [ROUTES.ADD_ACCOUNT]: {
+    bankId?: string;
+    accountId?: string;
+    accountTypeId?: string;
+  };
 };
 
-export type AccountStackParamListProps<T extends keyof AccountStackParamList> =
-  NativeStackScreenProps<AccountStackParamList, T>;
+export type AccountStackNavigationProps = NativeStackScreenProps<
+  AccountStackParamList,
+  keyof AccountStackParamList
+>['navigation'];
+
+export type AccountStackRouteProps<T extends keyof AccountStackParamList> = NativeStackScreenProps<
+  AccountStackParamList,
+  T
+>['route'];

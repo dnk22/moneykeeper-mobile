@@ -2,14 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 type AccountProps = {
-  accountStatementInfo: Record<string, Record<string, number>>;
-  accountNotifications: Record<string, string | undefined>;
+  accountStatementInfo: Record<string, Record<string, any>>;
 };
 
 //set default data
 const initialState: AccountProps = {
   accountStatementInfo: {},
-  accountNotifications: {},
 };
 export const ACCOUNT_SLICE_NAME = 'accountStore';
 
@@ -25,6 +23,7 @@ export const accountSlice = createSlice({
         ...state.accountStatementInfo,
         ...payload,
       };
+      console.log(state.accountStatementInfo, 'state.accountStatementInfo');
       return state;
     },
     removeAccountStatement(state, { payload }: PayloadAction<string>) {
@@ -35,28 +34,11 @@ export const accountSlice = createSlice({
       };
       return state;
     },
-    updateAccountNotification(
-      state,
-      { payload }: PayloadAction<AccountProps['accountNotifications']>,
-    ) {
-      const noti = {
-        ...state.accountNotifications,
-        ...payload,
-      };
-      if (!Object.values(payload)[0]) {
-        delete noti[Object.keys(payload)[0]];
-      }
-      state.accountNotifications = {
-        ...noti,
-      };
-      return state;
-    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { updateAccountStatement, removeAccountStatement, updateAccountNotification } =
-  accountSlice.actions;
+export const { updateAccountStatement, removeAccountStatement } = accountSlice.actions;
 
 export type TAccountSlice = {
   [ACCOUNT_SLICE_NAME]: ReturnType<(typeof accountSlice)['reducer']>;

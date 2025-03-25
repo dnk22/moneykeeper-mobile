@@ -1,7 +1,7 @@
 import { Initializer, InitializerOptions, InitializerDataSource } from '../types';
-import { SQLiteQuery } from '@nozbe/watermelondb/adapters/sqlite';
 import { BANKS } from 'database/constants';
 import { database } from 'database/index';
+import { BankModel } from 'database/models';
 
 export class BankInitializer implements Initializer {
   private dataSource: InitializerDataSource;
@@ -14,18 +14,18 @@ export class BankInitializer implements Initializer {
     try {
       var startTime = performance.now();
       const banksCollection = await this.dataSource.getBanks();
-      const updateStatements: SQLiteQuery[] = banksCollection.map((bank) => {
-        const { id, bankCode, bankName, shortName, icon, isSystem, type } = bank;
-        return [
-          `INSERT INTO ${BANKS} (id, bankCode, bankName, shortName, icon, isSystem, type, _changed, _status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-          [id, bankCode, bankName, shortName, icon, isSystem, type, '', 'created'],
-        ];
-      });
-
+      if (!banksCollection) {
+        return;
+      }
+      const banksTable = database.collections.get<BankModel>(BANKS);
       await database.write(async () => {
-        return await database.adapter.unsafeExecute({
-          sqls: updateStatements,
-        });
+        await database.batch(
+          ...banksCollection.map((data) =>
+            banksTable.prepareCreate((bank) => {
+              Object.assign(bank, { ...data, create: '' });
+            }),
+          ),
+        );
       });
       var endTime = performance.now();
       console.log(`Import bank data: ${Number((endTime - startTime) / 1000).toFixed(5)} s`);

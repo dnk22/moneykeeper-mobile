@@ -2,7 +2,7 @@ import { memo, useContext, useRef } from 'react';
 import { Alert, View } from 'react-native';
 import isEqual from 'react-fast-compare';
 import { useNavigation } from '@react-navigation/native';
-import { AccountStackParamListProps } from 'navigation/types';
+import { AccountStackNavigationProps } from 'navigation/types';
 import { ROUTES } from 'navigation/constants/routes';
 
 import { useCustomTheme } from 'resources/theme';
@@ -27,8 +27,7 @@ function TransactionItem({
 }) {
   const { colors } = useCustomTheme();
   const tapPosition = useRef<number>(0);
-  const navigation =
-    useNavigation<AccountStackParamListProps<typeof ROUTES.ACCOUNT_NORMAL_DETAIL>['navigation']>();
+  const navigation = useNavigation<AccountStackNavigationProps>();
   const { onRefreshData } = useContext(TransactionHistoryContext);
 
   const onTransactionItemPress = (e: any) => {

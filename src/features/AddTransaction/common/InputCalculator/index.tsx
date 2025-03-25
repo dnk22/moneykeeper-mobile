@@ -166,7 +166,7 @@ function InputCalculator({
 
   return (
     <View style={[styles.group, { backgroundColor: colors.surface }]}>
-      <RNText style={styles.amountLabel} fontSize={15}>
+      <RNText preset="subTitle" style={styles.amountLabel}>
         {text}
       </RNText>
       <View style={styles.inputGroup}>
@@ -190,7 +190,7 @@ function InputCalculator({
           onBlur={handleOnBlurInput}
         />
         {isShowPrefix && (
-          <RNText style={styles.currency} fontSize={22}>
+          <RNText preset="subTitle" style={styles.currency}>
             ₫
           </RNText>
         )}

@@ -15,59 +15,57 @@ export enum BANK_TYPE {
   INVESTMENT,
 }
 
+export const ACCOUNT_TYPE_LOGO: { [key: string]: string } = {
+  cash: require('assets/images/account/cash.png'),
+  bank: require('assets/images/account/bankAccountType.png'),
+  credit: require('assets/images/account/creditCard.png'),
+  investment: require('assets/images/account/investment.png'),
+  eWallet: require('assets/images/account/eWallet.png'),
+  other: require('assets/images/account/cash.png'),
+};
+
+// don't suffer order
 export const ACCOUNT_TYPE_LIST: TAccountType[] = [
   {
     id: ACCOUNT_CATEGORY_ID.MONEY,
     name: 'Tiền mặt',
-    value: 'cash',
     icon: 'cash',
   },
   {
     id: ACCOUNT_CATEGORY_ID.BANK,
     name: 'Tài khoản ngân hàng',
-    value: 'bank',
-    icon: 'bankAccountType',
+    icon: 'bank',
   },
   {
     id: ACCOUNT_CATEGORY_ID.CREDITCARD,
     name: 'Thẻ tín dụng',
-    value: 'credit',
-    icon: 'creditCard',
+    icon: 'credit',
   },
   {
     id: ACCOUNT_CATEGORY_ID.INVESTMENT,
     name: 'Tài khoản đầu tư',
-    value: 'investment',
     icon: 'investment',
   },
   {
     id: ACCOUNT_CATEGORY_ID.EWALLET,
     name: 'Ví điện tử',
-    value: 'eWallet',
     icon: 'eWallet',
   },
   {
     id: ACCOUNT_CATEGORY_ID.OTHER,
     name: 'Khác',
-    value: 'other',
-    icon: 'otherMoney',
+    icon: 'other',
   },
 ];
-
-export const ACCOUNT_TYPE_LOGO: { [key: string]: string } = {
-  [ACCOUNT_CATEGORY_ID.MONEY]: 'cash',
-  [ACCOUNT_CATEGORY_ID.BANK]: 'bankAccountType',
-  [ACCOUNT_CATEGORY_ID.CREDITCARD]: 'creditCard',
-  [ACCOUNT_CATEGORY_ID.INVESTMENT]: 'investment',
-  [ACCOUNT_CATEGORY_ID.EWALLET]: 'eWallet',
-  [ACCOUNT_CATEGORY_ID.OTHER]: 'other',
-};
 
 export const ADD_ACCOUNT_DEFAULT_VALUES = {
   accountName: '',
   initialAmount: 0,
   creditCardLimit: 0,
   creditCardIsReminder: false,
+  accountLogo: ACCOUNT_TYPE_LIST[0].icon,
+  accountTypeId: ACCOUNT_TYPE_LIST[0].id,
+  accountTypeName: ACCOUNT_TYPE_LIST[0].name,
   creditCardStatementDay: 5,
   creditCardDayAfterStatement: 15,
   creditCardReminderList: '',

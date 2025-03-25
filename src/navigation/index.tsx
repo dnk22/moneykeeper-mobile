@@ -12,7 +12,6 @@ import { selectAppTheme } from 'store/app/app.selector';
 import { RootStackParamList } from 'navigation/types';
 import { ROUTES } from 'navigation/constants/routes';
 import MainBottomTabs from './tabs/MainBottomTabs';
-import ModalStackScreen from './stacks/ModalStack';
 import AuthNavigator from './stacks/AuthStack';
 import navigation from 'navigation/helpers/navigate';
 //set up routes
@@ -41,14 +40,6 @@ function AppNavigators() {
             >
               <RootStack.Screen name={ROUTES.AUTH} component={AuthNavigator} />
               <RootStack.Screen name={ROUTES.MAIN} component={MainBottomTabs} />
-              <RootStack.Screen
-                name={ROUTES.MODAL_STACK}
-                component={ModalStackScreen}
-                options={{
-                  headerShown: false,
-                  presentation: 'modal',
-                }}
-              />
             </RootStack.Navigator>
           </BottomSheetModalProvider>
           <Toast />

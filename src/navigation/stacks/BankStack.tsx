@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { BankParams } from 'navigation/types';
+import { BankStackParamList } from 'navigation/types';
 import { ROUTES } from 'navigation/constants/routes';
 
 // import route component
@@ -7,7 +7,7 @@ import BankList from 'features/BankList';
 import { BANK_TYPE } from 'utils/constants/account';
 
 //set up routes
-const TransactionStack = createNativeStackNavigator<BankParams>();
+const TransactionStack = createNativeStackNavigator<BankStackParamList>();
 
 function BankNavigation() {
   return (

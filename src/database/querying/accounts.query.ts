@@ -12,7 +12,7 @@ export type TGetAllAccounts = {
 };
 
 /** READ */
-export const queryAllAccount = async ({ text = '', excludeId = '' }: TGetAllAccounts) => {
+export const queryAllAccount = async ({ text = '', excludeId = '' }: TGetAllAccounts = {}) => {
   return await database.read(async () => {
     var startTime = performance.now();
     const result = await database
@@ -42,9 +42,9 @@ export const queryAllAccount = async ({ text = '', excludeId = '' }: TGetAllAcco
   });
 };
 
-export const queryAccountById = async (id: string, getAll = true) => {
+export const queryAccountById = async (id: string, fields: string[] = []) => {
   const query = `SELECT ${
-    getAll ? '*' : 'accountLogo, accountName'
+    fields.length ? String(fields) : '*'
   }  FROM ${ACCOUNTS} WHERE id='${id}' AND _status != 'deleted' `;
   return await database.read(async () => {
     const res = await database
@@ -66,55 +66,48 @@ export const queryGetFirstAccount = async () => {
 
 /** CREATE */
 export const queryAddAccount = async (account: TAccount) => {
-  try {
-    const queryGetMaxSortOrder = `SELECT MAX(sortOrder) AS currentSortOrder from ${ACCOUNTS} WHERE _status!='deleted'`;
-    return await database.write(async () => {
-      const result = await database
-        .get<AccountModel>(ACCOUNTS)
-        .query(Q.unsafeSqlQuery(queryGetMaxSortOrder))
-        .unsafeFetchRaw();
-      const accountDB = await database.get<AccountModel>(ACCOUNTS).create((item) => {
-        Object.assign(item, { ...account, sortOrder: result[0].currentSortOrder + 1 });
-      });
-      return {
-        accountId: accountDB.id,
-        openAmount: accountDB?.initialAmount,
-        closingAmount: accountDB?.initialAmount,
-        transactionDateAt: null,
-        accountTypeId: accountDB.accountTypeId,
-      };
+  const queryGetMaxSortOrder = `SELECT MAX(sortOrder) AS currentSortOrder from ${ACCOUNTS} WHERE _status!='deleted'`;
+  return await database.write(async () => {
+    const result = await database
+      .get<AccountModel>(ACCOUNTS)
+      .query(Q.unsafeSqlQuery(queryGetMaxSortOrder))
+      .unsafeFetchRaw();
+    const accountDB = await database.get<AccountModel>(ACCOUNTS).create((item) => {
+      Object.assign(item, { ...account, sortOrder: result[0].currentSortOrder + 1 });
     });
-  } catch (error) {
-    return Promise.reject({
-      success: false,
-      error: 'Có lỗi trong quá trình tạo tài khoản.',
-    });
-  }
+    return {
+      accountId: accountDB.id,
+      openAmount: accountDB?.initialAmount,
+      closingAmount: accountDB?.initialAmount,
+      transactionDateAt: null,
+      accountTypeId: accountDB.accountTypeId,
+    };
+  });
 };
 
 /** UPDATE */
-export const queryUpdateAccount = async ({ id, account }: { id: string; account: TAccount }) => {
-  try {
-    return await database.write(async () => {
-      const res = await database.get<AccountModel>(ACCOUNTS).find(id);
-      const isUpdateBalance =
-        !isEqual(account.initialAmount, res.initialAmount) ||
-        !isEqual(account.creditCardLimit, res.creditCardLimit);
-      await res.update((item) => {
-        Object.assign(item, account);
-      });
-      // check if has new initialAmount, update balance also
-      return {
-        isUpdateBalance,
-        data: res,
-      };
+export const queryUpdateAccount = async ({
+  id,
+  account,
+}: {
+  id: string;
+  account: TAccount;
+}): Promise<{ isUpdateBalance: boolean; data: TAccount }> => {
+  return await database.write(async () => {
+    const res = await database.get<AccountModel>(ACCOUNTS).find(id);
+    // update balance table : prev initialAmount != new initialAmount || prev creditCardLimit != new creditCardLimit
+    const isUpdateBalance =
+      !isEqual(account.initialAmount, res.initialAmount) ||
+      !isEqual(account.creditCardLimit, res.creditCardLimit);
+    await res.update((item) => {
+      Object.assign(item, account);
     });
-  } catch (error) {
-    return Promise.reject({
-      success: false,
-      error: 'Có lỗi trong quá trình cập nhật tài khoản.',
-    });
-  }
+    // check if has new initialAmount, update balance also
+    return {
+      isUpdateBalance,
+      data: res,
+    };
+  });
 };
 
 export const queryChangeAccountStatusById = async (id: string) => {
@@ -140,6 +133,7 @@ export const queryDeleteAccountById = async (accountId: string) => {
       return (await database.get<AccountModel>(ACCOUNTS).find(accountId)).markAsDeleted();
     });
   } catch (error) {
+    console.log(error);
     return Promise.reject({
       success: false,
       error: 'Có lỗi trong quá trình xóa tài khoản.',

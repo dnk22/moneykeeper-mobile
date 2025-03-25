@@ -6,7 +6,7 @@ import SwipeableComponent from 'components/SwipeableComponent';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import IconComponent from 'components/IconComponent';
 import { useNavigation } from '@react-navigation/native';
-import { AccountStackParamListProps } from 'navigation/types';
+import { AccountStackNavigationProps } from 'navigation/types';
 import { ROUTES } from 'navigation/constants/routes';
 
 import { useCustomTheme } from 'resources/theme';
@@ -29,8 +29,7 @@ function TransactionItem({
   const { colors } = useCustomTheme();
   const dispatch = useAppDispatch();
   const tapPosition = useRef<number>(0);
-  const navigation =
-    useNavigation<AccountStackParamListProps<typeof ROUTES.ACCOUNT_NORMAL_DETAIL>['navigation']>();
+  const navigation = useNavigation<AccountStackNavigationProps>();
 
   const onTransactionItemPress = (e: any) => {
     if (e.nativeEvent.locationX === tapPosition.current) {
