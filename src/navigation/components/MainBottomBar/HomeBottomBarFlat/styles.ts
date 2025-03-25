@@ -11,12 +11,12 @@ const styles = StyleSheet.create({
   },
   tabBarContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-evenly',
   },
   component: {
     height: 80,
     position: 'relative',
-    width: SCREEN_WIDTH / 5,
+    width: SCREEN_WIDTH / 6,
     justifyContent: 'center',
     alignItems: 'center',
   },

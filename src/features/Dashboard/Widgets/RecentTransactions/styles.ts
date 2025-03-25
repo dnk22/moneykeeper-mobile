@@ -3,10 +3,9 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     maxHeight: 330,
-    paddingHorizontal: 5,
   },
   header: {
-    height: 40,
+    marginBottom: 8,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

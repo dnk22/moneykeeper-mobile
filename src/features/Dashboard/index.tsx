@@ -16,7 +16,7 @@ function Dashboard() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <FinancialStatement />
-      <ScrollView style={styles.widgetView}>
+      <ScrollView style={styles.widgetView} contentContainerStyle={{ gap: 10 }}>
         {isArray(widgetOrder) &&
           widgetOrder.map((item) => {
             if (item.isActive && item.key in WIDGET_IMPORT_LIST) {

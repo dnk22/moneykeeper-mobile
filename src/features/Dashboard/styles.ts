@@ -5,7 +5,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   widgetView: {
-    padding: 5,
+    padding: 10,
+    flexDirection: 'column',
+    gap: 20,
   },
 });
 

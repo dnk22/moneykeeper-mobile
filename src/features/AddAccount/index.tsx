@@ -66,7 +66,7 @@ function AddAccount() {
     const requestData = formatAccountData(data);
     requestUpdateAccount({ id: data?.id, account: requestData })
       .then((accountId: string) => {
-        // check noti in credit card account
+        // check notifications in credit card account
         if (requestData.accountTypeId === ACCOUNT_CATEGORY_ID.CREDITCARD) {
           dispatch(
             updateAccountStatement({
