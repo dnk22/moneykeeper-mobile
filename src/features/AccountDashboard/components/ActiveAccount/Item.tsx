@@ -12,7 +12,8 @@ import { useCustomTheme } from 'resources/theme';
 import { formatNumber } from 'utils/math';
 import { AccountStackNavigationProps } from 'navigation/types';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constants/account';
-import styles from './styles';
+import { accountListStyles as styles } from '../../styles';
+
 
 type ItemProps = {
   account: TAccount;

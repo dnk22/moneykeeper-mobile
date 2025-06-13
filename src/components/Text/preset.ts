@@ -49,6 +49,10 @@ export const textPresets: TextPresets = StyleSheet.create({
     fontSize: normalize(14),
     opacity: 0.7,
   },
+  emptyText: {
+    color: 'gray',
+    opacity: 0.7,
+  },
   title: {
     // fontSize: normalize(16),
     fontWeight: FONT_WEIGHTS.medium,

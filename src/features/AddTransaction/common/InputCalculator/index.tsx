@@ -35,12 +35,13 @@ function InputCalculator({
   rules,
   onChangeText,
   isShowPrefix = true,
-  inputTextColor = 'red',
+  inputTextColor,
   text = 'Số tiền',
 }: TInputCalculator) {
   const { colors } = useCustomTheme();
   const {
     field: { value = 0, onChange },
+    fieldState: { invalid },
   } = useController({
     name,
     control,
@@ -185,7 +186,13 @@ function InputCalculator({
           allowFontScaling={false}
           keyboardType="decimal-pad"
           value={Math.abs(value).toString()}
-          style={[styles.amountInput, { color: inputTextColor, borderColor: colors.divider }]}
+          style={[
+            styles.amountInput,
+            {
+              color: invalid ? colors.error : inputTextColor || colors.primary,
+              borderColor: colors.divider,
+            },
+          ]}
           onChangeText={onHandleInputChange}
           onBlur={handleOnBlurInput}
         />

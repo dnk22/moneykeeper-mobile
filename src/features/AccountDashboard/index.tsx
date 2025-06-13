@@ -1,73 +1,78 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
-import RNText from 'components/Text';
-import { formatNumber } from 'utils/math';
+import PagerView from 'react-native-pager-view';
 import { TAccount } from 'database/types';
+import ActiveAccount from './components/ActiveAccount';
+import InactiveAccount from './components/InactiveAccount';
+import ItemSettingsModal from './components/ItemSettingsModal';
+import { AccountContext } from './context';
 import { queryAllAccount } from 'database/querying';
-import ItemSettingsModal from './ItemSettingsModal';
-import AccountList from './AccountList';
-import styles from './styles';
 import { showToast } from 'utils/system';
+import { useCustomTheme } from 'resources/theme';
+import { accountDashboardStyles as styles } from './styles';
+
+export enum ACCOUNT_STATUS {
+  INACTIVE,
+  ACTIVE,
+}
 
 function Accounts() {
-  const currentAccountPressed = useRef<TAccount | any>(null);
-  const [isShowItemSettingsModal, setIsShowItemSettingsModal] = useState(false);
+  const { colors } = useCustomTheme();
+  const accountPressed = useRef<TAccount | any>(null);
+  const [isShowModal, setShowModal] = useState(false);
+  const [isActiveAccount, setIsActiveAccount] = useState(ACCOUNT_STATUS.ACTIVE);
   const [accountData, setAccountData] = useState<TAccount[]>([]);
 
-  const getAccounts = () => {
-    queryAllAccount()
+  const getAccounts = async () => {
+    return queryAllAccount({ isActive: isActiveAccount })
       .then((data) => {
         setAccountData(data);
+        return data;
       })
-      .catch((err) => {
+      .catch(() => {
         showToast({
           type: 'error',
-          text2: err,
         });
+        return [];
       });
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      getAccounts();
-    }, []),
-  );
-
   const onToggleModal = () => {
-    setIsShowItemSettingsModal(!isShowItemSettingsModal);
+    setShowModal(!isShowModal);
   };
 
-  const onActionPress = useCallback((account: TAccount) => {
-    currentAccountPressed.current = account;
+  const onActionPress = (account: TAccount) => {
+    accountPressed.current = account;
     onToggleModal();
-  }, []);
-
-  const getTotalMoneyInAllAccount = useMemo(() => {
-    return accountData.reduce(
-      (accumulator, currentValue) => (accumulator += +(currentValue?.closingAmount || 0)),
-      0,
-    );
-  }, [accountData]);
+  };
 
   return (
-    <>
-      <ItemSettingsModal
-        isVisible={isShowItemSettingsModal}
-        onToggleModal={onToggleModal}
-        account={currentAccountPressed.current}
-        onActionPressDone={getAccounts}
-      />
-      <View style={styles.container}>
-        <View style={styles.totalBalance}>
-          <RNText style={styles.totalCurrency}>{`Tổng: ${formatNumber(
-            getTotalMoneyInAllAccount,
-            true,
-          )}`}</RNText>
+    <AccountContext.Provider
+      value={{
+        accountPressed: accountPressed.current,
+        isShowModal,
+        onToggleModal,
+        onActionPress,
+        ACCOUNT_STATUS,
+        getAccounts,
+        setIsActiveAccount,
+        isActiveAccount,
+      }}
+    >
+      <View style={[styles.container]}>
+        <View style={[styles.accountWrapper, { backgroundColor: colors.surface }]}>
+          <PagerView style={{ flex: 1 }} initialPage={0}>
+            <View key={ACCOUNT_STATUS.ACTIVE}>
+              <ActiveAccount />
+            </View>
+            <View key={ACCOUNT_STATUS.INACTIVE}>
+              <InactiveAccount />
+            </View>
+          </PagerView>
         </View>
-        <AccountList account={accountData} onActionPress={onActionPress} onRefresh={getAccounts} />
       </View>
-    </>
+      <ItemSettingsModal />
+    </AccountContext.Provider>
   );
 }
 

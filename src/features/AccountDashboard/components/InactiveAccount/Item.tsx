@@ -1,0 +1,75 @@
+import React, { View } from 'react-native';
+import { TAccount } from 'database/types';
+
+import { useNavigation } from '@react-navigation/native';
+import { ROUTES } from 'navigation/constants/routes';
+import TouchableHighlightComponent from 'components/TouchableHighlight';
+import IconComponent from 'components/IconComponent';
+import PressableHaptic from 'components/PressableHaptic';
+import RNText from 'components/Text';
+import SvgIcon from 'components/SvgIcon';
+import { useCustomTheme } from 'resources/theme';
+import { formatNumber } from 'utils/math';
+import { AccountStackNavigationProps } from 'navigation/types';
+import { ACCOUNT_CATEGORY_ID } from 'utils/constants/account';
+import { accountListStyles as styles } from '../../styles';
+
+type ItemProps = {
+  account: TAccount;
+  transparentBackground?: boolean;
+  onActionPress?: (account: TAccount) => void;
+};
+
+function AccountItem({ account, transparentBackground, onActionPress }: ItemProps) {
+  const { colors } = useCustomTheme();
+  const navigation = useNavigation<AccountStackNavigationProps>();
+
+  const handleOnItemPress = () => {
+    const { id, accountName, accountTypeId, creditCardLimit } = account;
+    switch (accountTypeId) {
+      case ACCOUNT_CATEGORY_ID.CREDITCARD:
+        navigation.navigate(ROUTES.ACCOUNT_CREDIT_CARD_DETAIL, {
+          accountId: id,
+          accountName,
+          creditCardLimit,
+        });
+        break;
+      default:
+        navigation.navigate(ROUTES.ACCOUNT_NORMAL_DETAIL, { accountId: id, accountName });
+        break;
+    }
+  };
+
+  return (
+    <View style={styles.itemContainer}>
+      <TouchableHighlightComponent
+        style={{ backgroundColor: transparentBackground ? undefined : colors.surface }}
+        onPress={handleOnItemPress}
+      >
+        <View style={styles.itemContent}>
+          <IconComponent name={account.accountLogo} />
+          <View style={styles.itemCenter}>
+            <RNText numberOfLines={1} fontSize={16} style={styles.itemTitle}>
+              {account.accountName}
+            </RNText>
+            <RNText
+              numberOfLines={1}
+              fontSize={13}
+              style={styles.itemSubTitle}
+              color={account?.closingAmount < 0 ? 'red' : colors.text}
+            >
+              {formatNumber(account?.closingAmount, true)}
+            </RNText>
+          </View>
+          <PressableHaptic
+            style={styles.itemAction}
+            onPress={() => onActionPress && onActionPress(account)}
+          >
+            <SvgIcon name="settingDot" />
+          </PressableHaptic>
+        </View>
+      </TouchableHighlightComponent>
+    </View>
+  );
+}
+export default AccountItem;

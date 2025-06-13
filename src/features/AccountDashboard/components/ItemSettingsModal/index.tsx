@@ -1,6 +1,5 @@
-import { IModalComponentProps } from 'components/Modal';
+import { useContext } from 'react';
 import { Alert, View } from 'react-native';
-import { TAccount } from 'database/types';
 import { useNavigation } from '@react-navigation/native';
 import { ROUTES } from 'navigation/constants/routes';
 import { changeAccountStatusById, requestDeleteAccount } from 'services/api/accounts';
@@ -12,9 +11,8 @@ import ModalComponent from 'components/Modal';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import SvgIcon from 'components/SvgIcon';
 import RNText from 'components/Text';
+import { AccountContext } from 'features/AccountDashboard/context';
 import styles from './styles';
-
-type ItemSettingsModalProps = IModalComponentProps & { account: TAccount; onActionPressDone?: any };
 
 const TRANSFER = 'transfer';
 const ADJUSTMENT = 'adjustment';
@@ -22,13 +20,14 @@ const EDIT = 'edit';
 const DELETE = 'delete';
 const INACTIVE = 'inactive';
 
-function ItemSettingsModal({
-  isVisible,
-  onToggleModal,
-  account,
-  onActionPressDone,
-}: ItemSettingsModalProps) {
+function ItemSettingsModal() {
   const navigation = useNavigation<any>();
+  const {
+    accountPressed: account,
+    isShowModal,
+    onToggleModal,
+    getAccounts,
+  } = useContext(AccountContext);
   const isAccountDisable = !account?.isActive;
   const dispatch = useAppDispatch();
 
@@ -38,7 +37,7 @@ function ItemSettingsModal({
         .then(() => {
           dispatch(removeAccountStatement(account.id));
           onToggleModal();
-          onActionPressDone();
+          getAccounts();
           showToast({
             type: 'success',
             text2: 'Xóa tài khoản thành công',
@@ -70,25 +69,25 @@ function ItemSettingsModal({
     switch (type) {
       case TRANSFER:
         navigation.navigate(ROUTES.CREATE_TRANSACTION_FROM_ACCOUNT, {
-          accountId: account.id,
+          accountId: account?.id,
           transactionType: TRANSACTION_TYPE.TRANSFER,
         });
         break;
       case ADJUSTMENT:
         navigation.navigate(ROUTES.CREATE_TRANSACTION_FROM_ACCOUNT, {
-          accountId: account.id,
+          accountId: account?.id,
           transactionType: TRANSACTION_TYPE.ADJUSTMENT,
         });
         break;
       case EDIT:
-        navigation.navigate(ROUTES.ADD_ACCOUNT, { accountId: account.id });
+        navigation.navigate(ROUTES.ADD_ACCOUNT, { accountId: account?.id });
         break;
       case DELETE:
         onConfirmDelete();
         break;
       default:
         if (account?.id) {
-          changeAccountStatusById(account.id).then(() => onActionPressDone());
+          changeAccountStatusById(account.id).then(() => getAccounts());
         }
         break;
     }
@@ -97,7 +96,7 @@ function ItemSettingsModal({
 
   return (
     <ModalComponent
-      isVisible={isVisible}
+      isVisible={isShowModal}
       onToggleModal={onToggleModal}
       styleDefaultContent={{ padding: 5 }}
     >

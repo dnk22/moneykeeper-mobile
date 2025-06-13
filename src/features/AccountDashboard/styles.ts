@@ -1,18 +1,49 @@
 import { StyleSheet } from 'react-native';
 
-const styles = StyleSheet.create({
+export const accountDashboardStyles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 20,
     paddingHorizontal: 5,
   },
-  totalBalance: {
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  totalCurrency: {
-    fontWeight: '500',
+  accountWrapper: {
+    flex: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    borderRadius: 8,
   },
 });
 
-export default styles;
+export const accountListStyles = StyleSheet.create({
+  itemContainer: {
+    paddingVertical: 10,
+  },
+  itemContent: {
+    height: 60,
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: 10,
+    paddingHorizontal: 5,
+  },
+  itemCenter: {
+    flex: 1,
+    rowGap: 5,
+  },
+  itemAction: {
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  itemTitle: {
+    fontWeight: '500',
+    width: '100%',
+  },
+  itemSubTitle: {
+    width: '100%',
+    opacity: 0.7,
+  },
+  emptyText: {
+    marginTop: '50%',
+  },
+});
