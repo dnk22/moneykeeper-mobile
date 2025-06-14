@@ -8,10 +8,10 @@ import AccountTypeModalPicker from './ModalPicker';
 
 function AccountTypeSelect({
   accountTypeId,
-  accountNotShowBank,
+  accountWithoutBank,
 }: {
   accountTypeId: number;
-  accountNotShowBank: any[];
+  accountWithoutBank: any[];
 }) {
   const [isVisible, toggle] = useState(false);
   const navigation = useNavigation<any>();
@@ -26,7 +26,7 @@ function AccountTypeSelect({
 
   const handleItemPress = (item: TAccountType) => {
     if (item.id !== accountTypeId) {
-      if (accountNotShowBank.includes(item.id)) {
+      if (accountWithoutBank.includes(item.id)) {
         navigation.dispatch({
           ...CommonActions.setParams({ bankId: '' }),
         });

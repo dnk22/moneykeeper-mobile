@@ -3,7 +3,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import BlurScreen from 'features/BlurScreen';
+import BlurScreen from 'features/common/BlurScreen';
+import AppLoading from 'features/common/AppLoading';
 import Toast from 'react-native-toast-message';
 import StatusBar from 'components/StatusBar';
 import { useAppTheme } from 'resources/theme';
@@ -24,6 +25,7 @@ function AppNavigators() {
   return (
     <NavigationContainer theme={theme} ref={navigation.navigationRef}>
       <BlurScreen />
+      <AppLoading theme={theme} />
       <SafeAreaView
         style={{ flex: 1, backgroundColor: theme.colors.primary }}
         edges={['top', 'right', 'left']}

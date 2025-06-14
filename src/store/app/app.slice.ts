@@ -28,6 +28,7 @@ const initialState = {
     darkMode: false,
     color: COLOR_SCHEME.modernBlue,
   },
+  appLoading: false,
 } as AppStateProps;
 
 export const APP_SLICE_NAME = 'appConfig';
@@ -71,6 +72,11 @@ export const appSlice = createSlice({
     updateTheme(state, { payload }: PayloadAction<Partial<AppStateProps['theme']>>) {
       Object.assign(state.theme, payload);
     },
+    updateAppLoading(state, { payload }: PayloadAction<AppStateProps['appLoading']>) {
+      state.appLoading = produce(state.appLoading, (draft) => {
+        draft = payload;
+      });
+    },
   },
 });
 
@@ -84,6 +90,7 @@ export const {
   updateViewCategoryMostAndRecent,
   updateWidgetOrder,
   updateTheme,
+  updateAppLoading,
 } = appSlice.actions;
 
 export type TAppSlice = {

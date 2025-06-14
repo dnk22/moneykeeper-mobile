@@ -29,3 +29,4 @@ export const selectViewCategoryMostAndRecent = createSelector(
 
 export const selectWidgetOrder = createSelector(appState, (state) => state.widgetOrder);
 export const selectAppTheme = createSelector(appState, (state) => state.theme);
+export const selectAppLoadingState = createSelector(appState, (state) => state.appLoading);

@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   label: {
-    marginBottom: 4,
+    // marginBottom: 2,
   },
 });
 

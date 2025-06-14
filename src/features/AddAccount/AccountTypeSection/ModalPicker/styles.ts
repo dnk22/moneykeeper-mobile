@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   item: {
-    marginBottom: 2,
+    marginVertical: 2,
     padding: 15,
     flexDirection: 'row',
     alignItems: 'center',

@@ -7,9 +7,9 @@ import TouchableHighlightComponent from 'components/TouchableHighlight';
 import RNText from 'components/Text';
 import ModalComponent from 'components/Modal';
 import CheckboxComponent from 'components/Checkbox';
-import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
 import FastImage from 'react-native-fast-image';
+import styles from './styles';
 
 type AccountTypeModalPickerProps = {
   isVisible: boolean;
@@ -25,6 +25,7 @@ function AccountTypeModalPicker({
   onPressItem,
 }: AccountTypeModalPickerProps) {
   const { colors } = useCustomTheme();
+  
   // Memoize renderItem to prevent recreating on every render
   const renderItem = useCallback(
     ({ item }: { item: TAccountType }) => {

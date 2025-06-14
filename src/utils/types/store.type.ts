@@ -23,4 +23,5 @@ export type AppStateProps = {
   viewCategoryMostAndRecent: keyof typeof VIEW_CATEGORY_FAST_BY_COLUMN;
   widgetOrder: WidgetOrderListProps[];
   theme: ThemeProps;
+  appLoading: boolean;
 };

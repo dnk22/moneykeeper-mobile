@@ -23,8 +23,8 @@ const ModalComponent = ({
   style,
   children,
   backdropColor,
-  animationInTiming = 400,
-  animationOutTiming = 400,
+  animationInTiming = 300,
+  animationOutTiming = 300,
   animationIn = 'slideInUp',
   animationOut = 'slideOutDown',
   isShowClose,
@@ -66,7 +66,7 @@ const ModalComponent = ({
       style={[styles.modal, style]}
       useNativeDriver
       hideModalContentWhileAnimating
-      backdropTransitionOutTiming={0}
+      backdropTransitionOutTiming={300}
       useNativeDriverForBackdrop
       animationInTiming={animationInTiming}
       animationOutTiming={animationOutTiming}
