@@ -12,6 +12,7 @@ import { ROUTES } from 'navigation/constants/routes';
 import navigation from 'navigation/helpers/navigate';
 import { TLogin } from 'utils/types/auth';
 import validation from './validation';
+import { authService } from 'services/auth';
 import styles from './styles';
 
 function SignInScreen() {
@@ -20,14 +21,13 @@ function SignInScreen() {
   const { control, handleSubmit } = useForm<TLogin>({
     // resolver: yupResolver(validation),
     defaultValues: {
-      email: '',
-      password: '',
+      email: 'test@gmail.com',
+      password: '000000',
     },
   });
 
   const onSubmit = (data: TLogin) => {
-    navigation.navigate(ROUTES.MAIN);
-    console.log(data);
+    authService.firebaseSignIn(data);
   };
 
   const onNavigateToForgotPassword = () => {

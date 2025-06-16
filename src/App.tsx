@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { LogBox } from 'react-native';
 import { Provider } from 'react-redux';
 import AppNavigators from 'navigation/index';
@@ -10,8 +10,6 @@ import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-c
 // import { showToast } from 'utils/system';
 // import AppInitService from 'services/firebase/appInit';
 import { persistor, store } from './store';
-import { FirebaseDataSource } from 'services/firebase/appInit';
-import AppInitService from 'services/initialization';
 import { AuthProvider } from 'services/auth/AuthProvider';
 
 LogBox.ignoreAllLogs();
@@ -20,15 +18,6 @@ const App = () => {
   // useEffect(() => {
   //   RnKeyboard.registerKeyboard('KeyboardCalculator', KeyboardCalculator);
   // }, []);
-
-  useEffect(() => {
-    const initApp = async () => {
-      const dataSource = new FirebaseDataSource();
-      const appInit = AppInitService.getInstance(dataSource);
-      await appInit.initializeApp();
-    };
-    initApp();
-  }, []);
 
   // useEffect(() => {
   //   requestNotifications(['alert', 'sound']).then(({ status, settings }) => {
