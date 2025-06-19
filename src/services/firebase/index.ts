@@ -1,8 +1,8 @@
 export { firebaseApp, firebaseService } from './config';
-export { fireBaseAuthService } from './auth';
-export { databaseService } from './database';
+export { fireBaseAuthService } from './services/auth';
+export { databaseService } from './services/database';
 
 // Types
 export type { FirebaseConfig } from './config';
-export type { AuthResponse } from './auth';
-export type { DatabaseResponse } from './database';
+export type { AuthResponse } from './services/auth';
+export type { DatabaseResponse } from './services/database';

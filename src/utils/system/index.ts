@@ -1,21 +1,38 @@
-import Toast, { ToastProps } from 'react-native-toast-message';
+import Toast, { ToastShowParams } from 'react-native-toast-message';
 import ReactNativeHapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 
-const options = {
+const hapticOptions = {
   enableVibrateFallback: true,
   ignoreAndroidSystemSettings: false,
 };
 
-export const hapticFeedback = (type?: HapticFeedbackTypes) => {
-  ReactNativeHapticFeedback.trigger(type || 'selection', options);
+// Hàm gọi phản hồi xúc giác
+export const hapticFeedback = (type: HapticFeedbackTypes = HapticFeedbackTypes.selection) => {
+  ReactNativeHapticFeedback.trigger(type, hapticOptions);
 };
 
-export function showToast({ type, ...rest }: ToastProps) {
-  return Toast.show({
+// Hàm hiển thị toast
+export function showToast({
+  type,
+  text1,
+  text2,
+  position = 'top',
+  visibilityTime = 1500,
+  autoHide = true,
+  ...rest
+}: ToastShowParams) {
+  if (type === 'success') hapticFeedback(HapticFeedbackTypes.notificationSuccess);
+  else if (type === 'error') hapticFeedback(HapticFeedbackTypes.notificationError);
+  else hapticFeedback();
+
+  Toast.show({
     type,
     topOffset: 42,
-    text1: type === 'error' ? 'Oops! Lỗi mất rồi.' : 'Thành công!',
-    visibilityTime: 1500,
+    text1: text1 || (type === 'error' ? 'Lỗi!' : 'Thành công!'),
+    text2,
+    position,
+    visibilityTime,
+    autoHide,
     ...rest,
   });
 }

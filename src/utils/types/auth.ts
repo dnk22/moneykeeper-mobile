@@ -15,11 +15,7 @@ export type TUser = {
 export type TRegister = {
   email: string;
   password: string;
-  name: string;
-};
-export type TRegisterResponse = {
-  token: string;
-  user: TUser;
+  displayName: string;
 };
 export type TForgotPassword = {
   email: string;
@@ -51,31 +47,4 @@ export type TUpdatePasswordResponse = {
 };
 export type TLogoutResponse = {
   message: string;
-};
-export type TGoogleLoginResponse = {
-  token: string;
-  user: TUser;
-};
-export type TGoogleLogin = {
-  idToken: string;
-};
-export type TGoogleRegister = {
-  idToken: string;
-  name: string;
-};
-export type TGoogleRegisterResponse = {
-  token: string;
-  user: TUser;
-};
-export type TGoogleLink = {
-  idToken: string;
-};
-export type TGoogleLinkResponse = {
-  user: TUser;
-};
-export type TGoogleUnlinkResponse = {
-  message: string;
-};
-export type TGoogleUnlink = {
-  id: string;
 };

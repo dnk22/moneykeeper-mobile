@@ -38,6 +38,7 @@
  *    - [ ] IP Tracking
  */
 import { FirebaseAuthTypes, getAuth } from '@react-native-firebase/auth';
+import { TLogin, TRegister } from 'utils/types/auth';
 
 export class AuthError extends Error {
   constructor(public code: string, message: string) {
@@ -74,45 +75,60 @@ class FireBaseAuthService {
     return this.auth.onAuthStateChanged(callback);
   }
 
-  public async updateProfile(
-    profile: Partial<FirebaseAuthTypes.UpdateProfile>,
-  ): Promise<AuthResponse<void>> {
-    try {
-      const user = this.getCurrentUser();
-      if (!user) {
-        throw new Error('No user is currently signed in');
-      }
-      await user.updateProfile(profile);
-      return { data: undefined, error: null };
-    } catch (error: any) {
-      return {
-        data: null,
-        error: new AuthError(error.code || 'unknown', error.message),
-      };
+  private getSignUpErrorMessage(errorCode: string): string {
+    switch (errorCode) {
+      case 'auth/email-already-in-use':
+        return 'Email này đã được sử dụng bởi tài khoản khác';
+      case 'auth/invalid-email':
+        return 'Email không hợp lệ';
+      case 'auth/operation-not-allowed':
+        return 'Đăng ký bằng email/password chưa được kích hoạt';
+      case 'auth/weak-password':
+        return 'Mật khẩu cần có ít nhất 6 ký tự';
+      default:
+        return 'Đã có lỗi xảy ra khi đăng ký';
+    }
+  }
+
+  private getSignInErrorMessage(errorCode: string): string {
+    switch (errorCode) {
+      case 'auth/user-not-found':
+        return 'Người dùng không tồn tại. Vui lòng đăng ký tài khoản mới.';
+      case 'auth/wrong-password':
+        return 'Mật khẩu không chính xác. Vui lòng thử lại.';
+      case 'auth/invalid-email':
+        return 'Email không hợp lệ. Vui lòng kiểm tra lại.';
+      case 'auth/too-many-requests':
+        return 'Quá nhiều yêu cầu đăng nhập. Vui lòng thử lại sau.';
+      default:
+        return 'Đã có lỗi xảy ra khi đăng nhập';
     }
   }
 
   // Authentication Methods
-  public async signInWithEmailAndPassword(
-    email: string,
-    password: string,
-  ): Promise<AuthResponse<FirebaseAuthTypes.UserCredential>> {
+  public async signInWithEmailAndPassword({
+    email,
+    password,
+  }: TLogin): Promise<AuthResponse<FirebaseAuthTypes.UserCredential>> {
     try {
       const userCredential = await this.auth.signInWithEmailAndPassword(email, password);
       return { data: userCredential, error: null };
     } catch (error: any) {
       return {
         data: null,
-        error: new AuthError(error.code || 'unknown', error.message),
+        error: new AuthError(
+          error.code || 'unknown',
+          this.getSignInErrorMessage(error.code) || error.message,
+        ),
       };
     }
   }
 
-  public async signUpWithEmailAndPassword(
-    email: string,
-    password: string,
-    displayName?: string,
-  ): Promise<AuthResponse<FirebaseAuthTypes.UserCredential>> {
+  public async signUpWithEmailAndPassword({
+    email,
+    password,
+    displayName,
+  }: TRegister): Promise<AuthResponse<FirebaseAuthTypes.UserCredential>> {
     try {
       const userCredential = await this.auth.createUserWithEmailAndPassword(email, password);
 
@@ -136,21 +152,6 @@ class FireBaseAuthService {
     }
   }
 
-  private getSignUpErrorMessage(errorCode: string): string {
-    switch (errorCode) {
-      case 'auth/email-already-in-use':
-        return 'Email này đã được sử dụng bởi tài khoản khác';
-      case 'auth/invalid-email':
-        return 'Email không hợp lệ';
-      case 'auth/operation-not-allowed':
-        return 'Đăng ký bằng email/password chưa được kích hoạt';
-      case 'auth/weak-password':
-        return 'Mật khẩu cần có ít nhất 6 ký tự';
-      default:
-        return 'Đã có lỗi xảy ra khi đăng ký';
-    }
-  }
-
   public async signOut(): Promise<AuthResponse<void>> {
     try {
       await this.auth.signOut();
@@ -162,7 +163,24 @@ class FireBaseAuthService {
       };
     }
   }
-  // end Authentication Methods
+
+  public async updateProfile(
+    profile: Partial<FirebaseAuthTypes.UpdateProfile>,
+  ): Promise<AuthResponse<void>> {
+    try {
+      const user = this.getCurrentUser();
+      if (!user) {
+        throw new Error('No user is currently signed in');
+      }
+      await user.updateProfile(profile);
+      return { data: undefined, error: null };
+    } catch (error: any) {
+      return {
+        data: null,
+        error: new AuthError(error.code || 'unknown', error.message),
+      };
+    }
+  }
 
   public async resetPassword(email: string): Promise<AuthResponse<void>> {
     try {

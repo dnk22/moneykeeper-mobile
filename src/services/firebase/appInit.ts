@@ -1,6 +1,6 @@
 import { TBank, TTransactionsCategory } from 'database/types';
 import { InitializerDataSource } from 'services/initialization/types';
-import { databaseService } from './database';
+import { databaseService } from './services/database';
 
 export class FirebaseDataSource implements InitializerDataSource {
   async getCategories(): Promise<TTransactionsCategory[]> {

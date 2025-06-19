@@ -9,16 +9,22 @@ import { ROUTES } from 'navigation/constants/routes';
 import { useAuth } from 'services/auth/AuthProvider';
 import { settingRoutes } from './constants';
 import styles from './styles';
+import PressableHaptic from 'components/PressableHaptic';
+import { Logout } from 'iconsax-react-native';
 
 function Settings() {
   const { colors } = useCustomTheme();
   const navigation = useNavigation();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, appLogout } = useAuth();
   const { user = {} } = {}; // Add this hook
 
   function onNavigateToScreen(link: string) {
     navigation.navigate(link);
   }
+
+  const handleLogout = async () => {
+    await appLogout();
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -81,6 +87,13 @@ function Settings() {
             ))}
           </View>
         ))}
+        <PressableHaptic
+          style={[styles.item, styles.logout, { backgroundColor: colors.surface }]}
+          onPress={handleLogout}
+        >
+          <Logout color={colors.error} variant="Broken" />
+          <Text>Đăng xuất</Text>
+        </PressableHaptic>
       </ScrollView>
     </SafeAreaView>
   );

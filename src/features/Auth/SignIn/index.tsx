@@ -12,11 +12,12 @@ import { ROUTES } from 'navigation/constants/routes';
 import navigation from 'navigation/helpers/navigate';
 import { TLogin } from 'utils/types/auth';
 import validation from './validation';
-import { authService } from 'services/auth';
+import { useAuth } from 'services/auth/AuthProvider';
 import styles from './styles';
 
 function SignInScreen() {
   const { colors } = useCustomTheme();
+  const { appLogin } = useAuth();
 
   const { control, handleSubmit } = useForm<TLogin>({
     // resolver: yupResolver(validation),
@@ -26,8 +27,8 @@ function SignInScreen() {
     },
   });
 
-  const onSubmit = (data: TLogin) => {
-    authService.firebaseSignIn(data);
+  const onSubmit = async (formData: TLogin) => {
+    await appLogin(formData);
   };
 
   const onNavigateToForgotPassword = () => {

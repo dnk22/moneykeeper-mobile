@@ -53,6 +53,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'gray',
   },
+  logout: {
+    width: '100%',
+    padding: 10,
+    paddingHorizontal: 15,
+    borderRadius: 10,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+    color: 'white',
+    fontWeight: 'bold',
+  },
 });
 
 export default styles;

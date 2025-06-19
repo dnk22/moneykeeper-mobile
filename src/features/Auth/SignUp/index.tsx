@@ -10,17 +10,26 @@ import { useCustomTheme } from 'resources/theme';
 import { Nexo } from 'iconsax-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AuthStackNavigationProps } from 'navigation/types/auth';
+import { TRegister } from 'utils/types/auth';
+import { useAuth } from 'services/auth/AuthProvider';
 import styles from './styles';
 
 function SignUpScreen() {
   const navigation = useNavigation<AuthStackNavigationProps>();
   const { colors } = useCustomTheme();
   const [isAcceptTerm, setAcceptTerm] = useState(false);
+  const { appSignup } = useAuth();
 
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      name: 'duy',
+      email: 'tes2t@gmail.com',
+      password: '000000',
+    },
+  });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data: TRegister) => {
+    await appSignup(data);
   };
 
   const onNavigateToSignIn = () => {
@@ -57,7 +66,7 @@ function SignUpScreen() {
       </ImageBackground>
       <View style={[styles.bottomBlock, { backgroundColor: colors.surface }]}>
         <InputField
-          name="fullName"
+          name="name"
           label="Họ tên"
           control={control}
           placeholder="Điền họ tên"
