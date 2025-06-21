@@ -134,7 +134,9 @@ class FireBaseAuthService {
 
       // If displayName is provided, update the user profile
       if (displayName && userCredential.user) {
-        await userCredential.user.updateProfile({ displayName });
+        await userCredential.user.updateProfile({
+          displayName,
+        });
       }
 
       // Send email verification
@@ -164,15 +166,9 @@ class FireBaseAuthService {
     }
   }
 
-  public async updateProfile(
-    profile: Partial<FirebaseAuthTypes.UpdateProfile>,
-  ): Promise<AuthResponse<void>> {
+  public async resetPassword(email: string): Promise<AuthResponse<void>> {
     try {
-      const user = this.getCurrentUser();
-      if (!user) {
-        throw new Error('No user is currently signed in');
-      }
-      await user.updateProfile(profile);
+      await this.auth.sendPasswordResetEmail(email);
       return { data: undefined, error: null };
     } catch (error: any) {
       return {
@@ -182,9 +178,15 @@ class FireBaseAuthService {
     }
   }
 
-  public async resetPassword(email: string): Promise<AuthResponse<void>> {
+  public async updateProfile(
+    profile: Partial<FirebaseAuthTypes.UpdateProfile>,
+  ): Promise<AuthResponse<void>> {
     try {
-      await this.auth.sendPasswordResetEmail(email);
+      const user = this.getCurrentUser();
+      if (!user) {
+        throw new Error('No user is currently signed in');
+      }
+      await user.updateProfile(profile);
       return { data: undefined, error: null };
     } catch (error: any) {
       return {

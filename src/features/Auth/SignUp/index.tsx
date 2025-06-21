@@ -22,7 +22,7 @@ function SignUpScreen() {
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      name: 'duy',
+      displayName: 'duy',
       email: 'tes2t@gmail.com',
       password: '000000',
     },
@@ -66,11 +66,17 @@ function SignUpScreen() {
       </ImageBackground>
       <View style={[styles.bottomBlock, { backgroundColor: colors.surface }]}>
         <InputField
-          name="name"
+          name="displayName"
           label="Họ tên"
           control={control}
           placeholder="Điền họ tên"
           style={[styles.formInput, { backgroundColor: colors.background }]}
+          autoComplete="name"
+          autoCapitalize="words"
+          autoCorrect={false}
+          textContentType="name"
+          autoFocus
+          returnKeyType="next"
         />
         <InputField
           name="email"
@@ -78,6 +84,12 @@ function SignUpScreen() {
           control={control}
           placeholder="Điền email"
           style={[styles.formInput, { backgroundColor: colors.background }]}
+          autoComplete="email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+          textContentType="emailAddress"
+          returnKeyType="next"
         />
         <InputField
           name="password"
@@ -85,6 +97,12 @@ function SignUpScreen() {
           control={control}
           placeholder="Điền mật khẩu"
           style={[styles.formInput, { backgroundColor: colors.background }]}
+          secureTextEntry
+          autoComplete="password"
+          textContentType="newPassword"
+          returnKeyType="done"
+          autoCorrect={false}
+          autoCapitalize="none"
         />
         <View style={styles.termAndConditions}>
           <CheckboxComponent
@@ -107,7 +125,12 @@ function SignUpScreen() {
         <TouchableHighlightComponent
           onPress={handleSubmit(onSubmit)}
           underlayColor={colors.primaryVariant}
-          style={[styles.formInput, styles.submit, { backgroundColor: colors.primary }]}
+          disabled={!isAcceptTerm}
+          style={[
+            styles.formInput,
+            styles.submit,
+            { backgroundColor: isAcceptTerm ? colors.primary : colors.primaryVariant },
+          ]}
         >
           <RNText color="white" preset="textMedium" style={{ textAlign: 'center' }}>
             Đăng ký

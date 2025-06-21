@@ -104,6 +104,9 @@ function SignInScreen() {
           control={control}
           placeholder="Điền email"
           style={[styles.formInput, { backgroundColor: colors.background }]}
+          autoComplete="email"
+          keyboardType="email-address"
+          autoCapitalize="none"
         />
         <InputField
           name="password"

@@ -85,6 +85,7 @@ export const AuthProvider = ({ children }: any) => {
 
   // Handle user state changes
   function handleAuthStateChanged(user: any) {
+    console.log('Auth state changed:', user);
     setIsLoading(false);
     setUser(user);
   }

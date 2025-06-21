@@ -97,3 +97,16 @@ class FirebaseService {
 
 export const firebaseService = FirebaseService.getInstance();
 export const firebaseApp = firebaseService.getFirebaseApp();
+
+export const FB_PATH = {
+  USERS: 'users',
+  USER_PROFILE: 'userProfile',
+  ACCOUNTS: 'accounts',
+  TRANSACTIONS: 'transactions',
+  CATEGORIES: 'categories',
+  SETTINGS: 'settings',
+  NOTIFICATIONS: 'notifications',
+  BUDGETS: 'budgets',
+  GOALS: 'goals',
+  REPORTS: 'reports',
+};
