@@ -84,14 +84,14 @@ export const AuthProvider = ({ children }: any) => {
   };
 
   // Handle user state changes
-  function handleAuthStateChanged(user: any) {
+  function onAuthStateChanged(user: any) {
     console.log('Auth state changed:', user);
     setIsLoading(false);
     setUser(user);
   }
 
   useEffect(() => {
-    const subscriber = fireBaseAuthService.onAuthStateChanged(handleAuthStateChanged);
+    const subscriber = fireBaseAuthService.onAuthStateChanged(onAuthStateChanged);
     return subscriber;
   }, []);
 

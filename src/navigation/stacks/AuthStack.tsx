@@ -12,7 +12,7 @@ function AuthNavigator() {
   const { colors } = useCustomTheme();
   return (
     <Stack.Navigator
-      initialRouteName={ROUTES.SIGN_IN}
+      initialRouteName={ROUTES.SIGN_UP}
       screenOptions={{
         headerShown: false,
         animation: 'fade_from_bottom',

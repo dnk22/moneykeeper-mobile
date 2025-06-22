@@ -39,6 +39,8 @@
  */
 import { FirebaseAuthTypes, getAuth } from '@react-native-firebase/auth';
 import { TLogin, TRegister } from 'utils/types/auth';
+import { userService } from './user';
+import { appSettingsService, defaultSettings } from './appSettings';
 
 export class AuthError extends Error {
   constructor(public code: string, message: string) {
@@ -138,9 +140,14 @@ class FireBaseAuthService {
           displayName,
         });
       }
+      // Create user profile in the database
+      await userService.createUserProfile({ email, displayName });
+
+      // Initialize app settings for the new user
+      await appSettingsService.updateSettings({ newSettings: defaultSettings });
 
       // Send email verification
-      await userCredential.user?.sendEmailVerification();
+      // await userCredential.user?.sendEmailVerification();
 
       return { data: userCredential, error: null };
     } catch (error: any) {

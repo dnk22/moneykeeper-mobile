@@ -17,13 +17,13 @@ import styles from './styles';
 function SignUpScreen() {
   const navigation = useNavigation<AuthStackNavigationProps>();
   const { colors } = useCustomTheme();
-  const [isAcceptTerm, setAcceptTerm] = useState(false);
+  const [isAcceptTerm, setAcceptTerm] = useState(true);
   const { appSignup } = useAuth();
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      displayName: 'duy',
-      email: 'tes2t@gmail.com',
+      displayName: 'Khánh Duy',
+      email: 'duynk198@gmail.com',
       password: '000000',
     },
   });

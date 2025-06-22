@@ -58,12 +58,11 @@ class FirebaseService {
 
       // Initialize Firebase if not already initialized
       if (getApps().length === 0) {
-        return initializeApp(config, process.env.FIREBASE_APP_ID);
+        initializeApp(config, process.env.FIREBASE_APP_ID);
       }
 
-      return getApp();
+      return getApp;
     } catch (error) {
-      console.error('Error initializing Firebase:', error);
       throw error;
     }
   }
@@ -80,9 +79,7 @@ class FirebaseService {
     const missingFields = requiredFields.filter((field) => !config[field as keyof FirebaseConfig]);
 
     if (missingFields.length > 0) {
-      throw new Error(
-        `Missing required Firebase configuration fields: ${missingFields.join(', ')}`,
-      );
+      console.log(`Missing required Firebase configuration fields: ${missingFields.join(', ')}`);
     }
   }
 
@@ -99,8 +96,10 @@ export const firebaseService = FirebaseService.getInstance();
 export const firebaseApp = firebaseService.getFirebaseApp();
 
 export const FB_PATH = {
+  DEFAULT_DATA_BANKS: 'default_data/banks',
+  DEFAULT_DATA_CATEGORIES: 'default_data/categories',
   USERS: 'users',
-  USER_PROFILE: 'userProfile',
+  USER_PROFILE: 'profile',
   ACCOUNTS: 'accounts',
   TRANSACTIONS: 'transactions',
   CATEGORIES: 'categories',

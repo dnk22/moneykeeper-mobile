@@ -3,10 +3,12 @@ import { databaseService } from './database';
 import { FB_PATH } from '../config';
 
 export interface UserProfile {
-  uid: string;
   email: string | null;
+  phoneNumber?: string | null;
+  displayName?: string | null;
+  photoURL?: string | null;
   isOnboarded: boolean;
-  createdAt: number; // Realtime DB thường lưu timestamp dưới dạng số (milliseconds)
+  createdAt: number;
   updatedAt: number;
 }
 
@@ -23,30 +25,6 @@ export class UserService {
   }
 
   /**
-   * Tạo User Profile ban đầu khi người dùng mới đăng ký.
-   */
-  public async createUserProfile(uid: string, email: string | null): Promise<void> {
-    const { data: existingProfile } = await databaseService.get<UserProfile>(uid);
-
-    if (!existingProfile) {
-      const now = Date.now();
-      const newUserProfile: UserProfile = {
-        uid,
-        email,
-        isOnboarded: false,
-        createdAt: now,
-        updatedAt: now,
-      };
-      const { error } = await databaseService.set(FB_PATH.USER_PROFILE, newUserProfile);
-      if (error) {
-        throw new Error(`Failed to create user profile: ${error.message}`);
-      }
-    } else {
-      console.log('UserService: User profile already exists for', email);
-    }
-  }
-
-  /**
    * Lấy User Profile của người dùng hiện tại.
    */
   public async getUserProfile(): Promise<UserProfile | null> {
@@ -59,6 +37,35 @@ export class UserService {
     }
 
     return userProfile;
+  }
+
+  /**
+   * Tạo User Profile ban đầu khi người dùng mới đăng ký.
+   */
+  public async createUserProfile({
+    email,
+    displayName,
+  }: {
+    email: string;
+    displayName: string;
+  }): Promise<void> {
+    try {
+      const now = Date.now();
+      const newUserProfile: UserProfile = {
+        email,
+        displayName,
+        isOnboarded: false,
+        createdAt: now,
+        updatedAt: now,
+      };
+      await databaseService.set(FB_PATH.USER_PROFILE, newUserProfile);
+    } catch (error) {
+      throw new Error(
+        `Failed to create user profile: ${
+          error instanceof Error ? error.message : 'Unknown error'
+        }`,
+      );
+    }
   }
 
   /**
