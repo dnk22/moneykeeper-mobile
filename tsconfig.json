@@ -17,6 +17,7 @@
       "store/*": ["src/store/*"],
       "utils/*": ["src/utils/*"],
       "database/*": ["src/database/*"],
-    }
+    },
+    "typeRoots": ["./src/utils/types", "./node_modules/@types"],
   },
 }

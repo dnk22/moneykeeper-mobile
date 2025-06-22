@@ -5931,6 +5931,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv@npm:^16.4.5":
+  version: 16.5.0
+  resolution: "dotenv@npm:16.5.0"
+  checksum: 6543fe87b5ddf2d60dd42df6616eec99148a5fc150cb4530fef5bda655db5204a3afa0e6f25f7cd64b20657ace4d79c0ef974bec32fdb462cad18754191e7a90
+  languageName: node
+  linkType: hard
+
 "dunder-proto@npm:^1.0.0, dunder-proto@npm:^1.0.1":
   version: 1.0.1
   resolution: "dunder-proto@npm:1.0.1"
@@ -9593,6 +9600,7 @@ __metadata:
     react-native-clean-project: ^4.0.3
     react-native-collapsible: ^1.6.2
     react-native-contacts: ^8.0.4
+    react-native-dotenv: ^3.4.11
     react-native-draggable-flatlist: ^4.0.1
     react-native-fast-image: ^8.6.3
     react-native-gesture-handler: ^2.26.0
@@ -10658,6 +10666,17 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: d3695dc76ed1ed727ff97442db1cff702866264b7d3a66e2c3e5cf61e561b21cf396b33433e3bfba302dab9e06d08378f5fd48a5b941cc7793f44b787bbb60c4
+  languageName: node
+  linkType: hard
+
+"react-native-dotenv@npm:^3.4.11":
+  version: 3.4.11
+  resolution: "react-native-dotenv@npm:3.4.11"
+  dependencies:
+    dotenv: ^16.4.5
+  peerDependencies:
+    "@babel/runtime": ^7.20.6
+  checksum: 3ebac2c2ed79dd7e4920fd3fc2da9187413b7190231618e4858b46c47833677838b96d531afe7bd5c4b0a60454dba40cb8708722210df5d522e30aefbf41da05
   languageName: node
   linkType: hard
 

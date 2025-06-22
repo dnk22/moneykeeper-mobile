@@ -105,6 +105,7 @@
     "metro-react-native-babel-transformer": "^0.77.0",
     "prettier": "^2.8.8",
     "react-native-clean-project": "^4.0.3",
+    "react-native-dotenv": "^3.4.11",
     "react-native-svg-transformer": "^1.0.0",
     "react-test-renderer": "18.3.1",
     "typescript": "5.0.4",
