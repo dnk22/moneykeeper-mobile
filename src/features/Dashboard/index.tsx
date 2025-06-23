@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
-import { selectWidgetOrder } from 'store/app/app.selector';
+import { selectAppearanceConfig } from 'store/app/app.selector';
 import { useSelector } from 'react-redux';
 import isArray from 'lodash/isArray';
 import { RootState } from 'store/index';
@@ -11,14 +11,14 @@ import styles from './styles';
 
 function Dashboard() {
   const { colors } = useCustomTheme();
-  const widgetOrder = useSelector((state: RootState) => selectWidgetOrder(state));
+  const { homeWidgetOrder } = useSelector((state: RootState) => selectAppearanceConfig(state));
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <FinancialStatement />
       <ScrollView style={styles.widgetView} contentContainerStyle={{ gap: 10 }}>
-        {isArray(widgetOrder) &&
-          widgetOrder.map((item) => {
+        {isArray(homeWidgetOrder) &&
+          homeWidgetOrder.map((item) => {
             if (item.isActive && item.key in WIDGET_IMPORT_LIST) {
               const Widget =
                 WIDGET_IMPORT_LIST[item.key as keyof typeof WIDGET_IMPORT_LIST].default;

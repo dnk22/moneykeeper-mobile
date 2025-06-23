@@ -10,8 +10,8 @@ import { TTransactionsCategory } from 'database/types';
 import { getMostUsedOrRecentTransaction } from 'services/api/transactionsCategory';
 import { ITEM_WIDTH } from 'features/TransactionCategory/constants.config';
 import { useAppDispatch, useAppSelector } from 'store/index';
-import { selectViewCategoryMostAndRecent } from 'store/app/app.selector';
-import { updateViewCategoryMostAndRecent } from 'store/app/app.slice';
+import { selectCategoriesConfig } from 'store/app/app.selector';
+import { updateCategoriesConfig } from 'store/app/app.slice';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import IconComponent from 'components/IconComponent';
 import Empty from 'components/Empty';
@@ -43,7 +43,7 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation<any>();
   const viewCategoryMostAndRecent = useAppSelector((state) =>
-    selectViewCategoryMostAndRecent(state),
+    selectCategoriesConfig(state),
   );
   const dispatch = useAppDispatch();
   const [data, setData] = useState<TTransactionsCategory[]>([]);
@@ -70,7 +70,7 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
   }, [viewCategoryMostAndRecent]);
 
   const onHandlePressAction = ({ nativeEvent: { event } }: NativeActionEvent) => {
-    dispatch(updateViewCategoryMostAndRecent(event));
+    dispatch(updateCategoriesConfig(event));
   };
 
   const onItemCategoryPress = (category: TTransactionsCategory) => {

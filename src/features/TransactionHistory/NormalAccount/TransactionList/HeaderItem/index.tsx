@@ -18,7 +18,7 @@ import {
   CHILD_ITEM_TRANSACTION_HEIGHT,
 } from 'share/dimensions';
 import { useAppSelector } from 'store/index';
-import { selectTransactionListConfig } from 'store/app/app.selector';
+import { selectTransactionConfig } from 'store/app/app.selector';
 import TransactionItem from '../TransactionItem';
 import styles from './styles';
 
@@ -33,7 +33,7 @@ type HeaderItemProps = {
 function HeaderItem({ date, accountId, onRefreshDate, reload }: HeaderItemProps) {
   const { colors } = useCustomTheme();
   const [transaction, setTransaction] = useState<TTransactions[] | any[]>([]);
-  const display = useAppSelector((state) => selectTransactionListConfig(state));
+  const { display } = useAppSelector((state) => selectTransactionConfig(state));
   const formatDate = useCallback((format: string) => formatDateStringLocal(date, format), [date]);
   const transactionLength = size(transaction);
 

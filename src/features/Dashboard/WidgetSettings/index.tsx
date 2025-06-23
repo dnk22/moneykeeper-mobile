@@ -7,9 +7,9 @@ import DraggableFlatList, {
   ScaleDecorator,
 } from 'react-native-draggable-flatlist';
 import { useSelector } from 'react-redux';
-import { selectWidgetOrder } from 'store/app/app.selector';
+import { selectAppearanceConfig } from 'store/app/app.selector';
 import { useAppDispatch } from 'store/index';
-import { updateWidgetOrder } from 'store/app/app.slice';
+import { updateAppearanceConfig } from 'store/app/app.slice';
 import { WidgetOrderListProps } from '../constants';
 import styles from './styles';
 import CheckboxComponent from 'components/Checkbox';
@@ -20,11 +20,11 @@ import RNText from 'components/Text';
 function WidgetSettings({ navigation }: any) {
   const { colors } = useCustomTheme();
   const dispatch = useAppDispatch();
-  const widgetOrder = useSelector((state) => selectWidgetOrder(state));
-  const [data, setData] = useState(widgetOrder);
+  const { homeWidgetOrder } = useSelector((state) => selectAppearanceConfig(state));
+  const [data, setData] = useState(homeWidgetOrder);
 
   const onSaveSettings = () => {
-    dispatch(updateWidgetOrder(data));
+    dispatch(updateAppearanceConfig({ homeWidgetOrder: data }));
     navigation.goBack();
   };
 

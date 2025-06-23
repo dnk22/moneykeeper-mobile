@@ -7,8 +7,8 @@ import switchTheme from 'react-native-theme-switch-animation';
 import { useCustomTheme } from 'resources/theme';
 import { light, dark } from 'assets/images/common';
 import { useAppDispatch, useAppSelector } from 'store/index';
-import { selectAppTheme } from 'store/app/app.selector';
-import { updateTheme } from 'store/app/app.slice';
+import { selectAppearanceConfig } from 'store/app/app.selector';
+import { updateAppearanceConfig } from 'store/app/app.slice';
 import { MenuView } from '@react-native-menu/menu';
 import { COLOR_SCHEME } from 'resources/theme/constants';
 import styles from './styles';
@@ -34,7 +34,7 @@ const colorSchemePickerList = [
 ];
 
 function Appearance() {
-  const { darkMode, auto } = useAppSelector((state) => selectAppTheme(state));
+  const { darkMode, auto } = useAppSelector((state) => selectAppearanceConfig(state));
   const dispatch = useAppDispatch();
   const { colors } = useCustomTheme();
 
@@ -42,7 +42,7 @@ function Appearance() {
     const { pageX = 0, pageY = 0 } = e.nativeEvent; // Lấy vị trí trên màn hình
     switchTheme({
       switchThemeFunction: () => {
-        dispatch(updateTheme(newTheme));
+        dispatch(updateAppearanceConfig(newTheme));
       },
       animationConfig: {
         type: newTheme.color ? 'fade' : 'circular',
@@ -92,7 +92,7 @@ function Appearance() {
           <Switch
             value={auto}
             onValueChange={(value) => {
-              dispatch(updateTheme({ auto: value }));
+              dispatch(updateAppearanceConfig({ auto: value }));
             }}
           />
         </View>

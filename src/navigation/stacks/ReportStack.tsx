@@ -3,7 +3,6 @@ import ExpenseIncomeReport from 'features/Report/ExpenseIncome';
 import HomeReport from 'features/Report';
 import { useCustomTheme } from 'resources/theme';
 import { ROUTES } from 'navigation/constants/routes';
-// import ChangeView from './ChangeView';
 import { ReportParamList } from 'navigation/types';
 import SharedScreens from './SharedStacks';
 
@@ -28,7 +27,6 @@ function ReportNavigation() {
         component={HomeReport}
         options={{
           title: 'Phân tích và báo cáo',
-          // headerRight: (props) => <ChangeView {...props} />,
         }}
       />
 

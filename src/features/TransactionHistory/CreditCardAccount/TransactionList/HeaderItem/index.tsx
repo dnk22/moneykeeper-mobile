@@ -14,14 +14,14 @@ import {
 } from 'share/dimensions';
 import { GroupedTransactionProps } from 'utils/types';
 import { useAppSelector } from 'store/index';
-import { selectTransactionListConfig } from 'store/app/app.selector';
+import { selectTransactionConfig } from 'store/app/app.selector';
 import TransactionItem from '../TransactionItem';
 import styles from './styles';
 
 function HeaderItem({ transaction }: { transaction: GroupedTransactionProps }) {
   const { colors } = useCustomTheme();
   const { date, data = [] } = transaction;
-  const display = useAppSelector((state) => selectTransactionListConfig(state));
+  const { display } = useAppSelector((state) => selectTransactionConfig(state));
   const formatDate = useCallback((format: string) => formatDateStringLocal(date, format), [date]);
   const transactionLength = size(data);
 

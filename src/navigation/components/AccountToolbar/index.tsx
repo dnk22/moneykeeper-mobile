@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-
-import { selectAccountViewSettings } from 'store/app/app.selector';
-import { updateAccountViewSettings } from 'store/app/app.slice';
-import { useAppDispatch, useAppSelector } from 'store/index';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import CheckboxComponent from 'components/Checkbox';
 import PressableHaptic from 'components/PressableHaptic';
@@ -11,11 +7,14 @@ import ModalComponent from 'components/Modal';
 import RNText from 'components/Text';
 import Switch from 'components/Switch';
 import SvgIcon from 'components/SvgIcon';
+
+import { selectAccountViewSettings } from 'store/app/app.selector';
+import { updateAccountViewSettings } from 'store/app/app.slice';
+import { useAppDispatch, useAppSelector } from 'store/index';
 import styles from './styles';
-import { SORT_ACCOUNT_BY_KEY } from 'utils/constants/appSettings';
 
 function Toolbar() {
-  const { group, sort, isViewActive } = useAppSelector((state) => selectAccountViewSettings(state));
+  const { groupByType, sortByName } = useAppSelector((state) => selectAccountViewSettings(state));
   const useDispatch = useAppDispatch();
 
   const [isShowModal, setIsShowModal] = useState(false);
@@ -25,11 +24,11 @@ function Toolbar() {
   };
 
   const onGroupChange = (value: boolean) => {
-    useDispatch(updateAccountViewSettings({ group: value }));
+    useDispatch(updateAccountViewSettings({ groupByType: value }));
   };
 
-  const onSort = (value: keyof typeof SORT_ACCOUNT_BY_KEY) => {
-    useDispatch(updateAccountViewSettings({ sort: value }));
+  const onSortChange = (value: boolean) => {
+    useDispatch(updateAccountViewSettings({ sortByName: value }));
     onToggleModal();
   };
 
@@ -43,31 +42,23 @@ function Toolbar() {
             </RNText>
             <View style={styles.groupContent}>
               <RNText preset="textMedium">Nhóm theo loại tài khoản</RNText>
-              <Switch value={group} onValueChange={onGroupChange} disabled={!isViewActive} />
+              <Switch value={groupByType} onValueChange={onGroupChange} />
             </View>
           </View>
           <View style={styles.group}>
             <RNText style={styles.groupHeader} preset="textXSmall">
               Sắp xếp theo
             </RNText>
-            <TouchableHighlightComponent
-              isDisable={!isViewActive}
-              onPress={() => onSort(SORT_ACCOUNT_BY_KEY.accountName)}
-            >
+            <TouchableHighlightComponent onPress={() => onSortChange(true)}>
               <View style={styles.groupContent}>
                 <RNText preset="textMedium">Tên tài khoản</RNText>
-                {sort === SORT_ACCOUNT_BY_KEY.accountName && (
-                  <CheckboxComponent type="radio" check />
-                )}
+                {sortByName && <CheckboxComponent type="radio" check />}
               </View>
             </TouchableHighlightComponent>
-            <TouchableHighlightComponent
-              isDisable={!isViewActive}
-              onPress={() => onSort(SORT_ACCOUNT_BY_KEY.sortOrder)}
-            >
+            <TouchableHighlightComponent onPress={() => onSortChange(false)}>
               <View style={styles.groupContent}>
                 <RNText preset="textMedium">Tự chọn</RNText>
-                {sort === SORT_ACCOUNT_BY_KEY.sortOrder && <CheckboxComponent type="radio" check />}
+                {!sortByName && <CheckboxComponent type="radio" check />}
               </View>
             </TouchableHighlightComponent>
           </View>
@@ -79,4 +70,5 @@ function Toolbar() {
     </>
   );
 }
+
 export default Toolbar;

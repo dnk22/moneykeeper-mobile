@@ -5,7 +5,7 @@ import BlurScreen from 'features/common/BlurScreen';
 import AppLoading from 'features/common/AppLoading';
 import { useAppTheme } from 'resources/theme';
 import { useAppSelector } from 'store/index';
-import { selectAppTheme } from 'store/app/app.selector';
+import { selectAppearanceConfig } from 'store/app/app.selector';
 import { RootStackParamList } from 'navigation/types';
 import { ROUTES } from 'navigation/constants/routes';
 import navigation from 'navigation/helpers/navigate';
@@ -19,8 +19,8 @@ import AppInitService from 'services/initialization';
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 function AppNavigators() {
-  const appThemeState = useAppSelector((state) => selectAppTheme(state));
-  const theme = useAppTheme(appThemeState);
+  const { auto, darkMode, color } = useAppSelector((state) => selectAppearanceConfig(state));
+  const theme = useAppTheme({ auto, darkMode, color });
   const { isLoggedIn } = useAuth();
 
   useEffect(() => {

@@ -1,9 +1,48 @@
-export enum HOME_BOTTOM_BAR {
-  FLAT,
-  STICKY,
-}
+import { WIDGET_INIT_LIST } from 'features/Dashboard/constants';
+import { COLOR_SCHEME } from 'resources/theme/constants';
+import { TSettings } from 'utils/types/store.type';
 
-export const SORT_ACCOUNT_BY_KEY = {
-  accountName: 'accountName',
-  sortOrder: 'sortOrder',
+export const defaultSettings: TSettings = {
+  dateFormat: 'DD/MM/YYYY',
+  screenDefault: 'home',
+  hideBalance: false,
+  notification: {
+    enabled: true,
+    sound: true,
+    time: '08:00',
+  },
+  appearance: {
+    auto: true,
+    darkMode: false,
+    color: COLOR_SCHEME.modernBlue,
+    isBottomBarFlat: true,
+    homeWidgetOrder: WIDGET_INIT_LIST,
+  },
+  report: {
+    startDayOfWeek: 0, // Chủ nhật
+    startDateOfMonth: 1, // Ngày đầu tháng
+    startMonthOfYear: 0, // Tháng 1
+  },
+  security: {
+    pinCode: '',
+    biometricEnabled: false,
+  },
+  accounts: {
+    sortByName: true,
+    sortOrder: [],
+    sortOrderInGroup: [],
+    groupByType: true,
+  },
+  transactions: {
+    display: {
+      income: true,
+      expense: true,
+      amount: true,
+      description: true,
+    },
+  },
+  categories: {
+    orderBy: 'name',
+    fastViewByMost: true,
+  },
 };

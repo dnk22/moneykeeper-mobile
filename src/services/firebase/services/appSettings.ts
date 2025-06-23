@@ -1,97 +1,7 @@
 // src/services/user/AppSettings.ts
 import { databaseService } from './database';
 import { FB_PATH } from '../config';
-import { COLOR_SCHEME } from 'resources/theme/constants';
-
-export interface TAppSettings {
-  dateFormat?: string;
-  screenDefault?: string;
-  hideBalance?: boolean;
-  notification?: {
-    enabled: boolean;
-    sound: boolean;
-    time: string;
-  };
-  theme: {
-    auto?: boolean;
-    darkMode?: boolean;
-    color?: COLOR_SCHEME;
-    bottomBarType: 'flat' | 'rounded';
-  };
-  report?: {
-    startDayOfWeek?: number;
-    startDateOfMonth?: number;
-    startMonthOfYear?: number;
-  };
-  security?: {
-    pinCode?: string;
-    biometricEnabled?: boolean;
-  };
-  accounts: {
-    sortByName?: boolean;
-    sortOrder?: Array<string>[];
-    sortOrderInGroup?: Array<{ key: string; value: Array<string> }>[];
-    groupByType?: boolean;
-    isViewActive?: boolean;
-  };
-  transactions: {
-    display: {
-      income?: boolean;
-      expense?: boolean;
-      amount?: boolean;
-      description?: boolean;
-    };
-  };
-  categories?: {
-    orderBy?: string;
-    order?: Array<string>;
-  };
-}
-
-export const defaultSettings: TAppSettings = {
-  dateFormat: 'DD/MM/YYYY',
-  screenDefault: 'home',
-  hideBalance: false,
-  notification: {
-    enabled: true,
-    sound: true,
-    time: '08:00',
-  },
-  theme: {
-    auto: true,
-    darkMode: false,
-    color: COLOR_SCHEME.modernBlue,
-    bottomBarType: 'flat',
-  },
-  report: {
-    startDayOfWeek: 0, // Chủ nhật
-    startDateOfMonth: 1, // Ngày đầu tháng
-    startMonthOfYear: 0, // Tháng 1
-  },
-  security: {
-    pinCode: '',
-    biometricEnabled: false,
-  },
-  accounts: {
-    sortByName: true,
-    sortOrder: [],
-    sortOrderInGroup: [],
-    groupByType: false,
-    isViewActive: true,
-  },
-  transactions: {
-    display: {
-      income: true,
-      expense: true,
-      amount: true,
-      description: true,
-    },
-  },
-  categories: {
-    orderBy: 'name',
-    order: [],
-  },
-};
+import { TSettings } from 'utils/types/store.type';
 
 export class AppSettings {
   private static instance: AppSettings;
@@ -109,11 +19,11 @@ export class AppSettings {
    * Lấy trạng thái thiết lập của người dùng.
    * Nếu không có thiết lập nào, sẽ trả về null.
    * @param path Đường dẫn tùy chọn để lấy thiết lập cụ thể.
-   * @returns Trả về một phần của TAppSettings hoặc null nếu không có thiết lập nào.
+   * @returns Trả về một phần của TSettings hoặc null nếu không có thiết lập nào.
    */
-  public async getSettingStatus(path?: string): Promise<Partial<TAppSettings> | null> {
+  public async getSettingStatus(path?: string): Promise<Partial<TSettings> | null> {
     const settingPath = path ? `${FB_PATH.SETTINGS}/${path}` : FB_PATH.SETTINGS;
-    const { data, error } = await databaseService.get<TAppSettings>(settingPath);
+    const { data, error } = await databaseService.get<TSettings>(settingPath);
 
     if (error) {
       return null;
@@ -133,7 +43,7 @@ export class AppSettings {
     newSettings,
   }: {
     path?: string;
-    newSettings: Partial<TAppSettings>;
+    newSettings: Partial<TSettings>;
   }): Promise<Error | void> {
     try {
       if (path) {

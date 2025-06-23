@@ -1,7 +1,5 @@
 import React from 'react';
 import { View, ScrollView, SafeAreaView } from 'react-native';
-import { selectReportViewSettings } from 'store/app/app.selector';
-import { useAppSelector } from 'store/index';
 import { ROUTES } from 'navigation/constants/routes';
 
 import Card from './Card';
@@ -35,8 +33,6 @@ const data = [
   },
 ];
 function HomeReport() {
-  const getReportView = useAppSelector((state) => selectReportViewSettings(state));
-
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.list}>
@@ -44,7 +40,7 @@ function HomeReport() {
           {data.map((item) => {
             return (
               <View key={item.link}>
-                <Card item={item} isGridView={getReportView} />
+                <Card item={item} />
               </View>
             );
           })}

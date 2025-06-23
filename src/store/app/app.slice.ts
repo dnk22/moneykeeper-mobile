@@ -1,33 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { WIDGET_INIT_LIST } from 'features/Dashboard/constants';
 import { produce } from 'immer';
-import { COLOR_SCHEME } from 'resources/theme/constants';
-import { HOME_BOTTOM_BAR } from 'utils/constants/appSettings';
-import { VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constants/index';
-import { AccountViewSettingsProps, AppStateProps } from 'utils/types/store.type';
+import { defaultSettings } from 'utils/constants/appSettings';
+import { AppStateProps } from 'utils/types/store.type';
 
 const initialState = {
-  accountViewSettings: {
-    sort: 'accountName',
-    group: true,
-    isViewActive: true,
-  },
-  isReportViewByGrid: false,
-  transactionListDisplayConfig: {
-    income: true,
-    expense: true,
-    amount: true,
-    description: true,
-  },
-  homeBottomBarType: HOME_BOTTOM_BAR.FLAT,
-  viewCategoryMostAndRecent: VIEW_CATEGORY_FAST_BY_COLUMN.MOST,
-  widgetOrder: WIDGET_INIT_LIST,
-  theme: {
-    auto: true,
-    darkMode: false,
-    color: COLOR_SCHEME.modernBlue,
-  },
+  ...defaultSettings,
   appLoading: false,
 } as AppStateProps;
 
@@ -40,37 +18,26 @@ export const appSlice = createSlice({
     updateAppConfig(state, { payload }: PayloadAction<Partial<AppStateProps>>) {
       Object.assign(state, payload);
     },
+    updateAppearanceConfig(
+      state,
+      { payload }: PayloadAction<Partial<AppStateProps['appearance']>>,
+    ) {
+      Object.assign(state.appearance, payload);
+    },
     updateAccountViewSettings(
       state,
-      { payload }: PayloadAction<Partial<AccountViewSettingsProps>>,
+      { payload }: PayloadAction<Partial<AppStateProps['accounts']>>,
     ) {
-      state.accountViewSettings = { ...state.accountViewSettings, ...payload };
+      Object.assign(state.accounts, payload);
     },
-    updateReportViewSettings(state) {
-      state.isReportViewByGrid = !state.isReportViewByGrid;
-    },
-    updateTransactionListDisplayConfig(
+    updateTransactionConfig(
       state,
-      { payload }: PayloadAction<Partial<AppStateProps['transactionListDisplayConfig']>>,
+      { payload }: PayloadAction<Partial<AppStateProps['transactions']>>,
     ) {
-      Object.assign(state.transactionListDisplayConfig, payload);
+      Object.assign(state.transactions, payload);
     },
-    updateHomeBottomBarType(state, { payload }: PayloadAction<AppStateProps['homeBottomBarType']>) {
-      state.homeBottomBarType = payload;
-    },
-    updateViewCategoryMostAndRecent(
-      state,
-      { payload }: PayloadAction<AppStateProps['viewCategoryMostAndRecent']>,
-    ) {
-      state.viewCategoryMostAndRecent = payload;
-    },
-    updateWidgetOrder(state, { payload }: PayloadAction<AppStateProps['widgetOrder']>) {
-      state.widgetOrder = produce(state.widgetOrder, (draft) => {
-        draft.splice(0, draft.length, ...payload);
-      });
-    },
-    updateTheme(state, { payload }: PayloadAction<Partial<AppStateProps['theme']>>) {
-      Object.assign(state.theme, payload);
+    updateCategoriesConfig(state, { payload }: PayloadAction<AppStateProps['categories']>) {
+      state.categories = payload;
     },
     updateAppLoading(state, { payload }: PayloadAction<AppStateProps['appLoading']>) {
       state.appLoading = produce(state.appLoading, (draft) => {
@@ -84,12 +51,9 @@ export const appSlice = createSlice({
 export const {
   updateAppConfig,
   updateAccountViewSettings,
-  updateReportViewSettings,
-  updateTransactionListDisplayConfig,
-  updateHomeBottomBarType,
-  updateViewCategoryMostAndRecent,
-  updateWidgetOrder,
-  updateTheme,
+  updateTransactionConfig,
+  updateCategoriesConfig,
+  updateAppearanceConfig,
   updateAppLoading,
 } = appSlice.actions;
 

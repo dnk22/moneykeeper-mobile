@@ -1,13 +1,4 @@
-import { WidgetOrderListProps } from 'features/Dashboard/constants';
 import { COLOR_SCHEME } from 'resources/theme/constants';
-import { VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constants';
-import { HOME_BOTTOM_BAR, SORT_ACCOUNT_BY_KEY } from 'utils/constants/appSettings';
-
-export type AccountViewSettingsProps = {
-  sort: keyof typeof SORT_ACCOUNT_BY_KEY;
-  group: boolean;
-  isViewActive: boolean;
-};
 
 export type ThemeProps = {
   auto: boolean;
@@ -15,13 +6,55 @@ export type ThemeProps = {
   color: COLOR_SCHEME;
 };
 
-export type AppStateProps = {
-  accountViewSettings: AccountViewSettingsProps;
-  isReportViewByGrid: boolean;
-  transactionListDisplayConfig: Record<string, boolean>;
-  homeBottomBarType: HOME_BOTTOM_BAR;
-  viewCategoryMostAndRecent: keyof typeof VIEW_CATEGORY_FAST_BY_COLUMN;
-  widgetOrder: WidgetOrderListProps[];
-  theme: ThemeProps;
+export interface TSettings {
+  dateFormat?: string;
+  screenDefault?: string;
+  hideBalance?: boolean;
+  notification?: {
+    enabled: boolean;
+    sound: boolean;
+    time: string;
+  };
+  appearance: {
+    auto: boolean;
+    darkMode: boolean;
+    color: COLOR_SCHEME;
+    isBottomBarFlat: boolean;
+    homeWidgetOrder: Array<{
+      key: string;
+      label: string;
+      isActive: boolean;
+    }>;
+  };
+  report?: {
+    startDayOfWeek?: number;
+    startDateOfMonth?: number;
+    startMonthOfYear?: number;
+  };
+  security?: {
+    pinCode?: string;
+    biometricEnabled?: boolean;
+  };
+  accounts: {
+    sortByName?: boolean;
+    sortOrder?: Array<string>[];
+    sortOrderInGroup?: Array<{ key: string; value: Array<string> }>[];
+    groupByType?: boolean;
+  };
+  transactions: {
+    display: {
+      income?: boolean;
+      expense?: boolean;
+      amount?: boolean;
+      description?: boolean;
+    };
+  };
+  categories?: {
+    orderBy?: string;
+    fastViewByMost?: boolean;
+  };
+}
+
+export type AppStateProps = TSettings & {
   appLoading: boolean;
 };

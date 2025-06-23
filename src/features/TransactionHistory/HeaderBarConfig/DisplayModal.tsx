@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { useAppDispatch, useAppSelector } from 'store/index';
-import { selectTransactionListConfig } from 'store/app/app.selector';
-import { updateTransactionListDisplayConfig } from 'store/app/app.slice';
+import { selectTransactionConfig } from 'store/app/app.selector';
+import { updateTransactionConfig } from 'store/app/app.slice';
 import get from 'lodash/get';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import CheckboxComponent from 'components/Checkbox';
@@ -25,11 +25,11 @@ function DisplayModal({
   onToggleModal: () => void;
 }) {
   const dispatch = useAppDispatch();
-  const display = useAppSelector((state) => selectTransactionListConfig(state));
+  const { display } = useAppSelector((state) => selectTransactionConfig(state));
 
   const updateTransactionViewConfig = (key: string) => {
     dispatch(
-      updateTransactionListDisplayConfig({
+      updateTransactionConfig({
         [key]: !get(display, key, false),
       }),
     );
