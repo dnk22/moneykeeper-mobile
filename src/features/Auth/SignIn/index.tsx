@@ -14,10 +14,13 @@ import { TLogin } from 'utils/types/auth';
 import validation from './validation';
 import { useAuth } from 'services/auth/AuthProvider';
 import styles from './styles';
+import { useDispatch } from 'react-redux';
+import { updateAppAuthState } from 'store/app/app.slice';
 
 function SignInScreen() {
-  const { colors } = useCustomTheme();
+  const dispatch = useDispatch();
   const { appLogin } = useAuth();
+  const { colors } = useCustomTheme();
 
   const { control, handleSubmit } = useForm<TLogin>({
     // resolver: yupResolver(validation),
@@ -28,7 +31,15 @@ function SignInScreen() {
   });
 
   const onSubmit = async (formData: TLogin) => {
-    await appLogin(formData);
+    const { data } = await appLogin(formData);
+    if (data) {
+      dispatch(
+        updateAppAuthState({
+          isLoggedIn: true,
+          isOnboarded: data.isOnBoard,
+        }),
+      );
+    }
   };
 
   const onNavigateToForgotPassword = () => {

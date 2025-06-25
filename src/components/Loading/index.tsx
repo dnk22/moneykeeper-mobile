@@ -12,16 +12,18 @@ function Loading({ size = 'small', color = '#2D31FA', ...rest }: ILoadingProps) 
   return <ActivityIndicator size={size} color={color} {...rest} />;
 }
 
-function LoadingContainer({ theme }: { theme?: CustomTheme }) {
+function LoadingContainer({ theme, darkMode }: { theme?: CustomTheme; darkMode?: boolean }) {
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: darkMode ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)' },
+      ]}
+    >
       <View
-        style={[
-          styles.loadingIndicator,
-          { backgroundColor: theme ? theme.colors.background : 'white' },
-        ]}
+        style={[styles.loadingIndicator, { backgroundColor: theme?.colors.surface || 'white' }]}
       >
-        <Loading />
+        <Loading size="large" />
       </View>
     </View>
   );

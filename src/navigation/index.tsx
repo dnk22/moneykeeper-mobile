@@ -15,13 +15,14 @@ import AppContainer from './components/AppContainer';
 import { useAuth } from 'services/auth/AuthProvider';
 import { FirebaseDataSource } from 'services/firebase/appInit';
 import AppInitService from 'services/initialization';
+import OnboardingNavigator from './stacks/Onboarding';
 //set up routes
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 function AppNavigators() {
   const { auto, darkMode, color } = useAppSelector((state) => selectAppearanceConfig(state));
   const theme = useAppTheme({ auto, darkMode, color });
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, isOnboarded } = useAuth();
 
   useEffect(() => {
     const initApp = async () => {
@@ -35,7 +36,7 @@ function AppNavigators() {
   return (
     <NavigationContainer theme={theme} ref={navigation.navigationRef}>
       <BlurScreen />
-      <AppLoading theme={theme} />
+      <AppLoading theme={theme} darkMode={darkMode} />
       <AppContainer theme={theme}>
         <RootStack.Navigator
           screenOptions={{
@@ -43,10 +44,15 @@ function AppNavigators() {
             autoHideHomeIndicator: true,
           }}
         >
-          {isLoggedIn ? (
-            <RootStack.Screen name={ROUTES.MAIN} component={MainBottomTabs} />
-          ) : (
+          {!isLoggedIn ? (
+            // Nếu chưa đăng nhập, luôn đi đến màn hình xác thực
             <RootStack.Screen name={ROUTES.AUTH} component={AuthNavigator} />
+          ) : !isOnboarded ? (
+            // Nếu đã đăng nhập nhưng chưa onboarding, đi đến màn hình onboarding
+            <RootStack.Screen name={ROUTES.ONBOARDING} component={OnboardingNavigator} />
+          ) : (
+            // Nếu đã đăng nhập và đã onboarding, đi đến màn hình chính
+            <RootStack.Screen name={ROUTES.MAIN} component={MainBottomTabs} />
           )}
         </RootStack.Navigator>
       </AppContainer>

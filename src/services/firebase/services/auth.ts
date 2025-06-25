@@ -40,7 +40,8 @@
 import { FirebaseAuthTypes, getAuth } from '@react-native-firebase/auth';
 import { TLogin, TRegister } from 'utils/types/auth';
 import { userService } from './user';
-import { appSettingsService, defaultSettings } from './appSettings';
+import { appSettingsService } from './appSettings';
+import { defaultSettings } from 'utils/constants/appSettings';
 
 export class AuthError extends Error {
   constructor(public code: string, message: string) {
@@ -111,10 +112,14 @@ class FireBaseAuthService {
   public async signInWithEmailAndPassword({
     email,
     password,
-  }: TLogin): Promise<AuthResponse<FirebaseAuthTypes.UserCredential>> {
+  }: TLogin): Promise<AuthResponse<{ isOnBoard: boolean }>> {
     try {
-      const userCredential = await this.auth.signInWithEmailAndPassword(email, password);
-      return { data: userCredential, error: null };
+      await this.auth.signInWithEmailAndPassword(email, password);
+      const userProfile = await userService.getUserProfile();
+      if (!userProfile) {
+        throw new AuthError('user-not-found', 'User profile not found');
+      }
+      return { data: { isOnBoard: userProfile.isOnboarded }, error: null };
     } catch (error: any) {
       return {
         data: null,

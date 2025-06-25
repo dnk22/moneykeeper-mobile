@@ -5,29 +5,34 @@ import { LoadingIndicatorContainer } from 'components/Loading';
 import { TLogin, TRegister } from 'utils/types/auth';
 import { AuthResponse, fireBaseAuthService } from 'services/firebase';
 import { showToast } from 'utils/system';
+import { selectAppAuthState } from 'store/app/app.selector';
+import { RootState } from 'store/index';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateAppAuthState, updateAppLoading } from 'store/app/app.slice';
 
 type TFirebaseAuthResponse = AuthResponse<FirebaseAuthTypes.UserCredential>;
 
 export interface AuthContextType {
-  user: FirebaseAuthTypes.User | null;
-  isLoading: boolean;
   isLoggedIn: boolean;
-  appLogin: ({ email, password }: TLogin) => Promise<TFirebaseAuthResponse>;
+  isOnboarded?: boolean;
+  appLogin: ({ email, password }: TLogin) => Promise<AuthResponse<{ isOnBoard: boolean }>>;
   appSignup: ({ displayName, email, password }: TRegister) => Promise<TFirebaseAuthResponse>;
   appLogout: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextType>({
-  user: null,
-  isLoading: true,
   isLoggedIn: false,
-  appLogin: async ({ email, password }: TLogin): Promise<TFirebaseAuthResponse> => {
+  appLogin: async ({ email, password }: TLogin): Promise<AuthResponse<{ isOnBoard: boolean }>> => {
     throw new Error('Auth context not initialized');
   },
-  appSignup: async ({ name, email, password }: TRegister): Promise<TFirebaseAuthResponse> => {
+  appSignup: async ({
+    displayName,
+    email,
+    password,
+  }: TRegister): Promise<TFirebaseAuthResponse> => {
     throw new Error('Auth context not initialized');
   },
-  appLogout: async (): Promise<TFirebaseAuthResponse> => {
+  appLogout: async (): Promise<void> => {
     throw new Error('Auth context not initialized');
   },
 });
@@ -35,59 +40,87 @@ export const AuthContext = createContext<AuthContextType>({
 export const useAuth = () => React.useContext(AuthContext);
 
 export const AuthProvider = ({ children }: any) => {
-  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const dispatch = useDispatch();
+  const [isInitializing, setInitializing] = useState(true);
+  const { isLoggedIn, isOnboarded } = useSelector((state: RootState) => selectAppAuthState(state));
 
   const appLogin = async ({ email, password }: TLogin) => {
-    const { data, error } = await fireBaseAuthService.signInWithEmailAndPassword({
-      email,
-      password,
-    });
-    if (error) {
-      showToast({
-        type: 'error',
-        text2: error.message,
+    dispatch(updateAppLoading(true));
+    try {
+      const { data, error } = await fireBaseAuthService.signInWithEmailAndPassword({
+        email,
+        password,
       });
+      if (error) {
+        showToast({
+          type: 'error',
+          text2: error.message,
+        });
+      }
+      return {
+        data,
+        error,
+      } as AuthResponse<{ isOnBoard: boolean }>;
+    } catch (error) {
+      return error as AuthResponse<{ isOnBoard: boolean }>;
+    } finally {
+      dispatch(updateAppLoading(false));
     }
-    return {
-      data,
-      error,
-    } as TFirebaseAuthResponse;
   };
 
   const appSignup = async ({ displayName, email, password }: TRegister) => {
-    const { data, error } = await fireBaseAuthService.signUpWithEmailAndPassword({
-      displayName,
-      email,
-      password,
-    });
-    if (error) {
-      showToast({
-        type: 'error',
-        text2: error.message,
+    dispatch(updateAppLoading(true));
+    try {
+      const { data, error } = await fireBaseAuthService.signUpWithEmailAndPassword({
+        displayName,
+        email,
+        password,
       });
+      if (error) {
+        showToast({
+          type: 'error',
+          text2: error.message,
+        });
+      }
+      return {
+        data,
+        error,
+      } as TFirebaseAuthResponse;
+    } catch (error) {
+      return error as TFirebaseAuthResponse;
+    } finally {
+      dispatch(updateAppLoading(false));
     }
-    return {
-      data,
-      error,
-    } as TFirebaseAuthResponse;
   };
 
   const appLogout = async () => {
-    const { error } = await fireBaseAuthService.signOut();
-    if (error) {
-      showToast({
-        type: 'error',
-        text2: error.message,
-      });
+    dispatch(updateAppLoading(true));
+    try {
+      const { error } = await fireBaseAuthService.signOut();
+      if (error) {
+        showToast({
+          type: 'error',
+          text2: error.message,
+        });
+      }
+    } catch (error) {
+      return error as void;
+    } finally {
+      dispatch(updateAppLoading(false));
     }
   };
 
   // Handle user state changes
   function onAuthStateChanged(user: any) {
-    console.log('Auth state changed:', user);
-    setIsLoading(false);
-    setUser(user);
+    if (!user) {
+      dispatch(
+        updateAppAuthState({
+          isLoggedIn: false,
+          isOnboarded: false,
+        }),
+      );
+    }
+    setInitializing(false);
   }
 
   useEffect(() => {
@@ -95,14 +128,12 @@ export const AuthProvider = ({ children }: any) => {
     return subscriber;
   }, []);
 
-  if (isLoading) {
+  if (isInitializing) {
     return <LoadingIndicatorContainer />;
   }
 
   return (
-    <AuthContext.Provider
-      value={{ user, isLoading, isLoggedIn: !!user, appLogin, appSignup, appLogout }}
-    >
+    <AuthContext.Provider value={{ isOnboarded, isLoggedIn, appLogin, appSignup, appLogout }}>
       {children}
     </AuthContext.Provider>
   );

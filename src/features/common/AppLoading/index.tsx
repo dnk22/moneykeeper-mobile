@@ -5,14 +5,14 @@ import { selectAppLoadingState } from 'store/app/app.selector';
 import { useAppSelector } from 'store/index';
 import { CustomTheme } from 'resources/theme';
 
-function AppLoading({ theme }: { theme: CustomTheme }) {
+function AppLoading({ theme, darkMode }: { theme: CustomTheme; darkMode: boolean }) {
   const isAppLoading = useAppSelector((state) => selectAppLoadingState(state));
 
   if (!isAppLoading) {
     return <></>;
   }
 
-  return <LoadingIndicatorContainer theme={theme} />;
+  return <LoadingIndicatorContainer theme={theme} darkMode={darkMode} />;
 }
 
-export default memo(AppLoading, isEqual);
+export default AppLoading;

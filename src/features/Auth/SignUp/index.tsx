@@ -13,8 +13,12 @@ import { AuthStackNavigationProps } from 'navigation/types/auth';
 import { TRegister } from 'utils/types/auth';
 import { useAuth } from 'services/auth/AuthProvider';
 import styles from './styles';
+import { ROUTES } from 'navigation/constants/routes';
+import { useDispatch } from 'react-redux';
+import { updateAppAuthState } from 'store/app/app.slice';
 
 function SignUpScreen() {
+  const dispatch = useDispatch();
   const navigation = useNavigation<AuthStackNavigationProps>();
   const { colors } = useCustomTheme();
   const [isAcceptTerm, setAcceptTerm] = useState(true);
@@ -29,11 +33,19 @@ function SignUpScreen() {
   });
 
   const onSubmit = async (data: TRegister) => {
-    await appSignup(data);
+    const { data: response } = await appSignup(data);
+    if (response) {
+      dispatch(
+        updateAppAuthState({
+          isLoggedIn: true,
+          isOnboarded: false,
+        }),
+      );
+    }
   };
 
   const onNavigateToSignIn = () => {
-    navigation.popToTop();
+    navigation.popTo(ROUTES.SIGN_IN);
   };
 
   return (

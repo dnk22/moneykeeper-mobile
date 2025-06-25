@@ -6,6 +6,9 @@ export const ROUTES = {
   MAIN: 'main',
   MODAL_STACK: 'modal_stack',
 
+  ONBOARDING: 'onboarding',
+  ONBOARDING_TAB: 'onboardingTab',
+
   // Auth Screen constants
   AUTH: 'auth',
   SIGN_IN: 'login',

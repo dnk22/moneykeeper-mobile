@@ -12,7 +12,7 @@ import financialStatementReducer, {
 } from 'features/Report/FinancialStatement/reducer/financialStatement.slice';
 import { reduxPersistStorage } from 'services/storage';
 
-const appPersistConfig = {
+const rootPersistConfig = {
   key: 'root',
   version: 1,
   storage: reduxPersistStorage,
@@ -23,6 +23,12 @@ const appPersistConfig = {
     APP_SLICE_NAME,
     FINANCE_STATEMENT_SLICE_NAME,
   ],
+};
+
+const appPersistConfig = {
+  key: APP_SLICE_NAME,
+  storage: reduxPersistStorage,
+  blacklist: ['appLoading'],
 };
 
 const transactionPersistConfig = {
@@ -38,11 +44,11 @@ const transactionPersistConfig = {
 // };
 
 const allReducer = combineReducers({
-  [APP_SLICE_NAME]: appReducer,
+  [APP_SLICE_NAME]: persistReducer(appPersistConfig, appReducer),
   [TRANSACTION_CATEGORY_SLICE_NAME]: transactionCategoryReducer,
   [ACCOUNT_SLICE_NAME]: accountReducer,
   [TRANSACTION_SLICE_NAME]: persistReducer(transactionPersistConfig, transactionsReducer),
   [FINANCE_STATEMENT_SLICE_NAME]: financialStatementReducer,
 });
 
-export const persistedReducer = persistReducer(appPersistConfig, allReducer);
+export const persistedReducer = persistReducer(rootPersistConfig, allReducer);

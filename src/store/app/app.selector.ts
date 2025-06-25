@@ -14,3 +14,5 @@ export const selectAppearanceConfig = createSelector(appState, (state) => state.
 export const selectCategoriesConfig = createSelector(appState, (state) => state.categories);
 
 export const selectAppLoadingState = createSelector(appState, (state) => state.appLoading);
+
+export const selectAppAuthState = createSelector(appState, (state) => state.authState);

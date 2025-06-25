@@ -6,6 +6,10 @@ import { AppStateProps } from 'utils/types/store.type';
 
 const initialState = {
   ...defaultSettings,
+  authState: {
+    isLoggedIn: false,
+    isOnboarded: false,
+  },
   appLoading: false,
 } as AppStateProps;
 
@@ -40,8 +44,11 @@ export const appSlice = createSlice({
       state.categories = payload;
     },
     updateAppLoading(state, { payload }: PayloadAction<AppStateProps['appLoading']>) {
-      state.appLoading = produce(state.appLoading, (draft) => {
-        draft = payload;
+      state.appLoading = payload;
+    },
+    updateAppAuthState(state, { payload }: PayloadAction<Partial<AppStateProps['authState']>>) {
+      state.authState = produce(state.authState, (draft) => {
+        Object.assign(draft, payload);
       });
     },
   },
@@ -55,6 +62,7 @@ export const {
   updateCategoriesConfig,
   updateAppearanceConfig,
   updateAppLoading,
+  updateAppAuthState,
 } = appSlice.actions;
 
 export type TAppSlice = {

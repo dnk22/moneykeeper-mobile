@@ -57,4 +57,8 @@ export interface TSettings {
 
 export type AppStateProps = TSettings & {
   appLoading: boolean;
+  authState: {
+    isLoggedIn: boolean;
+    isOnboarded: boolean;
+  };
 };
