@@ -1,11 +1,14 @@
 import { WIDGET_INIT_LIST } from 'features/Dashboard/constants';
+import { ROUTES } from 'navigation/constants/routes';
 import { COLOR_SCHEME } from 'resources/theme/constants';
 import { TSettings } from 'utils/types/store.type';
 
 export const defaultSettings: TSettings = {
-  dateFormat: 'DD/MM/YYYY',
-  screenDefault: 'home',
-  hideBalance: false,
+  config: {
+    hideBalance: false,
+    dateFormat: 'DD/MM/YYYY',
+    screenDefault: ROUTES.DASHBOARD,
+  },
   notification: {
     enabled: true,
     sound: true,

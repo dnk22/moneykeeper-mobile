@@ -7,9 +7,11 @@ export type ThemeProps = {
 };
 
 export interface TSettings {
-  dateFormat?: string;
-  screenDefault?: string;
-  hideBalance?: boolean;
+  config: {
+    dateFormat?: string;
+    screenDefault?: string;
+    hideBalance?: boolean;
+  };
   notification?: {
     enabled: boolean;
     sound: boolean;
