@@ -37,7 +37,7 @@ function AppNavigators() {
     <NavigationContainer theme={theme} ref={navigation.navigationRef}>
       <BlurScreen />
       <AppLoading theme={theme} darkMode={darkMode} />
-      <AppContainer theme={theme}>
+      <AppContainer theme={theme} isMarginTop={!isLoggedIn || isOnboarded}>
         <RootStack.Navigator
           screenOptions={{
             headerShown: false,

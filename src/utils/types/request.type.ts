@@ -4,6 +4,7 @@ import { BANK_TYPE } from 'utils/constants/account';
 //common
 
 export type TResponse = {
+  status?: number;
   success: boolean;
   message?: unknown;
   data?: unknown;

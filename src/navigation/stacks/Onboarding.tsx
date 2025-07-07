@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ROUTES } from 'navigation/constants/routes';
 import { OnboardingStackParamList } from 'navigation/types/onboarding';
-import Onboarding from 'features/Onboard';
+import Onboarding from 'features/Onboarding';
 
 //set up routes
 const AccountStack = createNativeStackNavigator<OnboardingStackParamList>();

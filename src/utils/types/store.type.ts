@@ -6,7 +6,7 @@ export type ThemeProps = {
   color: COLOR_SCHEME;
 };
 
-export interface TSettings {
+export type TSettings = {
   config: {
     dateFormat?: string;
     screenDefault?: string;
@@ -55,7 +55,11 @@ export interface TSettings {
     orderBy?: string;
     fastViewByMost?: boolean;
   };
-}
+};
+export type TonBoardingConfig = {
+  appearance: Pick<TSettings['appearance'], 'auto' | 'darkMode'>;
+  report: TSettings['report'];
+};
 
 export type AppStateProps = TSettings & {
   appLoading: boolean;

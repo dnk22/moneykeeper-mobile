@@ -25,7 +25,7 @@ function SignInScreen() {
   const { control, handleSubmit } = useForm<TLogin>({
     // resolver: yupResolver(validation),
     defaultValues: {
-      email: 'test@gmail.com',
+      email: 'duynk198@gmail.com',
       password: '000000',
     },
   });

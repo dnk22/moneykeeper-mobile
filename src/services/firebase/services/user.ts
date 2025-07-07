@@ -84,13 +84,13 @@ export class UserService {
   /**
    * Cập nhật các thiết lập onboarding hoặc bất kỳ trường nào trong UserProfile.
    */
-  public async updateOnboardingSettings(settings: Partial<UserProfile>): Promise<void> {
+  public async updateUserProfile(settings: Partial<UserProfile>): Promise<void> {
     const { error } = await databaseService.update(FB_PATH.USER_PROFILE, {
       ...settings,
       updatedAt: Date.now(),
     });
     if (error) {
-      throw new Error(`Failed to update onboarding settings: ${error.message}`);
+      throw new Error(`Failed to update profile: ${error.message}`);
     }
   }
 
