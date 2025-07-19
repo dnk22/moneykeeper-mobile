@@ -7,9 +7,11 @@ import { formatNumber } from 'utils/math';
 import styles from './styles';
 import CheckboxComponent from 'components/Checkbox';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
-import IconComponent from 'components/IconComponent';
 import RNText from 'components/Text';
 import { ROUTES } from 'navigation/constants/routes';
+import FastImage from 'react-native-fast-image';
+
+const unknownIcon = require('assets/images/default/unknown.png');
 
 type ItemProps = {
   account: TAccount;
@@ -37,13 +39,17 @@ function Item({ account, isItemSelected, onItemPress }: ItemProps) {
         onPress={handleOnItemPress}
       >
         <View style={styles.itemContent}>
-          <IconComponent name={account.accountLogo} size={30} />
+          <FastImage
+            style={styles.itemIcon}
+            defaultSource={unknownIcon}
+            source={{ uri: account.accountLogo }}
+          />
           <View style={styles.itemCenter}>
             <RNText numberOfLines={1} style={styles.itemTitle}>
               {account.accountName}
             </RNText>
             <RNText numberOfLines={1} style={styles.itemSubTitle}>
-              {formatNumber(account.closingAmount) + ' ₫'}
+              {formatNumber(account.closingAmount, true)}
             </RNText>
           </View>
           {isItemSelected && isItemSelected === account.id && (

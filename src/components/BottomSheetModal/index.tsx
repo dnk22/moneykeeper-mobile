@@ -32,11 +32,14 @@ const BottomSheet = forwardRef(
         enableDynamicSizing
         keyboardBehavior="extend"
       >
-        <BottomSheetView style={{ backgroundColor: colors.background, flex: 1, paddingTop: 10 }}>
+        <BottomSheetView
+          style={{ backgroundColor: colors.background, flex: 1, height: '100%', paddingTop: 10 }}
+        >
           {children}
         </BottomSheetView>
       </BottomSheetModal>
     );
   },
 );
+
 export default BottomSheet;

@@ -31,7 +31,6 @@ function AccountList({ isItemSelected, onItemPress, excludeId }: AccountListProp
 
   const getListAccount = ({ text = '', excludeId }: TGetAllAccounts) => {
     getAccountList({ text, excludeId }).then((res) => {
-      console.log(res, 'res');
       const dataGroup: any[] = groupAccountDataByValue(res);
       setAccounts(dataGroup);
     });
@@ -47,7 +46,7 @@ function AccountList({ isItemSelected, onItemPress, excludeId }: AccountListProp
 
   const renderSectionHeader = ({ section }: { section: SectionListData<TAccount> }) => {
     const { title } = section;
-    return <RNText color="#747471">{`${title}`}</RNText>;
+    return <RNText color="#747471" style={styles.itemTitle}>{`${title}`}</RNText>;
   };
 
   const keyExtractor = useCallback((item: any) => item['id'], []);

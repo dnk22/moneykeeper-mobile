@@ -14,7 +14,7 @@ export type TGetAllAccounts = {
 export const queryAllAccount = async ({
   text = '',
   excludeId = '',
-  isActive = 0,
+  isActive = 1,
 }: TGetAllAccounts = {}) => {
   // WHERE conditions
   const whereConditions = [

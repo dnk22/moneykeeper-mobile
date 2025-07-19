@@ -13,7 +13,14 @@ export const roundMaxFixed = (num: number, decimals: number): number => {
   return Number(Math.round(Number(String(num + 'e' + decimals))) + 'e-' + decimals);
 };
 
-export const formatNumber = (num: number | string, isShowPrefix = false, comma = '.') => {
+export const formatNumber = (
+  num: number | string | undefined,
+  isShowPrefix = false,
+  comma = '.',
+) => {
+  if (num === undefined || num === null) {
+    return `0${isShowPrefix ? ' ₫' : ''}`;
+  }
   if (typeof num !== 'number' && typeof num !== 'string') {
     return `0${isShowPrefix ? ' ₫' : ''}`;
   }

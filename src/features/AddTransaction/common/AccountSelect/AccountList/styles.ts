@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
   },
   itemContent: {
-    height: 60,
+    height: 64,
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: 15,
@@ -43,6 +43,11 @@ const styles = StyleSheet.create({
   iconSearch: {
     left: 10,
     position: 'absolute',
+  },
+  itemIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 15,
   },
 });
 
