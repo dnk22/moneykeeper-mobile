@@ -15,7 +15,8 @@ import validation from './validation';
 import { useAuth } from 'services/auth/AuthProvider';
 import styles from './styles';
 import { useDispatch } from 'react-redux';
-import { updateAppAuthState } from 'store/app/app.slice';
+import { updateAppAuthState, updateAppLoading } from 'store/app/app.slice';
+import { getDefaultAppData } from '../helper';
 
 function SignInScreen() {
   const dispatch = useDispatch();
@@ -31,14 +32,23 @@ function SignInScreen() {
   });
 
   const onSubmit = async (formData: TLogin) => {
-    const { data } = await appLogin(formData);
-    if (data) {
-      dispatch(
-        updateAppAuthState({
-          isLoggedIn: true,
-          isOnboarded: data.isOnBoard,
-        }),
-      );
+    dispatch(updateAppLoading(true));
+    try {
+      const { data } = await appLogin(formData);
+      if (data) {
+        if (data.isOnBoard) {
+          await getDefaultAppData();
+        }
+        dispatch(
+          updateAppAuthState({
+            isLoggedIn: true,
+            isOnboarded: data.isOnBoard,
+          }),
+        );
+      }
+    } catch (error) {
+    } finally {
+      dispatch(updateAppLoading(false));
     }
   };
 

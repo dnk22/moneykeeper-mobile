@@ -45,6 +45,19 @@ class DatabaseService {
     return `${FB_PATH.USERS}/${currentUser.uid}`;
   }
 
+  public async getDefaultPath<T>(path: string): Promise<DatabaseResponse<T>> {
+    try {
+      const snapshot = await this.database.ref(path).once('value');
+      const data = snapshot.val() as T;
+      return { data, error: null };
+    } catch (error: any) {
+      return {
+        data: null,
+        error: new DatabaseError(error.code || 'unknown', error.message),
+      };
+    }
+  }
+
   public async get<T>(path: string): Promise<DatabaseResponse<T>> {
     try {
       const fullPath = `${this.getUserProfilePath()}/${path}`;

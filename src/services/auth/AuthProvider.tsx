@@ -45,7 +45,6 @@ export const AuthProvider = ({ children }: any) => {
   const { isLoggedIn, isOnboarded } = useSelector((state: RootState) => selectAppAuthState(state));
 
   const appLogin = async ({ email, password }: TLogin) => {
-    dispatch(updateAppLoading(true));
     try {
       const { data, error } = await fireBaseAuthService.signInWithEmailAndPassword({
         email,
@@ -63,8 +62,6 @@ export const AuthProvider = ({ children }: any) => {
       } as AuthResponse<{ isOnBoard: boolean }>;
     } catch (error) {
       return error as AuthResponse<{ isOnBoard: boolean }>;
-    } finally {
-      dispatch(updateAppLoading(false));
     }
   };
 

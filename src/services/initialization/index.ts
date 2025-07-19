@@ -27,11 +27,11 @@ class AppInitService {
 
   async initializeApp(): Promise<void> {
     try {
-      const isFirst = await this.isFirstLaunch();
-      if (isFirst) {
-        await this.initializeDefaultData();
-        storageService.setItem(APP_INITIALIZED_KEY, 'true');
-      }
+      // const isFirst = await this.isFirstLaunch();
+      // if (isFirst) {
+      await this.initializeDefaultData();
+      storageService.setItem(APP_INITIALIZED_KEY, 'true');
+      // }
     } catch (error) {
       console.error('Error initializing app:', error);
       throw error;

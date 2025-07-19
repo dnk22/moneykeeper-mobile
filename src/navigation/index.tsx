@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import BlurScreen from 'features/common/BlurScreen';
@@ -13,8 +12,6 @@ import MainBottomTabs from './tabs/MainBottomTabs';
 import AuthNavigator from './stacks/AuthStack';
 import AppContainer from './components/AppContainer';
 import { useAuth } from 'services/auth/AuthProvider';
-import { FirebaseDataSource } from 'services/firebase/appInit';
-import AppInitService from 'services/initialization';
 import OnboardingNavigator from './stacks/Onboarding';
 //set up routes
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -23,15 +20,6 @@ function AppNavigators() {
   const { auto, darkMode, color } = useAppSelector((state) => selectAppearanceConfig(state));
   const theme = useAppTheme({ auto, darkMode, color });
   const { isLoggedIn, isOnboarded } = useAuth();
-
-  useEffect(() => {
-    const initApp = async () => {
-      const dataSource = new FirebaseDataSource();
-      const appInit = AppInitService.getInstance(dataSource);
-      await appInit.initializeApp();
-    };
-    initApp();
-  }, []);
 
   return (
     <NavigationContainer theme={theme} ref={navigation.navigationRef}>

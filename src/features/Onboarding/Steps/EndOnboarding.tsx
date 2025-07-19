@@ -10,6 +10,7 @@ import { useCustomTheme } from 'resources/theme';
 import { markUserAsOnboarded } from 'services/api/user';
 import { updateAppAuthState } from 'store/app/app.slice';
 import { showToast } from 'utils/system';
+import { getDefaultAppData } from 'features/Auth/helper';
 
 const { width } = Dimensions.get('window'); // Lấy chiều rộng màn hình
 
@@ -57,7 +58,8 @@ function EndOnboarding() {
   const translateXValues = [useSharedValue(width), useSharedValue(width), useSharedValue(width)]; // Giá trị translateX cho từng hàng
 
   useEffect(() => {
-    updateOnboardingSettings({ appearance, report, notification }).then((res) => {
+    updateOnboardingSettings({ appearance, report, notification }).then(async () => {
+      await getDefaultAppData();
       // Bắt đầu hiệu ứng sau khi API thành công
       startAnimation();
     });

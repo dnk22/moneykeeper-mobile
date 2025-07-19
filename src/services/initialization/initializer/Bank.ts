@@ -2,6 +2,7 @@ import { Initializer, InitializerOptions, InitializerDataSource } from '../types
 import { BANKS } from 'database/constants';
 import { database } from 'database/index';
 import { BankModel } from 'database/models';
+import size from 'lodash/size';
 
 export class BankInitializer implements Initializer {
   private dataSource: InitializerDataSource;
@@ -14,7 +15,7 @@ export class BankInitializer implements Initializer {
     try {
       var startTime = performance.now();
       const banksCollection = await this.dataSource.getBanks();
-      if (!banksCollection) {
+      if (!size(banksCollection)) {
         return;
       }
       const banksTable = database.collections.get<BankModel>(BANKS);

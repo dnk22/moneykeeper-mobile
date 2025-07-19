@@ -99,6 +99,7 @@ export const FB_PATH = {
   DEFAULT_DATA_BANKS: 'default_data/banks',
   DEFAULT_DATA_CATEGORIES: 'default_data/categories',
   USERS: 'users',
+  BANKS: 'banks',
   USER_PROFILE: 'profile',
   ACCOUNTS: 'accounts',
   TRANSACTIONS: 'transactions',
