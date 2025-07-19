@@ -19,7 +19,7 @@ import InputCalculator from '../common/InputCalculator';
 import { defaultValues } from '../constant';
 import { AddTransactionType } from '../type';
 import CategorySelect from '../common/CategorySelect';
-import styles from '../styles.common';
+import styles from '../styles';
 import InputField from 'components/InputField';
 import SvgIcon from 'components/SvgIcon';
 import SwitchField from 'components/Switch/SwitchField';

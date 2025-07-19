@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-type transactionCategoryProps = {
+export type transactionCategoryProps = {
   lendBorrowData: Record<string, string>;
 };
 

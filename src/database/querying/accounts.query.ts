@@ -11,61 +11,6 @@ export type TGetAllAccounts = {
   excludeId?: string;
 };
 
-/** READ */
-// export const queryAllAccount = async ({
-//   text = '',
-//   excludeId = '',
-//   isActive = 0,
-// }: TGetAllAccounts = {}) => {
-//   // Build WHERE clause dynamically
-//   const whereConditions = [
-//     "acc._status!='deleted'",
-//     excludeId ? `acc.id!='${excludeId}'` : null,
-//     text ? `acc.accountName LIKE '${Q.sanitizeLikeString(text)}%'` : null,
-//     `acc.isActive=${isActive}`,
-//   ]
-//     .filter(Boolean)
-//     .join(' AND ');
-
-//   return await database.read(async () => {
-//     var startTime = performance.now();
-//     const result = await database
-//       .get<AccountModel>(ACCOUNTS)
-//       .query(
-//         Q.experimentalJoinTables([BALANCE]),
-//         Q.unsafeSqlQuery(
-//           `SELECT 
-//             acc.id, 
-//             acc.accountName, 
-//             acc.accountLogo, 
-//             acc._status, 
-//             acc.isActive, 
-//             acc.accountTypeId, 
-//             acc.accountTypeName, 
-//             acc.sortOrder, 
-//             acc.creditCardLimit, 
-//             bal.closingAmount 
-//           FROM ${ACCOUNTS} acc
-//           LEFT JOIN (
-//             SELECT
-//               b._id,
-//               b.accountId,
-//               b.closingAmount,
-//               b.transactionDateAt,
-//               ROW_NUMBER() OVER (PARTITION BY b.accountId ORDER BY b.transactionDateAt DESC, b._id DESC) AS row_num
-//             FROM ${BALANCE} b
-//           ) bal ON bal.accountId = acc.id AND bal.row_num = 1
-//           WHERE ${whereConditions}
-//           ORDER BY acc.sortOrder ASC`,
-//         ),
-//       )
-//       .unsafeFetchRaw();
-//     var endTime = performance.now();
-//     console.log(`get list account: ${Number((endTime - startTime) / 1000).toFixed(5)} s`);
-//     return result;
-//   });
-// };
-
 export const queryAllAccount = async ({
   text = '',
   excludeId = '',

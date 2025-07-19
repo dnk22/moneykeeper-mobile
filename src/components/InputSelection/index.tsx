@@ -8,11 +8,11 @@ import isEqual from 'react-fast-compare';
 import { useCustomTheme } from 'resources/theme';
 import FastImage from 'react-native-fast-image';
 import styles from './styles';
+import { useFormContext } from 'react-hook-form';
 
 type SelectedProps = {
   fieldName?: string;
   displayValue?: string;
-  formMethods?: any;
   placeholder?: string;
   subTitle?: string;
   icon?: string;
@@ -27,7 +27,6 @@ const unknownIcon = require('assets/images/default/unknown.png');
 function Selected({
   fieldName,
   displayValue,
-  formMethods,
   placeholder = '',
   subTitle = '',
   icon,
@@ -36,12 +35,12 @@ function Selected({
   onDelete,
   required,
 }: SelectedProps) {
-  const { control, getFieldState, formState } = formMethods;
+  const { control, getFieldState, formState } = useFormContext<any>();
   const { colors } = useCustomTheme();
   const iconUri = typeof icon === 'string' ? { uri: icon } : icon;
   const defaultIconUrl = typeof defaultIcon === 'string' ? { uri: defaultIcon } : defaultIcon;
   const isShowOptional = !required && displayValue;
-  const isError = required && getFieldState(fieldName, formState)?.invalid;
+  const isError = required && fieldName && getFieldState(fieldName, formState)?.invalid;
 
   return (
     <>

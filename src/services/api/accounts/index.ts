@@ -8,6 +8,8 @@ import {
   queryCalculateAllBalanceAfterDate,
   queryDeleteAllTransactionRelatedWithAccountId,
   queryDeleteAccountById,
+  queryAllAccount,
+  TGetAllAccounts,
 } from 'database/querying';
 import { TAccount } from 'database/types';
 
@@ -71,4 +73,12 @@ export async function requestDeleteAccount(accountId: string) {
 
 export async function changeAccountStatusById(id: string) {
   return await queryChangeAccountStatusById(id);
+}
+
+export async function getAccountList({ text, excludeId }: TGetAllAccounts) {
+  try {
+    return await queryAllAccount({ text, excludeId });
+  } catch (error) {
+    return Promise.reject(error);
+  }
 }

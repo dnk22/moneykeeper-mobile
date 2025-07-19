@@ -4,7 +4,7 @@ import { TAccount } from 'database/types';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
 import { AccountModel } from 'database/models';
 import { groupAccountDataByValue } from 'utils/algorithm';
-import { getAccountData } from 'services/api/accounts';
+import { getAccountList } from 'services/api/accounts';
 import { TGetAllAccounts } from 'database/querying';
 import { BottomSheetSectionList, BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { useCustomTheme } from 'resources/theme';
@@ -30,7 +30,8 @@ function AccountList({ isItemSelected, onItemPress, excludeId }: AccountListProp
   }, [excludeId]);
 
   const getListAccount = ({ text = '', excludeId }: TGetAllAccounts) => {
-    getAccountData({ text, excludeId }).then((res) => {
+    getAccountList({ text, excludeId }).then((res) => {
+      console.log(res, 'res');
       const dataGroup: any[] = groupAccountDataByValue(res);
       setAccounts(dataGroup);
     });
@@ -71,7 +72,7 @@ function AccountList({ isItemSelected, onItemPress, excludeId }: AccountListProp
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         renderSectionHeader={renderSectionHeader}
-        ListEmptyComponent={<Empty text="Không có tài khoản nào!" />}
+        ListEmptyComponent={<Empty title="Bạn chưa có tài khoản nào!" />}
       />
     </View>
   );

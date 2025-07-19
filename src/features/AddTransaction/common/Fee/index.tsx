@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View } from 'react-native';
-import styles from '../../styles.common';
+import styles from '../../styles';
 import { useCustomTheme } from 'resources/theme';
 import Collapsible from 'react-native-collapsible';
 import Animated, { StretchInY } from 'react-native-reanimated';

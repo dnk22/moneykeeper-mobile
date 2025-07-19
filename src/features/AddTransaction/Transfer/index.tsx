@@ -16,7 +16,7 @@ import DateTimeSelect from '../common/DateTimeSelect';
 import InputCalculator from '../common/InputCalculator';
 import { defaultValues } from '../constant';
 import { AddTransactionType } from '../type';
-import styles from '../styles.common';
+import styles from '../styles';
 import FormAction from 'components/common/FormAction';
 import InputField from 'components/InputField';
 import SvgIcon from 'components/SvgIcon';

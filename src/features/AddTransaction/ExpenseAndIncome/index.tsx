@@ -26,7 +26,7 @@ import SvgIcon from 'components/SvgIcon';
 import SwitchField from 'components/Switch/SwitchField';
 import FormAction from 'components/common/FormAction';
 import RNText from 'components/Text';
-import styles from '../styles.common';
+import styles from '../styles';
 
 function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
   const { colors } = useCustomTheme();

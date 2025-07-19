@@ -1,8 +1,7 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import get from 'lodash/get';
+import React, { memo, useCallback, useRef, useState } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { useFocusEffect } from '@react-navigation/native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { TAccount } from 'database/types';
@@ -20,38 +19,27 @@ type AccountProp = {
 type AccountSelectProps = {
   name?: string;
   title?: string;
-  isShowSubTitle?: boolean;
   excludeId?: string;
   swapId?: string;
+  subTitle?: string;
 };
 
 function AccountSelect({
   name = 'accountId',
   title = 'Chọn tài khoản',
-  isShowSubTitle,
   excludeId = '',
   swapId,
+  subTitle = '',
 }: AccountSelectProps) {
-  const {
-    control,
-    setValue,
-    getValues,
-    watch,
-    formState: { errors },
-  } = useFormContext<any>();
+  const { control, setValue, getValues } = useFormContext<any>();
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const [accountSelected, setAccountSelected] = useState<AccountProp | undefined>(undefined);
 
-  useFocusEffect(
-    useCallback(() => {
-      fetchAccountData();
-    }, [watch(name)]),
-  );
-
-  useEffect(() => {
-    fetchAccountData();
-  }, [watch(name)]);
+  const accountId = useWatch({
+    control,
+    name,
+  });
 
   const handleOnSelectAccount = () => {
     bottomSheetModalRef.current?.present();
@@ -63,6 +51,7 @@ function AccountSelect({
     }
     try {
       const account = await queryAccountById(getValues(name), ['accountLogo, accountName']);
+
       if (isEmpty(account)) {
         resetAccountState();
         return false;
@@ -93,18 +82,23 @@ function AccountSelect({
     bottomSheetModalRef.current?.dismiss();
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      fetchAccountData();
+    }, [accountId]),
+  );
+
+  console.log(accountSelected, 'accountSelected');
+
   return (
     <>
       <InputSelection
         required
-        isShowSubTitle={isShowSubTitle}
         icon={accountSelected?.accountLogo}
-        value={accountSelected?.accountName}
-        title={title}
-        subTitle={title}
-        name={name}
-        control={control}
-        error={get(errors, name)}
+        displayValue={accountSelected?.accountName}
+        placeholder={title}
+        subTitle={subTitle}
+        fieldName={name}
         onSelect={handleOnSelectAccount}
       />
       <BottomSheet ref={bottomSheetModalRef}>

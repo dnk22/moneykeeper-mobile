@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
   // card
   wrapper: {
     flex: 1,
+    height: '100%',
     paddingHorizontal: 10,
     borderRadius: 10,
   },

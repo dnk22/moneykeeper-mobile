@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useMemo } from 'react';
+import React, { forwardRef, useCallback } from 'react';
 import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
@@ -8,16 +8,16 @@ import {
 import { useCustomTheme } from 'resources/theme';
 
 type BottomSheetProps = {
-  ref: any;
   children: React.ReactElement;
   snapPoints?: string[];
   index?: number;
 };
 
+const snapPointsInit = ['30%', '50%', '80%'];
+
 const BottomSheet = forwardRef(
-  ({ children, snapPoints, index = 0 }: BottomSheetProps, ref: any) => {
+  ({ children, snapPoints, index = 2 }: BottomSheetProps, ref: any) => {
     const { colors } = useCustomTheme();
-    const snapPointsInit = useMemo(() => ['50%', '80%'], []);
 
     const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {
       return <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} />;
@@ -30,7 +30,7 @@ const BottomSheet = forwardRef(
         snapPoints={snapPoints || snapPointsInit}
         backdropComponent={renderBackdrop}
         enableDynamicSizing
-        keyboardBehavior="fillParent"
+        keyboardBehavior="extend"
       >
         <BottomSheetView style={{ backgroundColor: colors.background, flex: 1, paddingTop: 10 }}>
           {children}

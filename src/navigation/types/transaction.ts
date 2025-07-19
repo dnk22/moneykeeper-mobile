@@ -14,5 +14,7 @@ export type TransactionParamList = {
   };
 };
 
-export type TransactionParamListProps<T extends keyof TransactionParamList> =
-  NativeStackScreenProps<TransactionParamList, T>;
+export type TransactionParamListProps<T extends keyof TransactionParamList> = {
+  navigation: NativeStackScreenProps<TransactionParamList, T>['navigation'];
+  route: NativeStackScreenProps<TransactionParamList, T>['route'];
+};
