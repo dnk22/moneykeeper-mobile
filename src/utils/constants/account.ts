@@ -15,7 +15,7 @@ export enum BANK_TYPE {
   INVESTMENT,
 }
 
-export const ACCOUNT_TYPE_LOGO: { [key: string]: string } = {
+export const ACCOUNT_TYPE_LOGO: { [key: string]: any } = {
   cash: require('assets/images/account/cash.png'),
   bank: require('assets/images/account/bankAccountType.png'),
   credit: require('assets/images/account/creditCard.png'),

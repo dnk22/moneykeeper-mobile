@@ -1,4 +1,3 @@
-import { IconProps } from 'components/SvgIcon/const';
 import { TRANSACTION_TYPE, TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constants/account';
 

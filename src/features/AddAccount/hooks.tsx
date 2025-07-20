@@ -45,35 +45,6 @@ const useFormHooks = (accountId?: string) => {
     }
   };
 
-  const handleFormSubmit = (data: TAccount) => {
-    const requestData = formatAccountData(data);
-    requestUpdateAccount({ id: data?.id, account: requestData })
-      .then((accountId: string) => {
-        // check notifications in credit card account
-        if (requestData.accountTypeId === ACCOUNT_CATEGORY_ID.CREDITCARD) {
-          dispatch(
-            updateAccountStatement({
-              [accountId]: {
-                statementDate: requestData.creditCardStatementDay,
-                paymentDate: requestData.creditCardDayAfterStatement,
-                isReminder: requestData.creditCardIsReminder,
-                reminderList: requestData.creditCardReminderList,
-              },
-            }),
-          );
-        } else {
-          dispatch(removeAccountStatement(accountId));
-        }
-        goBack();
-      })
-      .catch(({ error }) => {
-        showToast({
-          type: 'error',
-          text2: error,
-        });
-      });
-  };
-
   const onOkDelete = () => {
     const { id } = getValues();
     if (id) {
@@ -107,19 +78,34 @@ const useFormHooks = (accountId?: string) => {
       ],
     );
 
-  useEffect(() => {
-    if (accountId) {
-      queryAccountById(accountId).then((account) => {
-        if (account) {
-          reset({
-            ...ADD_ACCOUNT_DEFAULT_VALUES,
-            ...account,
-            accountTypeId: account.accountTypeId || ACCOUNT_TYPE_LIST[0].id,
-          });
+  const handleFormSubmit = (data: TAccount) => {
+    const requestData = formatAccountData(data);
+    requestUpdateAccount({ id: data?.id, account: requestData })
+      .then((accountId: string) => {
+        // check notifications in credit card account
+        if (requestData.accountTypeId === ACCOUNT_CATEGORY_ID.CREDITCARD) {
+          dispatch(
+            updateAccountStatement({
+              [accountId]: {
+                statementDate: requestData.creditCardStatementDay,
+                paymentDate: requestData.creditCardDayAfterStatement,
+                isReminder: requestData.creditCardIsReminder,
+                reminderList: requestData.creditCardReminderList,
+              },
+            }),
+          );
+        } else {
+          dispatch(removeAccountStatement(accountId));
         }
+        goBack();
+      })
+      .catch(({ error }) => {
+        showToast({
+          type: 'error',
+          text2: error,
+        });
       });
-    }
-  }, [accountId]);
+  };
 
   // Use `setOptions` to update account
   useEffect(() => {
@@ -134,6 +120,20 @@ const useFormHooks = (accountId?: string) => {
       });
     };
   }, []);
+
+  useEffect(() => {
+    if (accountId) {
+      queryAccountById(accountId).then((account) => {
+        if (account) {
+          reset({
+            ...ADD_ACCOUNT_DEFAULT_VALUES,
+            ...account,
+            accountTypeId: account.accountTypeId || ACCOUNT_TYPE_LIST[0].id,
+          });
+        }
+      });
+    }
+  }, [accountId]);
 
   useEffect(() => {
     // Reset credit card fields if account type is not credit card
@@ -151,4 +151,3 @@ const useFormHooks = (accountId?: string) => {
 };
 
 export default useFormHooks;
-// This file contains the custom hooks for the AddAccount feature.

@@ -12,8 +12,8 @@ import { groupAccountDataByValue, sortDataByKey } from 'utils/algorithm';
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import { useAppSelector } from 'store/index';
 import AccountItem from './Item';
-import { accountListStyles as styles } from '../../styles';
 import { queryAllAccount } from 'database/querying';
+import { accountListStyles as styles } from '../../styles';
 
 function ActiveAccount() {
   const { colors } = useCustomTheme();
@@ -22,7 +22,7 @@ function ActiveAccount() {
   const [accountData, setAccountData] = useState<TAccount[]>([]);
 
   const fetchAccounts = useCallback(() => {
-    queryAllAccount()
+    queryAllAccount({ isActive: 0 })
       .then((data) => {
         setAccountData(data);
       })

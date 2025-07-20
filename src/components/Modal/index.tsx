@@ -1,10 +1,9 @@
 import React, { memo, useMemo } from 'react';
 import { StyleProp, TouchableOpacity, View } from 'react-native';
-import Modal, { ModalProps } from 'react-native-modal';
 import { useCustomTheme } from 'resources/theme';
-import isEqual from 'react-fast-compare';
 import SvgIcon from '../SvgIcon';
 import RNText from '../Text';
+import ReactNativeModal, { ModalProps } from 'react-native-modal';
 import { styles } from './styles';
 
 type NewModalProps = Partial<ModalProps>;
@@ -15,74 +14,67 @@ export interface IModalComponentProps extends NewModalProps {
   height?: string | number;
   styleDefaultContent?: StyleProp<any>;
   title?: string;
-  disableCloseOnPressBackDrop?: boolean;
+  disabledBackDropClose?: boolean;
 }
 
 const ModalComponent = ({
   isVisible,
   style,
   children,
-  backdropColor,
-  animationInTiming = 300,
-  animationOutTiming = 300,
+  animationInTiming = 400,
+  animationOutTiming = 400,
   animationIn = 'slideInUp',
   animationOut = 'slideOutDown',
   isShowClose,
   height,
   styleDefaultContent,
   onBackdropPress,
-  disableCloseOnPressBackDrop = false,
+  disabledBackDropClose = false,
   onToggleModal,
   title,
   ...rest
 }: IModalComponentProps) => {
   const { colors } = useCustomTheme();
+  const isShowHeader = useMemo(() => !!title || isShowClose, [title, isShowClose]);
 
   const onHandleBackdropPress = () => {
     if (onBackdropPress) onBackdropPress();
-    if (!disableCloseOnPressBackDrop) onToggleModal();
+    if (!disabledBackDropClose) onToggleModal();
   };
 
-  const headerComponent = useMemo(() => {
-    if (!title && !isShowClose) return null;
-
-    return (
-      <View style={[styles.header, styles.headerBorder, { borderBottomColor: colors.divider }]}>
-        {title && <RNText preset="modalTitle">{title}</RNText>}
-        {isShowClose && (
-          <TouchableOpacity style={styles.modalAction} onPress={onToggleModal}>
-            <SvgIcon name="closeCircle" preset="closeModal" />
-          </TouchableOpacity>
-        )}
-      </View>
-    );
-  }, [title, isShowClose, onToggleModal]);
-  
-
   return (
-    <Modal
+    <ReactNativeModal
       isVisible={isVisible}
-      backdropColor={backdropColor}
       style={[styles.modal, style]}
       useNativeDriver
       hideModalContentWhileAnimating
-      backdropTransitionOutTiming={300}
+      backdropTransitionOutTiming={1}
       useNativeDriverForBackdrop
       animationInTiming={animationInTiming}
       animationOutTiming={animationOutTiming}
       animationIn={animationIn}
       animationOut={animationOut}
       onBackdropPress={onHandleBackdropPress}
+      backdropOpacity={0.4}
       {...rest}
     >
       <View
         style={[styles.modalView, { backgroundColor: colors.surface, height }, styleDefaultContent]}
       >
-        {headerComponent}
+        {isShowHeader && (
+          <View style={[styles.header, styles.headerBorder, { borderBottomColor: colors.divider }]}>
+            <RNText preset="modalTitle">{title}</RNText>
+            {isShowClose && (
+              <TouchableOpacity style={styles.modalAction} onPress={onToggleModal}>
+                <SvgIcon name="closeCircle" preset="closeModal" />
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
         {children}
       </View>
-    </Modal>
+    </ReactNativeModal>
   );
 };
 
-export default memo(ModalComponent, isEqual);
+export default ModalComponent;
