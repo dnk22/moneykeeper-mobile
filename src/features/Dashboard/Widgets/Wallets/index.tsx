@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { queryAllAccount } from 'database/querying';
+import { queryAccounts } from 'database/querying';
 import PressableHaptic from 'components/PressableHaptic';
 import IconComponent from 'components/IconComponent';
 import RNText from 'components/Text';
@@ -72,7 +72,7 @@ function Wallets({ title }: { title: string }) {
 
   useFocusEffect(
     useCallback(() => {
-      queryAllAccount({}).then((res: any) => setAccount(res));
+      queryAccounts({}).then((res: any) => setAccount(res));
     }, []),
   );
 

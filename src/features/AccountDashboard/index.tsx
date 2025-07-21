@@ -6,8 +6,6 @@ import ActiveAccount from './components/ActiveAccount';
 import InactiveAccount from './components/InactiveAccount';
 import ItemSettingsModal from './components/ItemSettingsModal';
 import { AccountContext } from './context';
-import { queryAllAccount } from 'database/querying';
-import { showToast } from 'utils/system';
 import { useCustomTheme } from 'resources/theme';
 import { accountDashboardStyles as styles } from './styles';
 
@@ -21,21 +19,6 @@ function Accounts() {
   const accountPressed = useRef<TAccount | any>(null);
   const [isShowModal, setShowModal] = useState(false);
   const [isActiveAccount, setIsActiveAccount] = useState(ACCOUNT_STATUS.ACTIVE);
-  const [accountData, setAccountData] = useState<TAccount[]>([]);
-
-  const getAccounts = async () => {
-    return queryAllAccount({ isActive: isActiveAccount })
-      .then((data) => {
-        setAccountData(data);
-        return data;
-      })
-      .catch(() => {
-        showToast({
-          type: 'error',
-        });
-        return [];
-      });
-  };
 
   const onToggleModal = () => {
     setShowModal(!isShowModal);
@@ -54,7 +37,6 @@ function Accounts() {
         onToggleModal,
         onActionPress,
         ACCOUNT_STATUS,
-        getAccounts,
         setIsActiveAccount,
         isActiveAccount,
       }}

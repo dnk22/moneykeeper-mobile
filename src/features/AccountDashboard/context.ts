@@ -9,7 +9,6 @@ export const AccountContext = createContext<{
   onActionPress: (T: TAccount) => void;
   ACCOUNT_STATUS: typeof ACCOUNT_STATUS;
   isActiveAccount: ACCOUNT_STATUS;
-  getAccounts: () => Promise<TAccount[]>;
   setIsActiveAccount: (status: ACCOUNT_STATUS) => void;
 }>({
   ACCOUNT_STATUS,
@@ -18,6 +17,5 @@ export const AccountContext = createContext<{
   isShowModal: false,
   onToggleModal: () => {},
   onActionPress: (T: TAccount) => {},
-  getAccounts: () => Promise.resolve([]),
   setIsActiveAccount: () => {},
 });

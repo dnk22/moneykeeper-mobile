@@ -6,22 +6,22 @@ import { Q } from '@nozbe/watermelondb';
 import isEqual from 'lodash/isEqual';
 
 export type TGetAllAccounts = {
-  isActive?: number;
+  isInActive?: boolean;
   text?: string;
   excludeId?: string;
 };
 
-export const queryAllAccount = async ({
+export const queryAccounts = async ({
   text = '',
   excludeId = '',
-  isActive = 1,
+  isInActive = false,
 }: TGetAllAccounts = {}) => {
   // WHERE conditions
   const whereConditions = [
     "acc._status!='deleted'",
     excludeId ? `acc.id!='${excludeId}'` : null,
     text ? `acc.accountName LIKE '${Q.sanitizeLikeString(text)}%'` : null,
-    `acc.isActive=${isActive}`,
+    `acc.isActive=${!isInActive}`,
   ]
     .filter(Boolean)
     .join(' AND ');
@@ -67,7 +67,6 @@ export const queryAllAccount = async ({
     return result;
   });
 };
-
 
 export const queryAccountById = async (id: string, fields: string[] = []) => {
   const query = `SELECT ${

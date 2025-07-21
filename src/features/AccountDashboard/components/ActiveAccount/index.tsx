@@ -14,26 +14,28 @@ import { useAppSelector } from 'store/index';
 import AccountItem from './Item';
 import AddButton from './AddButton';
 import Header from '../Header';
-import { queryAllAccount } from 'database/querying';
+import { queryAccounts } from 'database/querying';
 import { accountListStyles as styles } from '../../styles';
 
 function ActiveAccount() {
   const { colors } = useCustomTheme();
-  const { isActiveAccount, onActionPress } = useContext(AccountContext);
-  const { group: isGroup, sort } = useAppSelector((state) => selectAccountViewSettings(state));
+  const { onActionPress } = useContext(AccountContext);
+  const { groupByType, sortByName } = useAppSelector((state) => selectAccountViewSettings(state));
   const [accountData, setAccountData] = useState<TAccount[]>([]);
+  const sortField = useMemo(() => (sortByName ? 'accountName' : 'sortOrder'), [sortByName]);
 
   const fetchAccounts = useCallback(() => {
-    queryAllAccount()
+    queryAccounts()
       .then((data) => {
         setAccountData(data);
       })
       .catch(() => {
         showToast({
           type: 'error',
+          text2: 'Không thể tải danh sách tài khoản',
         });
       });
-  }, [isActiveAccount]);
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
@@ -43,13 +45,13 @@ function ActiveAccount() {
 
   const activeAccount = useMemo(() => {
     const activeAccount = accountData.filter((item) => item.isActive);
-    return isGroup
-      ? groupAccountDataByValue(activeAccount, sort)
-      : [{ data: activeAccount.sort(sortDataByKey(sort)) }];
-  }, [accountData, isGroup, sort]);
+    return groupByType
+      ? groupAccountDataByValue(activeAccount, sortField)
+      : [{ data: activeAccount.sort(sortDataByKey(sortField)) }];
+  }, [accountData, groupByType, sortField]);
 
   const renderSectionHeader = ({ section }: { section: SectionListData<TAccount> }) => {
-    if (!isGroup) {
+    if (!groupByType) {
       return null;
     }
     const { title } = section;

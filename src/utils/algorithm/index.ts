@@ -66,11 +66,14 @@ export const sortDataByKey = (property: string) => (a: any, b: any) => {
   const valueA = typeof a[property] === 'string' ? a[property].toLowerCase() : a[property];
   const valueB = typeof b[property] === 'string' ? b[property].toLowerCase() : b[property];
 
+  if (valueA == null) return 1;
+  if (valueB == null) return -1;
+
   if (typeof valueA === 'number' && typeof valueB === 'number') {
     return valueA - valueB;
   }
 
-  return valueA.localeCompare(valueB);
+  return String(valueA).localeCompare(String(valueB));
 };
 
 export function addStatementDates(data: { month: Date | string }[], statementDay: number) {
