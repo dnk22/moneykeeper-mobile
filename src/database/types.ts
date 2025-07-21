@@ -61,7 +61,7 @@ export type TTransactionsCategory = {
 export type TAccount = {
   id?: string;
   accountName: string;
-  initialAmount: number;
+  initialAmount: any;
   accountTypeId: number;
   accountTypeName: string;
   closingAmount?: number;
@@ -85,7 +85,7 @@ export type TAccount = {
   numberDayOfYear?: number;
 
   // credit card
-  creditCardLimit: number;
+  creditCardLimit: any;
   creditCardIsReminder: boolean;
   creditCardReminderList?: string;
   creditCardStatementDay: number;

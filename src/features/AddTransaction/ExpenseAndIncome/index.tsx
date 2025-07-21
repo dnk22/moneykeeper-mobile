@@ -18,7 +18,6 @@ import MoreDetail from '../common/MoreDetail';
 import AccountSelect from '../common/AccountSelect';
 import RelatedPersonSelect from '../common/RelatedPersonSelect';
 import Fee from '../common/Fee';
-import InputCalculator from '../common/InputCalculator';
 import { AddTransactionType } from '../type';
 import { defaultValues } from '../constant';
 import InputField from 'components/InputField';
@@ -27,6 +26,7 @@ import SwitchField from 'components/Switch/SwitchField';
 import FormAction from 'components/common/FormAction';
 import RNText from 'components/Text';
 import styles from '../styles';
+import InputCalculator from 'components/InputCalculator';
 
 function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
   const { colors } = useCustomTheme();
@@ -156,7 +156,7 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
 
   return (
     <>
-      <InputCalculator name="amount" control={control} inputTextColor={getInputCalculatorColor()} />
+      <InputCalculator name="amount" inputTextColor={getInputCalculatorColor()} />
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
         <CategorySelect onPress={handleOnCategoryPress} />
         {renderIfLendBorrow() && watch('categoryId') && (
@@ -231,7 +231,7 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
           </View>
         </View>
         <Fee onClose={() => setValue('fee', 0)}>
-          <InputCalculator name="fee" control={control} />
+          <InputCalculator name="fee" />
         </Fee>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={[styles.itemGroup, styles.itemGroupBetween]}>

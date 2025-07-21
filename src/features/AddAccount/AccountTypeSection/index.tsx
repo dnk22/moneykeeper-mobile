@@ -10,8 +10,8 @@ import { View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import RNText from 'components/Text';
 import CheckboxComponent from 'components/Checkbox';
-import styles from './styles';
 import { useCustomTheme } from 'resources/theme';
+import styles from './styles';
 
 function AccountTypeSelect({
   accountTypeId,

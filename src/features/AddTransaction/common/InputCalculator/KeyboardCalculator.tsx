@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import TouchableHighlight from 'components/TouchableHighlight';
 import { Text, View } from 'react-native';
-import RnKeyboard from 'rn-keyboard';
 import styles from './styles';
 import {
   CLEAR,
@@ -10,84 +9,99 @@ import {
   BACKSPACE,
   DECIMAL,
   ActionsProps,
-  ISINCLUDEOPEARATORS,
-  CALCULATE,
   NUMBER,
 } from './type';
+
+type KeyboardCalculatorProps = {
+  value: string;
+  onChange: (val: string) => void;
+};
 
 type onPushKeyboardEventProps = {
   value: string;
   type: ActionsProps | typeof NUMBER | typeof ENTER;
 };
 
-const EnterButton = () => {
-  const [isHasOperator, setIsHasOperator] = useState(false);
-  useEffect(() => {
-    const changeSubmitEvent = RnKeyboard.addListener(ISINCLUDEOPEARATORS, (value: boolean) => {
-      setIsHasOperator(value);
-    });
-    return () => {
-      changeSubmitEvent.remove();
-    };
-  }, []);
-  const onEnter = async () => {
-    if (isHasOperator) {
-      RnKeyboard.emit(ENTER, '');
-      return;
-    }
-    const inputId = RnKeyboard.getFocusId();
-    await RnKeyboard.submit(inputId);
-  };
-  return (
-    <TouchableHighlight style={[styles.enterButton]} onPress={onEnter}>
-      <Text>{isHasOperator ? '=' : 'Xong'}</Text>
-    </TouchableHighlight>
-  );
-};
+function KeyboardCalculator({ value, onChange }: KeyboardCalculatorProps) {
+  const [expression, setExpression] = useState<string>(value || '');
 
-function KeyboardCalculator() {
-  const renderButton = useCallback((value: string, type: ActionsProps | typeof NUMBER) => {
-    return (
+  useEffect(() => {
+    setExpression(value || '');
+  }, [value]);
+
+  const updateValue = (val: string) => {
+    setExpression(val);
+    onChange(val);
+  };
+
+  const onPushKeyboardEvent = useCallback(
+    ({ value: inputValue, type }: onPushKeyboardEventProps) => {
+      try {
+        switch (type) {
+          case CLEAR:
+            updateValue('');
+            break;
+          case BACKSPACE:
+            updateValue(expression.slice(0, -1));
+            break;
+          case OPERATOR:
+            if (expression && !/[+\-×÷]$/.test(expression)) {
+              updateValue(expression + inputValue);
+            }
+            break;
+          case DECIMAL:
+            updateValue(expression + '.');
+            break;
+          case NUMBER:
+            updateValue(expression + inputValue);
+            break;
+          case ENTER:
+            try {
+              const evaluated = eval(expression.replace(/×/g, '*').replace(/÷/g, '/'));
+              updateValue(evaluated.toString());
+            } catch (err) {
+              // do nothing or notify invalid expression
+            }
+            break;
+        }
+      } catch (err) {
+        // @todo handle error
+      }
+    },
+    [expression],
+  );
+
+  const renderButton = useCallback(
+    (val: string, type: ActionsProps | typeof NUMBER) => (
       <TouchableHighlight
+        key={val}
         style={styles.button}
-        onPress={() => onPushKeyboardEvent({ value, type })}
+        onPress={() => onPushKeyboardEvent({ value: val, type })}
       >
-        <Text>{value}</Text>
+        <Text>{val}</Text>
+      </TouchableHighlight>
+    ),
+    [onPushKeyboardEvent],
+  );
+
+  const EnterButton = () => {
+    const isHasOperator = useMemo(() => /[+\-×÷]/.test(expression), [expression]);
+
+    const onEnter = () => {
+      onPushKeyboardEvent({ value: '=', type: ENTER });
+    };
+
+    return (
+      <TouchableHighlight style={styles.enterButton} onPress={onEnter}>
+        <Text>{isHasOperator ? '=' : 'Xong'}</Text>
       </TouchableHighlight>
     );
-  }, []);
-
-  const onPushKeyboardEvent = async ({ value, type }: onPushKeyboardEventProps) => {
-    const inputId = RnKeyboard.getFocusId();
-    try {
-      switch (type) {
-        case OPERATOR:
-          keyboardEventEmit(OPERATOR, value);
-          break;
-        case CLEAR:
-          keyboardEventEmit(CLEAR, '');
-          break;
-        case BACKSPACE:
-          await RnKeyboard.backspace(inputId);
-          break;
-        case NUMBER:
-          keyboardEventEmit(NUMBER, value);
-          break;
-        default:
-          break;
-      }
-    } catch (err) {
-      /** @todo handle error here */
-    }
   };
 
-  const keyboardEventEmit = (name: string, value: string) => {
-    RnKeyboard.emit(name, value);
-  };
   return (
     <View>
-      <View style={[styles.calcRow]}>
-        {renderButton('C', 'C')}
+      <View style={styles.calcRow}>
+        {renderButton('C', CLEAR)}
         {renderButton('÷', OPERATOR)}
         {renderButton('×', OPERATOR)}
         {renderButton('⌫', BACKSPACE)}

@@ -8,13 +8,14 @@ import {
   ACCOUNT_TYPE_LIST,
   ADD_ACCOUNT_DEFAULT_VALUES,
 } from 'utils/constants/account';
-import { formatAccountData } from './utility';
+import { formatDataBeforeSubmit, formatDataDetail } from './utility';
 import { requestDeleteAccount, requestUpdateAccount } from 'services/api/accounts';
 import { useAppDispatch } from 'store/index';
 import { removeAccountStatement, updateAccountStatement } from 'store/account/account.slice';
 import { showToast } from 'utils/system';
 import { Alert, Button } from 'react-native';
 import { queryAccountById } from 'database/querying';
+import { formatNumberGroups } from 'utils/math';
 
 const useFormHooks = (accountId?: string) => {
   const navigation = useNavigation();
@@ -79,7 +80,8 @@ const useFormHooks = (accountId?: string) => {
     );
 
   const handleFormSubmit = (data: TAccount) => {
-    const requestData = formatAccountData(data);
+    const requestData = formatDataBeforeSubmit(data);
+
     requestUpdateAccount({ id: data?.id, account: requestData })
       .then((accountId: string) => {
         // check notifications in credit card account
@@ -125,11 +127,9 @@ const useFormHooks = (accountId?: string) => {
     if (accountId) {
       queryAccountById(accountId).then((account) => {
         if (account) {
-          reset({
-            ...ADD_ACCOUNT_DEFAULT_VALUES,
-            ...account,
-            accountTypeId: account.accountTypeId || ACCOUNT_TYPE_LIST[0].id,
-          });
+          const formattedData = formatDataDetail({ ...ADD_ACCOUNT_DEFAULT_VALUES, ...account });
+          console.log(formattedData, 'formattedData');
+          reset(formattedData);
         }
       });
     }

@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
   },
   calcRow: {
     flexDirection: 'row',
+    gap: 4,
   },
   button: {
     flex: 1,
@@ -34,7 +35,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRightWidth: 1,
     borderBottomWidth: 1,
-    borderColor: 'rgb(242,242,242)',
   },
   enterButton: {
     height: 100,
@@ -42,10 +42,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderColor: 'rgb(242,242,242)',
   },
   handleIndicatorStyle: {
     display: 'none',
+  },
+  keyBoardContainer: {
+    gap: 4,
   },
 });
 

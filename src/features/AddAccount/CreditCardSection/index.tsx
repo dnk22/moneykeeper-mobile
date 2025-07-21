@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import StatementModalPicker from './StatementModalPicker';
 import SvgIcon from 'components/SvgIcon';
@@ -14,10 +14,19 @@ type ModalType = 'paymentDate' | 'statementDay';
 function CreditCardSection({ colors }: { colors: any }) {
   const isModalType = useRef<ModalType>('statementDay');
   const [isShowModalStatement, setIsShowModalStatement] = useState(false);
-  const { control, setValue } = useFormContext();
+  const { control, setValue, watch } = useFormContext();
+  const [isCollapse, setCollapse] = useState(true);
 
   const statementDay = useWatch({ control, name: 'creditCardStatementDay' });
   const paymentDay = useWatch({ control, name: 'creditCardDayAfterStatement' });
+  const ccReminderList = useWatch({
+    control,
+    name: 'creditCardReminderList',
+  });
+  const isCCReminder = useWatch({
+    control,
+    name: 'creditCardIsReminder',
+  });
 
   const toggleModal = () => {
     setIsShowModalStatement((prev) => !prev);
@@ -40,6 +49,10 @@ function CreditCardSection({ colors }: { colors: any }) {
   const onNotificationListChange = (value: string) => {
     setValue('creditCardReminderList', value);
   };
+
+  useEffect(() => {
+    setCollapse(!Boolean(isCCReminder));
+  }, [isCCReminder]);
 
   return (
     <>
@@ -83,21 +96,8 @@ function CreditCardSection({ colors }: { colors: any }) {
           <RNText preset="title">Thông báo thanh toán ?</RNText>
           <SwitchField name="creditCardIsReminder" control={control} />
         </View>
-        <Collapsible
-          collapsed={
-            !useWatch({
-              control,
-              name: 'creditCardIsReminder',
-            })
-          }
-        >
-          <Notifications
-            value={useWatch({
-              control,
-              name: 'creditCardReminderList',
-            })}
-            onValueChange={onNotificationListChange}
-          />
+        <Collapsible collapsed={isCollapse}>
+          <Notifications value={ccReminderList} onValueChange={onNotificationListChange} />
         </Collapsible>
       </View>
     </>

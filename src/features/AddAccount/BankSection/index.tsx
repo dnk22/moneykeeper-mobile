@@ -1,51 +1,54 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import InputSelection from 'components/InputSelection';
-import { BankModel } from 'database/models';
 import { ACCOUNT_CATEGORY_ID, BANK_TYPE } from 'utils/constants/account';
 import { ROUTES } from 'navigation/constants/routes';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { queryGetBankById } from 'database/querying';
+import { fetchBankList } from 'services/api/banks';
+import { TBank } from 'database/types';
 
 function BankSection({ bankIdParam }: { bankIdParam?: string }) {
   const navigation = useNavigation<any>();
-  const [selectedBank, setSelectedBank] = useState<BankModel | undefined>(undefined);
+  const [bankList, setBankList] = useState<{ [key: string]: TBank }>({});
   const formMethods = useFormContext();
-  const { control, setValue, trigger } = formMethods;
-
-  useFocusEffect(
-    useCallback(() => {
-      setValue('bankId', bankIdParam);
-    }, [bankIdParam]),
-  );
+  const { control, setValue } = formMethods;
 
   const accountType = useWatch({
     control,
     name: 'accountTypeId',
   });
 
-  const bankId = useWatch({
+  const bankType = useMemo(() => {
+    switch (accountType) {
+      case ACCOUNT_CATEGORY_ID.INVESTMENT:
+        return BANK_TYPE.INVESTMENT;
+      case ACCOUNT_CATEGORY_ID.EWALLET:
+        return BANK_TYPE.WALLET;
+      default:
+        return BANK_TYPE.BANK;
+    }
+  }, [accountType]);
+
+  const bankId: string = useWatch({
     control,
     name: 'bankId',
   });
 
-  useEffect(() => {
-    setBankSelectedValue(bankId);
-  }, [bankId, selectedBank]);
-
-  const setBankSelectedValue = async (id?: string) => {
-    if (!id) {
-      setSelectedBank(undefined);
-      return;
+  const currentBank = useMemo(() => {
+    if (bankId && bankList[bankId]) {
+      return bankList[bankId];
     }
-    if (id && id !== selectedBank?.id) {
-      const res = await queryGetBankById(id);
-      if (res) {
-        trigger('bankId');
-        setValue('bankId', res.id);
-        setValue('accountLogo', res.icon);
-        setSelectedBank(res);
-      }
+    return null;
+  }, [bankId, bankList]);
+
+  const getAllBanks = async () => {
+    const { data = [] } = await fetchBankList({ type: bankType });
+    if (data.length !== 0) {
+      const newBankList = data.reduce<{ [key: string]: TBank }>((acc, bank) => {
+        acc[bank.id] = bank;
+        return acc;
+      }, {});
+      setBankList(newBankList);
     }
   };
 
@@ -60,30 +63,30 @@ function BankSection({ bankIdParam }: { bankIdParam?: string }) {
   }, [accountType]);
 
   const handleSelectBank = () => {
-    let bankType = BANK_TYPE.BANK;
-    switch (accountType) {
-      case ACCOUNT_CATEGORY_ID.INVESTMENT:
-        bankType = BANK_TYPE.INVESTMENT;
-        break;
-      case ACCOUNT_CATEGORY_ID.EWALLET:
-        bankType = BANK_TYPE.WALLET;
-        break;
-      default:
-        break;
-    }
     navigation.navigate(ROUTES.BANK_NAVIGATION, {
       screen: ROUTES.BANK_HOME_LIST,
       params: { type: bankType, returnScreen: ROUTES.ADD_ACCOUNT },
     });
   };
 
+  useEffect(() => {
+    getAllBanks();
+  }, [bankType]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (bankIdParam) {
+        setValue('bankId', bankIdParam);
+      }
+    }, [bankIdParam]),
+  );
+
   return (
     <InputSelection
       required
       fieldName="bankId"
-      icon={selectedBank?.icon}
-      formMethods={formMethods}
-      displayValue={selectedBank?.bankName}
+      icon={currentBank?.icon}
+      displayValue={currentBank?.bankName}
       placeholder={getPlaceholder}
       onSelect={handleSelectBank}
     />

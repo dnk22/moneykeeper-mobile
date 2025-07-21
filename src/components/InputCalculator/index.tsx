@@ -4,7 +4,7 @@ import { Keyboard, TextInput, TextInputProps, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import RNText from 'components/Text';
 import styles from './styles';
-import { Control, RegisterOptions, useController, useFormContext } from 'react-hook-form';
+import { RegisterOptions, useController, useFormContext } from 'react-hook-form';
 import KeyboardCalculator from './KeyboardCalculator';
 import BottomSheet from 'components/BottomSheetModal';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -22,12 +22,11 @@ type TInputCalculator = TextInputProps & {
   text?: string;
 };
 
-const snapPoints = ['40%'];
+const snapPoints = ['36%'];
 
 function InputCalculator({
   name,
   rules,
-  onChangeText,
   isShowPrefix = true,
   inputTextColor,
   text = 'Số tiền',
@@ -44,14 +43,23 @@ function InputCalculator({
   });
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const hasJustFocused = useRef(false);
 
   const onFocusInput = () => {
+    hasJustFocused.current = true;
     bottomSheetRef.current?.present();
   };
 
   const onDismiss = () => {
+    hasJustFocused.current = false;
     Keyboard.dismiss();
     bottomSheetRef.current?.dismiss();
+  };
+
+  const onBlurInput = () => {
+    if (!value) {
+      onChange(0);
+    }
   };
 
   return (
@@ -62,8 +70,9 @@ function InputCalculator({
       <View style={styles.inputGroup}>
         <TextInput
           selectTextOnFocus
-          allowFontScaling={false}
-          value={value}
+          allowFontScaling={true}
+          defaultValue={String(value)}
+          value={String(value)}
           style={[
             styles.amountInput,
             {
@@ -71,7 +80,9 @@ function InputCalculator({
             },
           ]}
           onFocus={onFocusInput}
+          onBlur={onBlurInput}
           showSoftInputOnFocus={false}
+          contextMenuHidden={true}
         />
         {isShowPrefix && (
           <RNText preset="subTitle" style={styles.currency}>
@@ -90,11 +101,11 @@ function InputCalculator({
         enableContentPanningGesture={false}
         enableDynamicSizing={false}
         onDismiss={onDismiss}
-        handleIndicatorStyle={styles.handleIndicatorStyle}
+        handleStyle={styles.handleIndicatorStyle}
         style={[{ backgroundColor: colors.surface }]}
         backgroundColor={colors.surface}
       >
-        <KeyboardCalculator value={value} onChange={onChange} />
+        <KeyboardCalculator value={value} onChange={onChange} hasJustFocused={hasJustFocused} />
       </BottomSheet>
     </View>
   );

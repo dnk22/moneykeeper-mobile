@@ -1,8 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Keyboard, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useRoute } from '@react-navigation/native';
-import InputCalculator from 'features/AddTransaction/common/InputCalculator';
 import { useCustomTheme } from 'resources/theme';
 
 import SvgIcon from 'components/SvgIcon';
@@ -20,6 +19,7 @@ import BankSection from './BankSection';
 import CreditCardSection from './CreditCardSection';
 import useFormHooks from './hooks';
 import styles from './styles';
+import InputCalculator from 'components/InputCalculator';
 
 const ACCOUNT_TYPES_WITHOUT_BANK = [ACCOUNT_TYPE_LIST[0].id, ACCOUNT_TYPE_LIST[5].id];
 
@@ -41,7 +41,6 @@ function AddAccount() {
           <InputCalculator
             text={isCreditCard ? 'Hạn mức thẻ' : 'Số dư ban đầu'}
             name={isCreditCard ? 'creditCardLimit' : 'initialAmount'}
-            control={methods.control}
             inputTextColor="#007FFF"
           />
           <View style={[styles.group, { backgroundColor: colors.surface }]}>

@@ -6,21 +6,46 @@ import {
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import { useCustomTheme } from 'resources/theme';
+import { styles } from './styles';
 
 type BottomSheetProps = {
   children: React.ReactElement;
-  snapPoints?: string[];
-  index?: number;
-};
+  backgroundColor?: string;
+  paddingTop?: string;
+  backdropColor?: string;
+  disabledBackdrop?: boolean;
+} & React.ComponentProps<typeof BottomSheetModal>;
 
 const snapPointsInit = ['30%', '50%', '80%'];
 
-const BottomSheet = forwardRef(
-  ({ children, snapPoints, index = 2 }: BottomSheetProps, ref: any) => {
+const BottomSheetComponent = forwardRef(
+  (
+    {
+      children,
+      snapPoints,
+      index = 2,
+      disabledBackdrop,
+      backgroundColor,
+      backdropColor,
+      ...rest
+    }: BottomSheetProps,
+    ref: any,
+  ) => {
     const { colors } = useCustomTheme();
 
     const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {
-      return <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} />;
+      if (disabledBackdrop) {
+        return undefined;
+      }
+      return (
+        <BottomSheetBackdrop
+          {...props}
+          style={backdropColor ? { backgroundColor: backdropColor } : undefined}
+          opacity={0.3}
+          appearsOnIndex={0}
+          disappearsOnIndex={-1}
+        />
+      );
     }, []);
 
     return (
@@ -29,11 +54,11 @@ const BottomSheet = forwardRef(
         index={index}
         snapPoints={snapPoints || snapPointsInit}
         backdropComponent={renderBackdrop}
-        enableDynamicSizing
         keyboardBehavior="extend"
+        {...rest}
       >
         <BottomSheetView
-          style={{ backgroundColor: colors.background, flex: 1, height: '100%', paddingTop: 10 }}
+          style={[{ backgroundColor: backgroundColor || colors.background }, styles.modalContainer]}
         >
           {children}
         </BottomSheetView>
@@ -42,4 +67,4 @@ const BottomSheet = forwardRef(
   },
 );
 
-export default BottomSheet;
+export default BottomSheetComponent;

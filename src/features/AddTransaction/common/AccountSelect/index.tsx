@@ -88,8 +88,6 @@ function AccountSelect({
     }, [accountId]),
   );
 
-  console.log(accountSelected, 'accountSelected');
-
   return (
     <>
       <InputSelection
