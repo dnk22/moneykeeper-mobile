@@ -3,7 +3,7 @@ import { SectionListData, View } from 'react-native';
 import RNText from 'components/Text';
 import SectionListComponent from 'components/SectionList';
 import { getTotalAmount } from 'utils/algorithm';
-import ItemSettingsModal from 'features/AccountDashboard/components/ItemSettingsModal';
+import ItemSettingsModal from 'features/account/AccountDashboard/components/ItemSettingsModal';
 import { TAccount } from 'database/types';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import ItemLevel2 from './ItemLevel2';

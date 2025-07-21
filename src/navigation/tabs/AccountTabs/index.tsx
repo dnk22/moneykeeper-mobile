@@ -1,6 +1,6 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { ROUTES } from 'navigation/constants/routes';
-import Accounts from 'features/AccountDashboard';
+import Accounts from 'features/account/AccountDashboard';
 import Savings from 'features/Savings';
 import Loading from 'components/Loading';
 import { useCustomTheme } from 'resources/theme';

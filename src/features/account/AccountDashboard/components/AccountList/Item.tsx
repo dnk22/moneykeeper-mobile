@@ -10,7 +10,7 @@ import { useCustomTheme } from 'resources/theme';
 import { formatNumber } from 'utils/math';
 import { AccountStackNavigationProps } from 'navigation/types';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constants/account';
-import { AccountContext } from 'features/AccountDashboard/context';
+import { AccountContext } from 'features/account/AccountDashboard/context';
 import { TAccount } from 'database/types';
 import { accountListStyles as styles } from '../../styles';
 import FastImage from 'react-native-fast-image';

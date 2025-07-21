@@ -9,7 +9,7 @@ import { groupAccountDataByValue, sortDataByKey } from 'utils/algorithm';
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import { useAppSelector } from 'store/index';
 import AccountItem from './Item';
-import { MAP_SUBTITLE } from 'features/AccountDashboard/constants';
+import { MAP_SUBTITLE } from 'features/account/AccountDashboard/constants';
 import isEqual from 'react-fast-compare';
 import { accountListStyles as styles } from '../../styles';
 

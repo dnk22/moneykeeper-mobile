@@ -3,7 +3,7 @@ import { ROUTES } from 'navigation/constants/routes';
 import { ScreenRegistry } from './registry';
 
 // Import screens
-import AddAccount from 'features/AddAccount';
+import AddAccount from 'features/account/AddAccount';
 import TransactionHistoryNormal from 'features/TransactionHistory/NormalAccount';
 import TransactionHistoryCreditCard from 'features/TransactionHistory/CreditCardAccount';
 import AddTransactions from 'features/AddTransaction';
