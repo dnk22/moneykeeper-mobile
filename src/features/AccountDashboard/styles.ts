@@ -12,6 +12,9 @@ export const accountDashboardStyles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 8,
   },
+  pagerContainer: {
+    flex: 1,
+  },
 });
 
 export const accountListStyles = StyleSheet.create({
@@ -34,6 +37,7 @@ export const accountListStyles = StyleSheet.create({
     height: 30,
     justifyContent: 'center',
     alignItems: 'center',
+    // transform: [{ rotate: '90deg' }],
   },
   itemTitle: {
     fontWeight: '500',
@@ -45,5 +49,9 @@ export const accountListStyles = StyleSheet.create({
   },
   emptyText: {
     marginTop: '50%',
+  },
+  itemIcon: {
+    width: 40,
+    height: 40,
   },
 });

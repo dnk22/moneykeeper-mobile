@@ -64,11 +64,11 @@ export type TAccount = {
   initialAmount: any;
   accountTypeId: number;
   accountTypeName: string;
-  closingAmount?: number;
+  closingAmount: number;
   bankId?: string;
   currency?: string;
   descriptions?: string;
-  isActive: boolean;
+  isActive: number;
   excludeReport?: boolean;
   userId: string;
   accountLogo: string;

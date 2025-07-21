@@ -21,7 +21,7 @@ export const queryAccounts = async ({
     "acc._status!='deleted'",
     excludeId ? `acc.id!='${excludeId}'` : null,
     text ? `acc.accountName LIKE '${Q.sanitizeLikeString(text)}%'` : null,
-    `acc.isActive=${!isInActive}`,
+    isInActive && `acc.isActive=${!isInActive}`,
   ]
     .filter(Boolean)
     .join(' AND ');
