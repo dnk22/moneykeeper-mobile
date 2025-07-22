@@ -21,7 +21,7 @@ import useFormHooks from './hooks';
 import styles from './styles';
 import InputCalculator from 'components/InputCalculator';
 
-const ACCOUNT_TYPES_WITHOUT_BANK = [ACCOUNT_TYPE_LIST[0].id, ACCOUNT_TYPE_LIST[5].id];
+const ACCOUNT_TYPES_NOT_BANK = [ACCOUNT_TYPE_LIST[0].id, ACCOUNT_TYPE_LIST[5].id];
 
 function AddAccount() {
   const { params } = useRoute<AccountStackRouteProps<typeof ROUTES.ADD_ACCOUNT>>();
@@ -40,7 +40,7 @@ function AddAccount() {
         >
           <InputCalculator
             text={isCreditCard ? 'Hạn mức thẻ' : 'Số dư ban đầu'}
-            name={isCreditCard ? 'creditCardLimit' : 'initialAmount'}
+            name="initialAmount"
             inputTextColor="#007FFF"
           />
           <View style={[styles.group, { backgroundColor: colors.surface }]}>
@@ -71,11 +71,8 @@ function AddAccount() {
             </View>
           </View>
           <View style={[styles.group, { backgroundColor: colors.surface }]}>
-            <AccountTypeSection
-              accountTypeId={accountTypeId}
-              accountWithoutBank={ACCOUNT_TYPES_WITHOUT_BANK}
-            />
-            {!ACCOUNT_TYPES_WITHOUT_BANK.includes(accountTypeId) && (
+            <AccountTypeSection accountTypeId={accountTypeId} />
+            {!ACCOUNT_TYPES_NOT_BANK.includes(accountTypeId) && (
               <BankSection bankIdParam={params?.bankId} />
             )}
           </View>

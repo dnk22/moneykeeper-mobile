@@ -50,9 +50,7 @@ export const queryAccounts = async ({
               acc._status, 
               acc.isActive, 
               acc.accountTypeId, 
-              acc.accountTypeName, 
               acc.sortOrder, 
-              acc.creditCardLimit, 
               bal.closingAmount 
           FROM ${ACCOUNTS} acc
           LEFT JOIN LatestBalance bal ON bal.accountId = acc.id
@@ -121,10 +119,9 @@ export const queryUpdateAccount = async ({
 }): Promise<{ isUpdateBalance: boolean; data: TAccount }> => {
   return await database.write(async () => {
     const res = await database.get<AccountModel>(ACCOUNTS).find(id);
-    // update balance table : prev initialAmount != new initialAmount || prev creditCardLimit != new creditCardLimit
-    const isUpdateBalance =
-      !isEqual(account.initialAmount, res.initialAmount) ||
-      !isEqual(account.creditCardLimit, res.creditCardLimit);
+    // update balance table : prev initialAmount != new initialAmount
+    const isUpdateBalance = !isEqual(account.initialAmount, res.initialAmount);
+
     await res.update((item) => {
       Object.assign(item, account);
     });

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { CommonActions, useFocusEffect, useNavigation } from '@react-navigation/native';
 import InputSelection from 'components/InputSelection';
-import { ACCOUNT_CATEGORY_ID, BANK_TYPE } from 'utils/constants/account';
+import { ACCOUNT_CATEGORY_ID, ACCOUNT_TYPE_LIST, BANK_TYPE } from 'utils/constants/account';
 import { ROUTES } from 'navigation/constants/routes';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { fetchBankList } from 'services/api/banks';
@@ -11,7 +11,7 @@ function BankSection({ bankIdParam }: { bankIdParam?: string }) {
   const navigation = useNavigation<any>();
   const [bankList, setBankList] = useState<{ [key: string]: TBank }>({});
   const formMethods = useFormContext();
-  const { control, setValue } = formMethods;
+  const { control, setValue, getValues } = formMethods;
 
   const accountType = useWatch({
     control,
@@ -69,6 +69,11 @@ function BankSection({ bankIdParam }: { bankIdParam?: string }) {
     });
   };
 
+  const handleDeleteBank = () => {
+    setValue('bankId', '');
+    setValue('accountLogo', ACCOUNT_TYPE_LIST[getValues('accountTypeId')].icon);
+  };
+
   useEffect(() => {
     getAllBanks();
   }, [bankType]);
@@ -77,18 +82,22 @@ function BankSection({ bankIdParam }: { bankIdParam?: string }) {
     useCallback(() => {
       if (bankIdParam) {
         setValue('bankId', bankIdParam);
+        setValue('accountLogo', bankList[bankIdParam].icon);
+        navigation.dispatch({
+          ...CommonActions.setParams({ bankId: '' }),
+        });
       }
     }, [bankIdParam]),
   );
 
   return (
     <InputSelection
-      required
       fieldName="bankId"
       icon={currentBank?.icon}
       displayValue={currentBank?.bankName}
       placeholder={getPlaceholder}
       onSelect={handleSelectBank}
+      onDelete={handleDeleteBank}
     />
   );
 }

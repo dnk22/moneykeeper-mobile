@@ -25,7 +25,7 @@ export type SharedStackParamsList = {
   [ROUTES.ACCOUNT_CREDIT_CARD_DETAIL]: {
     accountId: string;
     accountName: string;
-    creditCardLimit: number;
+    initialAmount: number;
   };
   [ROUTES.DEBT_LOAN_REPORT]: undefined;
   [ROUTES.DEBT_LOAN_REPORT_DETAIL]: { personName: string; type: TRANSACTION_CATEGORY_TYPE };

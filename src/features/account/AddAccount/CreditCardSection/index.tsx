@@ -25,7 +25,7 @@ function CreditCardSection({ colors }: { colors: any }) {
   });
   const isCCReminder = useWatch({
     control,
-    name: 'creditCardIsReminder',
+    name: 'isCCReminder',
   });
 
   const toggleModal = () => {
@@ -94,7 +94,7 @@ function CreditCardSection({ colors }: { colors: any }) {
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
         <View style={[styles.itemGroup, styles.itemGroupBetween]}>
           <RNText preset="title">Thông báo thanh toán ?</RNText>
-          <SwitchField name="creditCardIsReminder" control={control} />
+          <SwitchField name="isCCReminder" control={control} />
         </View>
         <Collapsible collapsed={isCollapse}>
           <Notifications value={ccReminderList} onValueChange={onNotificationListChange} />

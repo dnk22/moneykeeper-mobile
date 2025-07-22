@@ -12,7 +12,7 @@ function CurrentBalance() {
     colors,
     accountId,
     currentStatement: statement,
-    creditCardLimit,
+    initialAmount,
     refreshData,
   } = useContext(TransactionHistoryContext);
   const [totalExpense, setTotalExpense] = useState<number>(0);
@@ -29,9 +29,9 @@ function CurrentBalance() {
   );
 
   const currentExpenseBarWidth = useMemo(() => {
-    const percent = (showTotalExpense / creditCardLimit) * 100;
+    const percent = (showTotalExpense / initialAmount) * 100;
     return percent < 100 ? percent : 100;
-  }, [accountId, creditCardLimit, showTotalExpense]);
+  }, [accountId, initialAmount, showTotalExpense]);
 
   return (
     <>
@@ -59,7 +59,7 @@ function CurrentBalance() {
           </View>
           <View>
             <RNText fontSize={16} color="#45f248">
-              {formatNumber(creditCardLimit + totalExpense, true)}
+              {formatNumber(initialAmount + totalExpense, true)}
             </RNText>
           </View>
         </View>

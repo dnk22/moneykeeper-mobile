@@ -3,7 +3,6 @@ import InputSelection from 'components/InputSelection';
 import { useFormContext } from 'react-hook-form';
 import { ACCOUNT_TYPE_LIST, ACCOUNT_TYPE_LOGO } from 'utils/constants/account';
 import { TAccountType } from 'database/types';
-import { CommonActions, useNavigation } from '@react-navigation/native';
 import ModalComponent from 'components/Modal';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import { View } from 'react-native';
@@ -13,18 +12,13 @@ import CheckboxComponent from 'components/Checkbox';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 
-function AccountTypeSelect({
-  accountTypeId,
-  accountWithoutBank,
-}: {
-  accountTypeId: number;
-  accountWithoutBank: any[];
-}) {
+const BANK_ACCOUNT_TYPE = [ACCOUNT_TYPE_LIST[1].id, ACCOUNT_TYPE_LIST[2].id];
+
+function AccountTypeSelect({ accountTypeId }: { accountTypeId: number }) {
   const { colors } = useCustomTheme();
   const [isVisible, toggle] = useState(false);
-  const navigation = useNavigation<any>();
   const formMethods = useFormContext();
-  const { setValue } = formMethods;
+  const { setValue, getValues } = formMethods;
 
   const currentAccountType = ACCOUNT_TYPE_LIST[accountTypeId];
 
@@ -33,18 +27,20 @@ function AccountTypeSelect({
   };
 
   const handleItemPress = (item: TAccountType) => {
+    onToggleModal();
     if (item.id !== accountTypeId) {
-      if (accountWithoutBank.includes(item.id)) {
-        navigation.dispatch({
-          ...CommonActions.setParams({ bankId: '' }),
-        });
-        setValue('bankId', '');
-      }
       setValue('accountTypeId', item.id);
-      setValue('accountTypeName', item.name);
+      // TH: nếu next accountType và currentAccount thuộc bank thì không xóa bankId, accountLogo
+      if (
+        BANK_ACCOUNT_TYPE.includes(item.id) &&
+        BANK_ACCOUNT_TYPE.includes(accountTypeId) &&
+        getValues('bankId')
+      ) {
+        return;
+      }
+      setValue('bankId', '');
       setValue('accountLogo', item.icon);
     }
-    onToggleModal();
   };
 
   // Memoize renderItem to prevent recreating on every render

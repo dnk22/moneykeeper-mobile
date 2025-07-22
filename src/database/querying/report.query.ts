@@ -259,7 +259,7 @@ export const queryAccountStatement = async (isOwnedViewType: boolean) => {
       .query(
         Q.experimentalJoinTables([TRANSACTIONS]),
         Q.unsafeSqlQuery(
-          `SELECT acc.id, acc.accountName , acc.accountLogo AS logo, acc.isActive, acc.accountTypeName, acc.accountTypeId, acc.sortOrder, bal.closingAmount AS value FROM ${ACCOUNTS} acc
+          `SELECT acc.id, acc.accountName , acc.accountLogo AS logo, acc.isActive, acc.accountTypeId, acc.sortOrder, bal.closingAmount AS value FROM ${ACCOUNTS} acc
           LEFT JOIN (
             SELECT
               b._id,

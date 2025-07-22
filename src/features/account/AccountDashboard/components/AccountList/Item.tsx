@@ -27,7 +27,7 @@ function AccountItem({ account, transparentBackground }: ItemProps) {
   const navigation = useNavigation<AccountStackNavigationProps>();
 
   const onHandleItemPress = () => {
-    const { id, accountName, accountTypeId, creditCardLimit } = account;
+    const { id, accountName, accountTypeId } = account;
     if (!id) return;
 
     switch (accountTypeId) {
@@ -35,7 +35,6 @@ function AccountItem({ account, transparentBackground }: ItemProps) {
         navigation.navigate(ROUTES.ACCOUNT_CREDIT_CARD_DETAIL, {
           accountId: id,
           accountName,
-          creditCardLimit,
         });
         break;
       default:

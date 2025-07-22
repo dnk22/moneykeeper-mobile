@@ -61,11 +61,9 @@ export const ACCOUNT_TYPE_LIST: TAccountType[] = [
 export const ADD_ACCOUNT_DEFAULT_VALUES = {
   accountName: '',
   initialAmount: 0,
-  creditCardLimit: 0,
-  creditCardIsReminder: false,
+  isCCReminder: false,
   accountLogo: ACCOUNT_TYPE_LIST[0].icon,
   accountTypeId: ACCOUNT_TYPE_LIST[0].id,
-  accountTypeName: ACCOUNT_TYPE_LIST[0].name,
   creditCardStatementDay: 5,
   creditCardDayAfterStatement: 15,
   creditCardReminderList: '',

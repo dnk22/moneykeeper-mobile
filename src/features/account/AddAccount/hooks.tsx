@@ -15,7 +15,6 @@ import { removeAccountStatement, updateAccountStatement } from 'store/account/ac
 import { showToast } from 'utils/system';
 import { Alert, Button } from 'react-native';
 import { queryAccountById } from 'database/querying';
-import { formatNumberGroups } from 'utils/math';
 
 const useFormHooks = (accountId?: string) => {
   const navigation = useNavigation();
@@ -81,6 +80,8 @@ const useFormHooks = (accountId?: string) => {
 
   const handleFormSubmit = (data: TAccount) => {
     const requestData = formatDataBeforeSubmit(data);
+    console.log(requestData, 'requestData');
+    return;
 
     requestUpdateAccount({ id: data?.id, account: requestData })
       .then((accountId: string) => {
@@ -91,7 +92,7 @@ const useFormHooks = (accountId?: string) => {
               [accountId]: {
                 statementDate: requestData.creditCardStatementDay,
                 paymentDate: requestData.creditCardDayAfterStatement,
-                isReminder: requestData.creditCardIsReminder,
+                isReminder: requestData.isCCReminder,
                 reminderList: requestData.creditCardReminderList,
               },
             }),
@@ -109,7 +110,7 @@ const useFormHooks = (accountId?: string) => {
       });
   };
 
-  // Use `setOptions` to update account
+  // Use /..`setOptions` to update account
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -128,18 +129,11 @@ const useFormHooks = (accountId?: string) => {
       queryAccountById(accountId).then((account) => {
         if (account) {
           const formattedData = formatDataDetail({ ...ADD_ACCOUNT_DEFAULT_VALUES, ...account });
-          console.log(formattedData, 'formattedData');
           reset(formattedData);
         }
       });
     }
   }, [accountId]);
-
-  useEffect(() => {
-    // Reset credit card fields if account type is not credit card
-    setValue('creditCardLimit', 0);
-    setValue('initialAmount', 0);
-  }, [isCreditCard]);
 
   return {
     methods,

@@ -15,7 +15,6 @@ export default class AccountModel extends Model {
   @text('accountLogo') accountLogo!: string;
   @field('initialAmount') initialAmount!: number;
   @field('accountTypeId') accountTypeId!: number;
-  @field('accountTypeName') accountTypeName!: string;
   @field('bankId') bankId!: string;
   @field('currency') currency!: string;
   @text('descriptions') descriptions!: string;
@@ -35,8 +34,7 @@ export default class AccountModel extends Model {
   @field('numberDayOfYear') numberDayOfYear!: number;
 
   //credit card
-  @field('creditCardLimit') creditCardLimit!: number;
-  @field('creditCardIsReminder') creditCardIsReminder!: boolean;
+  @field('isCCReminder') isCCReminder!: boolean;
   @field('creditCardReminderList') creditCardReminderList!: string;
   @field('creditCardStatementDay') creditCardStatementDay!: number;
   @field('creditCardDayAfterStatement') creditCardDayAfterStatement!: number;

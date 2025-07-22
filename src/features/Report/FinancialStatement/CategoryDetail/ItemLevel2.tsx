@@ -61,7 +61,6 @@ function ItemLevel2({
           navigation.navigate(ROUTES.ACCOUNT_CREDIT_CARD_DETAIL, {
             accountId: id,
             accountName,
-            creditCardLimit: 90000,
           });
           break;
         default:

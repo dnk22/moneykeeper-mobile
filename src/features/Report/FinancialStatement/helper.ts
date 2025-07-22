@@ -1,4 +1,4 @@
-import { ACCOUNT_TYPE_LOGO } from 'utils/constants/account';
+import { ACCOUNT_TYPE_LIST, ACCOUNT_TYPE_LOGO } from 'utils/constants/account';
 import { dataLevelProps } from './types';
 
 export function convertFinancialData(data: any, isOwnedViewType: boolean) {
@@ -7,15 +7,15 @@ export function convertFinancialData(data: any, isOwnedViewType: boolean) {
     [key: string]: dataLevelProps;
   } = {};
   data.forEach((item: any) => {
-    if (!groupedData[item['accountTypeName']]) {
-      groupedData[item['accountTypeName']] = { accountName: '', data: [], value: 0, logo: '' };
+    const accountTypeName = ACCOUNT_TYPE_LIST[item.accountTypeId].name;
+    if (!groupedData[accountTypeName]) {
+      groupedData[accountTypeName] = { accountName: '', data: [], value: 0, logo: '' };
     }
     const value = isOwnedViewType ? item.value : Math.abs(item.value);
-    groupedData[item['accountTypeName']].accountName = item['accountTypeName'];
-    groupedData[item['accountTypeName']].logo = ACCOUNT_TYPE_LOGO[item.accountTypeId];
-    groupedData[item['accountTypeName']].value = groupedData[item['accountTypeName']].value +=
-      value || 0;
-    groupedData[item['accountTypeName']].data.push(item);
+    groupedData[accountTypeName].accountName = accountTypeName;
+    groupedData[accountTypeName].logo = ACCOUNT_TYPE_LOGO[item.accountTypeId];
+    groupedData[accountTypeName].value = groupedData[accountTypeName].value += value || 0;
+    groupedData[accountTypeName].data.push(item);
   });
   return Object.values(groupedData);
 }

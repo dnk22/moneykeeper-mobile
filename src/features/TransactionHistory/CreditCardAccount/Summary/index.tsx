@@ -9,12 +9,12 @@ import PaymentDue from './PaymentDue';
 import styles from './styles';
 
 function Summary() {
-  const { colors, currentStatement, creditCardLimit } = useContext(TransactionHistoryContext);
+  const { colors, currentStatement, initialAmount } = useContext(TransactionHistoryContext);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
       <RNText style={{ fontWeight: '500' }}>
-        Hạn mức tín dụng: {formatNumber(creditCardLimit, true)}
+        Hạn mức tín dụng: {formatNumber(initialAmount, true)}
       </RNText>
       {currentStatement.month ? <PaymentDue /> : <CurrentBalance />}
     </View>

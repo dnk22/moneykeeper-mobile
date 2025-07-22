@@ -1,4 +1,5 @@
 import { TAccount, TTransactions } from 'database/types';
+import { ACCOUNT_TYPE_LIST } from 'utils/constants/account';
 import { GroupedTransactionProps, StatementViewProps } from 'utils/types';
 
 /**
@@ -33,7 +34,7 @@ export const groupAccountDataByValue = (
     if (!groupedData[item.accountTypeId]) {
       groupedData[item.accountTypeId] = { title: '', data: [], amount: 0 };
     }
-    groupedData[item.accountTypeId].title = item.accountTypeName;
+    groupedData[item.accountTypeId].title = ACCOUNT_TYPE_LIST[item.accountTypeId].name;
     groupedData[item.accountTypeId].accountTypeId = item.accountTypeId;
     groupedData[item.accountTypeId].amount = groupedData[item.accountTypeId].amount +=
       item?.closingAmount || 0;

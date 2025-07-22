@@ -24,14 +24,14 @@ Updates an existing account's information and recalculates related balances.
 - Input: account ID and updated account data
 - Process:
   1. Find account by ID in database
-  2. Compare old and new initialAmount/creditCardLimit
+  2. Compare old and new initialAmount
   3. Update account with new data
   4. Return isUpdateBalance flag if amounts changed
 - Response: `{ isUpdateBalance: boolean, data: TAccount }`
 
 #### 2. queryUpdateBalanceAfterUpdateAccount
 
-- Triggered if: initialAmount or creditCardLimit changed
+- Triggered if: initialAmount changed
 - Process:
   1. Find balance record with null transactionDate
   2. Update balance record with new initialAmount

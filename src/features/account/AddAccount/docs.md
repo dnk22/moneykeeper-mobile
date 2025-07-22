@@ -38,7 +38,7 @@ AddAccount/
    - User can select account type through `AccountTypeSection`
    - Opens modal picker with available account types (Cash, Bank, Credit Card, etc.)
    - When type changes:
-     - Reset relevant fields (creditCardLimit, initialAmount)
+     - Reset relevant fields ( initialAmount)
      - Clear bank selection if switching to type that doesn't need bank
 
 3. **Bank Selection (Conditional)**
@@ -179,7 +179,7 @@ AddAccount/
            [accountId]: {
              statementDate: requestData.creditCardStatementDay,
              paymentDate: requestData.creditCardDayAfterStatement,
-             isReminder: requestData.creditCardIsReminder,
+             isReminder: requestData.isCCReminder,
              reminderList: requestData.creditCardReminderList,
            },
          }),
@@ -210,7 +210,7 @@ const formatAccountData = (data: TAccount) => ({
   // Set initial amount based on account type
   initialAmount: data.accountTypeId !== ACCOUNT_CATEGORY_ID.CREDITCARD ? +data?.initialAmount : 0,
   // Handle credit card reminder settings
-  creditCardReminderList: data.creditCardIsReminder ? data.creditCardReminderList : '',
+  creditCardReminderList: data.isCCReminder ? data.creditCardReminderList : '',
 });
 ```
 

@@ -63,12 +63,11 @@ export type TAccount = {
   accountName: string;
   initialAmount: any;
   accountTypeId: number;
-  accountTypeName: string;
   closingAmount: number;
   bankId?: string;
   currency?: string;
   descriptions?: string;
-  isActive: number;
+  isActive: boolean;
   excludeReport?: boolean;
   userId: string;
   accountLogo: string;
@@ -85,8 +84,7 @@ export type TAccount = {
   numberDayOfYear?: number;
 
   // credit card
-  creditCardLimit: any;
-  creditCardIsReminder: boolean;
+  isCCReminder: boolean;
   creditCardReminderList?: string;
   creditCardStatementDay: number;
   creditCardDayAfterStatement: number;

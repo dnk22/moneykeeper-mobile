@@ -7,7 +7,6 @@ export type dataLevelProps = {
   accountName?: string;
   accountTypeId?: ACCOUNT_CATEGORY_ID;
   categoryName?: string;
-  accountTypeName?: string;
   relatedPerson?: string;
   value: number;
   logo: any;

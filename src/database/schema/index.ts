@@ -19,7 +19,6 @@ export default appSchema({
         { name: 'accountLogo', type: 'string' },
         { name: 'initialAmount', type: 'number' },
         { name: 'accountTypeId', type: 'number' },
-        { name: 'accountTypeName', type: 'string' },
         { name: 'bankId', type: 'string', isOptional: true },
         { name: 'currency', type: 'string', isOptional: true },
         { name: 'descriptions', type: 'string', isOptional: true },
@@ -39,8 +38,7 @@ export default appSchema({
         { name: 'savingFromAccountId', type: 'string', isOptional: true },
         { name: 'numberDayOfYear', type: 'number', isOptional: true },
         // credit card
-        { name: 'creditCardLimit', type: 'number' },
-        { name: 'creditCardIsReminder', type: 'boolean' },
+        { name: 'isCCReminder', type: 'boolean' },
         { name: 'creditCardReminderList', type: 'string' },
         { name: 'creditCardStatementDay', type: 'number' },
         { name: 'creditCardDayAfterStatement', type: 'number' },

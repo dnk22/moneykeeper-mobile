@@ -67,7 +67,6 @@ function CreditCardAccount({ navigation, route }: CreditCardAccountProps) {
           colors,
           refreshData,
           accountId: params.accountId,
-          creditCardLimit: params.creditCardLimit,
           currentStatement: statement,
           statementInfo: statementList[params.accountId],
           onRefreshData,

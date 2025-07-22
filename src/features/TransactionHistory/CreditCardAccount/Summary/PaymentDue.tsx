@@ -14,7 +14,6 @@ function PaymentDue() {
     colors,
     accountId,
     currentStatement: statement,
-    creditCardLimit,
     statementInfo,
   } = useContext(TransactionHistoryContext);
   const [totalExpense, setTotalExpense] = useState<number>(0);
