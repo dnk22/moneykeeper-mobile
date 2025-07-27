@@ -12,13 +12,13 @@ const handleError = ({ error }) => {
 
 /** read  */
 export const queryGetLatestBalanceByDate = async (accountId: string, date: number) => {
-  const query = `SELECT closingAmount, transactionDateAt FROM ${BALANCE}
+  const query = `SELECT closingAmount, dateRecord FROM ${BALANCE}
                 WHERE accountId='${accountId}'
                 AND (
-                  transactionDateAt < ${date}
-                  OR transactionDateAt IS NULL
+                  dateRecord < ${date}
+                  OR dateRecord IS NULL
                 )
-                ORDER BY transactionDateAt DESC, _id DESC
+                ORDER BY dateRecord DESC, _id DESC
                 LIMIT 1`;
   return await database.read(async () => {
     const result = await database
@@ -30,9 +30,9 @@ export const queryGetLatestBalanceByDate = async (accountId: string, date: numbe
 };
 
 export const queryGetCurrentBalance = async (accountId: string) => {
-  const query = `SELECT closingAmount, transactionDateAt FROM ${BALANCE}
+  const query = `SELECT closingAmount, dateRecord FROM ${BALANCE}
                 WHERE accountId='${accountId}'
-                ORDER BY transactionDateAt DESC, _id DESC
+                ORDER BY dateRecord DESC, _id DESC
                 LIMIT 1`;
   return await database.read(async () => {
     const result = await database
@@ -46,8 +46,8 @@ export const queryGetCurrentBalance = async (accountId: string) => {
 export const queryGetAllBalanceAfterDate = async (accountId: string, date: number) => {
   const query = `SELECT * FROM ${BALANCE}
                 WHERE accountId='${accountId}'
-                AND transactionDateAt > ${date}
-                ORDER BY transactionDateAt, _id`;
+                AND dateRecord > ${date}
+                ORDER BY dateRecord, _id`;
   return await database.read(async () => {
     return await database
       .get<BalanceModel>(BALANCE)
@@ -56,20 +56,6 @@ export const queryGetAllBalanceAfterDate = async (accountId: string, date: numbe
   });
 };
 
-/** create */
-export const queryAddBalanceFromAccount = async (balance: TBalance) => {
-  const query = `SELECT MAX(_id) AS maxId from ${BALANCE}`;
-  return await database.write(async () => {
-    const result = await database
-      .get<BalanceModel>(BALANCE)
-      .query(Q.unsafeSqlQuery(query))
-      .unsafeFetchRaw();
-    const res = await database.get<BalanceModel>(BALANCE).create((item) => {
-      Object.assign(item, { ...balance, _id: result[0].maxId + 1 });
-    });
-    return res;
-  });
-};
 
 export const queryAddNewBalanceTransaction = async (transaction: TransactionModel | any) => {
   try {
@@ -84,7 +70,7 @@ export const queryAddNewBalanceTransaction = async (transaction: TransactionMode
           accountId: transaction.accountId,
           transactionId: transaction.id,
           movementAmount: transaction.amount,
-          transactionDateAt: transaction.dateTimeAt,
+          dateRecord: transaction.dateTimeAt,
           _id: currentLatestId[0].maxId + 1,
         });
       });
@@ -112,7 +98,7 @@ export const queryUpdateBalanceTransaction = async (transaction: any, accountIdQ
         await currentBalance[0].update((bal) => {
           bal.accountId = transaction.accountId;
           bal.movementAmount = transaction.amount;
-          bal.transactionDateAt = new Date(transaction.dateTimeAt);
+          bal.dateRecord = new Date(transaction.dateTimeAt);
         });
         return true;
       } else {
@@ -130,32 +116,6 @@ export const queryUpdateBalanceTransaction = async (transaction: any, accountIdQ
   }
 };
 
-export const queryUpdateBalanceAfterUpdateAccount = ({
-  accountData,
-}: {
-  accountData: TAccount;
-}) => {
-  try {
-    return database.write(async () => {
-      const balance = await database
-        .get<BalanceModel>(BALANCE)
-        .query(Q.and(Q.where('accountId', accountData.id), Q.where('transactionDateAt', null)))
-        .fetch();
-      if (!isEmpty(balance)) {
-        await balance[0].update((bal) => {
-          bal.openAmount = accountData.initialAmount;
-          bal.closingAmount = accountData.initialAmount;
-        });
-      }
-      return true;
-    });
-  } catch (error) {
-    return handleError({
-      error: 'CR-BAL',
-    });
-  }
-};
-
 export const queryCalculateAllBalanceAfterDate = async ({
   accountId,
   date,
@@ -164,7 +124,7 @@ export const queryCalculateAllBalanceAfterDate = async ({
   date: number;
 }) => {
   try {
-    const { closingAmount, transactionDateAt: prevDate } = await queryGetLatestBalanceByDate(
+    const { closingAmount, dateRecord: prevDate } = await queryGetLatestBalanceByDate(
       accountId,
       new Date(date).getTime(),
     );

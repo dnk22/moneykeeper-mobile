@@ -1,6 +1,6 @@
 import { Model } from '@nozbe/watermelondb';
 import { Associations } from '@nozbe/watermelondb/Model';
-import { field, text, date, children } from '@nozbe/watermelondb/decorators';
+import { field, text, date, children, readonly } from '@nozbe/watermelondb/decorators';
 import { ACCOUNTS, BALANCE, TRANSACTIONS } from 'database/constants';
 
 export default class AccountModel extends Model {
@@ -11,6 +11,7 @@ export default class AccountModel extends Model {
     [BALANCE]: { type: 'has_many', foreignKey: 'accountId' },
   };
 
+  @text('remoteId') remoteId!: string;
   @text('accountName') accountName!: string;
   @text('accountLogo') accountLogo!: string;
   @field('initialAmount') initialAmount!: number;
@@ -39,13 +40,17 @@ export default class AccountModel extends Model {
   @field('creditCardStatementDay') creditCardStatementDay!: number;
   @field('creditCardDayAfterStatement') creditCardDayAfterStatement!: number;
 
-  @children(TRANSACTIONS) financeTransaction!: any;
+  // tracking
+  @readonly @date('created_at') createdAt!: number;
+  @readonly @date('updated_at') updatedAt!: number;
+
+  // @children(TRANSACTIONS) financeTransaction!: any;
   @children(BALANCE) balance!: any;
 
   async markAsDeleted() {
     // delete all transaction and balance record related
     await super.markAsDeleted();
     await this.balance.destroyAllPermanently();
-    await this.financeTransaction.destroyAllPermanently();
+    // await this.financeTransaction.destroyAllPermanently();
   }
 }

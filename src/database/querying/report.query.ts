@@ -78,7 +78,7 @@ export const queryGetCurrentBalanceCreditCardByAccountId = async ({
   // endDate: Date | number;
 }) => {
   // const queryDate = endDate
-  //   ? `AND transactionDateAt < ${new Date(
+  //   ? `AND dateRecord < ${new Date(
   //       new Date(endDate).setUTCHours(23, 59, 59, 999),
   //     ).getTime()}`
   //   : '';
@@ -87,7 +87,7 @@ export const queryGetCurrentBalanceCreditCardByAccountId = async ({
       .get<BalanceModel>(BALANCE)
       .query(
         Q.unsafeSqlQuery(
-          `SELECT closingAmount, MAX(transactionDateAt) FROM ${BALANCE}
+          `SELECT closingAmount, MAX(dateRecord) FROM ${BALANCE}
             WHERE accountId='${accountId}'`,
         ),
       )
@@ -145,8 +145,8 @@ export const getCurrentBalanceAllAccount = async () => {
               b._id,
               b.accountId,
               b.closingAmount,
-              b.transactionDateAt,
-              ROW_NUMBER() OVER (PARTITION BY b.accountId ORDER BY b.transactionDateAt DESC, b._id DESC) AS row_num
+              b.dateRecord,
+              ROW_NUMBER() OVER (PARTITION BY b.accountId ORDER BY b.dateRecord DESC, b._id DESC) AS row_num
             FROM ${BALANCE} b
           ) bal ON bal.accountId = acc.id AND bal.row_num = 1
           WHERE acc._status!='deleted'`,
@@ -265,8 +265,8 @@ export const queryAccountStatement = async (isOwnedViewType: boolean) => {
               b._id,
               b.accountId,
               b.closingAmount,
-              b.transactionDateAt,
-              ROW_NUMBER() OVER (PARTITION BY b.accountId ORDER BY b.transactionDateAt DESC, b._id DESC) AS row_num
+              b.dateRecord,
+              ROW_NUMBER() OVER (PARTITION BY b.accountId ORDER BY b.dateRecord DESC, b._id DESC) AS row_num
             FROM ${BALANCE} b
           ) bal ON bal.accountId = acc.id AND bal.row_num = 1
           WHERE acc._status!='deleted' AND acc.accountTypeId ${isOwnedViewType ? '!=' : '='} ${

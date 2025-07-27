@@ -10,6 +10,7 @@ import {
   BankModel,
   ContactModel,
   BalanceModel,
+  SyncQueueModel,
 } from './models';
 
 // First, create the adapter to the underlying database:
@@ -38,5 +39,6 @@ export const database = new Database({
     BankModel,
     ContactModel,
     BalanceModel,
+    SyncQueueModel,
   ],
 });

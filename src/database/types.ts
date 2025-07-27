@@ -59,11 +59,11 @@ export type TTransactionsCategory = {
 
 // account
 export type TAccount = {
+  remoteId?: string;
   id?: string;
   accountName: string;
   initialAmount: any;
   accountTypeId: number;
-  closingAmount: number;
   bankId?: string;
   currency?: string;
   descriptions?: string;
@@ -118,9 +118,10 @@ export type TContact = {
 
 export type TBalance = {
   transactionId?: string;
-  accountId?: string;
+  accountId: string;
   openAmount?: number;
   movementAmount?: number;
   closingAmount?: number;
-  transactionDateAt: Date | null;
+  dateRecord?: number;
 };
+

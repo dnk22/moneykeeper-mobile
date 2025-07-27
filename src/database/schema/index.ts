@@ -5,6 +5,7 @@ import {
   BALANCE,
   BANKS,
   CONTACT,
+  SYNC_QUEUE,
   TRANSACTIONS,
   TRANSACTION_CATEGORY,
 } from 'database/constants';
@@ -15,6 +16,7 @@ export default appSchema({
     tableSchema({
       name: ACCOUNTS,
       columns: [
+        { name: 'remoteId', type: 'string', isOptional: true, isIndexed: true },
         { name: 'accountName', type: 'string' },
         { name: 'accountLogo', type: 'string' },
         { name: 'initialAmount', type: 'number' },
@@ -24,7 +26,6 @@ export default appSchema({
         { name: 'descriptions', type: 'string', isOptional: true },
         { name: 'isActive', type: 'boolean' },
         { name: 'excludeReport', type: 'boolean', isOptional: true },
-        { name: 'userId', type: 'string', isOptional: true },
         { name: 'sortOrder', type: 'number', isOptional: true },
         // fields for savings account
         { name: 'termType', type: 'number', isOptional: true },
@@ -42,11 +43,14 @@ export default appSchema({
         { name: 'creditCardReminderList', type: 'string' },
         { name: 'creditCardStatementDay', type: 'number' },
         { name: 'creditCardDayAfterStatement', type: 'number' },
+        { name: 'created_at', type: 'number' },
+        { name: 'updated_at', type: 'number' },
       ],
     }),
     tableSchema({
       name: BANKS,
       columns: [
+        { name: 'remoteId', type: 'string', isOptional: true, isIndexed: true },
         { name: 'bankCode', type: 'string' },
         { name: 'bankName', type: 'string' },
         { name: 'shortName', type: 'string' },
@@ -58,6 +62,7 @@ export default appSchema({
     tableSchema({
       name: TRANSACTIONS,
       columns: [
+        { name: 'remoteId', type: 'string', isOptional: true, isIndexed: true },
         { name: 'amount', type: 'number' },
         { name: 'toAmount', type: 'number' },
         { name: 'transactionType', type: 'number' },
@@ -71,7 +76,6 @@ export default appSchema({
         { name: 'feeType', type: 'string', isOptional: true },
         { name: 'excludeReport', type: 'number', isOptional: true },
         { name: 'attachment', type: 'string', isOptional: true },
-        { name: 'userId', type: 'string', isOptional: true },
         { name: 'giver', type: 'string', isOptional: true },
         { name: 'payee', type: 'string', isOptional: true },
         { name: 'closingAmount', type: 'number' },
@@ -86,6 +90,7 @@ export default appSchema({
     tableSchema({
       name: TRANSACTION_CATEGORY,
       columns: [
+        { name: 'remoteId', type: 'string', isOptional: true, isIndexed: true },
         { name: 'categoryName', type: 'string' },
         { name: 'categoryType', type: 'number' },
         { name: 'dictionaryKey', type: 'number' },
@@ -101,18 +106,30 @@ export default appSchema({
     tableSchema({
       name: BALANCE,
       columns: [
+        { name: 'remoteId', type: 'string', isOptional: true, isIndexed: true },
         { name: '_id', type: 'number' },
         { name: 'transactionId', type: 'string', isOptional: true },
         { name: 'accountId', type: 'string', isOptional: true },
         { name: 'openAmount', type: 'number' },
         { name: 'movementAmount', type: 'number' },
         { name: 'closingAmount', type: 'number' },
-        { name: 'transactionDateAt', type: 'number', isOptional: true },
+        { name: 'dateRecord', type: 'number', isOptional: true },
       ],
     }),
     tableSchema({
       name: CONTACT,
       columns: [{ name: 'contactName', type: 'string' }],
+    }),
+    tableSchema({
+      name: SYNC_QUEUE,
+      columns: [
+        { name: 'recordId', type: 'string' },
+        { name: 'tableName', type: 'string' },
+        { name: 'payload', type: 'string' },
+        { name: 'action', type: 'number' },
+        { name: 'created_at', type: 'number' },
+        { name: 'updated_at', type: 'number' },
+      ],
     }),
   ],
 });
