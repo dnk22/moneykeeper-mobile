@@ -1831,8 +1831,6 @@ PODS:
     - React-perflogger
     - React-utils (= 0.76.9)
   - RecaptchaInterop (101.0.0)
-  - rn-keyboard (1.0.0):
-    - React-Core
   - RNCPicker (2.11.0):
     - DoubleConversion
     - glog
@@ -2297,7 +2295,6 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - rn-keyboard (from `../node_modules/rn-keyboard`)
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNFastImage (from `../node_modules/react-native-fast-image`)
@@ -2486,8 +2483,6 @@ EXTERNAL SOURCES:
     :path: build/generated/ios
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
-  rn-keyboard:
-    :path: "../node_modules/rn-keyboard"
   RNCPicker:
     :path: "../node_modules/@react-native-picker/picker"
   RNDateTimePicker:
@@ -2614,7 +2609,6 @@ SPEC CHECKSUMS:
   ReactCodegen: 31fcff227d0035956575be0c013a2edcc687a53c
   ReactCommon: 78c49c7cf7df16983ebc3c646b4f47398437f2ec
   RecaptchaInterop: 11e0b637842dfb48308d242afc3f448062325aba
-  rn-keyboard: 7dde83e2df5ee1451ce3e424cc9051bc4f89b706
   RNCPicker: 77e2a4ed202429cf5bb321ab054c42e6155e6c21
   RNDateTimePicker: 20b366c5eaa66d8f1c438025735ade083e850f60
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8

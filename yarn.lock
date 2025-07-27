@@ -9626,7 +9626,6 @@ __metadata:
     react-test-renderer: 18.3.1
     redux: ^5.0.1
     redux-persist: ^6.0.0
-    rn-keyboard: ^1.0.0
     typescript: 5.0.4
     visualize-bundle: ^1.4.0
     yup: ^1.6.1
@@ -11445,16 +11444,6 @@ __metadata:
   bin:
     rimraf: ./bin.js
   checksum: 3ea587b981a19016297edb96d1ffe48af7e6af69660e3b371dbfc73722a73a0b0e9be5c88089fbeeb866c389c1098e07f64929c7414290504b855f54f901ab10
-  languageName: node
-  linkType: hard
-
-"rn-keyboard@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "rn-keyboard@npm:1.0.0"
-  peerDependencies:
-    react: ">= 17.0.1"
-    react-native: ">= 0.64.0"
-  checksum: 46a857f4f776db0d09e09eaba4c141b5acee627aa35010e685bd84ed9c72e5bf34ace2887a4893f65057be8f2b347989ed5d1f1e57b020b29a634d7b31f3d5cc
   languageName: node
   linkType: hard
 
