@@ -1,5 +1,4 @@
-/** read  */
-import { queryGetAllBank } from 'database/querying';
+import { banksLocalQuery } from 'database/querying/banks';
 import { TBank } from 'database/types';
 import { ApiResponse } from 'services/axios';
 import { showToast } from 'utils/system';
@@ -11,11 +10,12 @@ export async function fetchBankList(
   try {
     return {
       status: 200,
-      data: await queryGetAllBank(payload),
+      data: await banksLocalQuery.getAllBanks(payload),
     };
   } catch (error) {
     showToast({
-      type: 'info',
+      type: 'error',
+      text2: 'Có lỗi xảy ra',
     });
     return {
       status: 200,

@@ -10,25 +10,6 @@ const handleError = ({ error }) => {
   return Promise.reject(error);
 };
 
-/** read  */
-export const queryGetLatestBalanceByDate = async (accountId: string, date: number) => {
-  const query = `SELECT closingAmount, dateRecord FROM ${BALANCE}
-                WHERE accountId='${accountId}'
-                AND (
-                  dateRecord < ${date}
-                  OR dateRecord IS NULL
-                )
-                ORDER BY dateRecord DESC, _id DESC
-                LIMIT 1`;
-  return await database.read(async () => {
-    const result = await database
-      .get<BalanceModel>(BALANCE)
-      .query(Q.unsafeSqlQuery(query))
-      .unsafeFetchRaw();
-    return result[0];
-  });
-};
-
 export const queryGetCurrentBalance = async (accountId: string) => {
   const query = `SELECT closingAmount, dateRecord FROM ${BALANCE}
                 WHERE accountId='${accountId}'
@@ -40,19 +21,6 @@ export const queryGetCurrentBalance = async (accountId: string) => {
       .query(Q.unsafeSqlQuery(query))
       .unsafeFetchRaw();
     return result[0];
-  });
-};
-
-export const queryGetAllBalanceAfterDate = async (accountId: string, date: number) => {
-  const query = `SELECT * FROM ${BALANCE}
-                WHERE accountId='${accountId}'
-                AND dateRecord > ${date}
-                ORDER BY dateRecord, _id`;
-  return await database.read(async () => {
-    return await database
-      .get<BalanceModel>(BALANCE)
-      .query(Q.unsafeSqlQuery(query))
-      .unsafeFetchRaw();
   });
 };
 
