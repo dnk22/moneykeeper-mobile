@@ -159,3 +159,11 @@ export function getTotalAmount(data: any[]) {
   }
   return data.reduce((total, current) => (total += current.value), 0);
 }
+
+export function convertDataToFb(data: any) {
+  return {
+    ...data,
+    _status: undefined,
+    _changed: undefined,
+  };
+}

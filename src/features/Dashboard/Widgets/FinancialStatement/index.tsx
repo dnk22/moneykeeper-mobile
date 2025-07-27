@@ -7,12 +7,12 @@ import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import { getCurrentBalanceAllAccount, queryGetAllBalance } from 'database/querying';
 import { formatNumber } from 'utils/math';
-import { getAllTriggerNotifications } from 'share/notifications';
 import { useAppDispatch } from 'store/index';
 import { setViewType } from 'features/Report/FinancialStatement/reducer/financialStatement.slice';
 import { ArrowRight2, NotificationBing, Repeat } from 'iconsax-react-native';
 import { styles } from './styles';
 import { ROUTES } from 'navigation/constants/routes';
+import { notifeeService } from 'services/notifications/notifee';
 
 function FinancialStatement() {
   const { colors } = useCustomTheme();
@@ -40,7 +40,7 @@ function FinancialStatement() {
 
   const onHideMoney = () => {
     queryGetAllBalance();
-    getAllTriggerNotifications();
+    notifeeService.getTriggerNotifications();
   };
 
   const onNavigateToScreen = (screenName: string) => {
@@ -51,7 +51,10 @@ function FinancialStatement() {
     <View style={styles.container}>
       <View style={[styles.top, { backgroundColor: colors.primary }]}>
         <RNText preset={'textLarge'} color="white">{`${hello}, Duy!`}</RNText>
-        <Pressable onPress={() => onNavigateToScreen(ROUTES.NOTIFICATION)} style={styles.notifications}>
+        <Pressable
+          onPress={() => onNavigateToScreen(ROUTES.NOTIFICATION)}
+          style={styles.notifications}
+        >
           <NotificationBing size={25} color="white" variant="Broken" />
         </Pressable>
       </View>

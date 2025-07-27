@@ -4,7 +4,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useForm, useWatch } from 'react-hook-form';
 import { TTransactions } from 'database/types';
 import { getTransactionById } from 'services/api/transactions';
-import { getFirstAccount } from 'services/api/accounts';
 import { useAppSelector } from 'store/index';
 import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';
 import { TRANSACTION_TYPE } from 'utils/constants';
@@ -13,6 +12,7 @@ import { ROUTES } from 'navigation/constants/routes';
 import { TransactionParamListProps } from 'navigation/types';
 import { useHeaderOption } from './useHeaderOption';
 import { useTransactionParamsSync } from './useTransactionParamsSync';
+import { accountLocalQuery } from 'database/querying';
 
 export function useAddTransactionFormLogic({
   navigation,
@@ -45,9 +45,9 @@ export function useAddTransactionFormLogic({
 
   const getDefaultAccountInAddMode = async () => {
     try {
-      const firstAccount = await getFirstAccount();
-      if (firstAccount?.length) {
-        setValue('accountId', firstAccount[0].id);
+      const firstAccount = await accountLocalQuery.getFirstActiveAccount();
+      if (firstAccount) {
+        setValue('accountId', firstAccount.id);
       }
     } catch (error) {
       Alert.alert('Oops, Lỗi rồi!', 'Có lỗi trong quá trình lấy thông tin tài khoản');

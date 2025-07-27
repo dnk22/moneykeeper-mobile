@@ -9,6 +9,7 @@ type AccountProps = {
 const initialState: AccountProps = {
   accountStatementInfo: {},
 };
+
 export const ACCOUNT_SLICE_NAME = 'accountStore';
 
 export const accountSlice = createSlice({
@@ -23,7 +24,6 @@ export const accountSlice = createSlice({
         ...state.accountStatementInfo,
         ...payload,
       };
-      console.log(state.accountStatementInfo, 'state.accountStatementInfo');
       return state;
     },
     removeAccountStatement(state, { payload }: PayloadAction<string>) {

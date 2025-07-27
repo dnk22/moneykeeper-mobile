@@ -1,5 +1,5 @@
 import { Action } from '@reduxjs/toolkit';
-import { clearAllTriggerNotifications, createTriggerNotification } from 'share/notifications';
+import { clearAllTriggerNotifications, createTriggerNotification } from 'share/notifee';
 import { RepeatFrequency } from '@notifee/react-native';
 
 export async function onAccountStatementListener(action: Action, listenerApi: any) {

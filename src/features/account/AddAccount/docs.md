@@ -141,7 +141,7 @@ AddAccount/
    ```typescript
    useEffect(() => {
      if (params?.accountId) {
-       queryAccountById(params.accountId).then((account) => reset(account));
+       getAccountById(params.accountId).then((account) => reset(account));
      }
    }, [params?.accountId]);
    ```

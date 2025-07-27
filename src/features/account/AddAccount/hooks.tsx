@@ -3,18 +3,14 @@ import { TAccount } from 'database/types';
 import { ROUTES } from 'navigation/constants/routes';
 import { useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import {
-  ACCOUNT_CATEGORY_ID,
-  ACCOUNT_TYPE_LIST,
-  ADD_ACCOUNT_DEFAULT_VALUES,
-} from 'utils/constants/account';
+import { ACCOUNT_TYPE_LIST, ADD_ACCOUNT_DEFAULT_VALUES } from 'utils/constants/account';
 import { formatDataBeforeSubmit, formatDataDetail } from './utility';
 import { requestDeleteAccount, requestUpdateAccount } from 'services/api/accounts';
 import { useAppDispatch } from 'store/index';
-import { removeAccountStatement, updateAccountStatement } from 'store/account/account.slice';
 import { showToast } from 'utils/system';
 import { Alert, Button } from 'react-native';
-import { queryAccountById } from 'database/querying';
+import { accountLocalQuery } from 'database/querying';
+import { updateAppLoading } from 'store/app/app.slice';
 
 const useFormHooks = (accountId?: string) => {
   const navigation = useNavigation();
@@ -22,9 +18,9 @@ const useFormHooks = (accountId?: string) => {
 
   const methods = useForm<TAccount>({
     defaultValues: ADD_ACCOUNT_DEFAULT_VALUES,
-    reValidateMode: 'onSubmit',
+    reValidateMode: 'onChange',
   });
-  const { control, handleSubmit, getValues, reset, setValue } = methods;
+  const { control, handleSubmit, getValues, reset } = methods;
 
   const isCreditCard =
     useWatch({
@@ -54,12 +50,12 @@ const useFormHooks = (accountId?: string) => {
             type: 'success',
             text2: 'Xóa tài khoản thành công',
           });
-          dispatch(removeAccountStatement(id));
           goBack();
         })
-        .catch(() => {
+        .catch((error) => {
           showToast({
             type: 'error',
+            text2: 'Vui lòng thử lại',
           });
         });
     }
@@ -79,38 +75,22 @@ const useFormHooks = (accountId?: string) => {
     );
 
   const handleFormSubmit = (data: TAccount) => {
+    dispatch(updateAppLoading(true));
     const requestData = formatDataBeforeSubmit(data);
-    console.log(requestData, 'requestData');
-    return;
-
-    requestUpdateAccount({ id: data?.id, account: requestData })
-      .then((accountId: string) => {
-        // check notifications in credit card account
-        if (requestData.accountTypeId === ACCOUNT_CATEGORY_ID.CREDITCARD) {
-          dispatch(
-            updateAccountStatement({
-              [accountId]: {
-                statementDate: requestData.creditCardStatementDay,
-                paymentDate: requestData.creditCardDayAfterStatement,
-                isReminder: requestData.isCCReminder,
-                reminderList: requestData.creditCardReminderList,
-              },
-            }),
-          );
-        } else {
-          dispatch(removeAccountStatement(accountId));
-        }
+    requestUpdateAccount(requestData)
+      .then(() => {
+        dispatch(updateAppLoading(false));
         goBack();
       })
-      .catch(({ error }) => {
+      .catch((error) => {
         showToast({
           type: 'error',
-          text2: error,
+          text2: 'Vui lòng thử lại.',
         });
       });
   };
 
-  // Use /..`setOptions` to update account
+  // Use `setOptions` to update account
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -126,7 +106,7 @@ const useFormHooks = (accountId?: string) => {
 
   useEffect(() => {
     if (accountId) {
-      queryAccountById(accountId).then((account) => {
+      accountLocalQuery.getAccountById(accountId).then((account) => {
         if (account) {
           const formattedData = formatDataDetail({ ...ADD_ACCOUNT_DEFAULT_VALUES, ...account });
           reset(formattedData);

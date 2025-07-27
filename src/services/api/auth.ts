@@ -1,9 +1,9 @@
-import { appSettingsService } from 'services/firebase/services/appSettings';
+import { appSettingsFb } from 'services/firebase/db/appSettings';
 import { TResponse } from 'utils/types/request.type';
 
 export async function updateOnboardingSettings(payload: any): Promise<TResponse> {
   try {
-    await appSettingsService.updateSettings({ newSettings: payload });
+    await appSettingsFb.updateSettings({ newSettings: payload });
     return {
       success: true,
     };

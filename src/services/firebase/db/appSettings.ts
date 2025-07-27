@@ -1,7 +1,7 @@
 // src/services/user/AppSettings.ts
-import { databaseService } from './database';
 import { FB_PATH } from '../config';
 import { TSettings } from 'utils/types/store.type';
+import { databaseService } from '../services/database';
 
 export class AppSettings {
   private static instance: AppSettings;
@@ -62,4 +62,4 @@ export class AppSettings {
   }
 }
 
-export const appSettingsService = AppSettings.getInstance();
+export const appSettingsFb = AppSettings.getInstance();

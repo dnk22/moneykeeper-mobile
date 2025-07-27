@@ -21,7 +21,7 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 jest.mock('database/querying', () => ({
-  queryAccountById: jest.fn(() => Promise.resolve(null)),
+  accountLocalQuery: jest.fn(() => Promise.resolve(null)),
   queryGetBankById: jest.fn(() =>
     Promise.resolve({ id: '1', icon: 'bank-icon', bankName: 'Test Bank' }),
   ),

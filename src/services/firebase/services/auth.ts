@@ -40,20 +40,9 @@
 import { FirebaseAuthTypes, getAuth } from '@react-native-firebase/auth';
 import { TLogin, TRegister } from 'utils/types/auth';
 import { userService } from './user';
-import { appSettingsService } from './appSettings';
-import { defaultSettings } from 'utils/constants/appSettings';
-
-export class AuthError extends Error {
-  constructor(public code: string, message: string) {
-    super(message);
-    this.name = 'AuthError';
-  }
-}
-
-export interface AuthResponse<T> {
-  data: T | null;
-  error: AuthError | null;
-}
+import defaultSettings from 'utils/constants/appSettings';
+import { appSettingsFb } from '../db/appSettings';
+import { FirebaseError, FirebaseResponse } from '../types';
 
 class FireBaseAuthService {
   private static instance: FireBaseAuthService;
@@ -112,18 +101,18 @@ class FireBaseAuthService {
   public async signInWithEmailAndPassword({
     email,
     password,
-  }: TLogin): Promise<AuthResponse<{ isOnBoard: boolean }>> {
+  }: TLogin): Promise<FirebaseResponse<{ isOnBoard: boolean }>> {
     try {
       await this.auth.signInWithEmailAndPassword(email, password);
       const userProfile = await userService.getUserProfile();
       if (!userProfile) {
-        throw new AuthError('user-not-found', 'User profile not found');
+        throw new FirebaseError('user-not-found', 'User profile not found');
       }
       return { data: { isOnBoard: userProfile.isOnboarded }, error: null };
     } catch (error: any) {
       return {
         data: null,
-        error: new AuthError(
+        error: new FirebaseError(
           error.code || 'unknown',
           this.getSignInErrorMessage(error.code) || error.message,
         ),
@@ -135,7 +124,7 @@ class FireBaseAuthService {
     email,
     password,
     displayName,
-  }: TRegister): Promise<AuthResponse<FirebaseAuthTypes.UserCredential>> {
+  }: TRegister): Promise<FirebaseResponse<FirebaseAuthTypes.UserCredential>> {
     try {
       const userCredential = await this.auth.createUserWithEmailAndPassword(email, password);
 
@@ -149,7 +138,7 @@ class FireBaseAuthService {
       await userService.createUserProfile({ email, displayName });
 
       // Initialize app settings for the new user
-      await appSettingsService.updateSettings({ newSettings: defaultSettings });
+      await appSettingsFb.updateSettings({ newSettings: defaultSettings });
 
       // Send email verification
       // await userCredential.user?.sendEmailVerification();
@@ -158,7 +147,7 @@ class FireBaseAuthService {
     } catch (error: any) {
       return {
         data: null,
-        error: new AuthError(
+        error: new FirebaseError(
           error.code || 'unknown',
           this.getSignUpErrorMessage(error.code) || error.message,
         ),
@@ -166,33 +155,33 @@ class FireBaseAuthService {
     }
   }
 
-  public async signOut(): Promise<AuthResponse<void>> {
+  public async signOut(): Promise<FirebaseResponse<void>> {
     try {
       await this.auth.signOut();
       return { data: undefined, error: null };
     } catch (error: any) {
       return {
         data: null,
-        error: new AuthError(error.code || 'unknown', error.message),
+        error: new FirebaseError(error.code || 'unknown', error.message),
       };
     }
   }
 
-  public async resetPassword(email: string): Promise<AuthResponse<void>> {
+  public async resetPassword(email: string): Promise<FirebaseResponse<void>> {
     try {
       await this.auth.sendPasswordResetEmail(email);
       return { data: undefined, error: null };
     } catch (error: any) {
       return {
         data: null,
-        error: new AuthError(error.code || 'unknown', error.message),
+        error: new FirebaseError(error.code || 'unknown', error.message),
       };
     }
   }
 
   public async updateProfile(
     profile: Partial<FirebaseAuthTypes.UpdateProfile>,
-  ): Promise<AuthResponse<void>> {
+  ): Promise<FirebaseResponse<void>> {
     try {
       const user = this.getCurrentUser();
       if (!user) {
@@ -203,7 +192,7 @@ class FireBaseAuthService {
     } catch (error: any) {
       return {
         data: null,
-        error: new AuthError(error.code || 'unknown', error.message),
+        error: new FirebaseError(error.code || 'unknown', error.message),
       };
     }
   }

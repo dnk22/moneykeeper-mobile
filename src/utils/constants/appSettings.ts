@@ -3,7 +3,7 @@ import { ROUTES } from 'navigation/constants/routes';
 import { COLOR_SCHEME } from 'resources/theme/constants';
 import { TSettings } from 'utils/types/store.type';
 
-export const defaultSettings: TSettings = {
+const defaultSettings: TSettings = {
   config: {
     hideBalance: false,
     dateFormat: 'DD/MM/YYYY',
@@ -49,3 +49,5 @@ export const defaultSettings: TSettings = {
     fastViewByMost: true,
   },
 };
+
+export default defaultSettings;

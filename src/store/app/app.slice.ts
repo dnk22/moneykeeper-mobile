@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { produce } from 'immer';
-import { defaultSettings } from 'utils/constants/appSettings';
+import defaultSettings from 'utils/constants/appSettings';
 import { AppStateProps } from 'utils/types/store.type';
 
 const initialState = {

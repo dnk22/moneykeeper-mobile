@@ -9,7 +9,7 @@ import { showToast } from 'utils/system';
 import AccountList from './AccountList';
 import InputSelection from 'components/InputSelection';
 import BottomSheet from 'components/BottomSheetModal';
-import { queryAccountById } from 'database/querying';
+import { accountLocalQuery } from 'database/querying';
 
 type AccountProp = {
   accountLogo: string;
@@ -50,7 +50,9 @@ function AccountSelect({
       return false;
     }
     try {
-      const account = await queryAccountById(getValues(name), ['accountLogo, accountName']);
+      const account = await accountLocalQuery.getAccountById(getValues(name), [
+        'accountLogo, accountName',
+      ]);
 
       if (isEmpty(account)) {
         resetAccountState();

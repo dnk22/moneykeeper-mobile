@@ -8,7 +8,7 @@ import { AccountContext } from './context';
 import Header from './components/Header';
 import AddButton from './components/AddButton';
 import { useCustomTheme } from 'resources/theme';
-import { queryAccounts } from 'database/querying';
+import { accountLocalQuery } from 'database/querying';
 import { showToast } from 'utils/system';
 import { useFocusEffect } from '@react-navigation/native';
 import { accountDashboardStyles as styles } from './styles';
@@ -33,7 +33,8 @@ function Accounts() {
   };
 
   const fetchAccounts = () => {
-    queryAccounts()
+    accountLocalQuery
+      .getAccounts()
       .then((data) => {
         setAccountData(data);
       })
