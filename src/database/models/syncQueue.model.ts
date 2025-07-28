@@ -9,7 +9,7 @@ export enum SyncQueueAction {
 }
 
 export type TSyncQueue = {
-  recordId: string;
+  recordId?: string;
   tableName: string;
   payload?: any;
   action?: SyncQueueAction;

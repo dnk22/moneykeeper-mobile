@@ -45,20 +45,15 @@ export class AppSettings {
     path?: string;
     newSettings: Partial<TSettings>;
   }): Promise<Error | void> {
-    try {
-      if (path) {
-        const currentSettings = await this.getSettingStatus(path);
-        await databaseService.set(`${FB_PATH.SETTINGS}/${path}`, currentSettings);
-        return;
-      }
-      const currentSettings = await this.getSettingStatus();
+    if (path) {
+      const currentSettings = await this.getSettingStatus(path);
       const updatedSettings = { ...currentSettings, ...newSettings };
-      await databaseService.set(FB_PATH.SETTINGS, updatedSettings);
-    } catch (error) {
-      return Error(
-        `Failed to update settings: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      );
+      await databaseService.update(`${FB_PATH.SETTINGS}/${path}`, { ...updatedSettings });
+      return;
     }
+    const currentSettings = await this.getSettingStatus();
+    const updatedSettings = { ...currentSettings, ...newSettings };
+    await databaseService.update(FB_PATH.SETTINGS, updatedSettings);
   }
 }
 

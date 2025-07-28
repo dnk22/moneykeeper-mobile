@@ -1,56 +1,27 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import PagerView from 'react-native-pager-view';
-import { TAccount } from 'database/types';
 import AccountList from './components/AccountList';
 import ItemSettingsModal from './components/ItemSettingsModal';
 import { AccountContext } from './context';
 import Header from './components/Header';
 import AddButton from './components/AddButton';
-import { useCustomTheme } from 'resources/theme';
-import { accountLocalQuery } from 'database/querying';
-import { showToast } from 'utils/system';
-import { useFocusEffect } from '@react-navigation/native';
+import useHook from './useHook';
 import { accountDashboardStyles as styles } from './styles';
 
 function Accounts() {
-  const { colors } = useCustomTheme();
-  const currentAccountPressed = useRef<TAccount | any>(null);
-  const [isShowModal, setShowModal] = useState(false);
-  const [pageIndex, setPageIndex] = useState(0);
-  const [accountData, setAccountData] = useState<TAccount[]>([]);
-  const pagerViewRef = useRef<PagerView>(null);
-
-  const onActionPress = (account?: TAccount) => {
-    currentAccountPressed.current = account;
-    setShowModal(!isShowModal);
-  };
-
-  const onChangePageIndex = (index: number) => {
-    if (pagerViewRef.current) {
-      pagerViewRef.current.setPage(index);
-    }
-  };
-
-  const fetchAccounts = () => {
-    accountLocalQuery
-      .getAccounts()
-      .then((data) => {
-        setAccountData(data);
-      })
-      .catch(() => {
-        showToast({
-          type: 'error',
-          text2: 'Không thể tải danh sách tài khoản',
-        });
-      });
-  };
-
-  useFocusEffect(
-    useCallback(() => {
-      fetchAccounts();
-    }, []),
-  );
+  const {
+    isShowModal,
+    fetchAccounts,
+    currentAccountPressed,
+    pagerViewRef,
+    colors,
+    pageIndex,
+    accountData,
+    onChangePageIndex,
+    onActionPress,
+    setPageIndex,
+  } = useHook();
 
   return (
     <AccountContext.Provider

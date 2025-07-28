@@ -11,6 +11,10 @@ import SvgIcon from 'components/SvgIcon';
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import { updateAccountViewSettings } from 'store/app/app.slice';
 import { useAppDispatch, useAppSelector } from 'store/index';
+import { appSettingsFb } from 'services/firebase/db/appSettings';
+import { FB_PATH } from 'services/firebase/config';
+import { syncQueueLocalQuery } from 'database/querying';
+import { SyncQueueAction } from 'database/models/syncQueue.model';
 import styles from './styles';
 
 function Toolbar() {
@@ -23,12 +27,28 @@ function Toolbar() {
     setIsShowModal(!isShowModal);
   };
 
-  const onGroupChange = (value: boolean) => {
-    useDispatch(updateAccountViewSettings({ groupByType: value }));
+  const updateSettings = async (value: { [key: string]: boolean }) => {
+    useDispatch(updateAccountViewSettings(value));
+    await appSettingsFb
+      .updateSettings({
+        path: FB_PATH.SETTINGS_CHILD.ACCOUNTS,
+        newSettings: value,
+      })
+      .catch(async (error) => {
+        await syncQueueLocalQuery.updateSyncQueueItem({
+          tableName: `${FB_PATH.SETTINGS}/${FB_PATH.SETTINGS_CHILD.ACCOUNTS}`,
+          payload: value,
+          action: SyncQueueAction.UPDATE,
+        });
+      });
   };
 
-  const onSortChange = (value: boolean) => {
-    useDispatch(updateAccountViewSettings({ sortByName: value }));
+  const onGroupChange = (value: boolean) => {
+    updateSettings({ groupByType: value });
+  };
+
+  const onSortChange = async (value: boolean) => {
+    await updateSettings({ sortByName: value });
     onToggleModal();
   };
 

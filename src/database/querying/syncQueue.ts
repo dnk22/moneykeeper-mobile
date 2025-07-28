@@ -28,9 +28,11 @@ export class SyncQueueLocalDataSource {
     };
     return await database.write(async () => {
       // Tìm mục sync queue dựa trên recordId và tableName
-      const itemsToUpdate = await this.syncQueueCollection
-        .query(Q.where('recordId', itemData.recordId), Q.where('tableName', itemData.tableName))
-        .fetch();
+      const query = [Q.where('tableName', itemData.tableName)];
+      if (itemData.recordId) {
+        query.push(Q.where('recordId', itemData.recordId));
+      }
+      const itemsToUpdate = await this.syncQueueCollection.query(query).fetch();
 
       // Có thì update, không thì tạo mới
       if (itemsToUpdate.length > 0) {

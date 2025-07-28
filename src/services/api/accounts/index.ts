@@ -81,7 +81,7 @@ export async function requestUpdateAccount(account: TAccount): Promise<void> {
 /**
  * Hàm xử lý xóa tài khoản và các giao dịch liên quan
  * @param accountId - ID của tài khoản cần xóa
- * 
+ *
  * Luồng xử lý:
  * 1. Xóa tài khoản trong local DB
  * 2. Xóa tất cả giao dịch liên quan đến tài khoản
@@ -152,6 +152,31 @@ export async function requestDeleteAccount(accountId: string) {
  * @param id - ID của tài khoản cần thay đổi trạng thái
  * @returns Promise trả về kết quả sau khi thay đổi trạng thái tài khoản trong local DB
  */
-export async function changeAccountStatusById(id: string) {
-  return await accountLocalQuery.changeAccountStatusById(id);
+export async function changeAccountStatusById(account: TAccount) {
+  const updatedAccount = {
+    ...account,
+    isActive: !account.isActive,
+  };
+  if (!updatedAccount?.id) {
+    return;
+  }
+  try {
+    await accountLocalQuery.changeAccountStatusById(updatedAccount.id);
+    await accountsFb
+      .updateAccount({
+        account: updatedAccount,
+      })
+      .catch(async (error) => {
+        if (updatedAccount?.id) {
+          await syncQueueLocalQuery.updateSyncQueueItem({
+            recordId: updatedAccount.id,
+            tableName: TRANSACTIONS,
+            payload: updatedAccount,
+            action: SyncQueueAction.UPDATE,
+          });
+        }
+      });
+  } catch (error) {
+    throw error;
+  }
 }

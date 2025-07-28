@@ -7,8 +7,6 @@ import RNText from 'components/Text';
 import { ROUTES } from 'navigation/constants/routes';
 import { changeAccountStatusById, requestDeleteAccount } from 'services/api/accounts';
 import { TRANSACTION_TYPE } from 'utils/constants';
-import { useAppDispatch } from 'store/index';
-import { removeAccountStatement } from 'store/account/account.slice';
 import { showToast } from 'utils/system';
 import { TAccount } from 'database/types';
 import styles from './styles';
@@ -32,13 +30,11 @@ function ItemSettingsModal({
 }) {
   const navigation = useNavigation<any>();
   const isDisabledAction = !currentAccount?.isActive;
-  const dispatch = useAppDispatch();
 
   const onOk = () => {
     if (currentAccount.id) {
       requestDeleteAccount(currentAccount.id)
         .then(() => {
-          dispatch(removeAccountStatement(currentAccount.id));
           onToggleModal();
           onRefresh();
           showToast({
@@ -49,7 +45,7 @@ function ItemSettingsModal({
         .catch(({ error }) => {
           showToast({
             type: 'error',
-            text2: error,
+            text2: 'Vui lòng thử lại',
           });
         });
     }
@@ -90,7 +86,14 @@ function ItemSettingsModal({
         break;
       default:
         if (currentAccount?.id) {
-          changeAccountStatusById(currentAccount.id).then(() => onRefresh());
+          changeAccountStatusById(currentAccount)
+            .then(() => onRefresh())
+            .catch((error) => {
+              showToast({
+                type: 'error',
+                text2: 'Vui lòng thử lại',
+              });
+            });
         }
         break;
     }

@@ -56,6 +56,7 @@ export type TSettings = {
     fastViewByMost?: boolean;
   };
 };
+
 export type TonBoardingConfig = {
   appearance: Pick<TSettings['appearance'], 'auto' | 'darkMode'>;
   report: TSettings['report'];
