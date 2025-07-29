@@ -69,13 +69,13 @@ function Toolbar() {
             <RNText style={styles.groupHeader} preset="textXSmall">
               Sắp xếp theo
             </RNText>
-            <TouchableHighlightComponent onPress={() => onSortChange(true)}>
+            <TouchableHighlightComponent disabled={groupByType} onPress={() => onSortChange(true)}>
               <View style={styles.groupContent}>
                 <RNText preset="textMedium">Tên tài khoản</RNText>
                 {sortByName && <CheckboxComponent type="radio" check />}
               </View>
             </TouchableHighlightComponent>
-            <TouchableHighlightComponent onPress={() => onSortChange(false)}>
+            <TouchableHighlightComponent disabled={groupByType} onPress={() => onSortChange(false)}>
               <View style={styles.groupContent}>
                 <RNText preset="textMedium">Tự chọn</RNText>
                 {!sortByName && <CheckboxComponent type="radio" check />}

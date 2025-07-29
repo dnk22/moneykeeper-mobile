@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useFormContext } from 'react-hook-form';
-import Contact from 'features/Contact';
+import Contact from 'features/common/Contact';
 import InputSelection from 'components/InputSelection';
 import BottomSheet from 'components/BottomSheetModal';
 

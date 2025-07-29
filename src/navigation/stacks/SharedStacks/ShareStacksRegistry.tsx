@@ -4,9 +4,9 @@ import { ScreenRegistry } from './registry';
 
 // Import screens
 import AddAccount from 'features/account/AddAccount';
-import TransactionHistoryNormal from 'features/TransactionHistory/NormalAccount';
-import TransactionHistoryCreditCard from 'features/TransactionHistory/CreditCardAccount';
-import AddTransactions from 'features/AddTransaction';
+import TransactionHistoryNormal from 'features/transaction/TransactionHistory/NormalAccount';
+import TransactionHistoryCreditCard from 'features/transaction/TransactionHistory/CreditCardAccount';
+import AddTransactions from 'features/transaction/AddTransaction';
 import ExpenseIncome from 'features/Report/ExpenseIncome';
 import FinancialStatement from 'features/Report/FinancialStatement';
 import DebtLoanReport from 'features/Report/DebtLoan';

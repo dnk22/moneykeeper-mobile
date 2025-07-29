@@ -5,7 +5,7 @@ import { ROUTES } from 'navigation/constants/routes';
 
 // import route component
 import Dashboard from 'features/Dashboard';
-import Notification from 'features/Notification';
+import Notification from 'features/common/Notifications';
 import SharedScreens from './SharedStacks';
 
 //set up routes

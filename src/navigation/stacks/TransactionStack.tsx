@@ -3,7 +3,7 @@ import { TransactionParamList } from 'navigation/types';
 import { ROUTES } from 'navigation/constants/routes';
 
 // import route component
-import AddTransactions from 'features/AddTransaction';
+import AddTransactions from 'features/transaction/AddTransaction';
 import { useCustomTheme } from 'resources/theme';
 
 //set up routes
