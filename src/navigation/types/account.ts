@@ -12,6 +12,11 @@ export type AccountStackParamList = SharedStackParamsList & {
   };
 };
 
+// export type AccountParamListProps<T extends keyof AccountStackParamList> = {
+//   navigation: NativeStackScreenProps<AccountStackParamList, T>['navigation'];
+//   route: NativeStackScreenProps<AccountStackParamList, T>['route'];
+// };
+
 export type AccountStackNavigationProps = NativeStackScreenProps<
   AccountStackParamList,
   keyof AccountStackParamList

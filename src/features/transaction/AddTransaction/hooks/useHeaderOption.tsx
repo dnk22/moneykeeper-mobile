@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { TransactionParamListProps } from 'navigation/types';
-import SelectTransactionType from '../common/SelectTransactionType';
+import SelectTransactionType from '../components/SelectTransactionType';
 import { TTransactionType } from 'utils/types/request.type';
 import { transactionCategoryProps } from 'store/transactionCategory/transactionCategory.slice';
 import { ROUTES } from 'navigation/constants/routes';

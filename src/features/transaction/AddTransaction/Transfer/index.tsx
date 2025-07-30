@@ -9,11 +9,11 @@ import { deleteTransactionById, updateTransactionTransfer } from 'services/api/t
 import { showToast } from 'utils/system';
 import { TransactionParamListProps } from 'navigation/types';
 import { ROUTES } from 'navigation/constants/routes';
-import MoreDetail from '../common/MoreDetail';
-import AccountSelect from '../common/AccountSelect';
-import Fee from '../common/Fee';
-import DateTimeSelect from '../common/DateTimeSelect';
-import InputCalculator from '../common/InputCalculator';
+import MoreDetail from '../components/MoreDetail';
+import AccountSelect from '../components/AccountSelect';
+import Fee from '../components/Fee';
+import DateTimeSelect from '../components/DateTimeSelect';
+import InputCalculator from '../components/InputCalculator';
 import { defaultValues } from '../constant';
 import { AddTransactionType } from '../type';
 import styles from '../styles';
