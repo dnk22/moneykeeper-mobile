@@ -1,5 +1,5 @@
 import React from 'react';
-import { Keyboard, View } from 'react-native';
+import { View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useRoute } from '@react-navigation/native';
 import { useCustomTheme } from 'resources/theme';
@@ -42,6 +42,7 @@ function AddAccount() {
             text={isCreditCard ? 'Hạn mức thẻ' : 'Số dư ban đầu'}
             name="initialAmount"
             inputTextColor="#007FFF"
+            autoFocus
           />
           <View style={[styles.group, { backgroundColor: colors.surface }]}>
             <View style={styles.itemGroup}>
@@ -49,7 +50,6 @@ function AddAccount() {
               <View style={styles.groupContent}>
                 <InputField
                   name="accountName"
-                  control={methods.control}
                   placeholder="Tên tài khoản"
                   style={styles.formInput}
                   rules={{ required: true }}
@@ -62,7 +62,6 @@ function AddAccount() {
               <View style={styles.groupContent}>
                 <InputField
                   name="descriptions"
-                  control={methods.control}
                   placeholder="Ghi chú"
                   style={styles.formInput}
                   maxLength={50}
@@ -80,7 +79,7 @@ function AddAccount() {
           <View style={[styles.group, { backgroundColor: colors.surface }]}>
             <View style={[styles.itemGroup, styles.itemGroupBetween]}>
               <RNText preset="title">Không tính vào báo cáo</RNText>
-              <SwitchField name="excludeReport" control={methods.control} />
+              <SwitchField name="excludeReport" />
             </View>
             <RNText fontSize={12} style={styles.subText}>
               Ghi chép này sẽ không thống kê vào các báo cáo.

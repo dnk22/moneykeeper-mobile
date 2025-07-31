@@ -1,17 +1,7 @@
-import { useCallback, useEffect } from 'react';
+import { memo } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
-import { TTransactions, TTransactionsCategory } from 'database/types';
-import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
-import { ROUTES } from 'navigation/constants/routes';
-import { TransactionParamListProps } from 'navigation/types';
-import HeaderIcon from 'navigation/components/HeaderIcon';
 import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constants';
-import { deleteTransactionById, updateTransaction } from 'services/api/transactions';
-import { useFormContext } from 'react-hook-form';
-import { showToast } from 'utils/system';
-import { useAppSelector } from 'store/index';
-import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';
 import CategorySelect from '../components/CategorySelect';
 import DateTimeSelect from '../components/DateTimeSelect';
 import MoreDetail from '../components/MoreDetail';
@@ -19,7 +9,6 @@ import AccountSelect from '../components/AccountSelect';
 import RelatedPersonSelect from '../components/RelatedPersonSelect';
 import Fee from '../components/Fee';
 import { AddTransactionType } from '../type';
-import { defaultValues } from '../constant';
 import InputField from 'components/InputField';
 import SvgIcon from 'components/SvgIcon';
 import SwitchField from 'components/Switch/SwitchField';
@@ -27,139 +16,38 @@ import FormAction from 'components/common/FormAction';
 import RNText from 'components/Text';
 import styles from '../styles';
 import InputCalculator from 'components/InputCalculator';
+import isEqual from 'react-fast-compare';
+import useExpenseIncomeHook from '../hooks/useExpenseIncomeLogic';
 
 function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
   const { colors } = useCustomTheme();
-  const navigation =
-    useNavigation<TransactionParamListProps<typeof ROUTES.ADD_TRANSACTION>['navigation']>();
-  const { name: routerName } =
-    useRoute<TransactionParamListProps<typeof ROUTES.ADD_TRANSACTION>['route']>();
-  const lendBorrowData = useAppSelector((state) => selectLendBorrowData(state));
-  const { control, handleSubmit, setValue, getValues, watch, reset } = useFormContext<any>();
 
-  // Use `setOptions` to update the button that submit form
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => <HeaderIcon onPress={handleSubmit(onSubmit)} />,
-    });
-    return () => {
-      navigation.setOptions({
-        headerRight: () => undefined,
-      });
-    };
-  }, []);
+  const {
+    categoryId,
+    lendBorrowData,
+    recordAt,
+    isLendBorrowType,
+    inputAmountColor,
+    transactionType,
+    handleOnCategorySelect,
+    handleOnDateTimePicker,
+    onFeeRemove,
+    onDeleteTransaction,
+    handleSubmit,
+    onSubmit,
+  } = useExpenseIncomeHook({
+    onSubmitSuccess,
+    params,
+  });
 
-  useFocusEffect(
-    useCallback(() => {
-      if (routerName === ROUTES.CREATE_TRANSACTION_FROM_ACCOUNT && !params?.transactionId) {
-        setValue('dateTimeAt', new Date());
-      }
-    }, [routerName, params?.transactionId]),
-  );
-
-  useEffect(() => {
-    const noteText = getValues('descriptions') ? getValues('descriptions').split(':') : [''];
-    if (
-      (!getValues('descriptions') && getValues('relatedPerson')) ||
-      Object.values(lendBorrowData).includes(noteText[0].trim())
-    ) {
-      setValue(
-        'descriptions',
-        `${lendBorrowData[getValues('categoryId')]} : ${getValues('relatedPerson')}`,
-      );
-    }
-  }, [getValues('categoryId'), getValues('relatedPerson')]);
-
-  /** start account function */
-  const renderIfLendBorrow = () => {
-    return Boolean(lendBorrowData && Object.keys(lendBorrowData).includes(getValues('categoryId')));
-  };
-
-  const handleOnDateTimePicker = (date: Date) => {
-    setValue('dateTimeAt', date);
-  };
-
-  const onDeleteTransaction = () => {
-    if (params?.transactionId) {
-      deleteTransactionById(params.transactionId)
-        .then(() => navigation.goBack())
-        .catch((err) =>
-          showToast({
-            type: 'error',
-            text2: err,
-          }),
-        );
-    }
-  };
-
-  const handleOnCategoryPress = (item?: TTransactionsCategory) => {
-    const { transactionType } = getValues();
-    let screenTarget = ROUTES.EXPENSE_CATEGORY;
-    if (Object.values(TRANSACTION_LEND_BORROW_NAME).includes(item?.categoryName)) {
-      screenTarget = ROUTES.LEND_BORROW;
-    } else {
-      const mapScreen: any = {
-        [TRANSACTION_TYPE.EXPENSE]: ROUTES.EXPENSE_CATEGORY,
-        [TRANSACTION_TYPE.INCOME]: ROUTES.INCOME_CATEGORY,
-      };
-      screenTarget = mapScreen[transactionType];
-    }
-    navigation.navigate(ROUTES.TRANSACTION_CATEGORY, {
-      screen: ROUTES.TRANSACTION_CATEGORY_LIST,
-      params: {
-        screen: screenTarget,
-        params: {
-          idActive: getValues('categoryId'),
-          returnScreen: routerName,
-        },
-        initial: false,
-      },
-    });
-  };
-
-  const getInputCalculatorColor = () => {
-    return getValues('transactionType') === TRANSACTION_TYPE.INCOME ? 'green' : 'red';
-  };
-
-  const onSubmit = (data: TTransactions) => {
-    const requestData = {
-      ...data,
-      excludeReport: +data?.excludeReport,
-      amount:
-        data.transactionType === TRANSACTION_TYPE.INCOME
-          ? Math.abs(+data.amount)
-          : -Math.abs(+data.amount),
-    };
-    updateTransaction({
-      id: params?.transactionId,
-      data: requestData,
-    })
-      .then(({ success }) => {
-        if (!success) {
-          return;
-        }
-        onSubmitSuccess();
-        // reset form state
-        reset({
-          ...defaultValues,
-          accountId: data?.accountId,
-          transactionType: data?.transactionType,
-        });
-      })
-      .catch(({ error }) => {
-        showToast({
-          type: 'error',
-          text2: error,
-        });
-      });
-  };
+  const isExpenseType = transactionType === TRANSACTION_TYPE.EXPENSE;
 
   return (
     <>
-      <InputCalculator name="amount" inputTextColor={getInputCalculatorColor()} />
+      <InputCalculator name="amount" inputTextColor={'green'} autoFocus />
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
-        <CategorySelect onPress={handleOnCategoryPress} />
-        {renderIfLendBorrow() && watch('categoryId') && (
+        <CategorySelect onPress={handleOnCategorySelect} />
+        {isLendBorrowType && categoryId && (
           <RelatedPersonSelect
             required
             fieldName="relatedPerson"
@@ -167,7 +55,7 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
               [
                 TRANSACTION_LEND_BORROW_NAME.BORROW,
                 TRANSACTION_LEND_BORROW_NAME.REPAYMENT,
-              ].includes(lendBorrowData[getValues('categoryId')])
+              ].includes(lendBorrowData[categoryId])
                 ? 'Người cho vay'
                 : 'Người vay'
             }
@@ -178,36 +66,28 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
           <View style={styles.groupContent}>
             <InputField
               name="descriptions"
-              control={control}
               placeholder="Chi tiết"
               style={styles.formInput}
               maxLength={50}
             />
           </View>
         </View>
-        <DateTimeSelect values={watch('dateTimeAt')} onChangeDate={handleOnDateTimePicker} />
+        <DateTimeSelect values={recordAt} onChangeDate={handleOnDateTimePicker} />
         <AccountSelect />
       </View>
       <MoreDetail>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
-          {!renderIfLendBorrow() && (
+          {!isLendBorrowType && (
             <>
               <RelatedPersonSelect
-                fieldName={
-                  getValues('transactionType') === TRANSACTION_TYPE.EXPENSE ? 'giver' : 'payee'
-                }
-                title={
-                  getValues('transactionType') === TRANSACTION_TYPE.EXPENSE
-                    ? 'Chi cho ai'
-                    : 'Nhận từ ai'
-                }
+                fieldName={isExpenseType ? 'giver' : 'payee'}
+                title={isExpenseType ? 'Chi cho ai' : 'Nhận từ ai'}
               />
               <View style={styles.itemGroup}>
                 <SvgIcon name="camp" color={styles.iconShadow.color} />
                 <View style={styles.groupContent}>
                   <InputField
                     name="eventName"
-                    control={control}
                     placeholder="Sự kiện"
                     style={styles.formInput}
                     maxLength={50}
@@ -221,7 +101,6 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
             <View style={styles.groupContent}>
               <InputField
                 name="location"
-                control={control}
                 placeholder="Địa điểm"
                 style={[styles.formInput, { width: '90%' }]}
                 maxLength={50}
@@ -230,13 +109,13 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
             </View>
           </View>
         </View>
-        <Fee onClose={() => setValue('fee', 0)}>
+        <Fee onClose={onFeeRemove}>
           <InputCalculator name="fee" />
         </Fee>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={[styles.itemGroup, styles.itemGroupBetween]}>
             <RNText>Không tính vào báo cáo</RNText>
-            <SwitchField name="excludeReport" control={control} />
+            <SwitchField name="excludeReport" />
           </View>
           <RNText preset="subTitle">Ghi chép này sẽ không thống kê vào các báo cáo.</RNText>
         </View>
@@ -251,4 +130,4 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
   );
 }
 
-export default ExpenseAndIncome;
+export default memo(ExpenseAndIncome, isEqual);

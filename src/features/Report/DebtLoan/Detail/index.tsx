@@ -98,8 +98,8 @@ export default function DebtLoanDetail({
       queryGetDebtLoanDetailByPerson({ relatedPerson: personName, type })
         .then((res) => {
           const formatData: any = res.reduce((result, item) => {
-            // Extracting date from the dateTimeAt property
-            const date = new Date(item.dateTimeAt).toDateString();
+            // Extracting date from the recordAt property
+            const date = new Date(item.recordAt).toDateString();
             // Adding the item to the corresponding date group
             if (!result[date]) {
               result[date] = { date: date, data: [] };
@@ -175,7 +175,7 @@ export default function DebtLoanDetail({
             <RNText style={styles.value} fontSize={13}>
               {!!data?.original &&
                 formatDateLocal(
-                  data?.original[data?.original.length - 1]?.dateTimeAt,
+                  data?.original[data?.original.length - 1]?.recordAt,
                   'dd/MM/yyyy HH:mm',
                 )}
             </RNText>
@@ -193,7 +193,7 @@ export default function DebtLoanDetail({
             <View style={[styles.row, styles.itemDate]}>
               <RNText style={styles.value} fontSize={13}>
                 {!!data?.original &&
-                  formatDateLocal(data?.original[0]?.dateTimeAt, 'dd/MM/yyyy HH:mm')}
+                  formatDateLocal(data?.original[0]?.recordAt, 'dd/MM/yyyy HH:mm')}
               </RNText>
               <RNText style={styles.title}>-</RNText>
               <RNText style={styles.value} fontSize={13}>

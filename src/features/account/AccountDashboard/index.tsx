@@ -12,12 +12,12 @@ import { accountDashboardStyles as styles } from './styles';
 function Accounts() {
   const {
     isShowModal,
-    fetchAccounts,
     currentAccountPressed,
     pagerViewRef,
     colors,
     pageIndex,
     accountData,
+    fetchAccounts,
     onChangePageIndex,
     onActionPress,
     setPageIndex,

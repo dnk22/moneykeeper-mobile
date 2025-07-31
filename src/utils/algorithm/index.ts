@@ -135,7 +135,7 @@ export function groupTransactionsByDay(data: TTransactions[]): GroupedTransactio
   const groupedData: GroupedTransactionProps[] = [];
 
   data.forEach((item) => {
-    const date = new Date(item.dateTimeAt);
+    const date = new Date(item.recordAt);
     const day = date.toISOString().split('T')[0];
 
     // Find the index of the existing date in the result array

@@ -12,7 +12,7 @@ export default class TransactionModel extends Model {
   @text('descriptions') descriptions!: string;
   @field('accountId') accountId!: string;
   @field('toAccountId') toAccountId!: string;
-  @date('dateTimeAt') dateTimeAt!: Date;
+  @date('recordAt') recordAt!: Date;
   @field('location') location!: string;
   @text('eventName') eventName!: string;
   @field('closingAmount') closingAmount!: number;

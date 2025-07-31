@@ -4,7 +4,7 @@ import { TAccount } from 'database/types';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
 import { AccountModel } from 'database/models';
 import { groupAccountDataByValue } from 'utils/algorithm';
-import { accountLocalQuery, TGetAllAccounts } from 'database/querying';
+import { accountLocalQuery, TGetAllAccountsOptions } from 'database/querying';
 import { BottomSheetSectionList, BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { useCustomTheme } from 'resources/theme';
 import Item from './Item';
@@ -28,7 +28,7 @@ function AccountList({ isItemSelected, onItemPress, excludeId }: AccountListProp
     getListAccount({ text: '', excludeId });
   }, [excludeId]);
 
-  const getListAccount = ({ text = '', excludeId }: TGetAllAccounts) => {
+  const getListAccount = ({ text = '', excludeId }: TGetAllAccountsOptions) => {
     accountLocalQuery.getAccounts({ text, excludeId }).then((res) => {
       const dataGroup: any[] = groupAccountDataByValue(res);
       setAccounts(dataGroup);

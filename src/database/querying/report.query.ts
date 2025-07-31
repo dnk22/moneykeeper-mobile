@@ -121,7 +121,7 @@ export const queryGetPaymentDueCreditCardByAccountId = async ({
               ELSE 0 
           END) AS totalExpense 
       FROM ${TRANSACTIONS}
-      WHERE (accountId='${accountId}' OR toAccountId='${accountId}') AND dateTimeAt BETWEEN ${startOfDay} AND ${endOfDay}
+      WHERE (accountId='${accountId}' OR toAccountId='${accountId}') AND recordAt BETWEEN ${startOfDay} AND ${endOfDay}
           AND _status!='deleted' 
           AND excludeReport=0`,
         ),
@@ -216,7 +216,7 @@ export const getExpenseIncomeInRangeDate = async (rangeDate: string) => {
           `SELECT SUM(CASE WHEN amount > 0 THEN amount ELSE 0 END) AS income,
           SUM(CASE WHEN amount < 0 THEN -amount ELSE 0 END) AS expense
           FROM ${TRANSACTIONS}
-          WHERE _status!='deleted' AND transactionType != ${TRANSACTION_TYPE.TRANSFER} AND dateTimeAt BETWEEN ${startDate} AND ${endDate}`,
+          WHERE _status!='deleted' AND transactionType != ${TRANSACTION_TYPE.TRANSFER} AND recordAt BETWEEN ${startDate} AND ${endDate}`,
         ),
       )
       .unsafeFetchRaw();
@@ -238,7 +238,7 @@ export const getExpenseIncomeInRangeDate = async (rangeDate: string) => {
           WHERE
               t._status!='deleted' 
               AND t.transactionType != ${TRANSACTION_TYPE.TRANSFER} AND t.transactionType != ${TRANSACTION_TYPE.INCOME}
-              AND t.dateTimeAt BETWEEN ${startDate} AND ${endDate}
+              AND t.recordAt BETWEEN ${startDate} AND ${endDate}
           GROUP BY
             COALESCE(tc.parentId, t.categoryId) 
           ORDER BY expense DESC`,
@@ -345,7 +345,7 @@ export const queryGetDebtLoanDetailByPerson = async ({
       .get<TransactionModel>(TRANSACTIONS)
       .query(
         Q.unsafeSqlQuery(
-          `SELECT trans.id, bal._id, transC.categoryType, transC.categoryName, transC.icon, trans.descriptions, trans.amount, trans.dateTimeAt, acc.accountLogo, acc.accountName FROM ${TRANSACTIONS} trans
+          `SELECT trans.id, bal._id, transC.categoryType, transC.categoryName, transC.icon, trans.descriptions, trans.amount, trans.recordAt, acc.accountLogo, acc.accountName FROM ${TRANSACTIONS} trans
           LEFT JOIN ${TRANSACTION_CATEGORY} transC ON transC.id = trans.categoryId
           LEFT JOIN ${ACCOUNTS} acc ON acc.id = trans.accountId
           LEFT JOIN ${BALANCE} bal ON bal.transactionId = trans.id
@@ -388,7 +388,7 @@ export const queryGetExpenseIncomeReportByCurrentDate = async ({
           END) AS totalExpense
         FROM ${TRANSACTIONS} trans
         LEFT JOIN ${TRANSACTION_CATEGORY} transC ON transC.id = trans.categoryId
-        WHERE trans._status!='deleted' ${debtLoanQuery} AND trans.excludeReport=0 AND trans.dateTimeAt BETWEEN ${startOfDate} AND ${endOfDate}`,
+        WHERE trans._status!='deleted' ${debtLoanQuery} AND trans.excludeReport=0 AND trans.recordAt BETWEEN ${startOfDate} AND ${endOfDate}`,
         ),
       )
       .unsafeFetchRaw();
@@ -412,7 +412,7 @@ export const queryGetExpenseIncomeReportGroupByDate = async ({
   endDate: Date;
 }): Promise<TQueryGetExpenseIncomeReportGroupByDate[]> => {
   let groupByType = '';
-  let selectDateQuery = `strftime('%Y-%m', datetime(dateTimeAt/1000, 'unixepoch'))  AS date`;
+  let selectDateQuery = `strftime('%Y-%m', datetime(recordAt/1000, 'unixepoch'))  AS date`;
   // Convert start and end dates to UTC timestamps
   const startOfDate = new Date(startDate).setUTCHours(0, 0, 0, 0);
   const endOfDate = new Date(endDate).setUTCHours(23, 59, 59, 999);
@@ -424,23 +424,23 @@ export const queryGetExpenseIncomeReportGroupByDate = async ({
 
   switch (type) {
     case VIEW_EXPENSE_INCOME_REPORT_BY.MONTH:
-      groupByType = `GROUP BY strftime('%Y-%m', datetime(dateTimeAt/1000, 'unixepoch')) 
-          ORDER BY strftime('%Y-%m', datetime(dateTimeAt/1000, 'unixepoch')) DESC;`;
+      groupByType = `GROUP BY strftime('%Y-%m', datetime(recordAt/1000, 'unixepoch')) 
+          ORDER BY strftime('%Y-%m', datetime(recordAt/1000, 'unixepoch')) DESC;`;
       break;
     case VIEW_EXPENSE_INCOME_REPORT_BY.QUARTER:
-      selectDateQuery = `strftime('%Y', datetime(dateTimeAt/1000, 'unixepoch')) || '-' ||
+      selectDateQuery = `strftime('%Y', datetime(recordAt/1000, 'unixepoch')) || '-' ||
           CASE 
-              WHEN strftime('%m', datetime(dateTimeAt/1000, 'unixepoch')) BETWEEN '01' AND '03' THEN '1' 
-              WHEN strftime('%m', datetime(dateTimeAt/1000, 'unixepoch')) BETWEEN '04' AND '06' THEN '4' 
-              WHEN strftime('%m', datetime(dateTimeAt/1000, 'unixepoch')) BETWEEN '07' AND '09' THEN '7' 
+              WHEN strftime('%m', datetime(recordAt/1000, 'unixepoch')) BETWEEN '01' AND '03' THEN '1' 
+              WHEN strftime('%m', datetime(recordAt/1000, 'unixepoch')) BETWEEN '04' AND '06' THEN '4' 
+              WHEN strftime('%m', datetime(recordAt/1000, 'unixepoch')) BETWEEN '07' AND '09' THEN '7' 
               ELSE '10'
           END AS date`;
       groupByType = `GROUP BY date
           ORDER BY date DESC`;
       break;
     case VIEW_EXPENSE_INCOME_REPORT_BY.YEAR:
-      groupByType = `GROUP BY strftime('%Y', datetime(dateTimeAt/1000, 'unixepoch')) 
-          ORDER BY strftime('%Y', datetime(dateTimeAt/1000, 'unixepoch')) DESC;`;
+      groupByType = `GROUP BY strftime('%Y', datetime(recordAt/1000, 'unixepoch')) 
+          ORDER BY strftime('%Y', datetime(recordAt/1000, 'unixepoch')) DESC;`;
       break;
     default:
       break;
@@ -463,7 +463,7 @@ export const queryGetExpenseIncomeReportGroupByDate = async ({
           ${selectDateQuery}
         FROM ${TRANSACTIONS} trans
         LEFT JOIN ${TRANSACTION_CATEGORY} transC ON transC.id = trans.categoryId
-        WHERE trans._status!='deleted' ${debtLoanQuery} AND trans.excludeReport=0 AND trans.dateTimeAt BETWEEN ${startOfDate} AND ${endOfDate}
+        WHERE trans._status!='deleted' ${debtLoanQuery} AND trans.excludeReport=0 AND trans.recordAt BETWEEN ${startOfDate} AND ${endOfDate}
         ${groupByType}`,
         ),
       )

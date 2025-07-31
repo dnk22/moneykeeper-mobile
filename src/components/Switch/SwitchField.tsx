@@ -1,19 +1,14 @@
 import React, { memo } from 'react';
 import isEqual from 'react-fast-compare';
-import { useController } from 'react-hook-form';
+import { useController, useFormContext } from 'react-hook-form';
 import { ISwitchFieldProps } from './type';
 import { Switch as RNSwitch } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 
-function SwitchField({
-  name,
-  control,
-  style,
-  ios_backgroundColor,
-  trackColor,
-  ...rest
-}: ISwitchFieldProps) {
+function SwitchField({ name, style, ios_backgroundColor, trackColor, ...rest }: ISwitchFieldProps) {
   const { colors } = useCustomTheme();
+  const { control } = useFormContext<any>();
+
   const {
     field: { value, onChange },
   } = useController({

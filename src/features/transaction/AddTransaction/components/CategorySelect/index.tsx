@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { useFocusEffect } from '@react-navigation/native';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
@@ -15,6 +15,9 @@ type CategorySelectProps = {
 };
 
 function CategorySelect({ onPress, onChange }: CategorySelectProps) {
+  const [categorySelected, setCategorySelected] = useState<TTransactionsCategory | undefined>(
+    undefined,
+  );
   const {
     control,
     getValues,
@@ -22,9 +25,11 @@ function CategorySelect({ onPress, onChange }: CategorySelectProps) {
     setValue,
     formState: { errors },
   } = useFormContext<any>();
-  const [categorySelected, setCategorySelected] = useState<TTransactionsCategory | undefined>(
-    undefined,
-  );
+
+  const categoryId = useWatch({
+    control,
+    name: 'categoryId',
+  });
 
   const fetchCategoryData = debounce(() => {
     if (!getValues('categoryId')) {
@@ -46,34 +51,28 @@ function CategorySelect({ onPress, onChange }: CategorySelectProps) {
     }
   }, 30);
 
-  const handleOnSelectTransactionCategory = () => {
+  const handleOnSelectCategory = () => {
     onPress && onPress(categorySelected);
   };
-
-  useFocusEffect(
-    useCallback(() => {
-      fetchCategoryData();
-    }, [watch('categoryId'), categorySelected]),
-  );
-
-  useEffect(() => {
-    fetchCategoryData();
-  }, [watch('categoryId')]);
 
   useEffect(() => {
     onChange && onChange(categorySelected);
   }, [categorySelected]);
 
+  useFocusEffect(
+    useCallback(() => {
+      fetchCategoryData();
+    }, [categoryId]),
+  );
+
   return (
     <InputSelection
       required
-      name="categoryId"
-      control={control}
-      error={errors.categoryId}
+      fieldName="categoryId"
       icon={categorySelected?.icon}
-      title="Chọn danh mục"
-      value={categorySelected?.categoryName}
-      onSelect={handleOnSelectTransactionCategory}
+      placeholder="Chọn danh mục"
+      displayValue={categorySelected?.categoryName}
+      onSelect={handleOnSelectCategory}
     />
   );
 }

@@ -13,6 +13,7 @@ import AuthNavigator from './stacks/AuthStack';
 import AppContainer from './components/AppContainer';
 import { useAuth } from 'services/auth/AuthProvider';
 import OnboardingNavigator from './stacks/Onboarding';
+
 //set up routes
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 

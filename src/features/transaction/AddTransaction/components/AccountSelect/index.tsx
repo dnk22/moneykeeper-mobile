@@ -65,6 +65,7 @@ function AccountSelect({
     } catch (error) {
       showToast({
         type: 'error',
+        text2: 'Không lấy được thông tin ví',
       });
     }
   };

@@ -6,8 +6,8 @@ import { useCustomTheme } from 'resources/theme';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { TransactionCategoryListParams } from 'navigation/types';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
-import LendAndBorrowTab from 'features/TransactionCategory/LendAndBorrowTab';
-import ExpenseIncomeTab from 'features/TransactionCategory/ExpenseIncomeTab';
+import LendAndBorrowTab from 'features/transaction/TransactionCategory/LendAndBorrowTab';
+import ExpenseIncomeTab from 'features/transaction/TransactionCategory/ExpenseIncomeTab';
 import PressableHaptic from 'components/PressableHaptic';
 import SvgIcon from 'components/SvgIcon';
 import Loading from 'components/Loading';
@@ -22,7 +22,7 @@ const mapTransactionCategoryType = {
   [ROUTES.INCOME_CATEGORY]: TRANSACTION_CATEGORY_TYPE.INCOME,
 };
 
-function TransactionCategoryTaBBar({ navigation, route }: any) {
+function TransactionCategoryTabs({ navigation, route }: any) {
   const { colors } = useCustomTheme();
   const [isUpdate, setIsUpdate] = useState(false);
   const { params } = route;
@@ -112,4 +112,4 @@ function TransactionCategoryTaBBar({ navigation, route }: any) {
   );
 }
 
-export default TransactionCategoryTaBBar;
+export default TransactionCategoryTabs;

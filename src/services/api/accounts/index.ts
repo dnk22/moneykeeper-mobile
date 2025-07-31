@@ -102,7 +102,7 @@ export async function requestDeleteAccount(accountId: string) {
           accountBalanceRecalculation,
           transactionIds,
         }: {
-          accountBalanceRecalculation: { accountId: string; dateTimeAt: number }[];
+          accountBalanceRecalculation: { accountId: string; recordAt: number }[];
           transactionIds: string[];
         }) => {
           transactionIdsToDelete = transactionIds;
@@ -111,10 +111,10 @@ export async function requestDeleteAccount(accountId: string) {
             const accountCalc = accountBalanceRecalculation.filter(
               (item) => item.accountId !== accountId,
             );
-            for await (const { accountId, dateTimeAt } of accountCalc) {
+            for await (const { accountId, recordAt } of accountCalc) {
               await balanceLocalQuery.calculateAllBalanceAfterDate({
                 accountId,
-                date: dateTimeAt,
+                date: recordAt,
               });
             }
           }

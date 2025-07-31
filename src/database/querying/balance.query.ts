@@ -38,7 +38,7 @@ export const queryAddNewBalanceTransaction = async (transaction: TransactionMode
           accountId: transaction.accountId,
           transactionId: transaction.id,
           movementAmount: transaction.amount,
-          dateRecord: transaction.dateTimeAt,
+          dateRecord: transaction.recordAt,
           _id: currentLatestId[0].maxId + 1,
         });
       });
@@ -66,7 +66,7 @@ export const queryUpdateBalanceTransaction = async (transaction: any, accountIdQ
         await currentBalance[0].update((bal) => {
           bal.accountId = transaction.accountId;
           bal.movementAmount = transaction.amount;
-          bal.dateRecord = new Date(transaction.dateTimeAt);
+          bal.dateRecord = new Date(transaction.recordAt);
         });
         return true;
       } else {

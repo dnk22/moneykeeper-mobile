@@ -98,7 +98,7 @@ function Adjustment({ params, onSubmitSuccess }: AddTransactionType) {
   }, [differenceValue]);
 
   const handleOnDateTimePicker = (date: Date) => {
-    setValue('dateTimeAt', date);
+    setValue('recordAt', date);
   };
 
   const onDeleteTransaction = () => {
@@ -170,7 +170,7 @@ function Adjustment({ params, onSubmitSuccess }: AddTransactionType) {
       </View>
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
         <AccountSelect />
-        <DateTimeSelect values={watch('dateTimeAt')} onChangeDate={handleOnDateTimePicker} />
+        <DateTimeSelect values={watch('recordAt')} onChangeDate={handleOnDateTimePicker} />
       </View>
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
         <CategorySelect onPress={handleOnCategoryPress} onChange={onCategoryChange} />

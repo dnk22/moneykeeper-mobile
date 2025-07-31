@@ -1,4 +1,4 @@
-import { SharedStackParamsList } from 'navigation/types';
+import { SharedStackParamsList, SharedStackParamsListProps } from 'navigation/types';
 import { ROUTES } from 'navigation/constants/routes';
 import { ScreenRegistry } from './registry';
 
@@ -12,19 +12,17 @@ import FinancialStatement from 'features/Report/FinancialStatement';
 import DebtLoanReport from 'features/Report/DebtLoan';
 import DebtLoanDetail from 'features/Report/DebtLoan/Detail';
 import BankNavigation from '../BankStack';
+import TransactionCategoryNavigation from '../TransactionCategoryStack';
 
 export const sharedScreenRegistry = new ScreenRegistry<SharedStackParamsList>()
   .register(ROUTES.ADD_ACCOUNT, {
     component: AddAccount,
-    options: ({ route }) => ({
+    options: ({
+      route,
+    }: {
+      route: SharedStackParamsListProps<typeof ROUTES.ADD_ACCOUNT>['route'];
+    }) => ({
       title: route.params?.accountId ? 'Sửa tài khoản' : 'Thêm tài khoản',
-    }),
-  })
-  .register(ROUTES.BANK_NAVIGATION, {
-    component: BankNavigation,
-    options: () => ({
-      headerShown: false,
-      presentation: 'modal',
     }),
   })
   .register(ROUTES.ACCOUNT_NORMAL_DETAIL, {
@@ -67,5 +65,20 @@ export const sharedScreenRegistry = new ScreenRegistry<SharedStackParamsList>()
     component: DebtLoanDetail,
     options: ({ route: { params } }) => ({
       title: params.personName,
+    }),
+  })
+  //modal stack
+  .register(ROUTES.BANK_NAVIGATION, {
+    component: BankNavigation,
+    options: () => ({
+      headerShown: false,
+      presentation: 'modal',
+    }),
+  })
+  .register(ROUTES.TRANSACTION_CATEGORY, {
+    component: TransactionCategoryNavigation,
+    options: () => ({
+      headerShown: false,
+      presentation: 'modal',
     }),
   });

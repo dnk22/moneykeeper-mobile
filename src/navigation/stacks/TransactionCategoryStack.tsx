@@ -2,11 +2,12 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ROUTES } from 'navigation/constants/routes';
 import { HEADER_TITLE_FONT_SIZE } from 'resources/theme/constants';
-import UpdateTransactionCategory from 'features/TransactionCategory/Update';
-import ParentList from 'features/TransactionCategory/ParentList';
-import IconSelect from 'features/TransactionCategory/IconSelect';
+import UpdateTransactionCategory from 'features/transaction/TransactionCategory/Update';
+import ParentList from 'features/transaction/TransactionCategory/ParentList';
+import IconSelect from 'features/transaction/TransactionCategory/IconSelect';
 import { TransactionCategoryParams } from 'navigation/types';
 import TransactionCategoryHeaderRight from 'navigation/components/TransactionCategoryHeaderRight';
+import TransactionCategoryTaBBar from 'navigation/tabs/TransactionCategoryTabs';
 
 //set up routes
 const TransactionCategoryStack = createNativeStackNavigator<TransactionCategoryParams>();
@@ -16,7 +17,7 @@ function TransactionCategoryNavigation() {
     <TransactionCategoryStack.Navigator initialRouteName={ROUTES.TRANSACTION_CATEGORY_LIST}>
       <TransactionCategoryStack.Screen
         name={ROUTES.TRANSACTION_CATEGORY_LIST}
-        component={TransactionCategoryHeaderRight}
+        component={TransactionCategoryTaBBar}
         options={{
           headerTitleStyle: {
             fontSize: HEADER_TITLE_FONT_SIZE,

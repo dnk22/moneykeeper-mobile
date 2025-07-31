@@ -73,10 +73,10 @@ export class TransactionLocalDataSource {
    */
   public async queryUniqueTransactionDates(accountId: string) {
     const query = `SELECT DISTINCT 
-      strftime('%Y-%m-%d', datetime(dateTimeAt/1000, 'unixepoch')) AS date 
+      strftime('%Y-%m-%d', datetime(recordAt/1000, 'unixepoch')) AS date 
       FROM ${TRANSACTIONS}
       WHERE _status != 'deleted' AND ((accountId='${accountId}') OR (toAccountId='${accountId}'))
-      ORDER BY dateTimeAt DESC 
+      ORDER BY recordAt DESC 
     `;
     return await database.read(async () => {
       return await this.transactionsCollection.query(Q.unsafeSqlQuery(query)).unsafeFetchRaw();
@@ -113,10 +113,10 @@ export class TransactionLocalDataSource {
     const endOfDay = new Date(new Date(endDate).setUTCHours(23, 59, 59, 999)).getTime();
     const shouldGetAll = typeof getAll === 'string' ? getAll === 'true' : getAll;
     const dateQuery = shouldGetAll
-      ? `AND tran.dateTimeAt BETWEEN ${startOfDay} AND ${endOfDay}`
+      ? `AND tran.recordAt BETWEEN ${startOfDay} AND ${endOfDay}`
       : '';
 
-    const query = `SELECT tran.id, tran.accountId, tran.toAccountId, tran.categoryId,tran.transactionType, tran.descriptions, tran.dateTimeAt, bal._id, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount,bal.movementAmount AS amount,
+    const query = `SELECT tran.id, tran.accountId, tran.toAccountId, tran.categoryId,tran.transactionType, tran.descriptions, tran.recordAt, bal._id, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount,bal.movementAmount AS amount,
       CASE
         WHEN tran.accountId = '${accountId}' THEN accTo.accountName
         WHEN tran.toAccountId = '${accountId}' THEN acc.accountName
@@ -127,7 +127,7 @@ export class TransactionLocalDataSource {
       LEFT JOIN ${ACCOUNTS} acc ON acc.id=tran.accountId
       LEFT JOIN ${ACCOUNTS} accTo ON accTo.id=tran.toAccountId
       WHERE tran._status != 'deleted' AND ((tran.accountId='${accountId}') OR (tran.toAccountId='${accountId}')) ${dateQuery}
-      ORDER BY tran.dateTimeAt DESC, bal._id DESC 
+      ORDER BY tran.recordAt DESC, bal._id DESC 
     `;
     return await database.read(async () => {
       return await this.transactionsCollection.query(Q.unsafeSqlQuery(query)).unsafeFetchRaw();
@@ -153,7 +153,7 @@ export class TransactionLocalDataSource {
   public async getTransactionsListByDate({ date, accountId }: GetTransactionByDateOptions) {
     const startOfDay = new Date(new Date(date).setUTCHours(0, 0, 0, 0)).getTime();
     const endOfDay = new Date(new Date(date).setUTCHours(23, 59, 59, 999)).getTime();
-    const query = `SELECT tran.id, tran.accountId, tran.toAccountId, tran.categoryId,tran.transactionType, tran.descriptions, tran.dateTimeAt, bal._id, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount,bal.movementAmount AS amount,
+    const query = `SELECT tran.id, tran.accountId, tran.toAccountId, tran.categoryId,tran.transactionType, tran.descriptions, tran.recordAt, bal._id, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount,bal.movementAmount AS amount,
       CASE
         WHEN tran.accountId = '${accountId}' THEN accTo.accountName
         WHEN tran.toAccountId = '${accountId}' THEN acc.accountName
@@ -163,8 +163,8 @@ export class TransactionLocalDataSource {
       LEFT JOIN ${BALANCE} bal ON bal.transactionId=tran.id AND bal.accountId='${accountId}'
       LEFT JOIN ${ACCOUNTS} acc ON acc.id=tran.accountId
       LEFT JOIN ${ACCOUNTS} accTo ON accTo.id=tran.toAccountId
-      WHERE tran._status != 'deleted' AND ((tran.accountId='${accountId}') OR (tran.toAccountId='${accountId}')) AND tran.dateTimeAt BETWEEN ${startOfDay} AND ${endOfDay}
-      ORDER BY tran.dateTimeAt DESC, bal._id DESC 
+      WHERE tran._status != 'deleted' AND ((tran.accountId='${accountId}') OR (tran.toAccountId='${accountId}')) AND tran.recordAt BETWEEN ${startOfDay} AND ${endOfDay}
+      ORDER BY tran.recordAt DESC, bal._id DESC 
     `;
     return await database.read(async () => {
       return await this.transactionsCollection.query(Q.unsafeSqlQuery(query)).unsafeFetchRaw();
@@ -206,14 +206,14 @@ export class TransactionLocalDataSource {
    * 4. Giới hạn số lượng kết quả trả về
    */
   public async getRecentTransactions(limit: number) {
-    const query = `SELECT tran.id,tran.amount, tran.accountId, tran.toAccountId, tran.categoryId,tran.transactionType, tran.descriptions, tran.dateTimeAt, bal._id, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount,bal.movementAmount AS amount
+    const query = `SELECT tran.id,tran.amount, tran.accountId, tran.toAccountId, tran.categoryId,tran.transactionType, tran.descriptions, tran.recordAt, bal._id, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount,bal.movementAmount AS amount
       FROM ${TRANSACTIONS} tran
       LEFT JOIN ${TRANSACTION_CATEGORY} tCategory ON tCategory.id=tran.categoryId
       LEFT JOIN ${BALANCE} bal ON bal.transactionId=tran.id AND bal.accountId=tran.accountId
       LEFT JOIN ${ACCOUNTS} acc ON acc.id=tran.accountId
       LEFT JOIN ${ACCOUNTS} accTo ON accTo.id=tran.toAccountId
       WHERE tran._status != 'deleted'
-      ORDER BY tran.dateTimeAt DESC, bal._id DESC 
+      ORDER BY tran.recordAt DESC, bal._id DESC 
       LIMIT ${limit}
     `;
     return await database.read(async () => {
@@ -283,7 +283,7 @@ export class TransactionLocalDataSource {
         /** Lưu trữ dữ liệu cũ để so sánh */
         const prevCategoryId = transactionToUpdate.categoryId;
         const prevAmount = transactionToUpdate.amount;
-        const prevDateTimeAt = new Date(transactionToUpdate.dateTimeAt).getTime(); // Đảm bảo là timestamp
+        const prevDateTimeAt = new Date(transactionToUpdate.recordAt).getTime(); // Đảm bảo là timestamp
         const prevAccountId = transactionToUpdate.accountId;
         const prevToAccountId = transactionToUpdate.toAccountId;
 
@@ -299,7 +299,7 @@ export class TransactionLocalDataSource {
         const isUpdateCountCategory = prevCategoryId !== data.categoryId;
         const isUpdateBalance =
           !isEqual(prevAmount, data.amount) ||
-          !isEqual(prevDateTimeAt, data.dateTimeAt) ||
+          !isEqual(prevDateTimeAt, data.recordAt) ||
           !isEqual(prevAccountId, data.accountId) ||
           !isEqual(prevToAccountId, data.toAccountId);
 
@@ -360,11 +360,11 @@ export class TransactionLocalDataSource {
    *    - transactionIds: Danh sách ID các giao dịch đã xóa
    */
   public async clearTransactionsForAccount(accountId: string): Promise<{
-    accountBalanceRecalculation: { accountId: string; dateTimeAt: number }[];
+    accountBalanceRecalculation: { accountId: string; recordAt: number }[];
     transactionIds: string[];
   }> {
     try {
-      //   let accountBalanceRecalculation: { accountId: string; dateTimeAt: number }[] = [];
+      //   let accountBalanceRecalculation: { accountId: string; recordAt: number }[] = [];
       return await database.write(async () => {
         // Lấy các giao dịch chuyển khoản liên quan đến accountId
         const transferTransactions = await this.transactionsCollection
@@ -389,9 +389,9 @@ export class TransactionLocalDataSource {
         const accountBalanceRecalculation = await this.transactionsCollection
           .query(
             Q.unsafeSqlQuery(
-              `SELECT accountId, dateTimeAt FROM ${TRANSACTIONS} 
+              `SELECT accountId, recordAt FROM ${TRANSACTIONS} 
               WHERE (toAccountId='${accountId}' OR accountId='${accountId}') 
-              GROUP BY accountId HAVING MIN(dateTimeAt)`,
+              GROUP BY accountId HAVING MIN(recordAt)`,
             ),
           )
           .unsafeFetchRaw();

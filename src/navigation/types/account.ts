@@ -6,9 +6,11 @@ import { ROUTES } from 'navigation/constants/routes';
 export type AccountStackParamList = SharedStackParamsList & {
   [ROUTES.ACCOUNT_TAB]: undefined;
   [ROUTES.ADD_ACCOUNT]: {
-    bankId?: string;
     accountId?: string;
+    bankId?: string;
+    toAccountId?: string;
     accountTypeId?: string;
+    accountName?: string;
   };
 };
 

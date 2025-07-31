@@ -17,7 +17,7 @@ export type TGetDebtLoanDetailByPerson = {
   icon: string;
   descriptions: string;
   amount: number;
-  dateTimeAt: number;
+  recordAt: number;
   accountLogo: string;
   accountName: string;
 };

@@ -108,7 +108,7 @@ function RecentTransactions({ title }: { title: string }) {
                 <RNText color={item.amount > 0 ? 'green' : 'red'}>
                   {formatNumber(item.amount, true)}
                 </RNText>
-                <RNText preset="subTitle">{formatTransactionDate(item.dateTimeAt)}</RNText>
+                <RNText preset="subTitle">{formatTransactionDate(item.recordAt)}</RNText>
               </View>
             </View>
           );

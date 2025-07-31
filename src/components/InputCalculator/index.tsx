@@ -3,11 +3,11 @@ import isEqual from 'react-fast-compare';
 import { Keyboard, TextInput, TextInputProps, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import RNText from 'components/Text';
-import styles from './styles';
 import { RegisterOptions, useController, useFormContext } from 'react-hook-form';
 import KeyboardCalculator from './KeyboardCalculator';
 import BottomSheet from 'components/BottomSheetModal';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import styles from './styles';
 
 type TInputCalculator = TextInputProps & {
   name: string;
@@ -22,14 +22,14 @@ type TInputCalculator = TextInputProps & {
   text?: string;
 };
 
-const snapPoints = ['36%'];
+const snapPoints = ['40%'];
 
 function InputCalculator({
   name,
-  rules,
   isShowPrefix = true,
   inputTextColor,
   text = 'Số tiền',
+  ...props
 }: TInputCalculator) {
   const { colors } = useCustomTheme();
   const { control } = useFormContext();
@@ -39,7 +39,6 @@ function InputCalculator({
   } = useController({
     name,
     control,
-    rules,
   });
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -83,6 +82,7 @@ function InputCalculator({
           onBlur={onBlurInput}
           showSoftInputOnFocus={false}
           contextMenuHidden={true}
+          {...props}
         />
         {isShowPrefix && (
           <RNText preset="subTitle" style={styles.currency}>
@@ -91,9 +91,9 @@ function InputCalculator({
         )}
       </View>
       <BottomSheet
+        index={0}
         ref={bottomSheetRef}
         snapPoints={snapPoints}
-        index={0}
         enableOverDrag={false}
         enablePanDownToClose
         // disabledBackdrop
@@ -105,7 +105,12 @@ function InputCalculator({
         style={[{ backgroundColor: colors.surface }]}
         backgroundColor={colors.surface}
       >
-        <KeyboardCalculator value={value} onChange={onChange} hasJustFocused={hasJustFocused} />
+        <KeyboardCalculator
+          value={value}
+          onChange={onChange}
+          hasJustFocused={hasJustFocused}
+          onDismiss={onDismiss}
+        />
       </BottomSheet>
     </View>
   );

@@ -23,7 +23,7 @@ export type TTransactions = {
   categoryId: string;
   categoryName?: string;
   descriptions?: string;
-  dateTimeAt: number;
+  recordAt: number;
   accountId: string;
   toAccountId: string;
   accountName?: string;

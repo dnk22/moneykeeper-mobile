@@ -11,6 +11,7 @@ import { formatNumberGroups } from 'utils/math';
 type KeyboardCalculatorProps = {
   value: string;
   onChange: (val: string) => void;
+  onDismiss: () => void;
   hasJustFocused: React.MutableRefObject<boolean>;
 };
 
@@ -21,7 +22,12 @@ type onPushKeyboardEventProps = {
 
 const replaceSymbols = (expression: string) => expression.replace(/×/g, '*').replace(/÷/g, '/');
 
-function KeyboardCalculator({ value, onChange, hasJustFocused }: KeyboardCalculatorProps) {
+function KeyboardCalculator({
+  value,
+  onChange,
+  hasJustFocused,
+  onDismiss,
+}: KeyboardCalculatorProps) {
   const { colors } = useCustomTheme();
   const [expression, setExpression] = useState<string>(value || '');
 
@@ -84,12 +90,9 @@ function KeyboardCalculator({ value, onChange, hasJustFocused }: KeyboardCalcula
               const evaluated = eval(raw);
               updateValue(evaluated.toString());
             } catch (err) {
-              showToast({
-                type: 'error',
-                text2: 'Biểu thức không hợp lệ',
-              });
               setExpression('');
             }
+            onDismiss();
             break;
         }
       } catch (err) {}

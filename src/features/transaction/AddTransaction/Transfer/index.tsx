@@ -42,7 +42,7 @@ function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
   }, []);
 
   const handleOnDateTimePicker = (date: Date) => {
-    setValue('dateTimeAt', date);
+    setValue('recordAt', date);
   };
 
   const onDeleteTransaction = () => {
@@ -110,7 +110,7 @@ function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
         </View>
       </View>
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
-        <DateTimeSelect values={watch('dateTimeAt')} onChangeDate={handleOnDateTimePicker} />
+        <DateTimeSelect values={watch('recordAt')} onChangeDate={handleOnDateTimePicker} />
         <View style={styles.itemGroup}>
           <SvgIcon name="textWord" style={styles.iconShadow} />
           <View style={styles.groupContent}>

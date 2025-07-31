@@ -68,7 +68,7 @@ export default appSchema({
         { name: 'transactionType', type: 'number' },
         { name: 'categoryId', type: 'string' },
         { name: 'descriptions', type: 'string', isOptional: true },
-        { name: 'dateTimeAt', type: 'number' },
+        { name: 'recordAt', type: 'number' },
         { name: 'accountId', type: 'string', isOptional: true },
         { name: 'location', type: 'string', isOptional: true },
         { name: 'eventName', type: 'string', isOptional: true },

@@ -5,6 +5,7 @@ import { ROUTES } from 'navigation/constants/routes';
 // import route component
 import AddTransactions from 'features/transaction/AddTransaction';
 import { useCustomTheme } from 'resources/theme';
+import SharedScreens from './SharedStacks';
 
 //set up routes
 const TransactionStack = createNativeStackNavigator<TransactionParamList>();
@@ -23,6 +24,7 @@ function TransactionNavigation() {
           },
         }}
       />
+      {SharedScreens({ stack: TransactionStack, screens: [ROUTES.TRANSACTION_CATEGORY] })}
     </TransactionStack.Navigator>
   );
 }

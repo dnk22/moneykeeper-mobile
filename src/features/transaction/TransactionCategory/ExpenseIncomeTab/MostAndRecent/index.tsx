@@ -8,7 +8,7 @@ import { useCustomTheme } from 'resources/theme';
 import { TRANSACTION_CATEGORY_TYPE, VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constants';
 import { TTransactionsCategory } from 'database/types';
 import { getMostUsedOrRecentTransaction } from 'services/api/transactionsCategory';
-import { ITEM_WIDTH } from 'features/TransactionCategory/constants.config';
+import { ITEM_WIDTH } from 'features/transaction/TransactionCategory/constants.config';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectCategoriesConfig } from 'store/app/app.selector';
 import { updateCategoriesConfig } from 'store/app/app.slice';

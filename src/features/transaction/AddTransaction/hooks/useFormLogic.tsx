@@ -85,13 +85,22 @@ export function useAddTransactionFormLogic({
     }
   }, [params?.transactionId]);
 
-  const onSubmitSuccess = () => {
+  // set lại ngày tháng ghi chép mỗi khi focus mới vào screen đi từ account
+  useFocusEffect(
+    useCallback(() => {
+      if (routerName === ROUTES.CREATE_TRANSACTION_FROM_ACCOUNT && !params?.transactionId) {
+        setValue('recordAt', new Date().getTime());
+      }
+    }, [routerName, params?.transactionId]),
+  );
+
+  const onSubmitSuccess = useCallback(() => {
     if (navigation.canGoBack() && routerName !== ROUTES.ADD_TRANSACTION) {
       navigation.goBack();
       return;
     }
     navigation.setParams({ categoryId: '' });
-  };
+  }, [navigation, routerName]);
 
   return {
     transactionForm,

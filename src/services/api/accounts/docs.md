@@ -76,7 +76,7 @@ Deletes an account and recalculates balances for related accounts.
 - Process:
   1. Delete all transactions linked to account
   2. Return list of affected accounts that need balance recalculation
-- Response: Array of `{ accountId: string, dateTimeAt: number }`
+- Response: Array of `{ accountId: string, recordAt: number }`
 
 #### 3. Balance Recalculation Process
 

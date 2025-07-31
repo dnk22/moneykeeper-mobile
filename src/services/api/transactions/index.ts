@@ -58,7 +58,7 @@ export const updateTransaction = async ({ id, data }: { id?: string; data: TTran
         await queryAddNewBalanceTransaction(transaction);
         await queryCalculateAllBalanceAfterDate({
           accountId: transaction.accountId,
-          date: new Date(transaction.dateTimeAt).getTime(),
+          date: new Date(transaction.recordAt).getTime(),
         });
         return {
           success: true,
@@ -135,13 +135,13 @@ export const updateTransactionTransfer = async ({
             id: transaction.id,
             accountId: transaction.accountId,
             amount: transaction.amount,
-            dateTimeAt: transaction.dateTimeAt,
+            recordAt: transaction.recordAt,
           },
           [data.toAccountId]: {
             id: transaction.id,
             accountId: transaction.toAccountId,
             amount: transaction.toAmount,
-            dateTimeAt: transaction.dateTimeAt,
+            recordAt: transaction.recordAt,
           },
         };
         // Update balances and calculate new balances for accounts involved in the transaction
@@ -149,7 +149,7 @@ export const updateTransactionTransfer = async ({
           await queryAddNewBalanceTransaction(requestDataBalance[item]);
           await queryCalculateAllBalanceAfterDate({
             accountId: requestDataBalance[item].accountId,
-            date: new Date(requestDataBalance[item].dateTimeAt).getTime(),
+            date: new Date(requestDataBalance[item].recordAt).getTime(),
           });
         }
         return {
@@ -188,14 +188,14 @@ export const updateTransactionTransfer = async ({
               id: transactionUpdated.id,
               accountId: transactionUpdated.accountId,
               amount: transactionUpdated.amount,
-              dateTimeAt: transactionUpdated.dateTimeAt,
+              recordAt: transactionUpdated.recordAt,
               accountIdQuery: prevAccountId,
             },
             [data.toAccountId]: {
               id: transactionUpdated.id,
               accountId: transactionUpdated.toAccountId,
               amount: transactionUpdated.toAmount,
-              dateTimeAt: transactionUpdated.dateTimeAt,
+              recordAt: transactionUpdated.recordAt,
               accountIdQuery: prevToAccountId || transactionUpdated.toAccountId,
             },
           };
@@ -234,12 +234,12 @@ export const deleteTransactionById = async (id: string) => {
     await queryDeleteBalanceById(transaction.id).then(async () => {
       await queryCalculateAllBalanceAfterDate({
         accountId: transaction.accountId,
-        date: new Date(transaction.dateTimeAt).getTime(),
+        date: new Date(transaction.recordAt).getTime(),
       });
       if (transaction.toAccountId) {
         await queryCalculateAllBalanceAfterDate({
           accountId: transaction.toAccountId,
-          date: new Date(transaction.dateTimeAt).getTime(),
+          date: new Date(transaction.recordAt).getTime(),
         });
       }
     });

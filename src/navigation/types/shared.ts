@@ -1,5 +1,6 @@
 import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constants';
 import { ROUTES } from 'navigation/constants/routes';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 export type SharedStackParamsList = {
   [ROUTES.ADD_ACCOUNT]: {
@@ -29,4 +30,9 @@ export type SharedStackParamsList = {
   };
   [ROUTES.DEBT_LOAN_REPORT]: undefined;
   [ROUTES.DEBT_LOAN_REPORT_DETAIL]: { personName: string; type: TRANSACTION_CATEGORY_TYPE };
+};
+
+export type SharedStackParamsListProps<T extends keyof SharedStackParamsList> = {
+  navigation: NativeStackScreenProps<SharedStackParamsList, T>['navigation'];
+  route: NativeStackScreenProps<SharedStackParamsList, T>['route'];
 };

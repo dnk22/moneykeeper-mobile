@@ -15,10 +15,10 @@ export type GetTransactionByDate = {
 /** query list transaction group by date  */
 export const queryUniqueTransactionDates = async (accountId: string) => {
   const query = `SELECT DISTINCT 
-      strftime('%Y-%m-%d', datetime(dateTimeAt/1000, 'unixepoch')) AS date 
+      strftime('%Y-%m-%d', datetime(recordAt/1000, 'unixepoch')) AS date 
       FROM ${TRANSACTIONS}
       WHERE _status != 'deleted' AND ((accountId='${accountId}') OR (toAccountId='${accountId}'))
-      ORDER BY dateTimeAt DESC 
+      ORDER BY recordAt DESC 
     `;
   return await database.read(async () => {
     return await database
@@ -42,8 +42,8 @@ export const queryGetTransactionsListByMonth = async ({
 }) => {
   const startOfDay = new Date(new Date(startDate).setUTCHours(0, 0, 0, 0)).getTime();
   const endOfDay = new Date(new Date(endDate).setUTCHours(23, 59, 59, 999)).getTime();
-  const dateQuery = getAll ? `AND tran.dateTimeAt BETWEEN ${startOfDay} AND ${endOfDay}` : '';
-  const query = `SELECT tran.id, tran.accountId, tran.toAccountId, tran.categoryId,tran.transactionType, tran.descriptions, tran.dateTimeAt, bal._id, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount,bal.movementAMount AS amount,
+  const dateQuery = getAll ? `AND tran.recordAt BETWEEN ${startOfDay} AND ${endOfDay}` : '';
+  const query = `SELECT tran.id, tran.accountId, tran.toAccountId, tran.categoryId,tran.transactionType, tran.descriptions, tran.recordAt, bal._id, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount,bal.movementAMount AS amount,
       CASE
         WHEN tran.accountId = '${accountId}' THEN accTo.accountName
         WHEN tran.toAccountId = '${accountId}' THEN acc.accountName
@@ -54,7 +54,7 @@ export const queryGetTransactionsListByMonth = async ({
       LEFT JOIN ${ACCOUNTS} acc ON acc.id=tran.accountId
       LEFT JOIN ${ACCOUNTS} accTo ON accTo.id=tran.toAccountId
       WHERE tran._status != 'deleted' AND ((tran.accountId='${accountId}') OR (tran.toAccountId='${accountId}')) ${dateQuery}
-      ORDER BY tran.dateTimeAt DESC, bal._id DESC
+      ORDER BY tran.recordAt DESC, bal._id DESC
     `;
   return await database.read(async () => {
     return await database
@@ -67,7 +67,7 @@ export const queryGetTransactionsListByMonth = async ({
 export const queryGetTransactionsListByDate = async ({ date, accountId }: GetTransactionByDate) => {
   const startOfDay = new Date(new Date(date).setUTCHours(0, 0, 0, 0)).getTime();
   const endOfDay = new Date(new Date(date).setUTCHours(23, 59, 59, 999)).getTime();
-  const query = `SELECT tran.id, tran.accountId, tran.toAccountId, tran.categoryId,tran.transactionType, tran.descriptions, tran.dateTimeAt, bal._id, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount,bal.movementAMount AS amount,
+  const query = `SELECT tran.id, tran.accountId, tran.toAccountId, tran.categoryId,tran.transactionType, tran.descriptions, tran.recordAt, bal._id, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount,bal.movementAMount AS amount,
       CASE
         WHEN tran.accountId = '${accountId}' THEN accTo.accountName
         WHEN tran.toAccountId = '${accountId}' THEN acc.accountName
@@ -77,8 +77,8 @@ export const queryGetTransactionsListByDate = async ({ date, accountId }: GetTra
       LEFT JOIN ${BALANCE} bal ON bal.transactionId=tran.id AND bal.accountId='${accountId}'
       LEFT JOIN ${ACCOUNTS} acc ON acc.id=tran.accountId
       LEFT JOIN ${ACCOUNTS} accTo ON accTo.id=tran.toAccountId
-      WHERE tran._status != 'deleted' AND ((tran.accountId='${accountId}') OR (tran.toAccountId='${accountId}')) AND tran.dateTimeAt BETWEEN ${startOfDay} AND ${endOfDay}
-      ORDER BY tran.dateTimeAt DESC, bal._id DESC
+      WHERE tran._status != 'deleted' AND ((tran.accountId='${accountId}') OR (tran.toAccountId='${accountId}')) AND tran.recordAt BETWEEN ${startOfDay} AND ${endOfDay}
+      ORDER BY tran.recordAt DESC, bal._id DESC
     `;
   return await database.read(async () => {
     return await database
@@ -100,14 +100,14 @@ export const queryTransactionById = async (id: string) => {
 };
 
 export const queryRecentTransaction = async (limit: number) => {
-  const query = `SELECT tran.id,tran.amount, tran.accountId, tran.toAccountId, tran.categoryId,tran.transactionType, tran.descriptions, tran.dateTimeAt, bal._id, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount,bal.movementAMount AS amount
+  const query = `SELECT tran.id,tran.amount, tran.accountId, tran.toAccountId, tran.categoryId,tran.transactionType, tran.descriptions, tran.recordAt, bal._id, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount,bal.movementAMount AS amount
       FROM ${TRANSACTIONS} tran
       LEFT JOIN ${TRANSACTION_CATEGORY} tCategory ON tCategory.id=tran.categoryId
       LEFT JOIN ${BALANCE} bal ON bal.transactionId=tran.id AND bal.accountId=tran.accountId
       LEFT JOIN ${ACCOUNTS} acc ON acc.id=tran.accountId
       LEFT JOIN ${ACCOUNTS} accTo ON accTo.id=tran.toAccountId
       WHERE tran._status != 'deleted'
-      ORDER BY tran.dateTimeAt DESC, bal._id DESC
+      ORDER BY tran.recordAt DESC, bal._id DESC
       LIMIT ${limit}
     `;
   return await database.read(async () => {
@@ -147,7 +147,7 @@ export const queryUpdateTransaction = async ({ id, data }: { id: string; data: T
     let isUpdateBalance = false;
     let prevAccountId = '';
     let prevToAccountId = '';
-    let prevDate = data.dateTimeAt;
+    let prevDate = data.recordAt;
 
     return await database.write(async () => {
       const res = await database.get<TransactionModel>(TRANSACTIONS).find(id);
@@ -156,13 +156,13 @@ export const queryUpdateTransaction = async ({ id, data }: { id: string; data: T
       isUpdateCountCategory = res.categoryId !== data.categoryId;
       isUpdateBalance =
         !isEqual(res.amount, data.amount) ||
-        !isEqual(new Date(res.dateTimeAt).getTime(), data.dateTimeAt) ||
+        !isEqual(new Date(res.recordAt).getTime(), data.recordAt) ||
         !isEqual(res.accountId, data.accountId) ||
         !isEqual(res.toAccountId, data.toAccountId);
       prevAccountId = res.accountId;
       prevToAccountId = res.toAccountId;
-      if (new Date(res.dateTimeAt).getTime() < new Date(prevDate).getTime()) {
-        prevDate = new Date(res.dateTimeAt).getTime();
+      if (new Date(res.recordAt).getTime() < new Date(prevDate).getTime()) {
+        prevDate = new Date(res.recordAt).getTime();
       }
 
       /** update data */
@@ -202,7 +202,7 @@ export const queryDeleteTransactionById = async (id: string) => {
 
 export const queryDeleteAllTransactionRelatedWithAccountId = async (accountId: string) => {
   try {
-    let accountReCalculateBalance: { accountId: string; dateTimeAt: number }[] = [];
+    let accountReCalculateBalance: { accountId: string; recordAt: number }[] = [];
     await database.write(async () => {
       const transferTransaction = await database
         .get<TransactionModel>(TRANSACTIONS)
@@ -216,8 +216,8 @@ export const queryDeleteAllTransactionRelatedWithAccountId = async (accountId: s
       accountReCalculateBalance = await database
         .get<TransactionModel>(TRANSACTIONS)
         .query(
-          Q.unsafeSqlQuery(`SELECT accountId, dateTimeAt FROM ${TRANSACTIONS} 
-      WHERE (toAccountId='${accountId}' OR accountId='${accountId}') GROUP BY accountId HAVING MIN(dateTimeAt)`),
+          Q.unsafeSqlQuery(`SELECT accountId, recordAt FROM ${TRANSACTIONS} 
+      WHERE (toAccountId='${accountId}' OR accountId='${accountId}') GROUP BY accountId HAVING MIN(recordAt)`),
         )
         .unsafeFetchRaw();
 
