@@ -36,11 +36,9 @@ function RelatedPersonSelect({
       <InputSelection
         required={required}
         defaultIcon={'user'}
-        name={fieldName}
-        value={watch(fieldName)}
-        title={title}
-        control={control}
-        error={errors[fieldName]}
+        fieldName={fieldName}
+        displayValue={watch(fieldName)}
+        placeholder={title}
         onSelect={handleOnSelectContact}
         onDelete={() => setValue(fieldName, '')}
       />

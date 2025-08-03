@@ -1,6 +1,8 @@
 import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_TYPE } from 'utils/constants';
 import { ROUTES } from 'navigation/constants/routes';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { NavigatorScreenParams } from '@react-navigation/native';
+import { TransactionCategoryParams } from './transactionCategory';
 
 export type SharedStackParamsList = {
   [ROUTES.ADD_ACCOUNT]: {
@@ -10,6 +12,7 @@ export type SharedStackParamsList = {
     accountTypeId?: string;
     accountName?: string;
   };
+  [ROUTES.TRANSACTION_CATEGORY]: NavigatorScreenParams<TransactionCategoryParams>;
   [ROUTES.FINANCE_STATEMENT]: undefined;
   [ROUTES.EXPENSE_INCOME_DETAIL]: {
     dateView: string;

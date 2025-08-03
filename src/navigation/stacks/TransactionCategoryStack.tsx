@@ -6,7 +6,6 @@ import UpdateTransactionCategory from 'features/transaction/TransactionCategory/
 import ParentList from 'features/transaction/TransactionCategory/ParentList';
 import IconSelect from 'features/transaction/TransactionCategory/IconSelect';
 import { TransactionCategoryParams } from 'navigation/types';
-import TransactionCategoryHeaderRight from 'navigation/components/TransactionCategoryHeaderRight';
 import TransactionCategoryTaBBar from 'navigation/tabs/TransactionCategoryTabs';
 
 //set up routes
@@ -14,7 +13,14 @@ const TransactionCategoryStack = createNativeStackNavigator<TransactionCategoryP
 
 function TransactionCategoryNavigation() {
   return (
-    <TransactionCategoryStack.Navigator initialRouteName={ROUTES.TRANSACTION_CATEGORY_LIST}>
+    <TransactionCategoryStack.Navigator
+      screenOptions={{
+        headerTitleStyle: {
+          fontSize: HEADER_TITLE_FONT_SIZE,
+        },
+      }}
+      initialRouteName={ROUTES.TRANSACTION_CATEGORY_LIST}
+    >
       <TransactionCategoryStack.Screen
         name={ROUTES.TRANSACTION_CATEGORY_LIST}
         component={TransactionCategoryTaBBar}
@@ -27,7 +33,10 @@ function TransactionCategoryNavigation() {
       <TransactionCategoryStack.Screen
         name={ROUTES.UPDATE_TRANSACTION_CATEGORY}
         options={({ route }) => ({
-          title: route.params?.transactionCategoryId ? 'Sửa danh mục' : 'Thêm danh mục',
+          title:
+            route.params && 'transactionCategoryId' in route.params
+              ? 'Sửa danh mục'
+              : 'Thêm danh mục',
         })}
         component={UpdateTransactionCategory}
       />

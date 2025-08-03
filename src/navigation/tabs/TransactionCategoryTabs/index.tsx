@@ -4,7 +4,7 @@ import { ROUTES, TransactionCategoryContext } from 'navigation/constants/routes'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useCustomTheme } from 'resources/theme';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import { TransactionCategoryListParams } from 'navigation/types';
+import { TransactionCategoryTabsParams } from 'navigation/types';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
 import LendAndBorrowTab from 'features/transaction/TransactionCategory/LendAndBorrowTab';
 import ExpenseIncomeTab from 'features/transaction/TransactionCategory/ExpenseIncomeTab';
@@ -15,7 +15,7 @@ import get from 'lodash/get';
 import TransactionCategoryHeaderRight from 'navigation/components/TransactionCategoryHeaderRight';
 import styles from './styles';
 
-const TabBar = createMaterialTopTabNavigator<TransactionCategoryListParams>();
+const TabBar = createMaterialTopTabNavigator<TransactionCategoryTabsParams>();
 
 const mapTransactionCategoryType = {
   [ROUTES.EXPENSE_CATEGORY]: TRANSACTION_CATEGORY_TYPE.EXPENSE,
@@ -28,6 +28,15 @@ function TransactionCategoryTabs({ navigation, route }: any) {
   const { params } = route;
 
   const isTabHide = get(params, 'tabHide', false);
+
+  const focusedRoute = useCallback(
+    (route: any) => getFocusedRouteNameFromRoute(route) ?? ROUTES.EXPENSE_CATEGORY,
+    [route],
+  );
+
+  const onHeaderButtonPress = () => {
+    setIsUpdate(!isUpdate);
+  };
 
   useEffect(() => {
     const routeName = focusedRoute(route);
@@ -46,18 +55,9 @@ function TransactionCategoryTabs({ navigation, route }: any) {
         />
       ),
     });
-  }, [navigation, route]);
+  }, [navigation, focusedRoute]);
 
-  const onHeaderButtonPress = () => {
-    setIsUpdate(!isUpdate);
-  };
-
-  const focusedRoute = useCallback(
-    (route: any) => getFocusedRouteNameFromRoute(route) ?? ROUTES.EXPENSE_CATEGORY,
-    [route],
-  );
-
-  const handleOnNavigateToScreenAdd = () => {
+  const navigateToAddCategory = () => {
     navigation.navigate(ROUTES.UPDATE_TRANSACTION_CATEGORY, {
       type: mapTransactionCategoryType[
         getFocusedRouteNameFromRoute(route) ?? ROUTES.EXPENSE_CATEGORY
@@ -71,7 +71,7 @@ function TransactionCategoryTabs({ navigation, route }: any) {
         {focusedRoute(route) !== ROUTES.LEND_BORROW && isUpdate && (
           <PressableHaptic
             style={[styles.addIcon, { backgroundColor: colors.primary }]}
-            onPress={handleOnNavigateToScreenAdd}
+            onPress={navigateToAddCategory}
           >
             <SvgIcon name="add" color="white" />
           </PressableHaptic>

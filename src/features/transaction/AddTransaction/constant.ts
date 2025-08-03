@@ -1,7 +1,4 @@
 import { TRANSACTION_TYPE } from 'utils/constants';
-import ExpenseAndIncome from './ExpenseAndIncome';
-import Transfer from './Transfer';
-import Adjustment from './Adjustment';
 
 export const defaultValues = {
   amount: 0,
@@ -22,13 +19,6 @@ export const defaultValues = {
   excludeReport: 0,
   attachment: '',
   userId: '',
-};
-
-export const COMPONENT_MAPPING = {
-  [TRANSACTION_TYPE.EXPENSE]: ExpenseAndIncome,
-  [TRANSACTION_TYPE.INCOME]: ExpenseAndIncome,
-  [TRANSACTION_TYPE.TRANSFER]: Transfer,
-  [TRANSACTION_TYPE.ADJUSTMENT]: Adjustment,
 };
 
 export const INPUT_AMOUNT_COLOR: any = {

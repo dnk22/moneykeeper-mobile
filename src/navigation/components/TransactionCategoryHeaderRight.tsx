@@ -1,5 +1,5 @@
-import SvgIcon from 'components/SvgIcon';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
+import { Edit } from 'iconsax-react-native';
 import { Button, View } from 'react-native';
 
 function TransactionCategoryHeaderRight({ onPress, isUpdateMode, show }: any) {
@@ -9,7 +9,7 @@ function TransactionCategoryHeaderRight({ onPress, isUpdateMode, show }: any) {
         <Button title="Hủy" onPress={onPress} />
       ) : (
         <TouchableHighlightComponent onPress={onPress}>
-          <SvgIcon name="pen" />
+          <Edit size="28" color="#FF8A65"/>
         </TouchableHighlightComponent>
       )}
     </View>

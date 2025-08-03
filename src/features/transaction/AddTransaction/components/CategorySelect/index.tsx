@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Alert } from 'react-native';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useFocusEffect } from '@react-navigation/native';
 import debounce from 'lodash/debounce';
@@ -8,6 +7,7 @@ import InputSelection from 'components/InputSelection';
 import { getTransactionCategoryByID } from 'services/api/transactionsCategory';
 import { TTransactionsCategory } from 'database/types';
 import { TRANSACTION_TYPE } from 'utils/constants';
+import { showToast } from 'utils/system';
 
 type CategorySelectProps = {
   onPress: (item?: TTransactionsCategory) => void;
@@ -18,26 +18,20 @@ function CategorySelect({ onPress, onChange }: CategorySelectProps) {
   const [categorySelected, setCategorySelected] = useState<TTransactionsCategory | undefined>(
     undefined,
   );
-  const {
-    control,
-    getValues,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useFormContext<any>();
+  const { control, getValues, setValue } = useFormContext<any>();
 
   const categoryId = useWatch({
     control,
     name: 'categoryId',
   });
 
-  const fetchCategoryData = debounce(() => {
-    if (!getValues('categoryId')) {
+  const fetchCategoryData = debounce((id: string) => {
+    if (!id) {
       setCategorySelected(undefined);
       return;
     }
     try {
-      getTransactionCategoryByID(watch('categoryId')).then((res) => {
+      getTransactionCategoryByID(id).then((res) => {
         // if data no change , don't setState
         if (!isEqual(res, categorySelected)) {
           setCategorySelected(res);
@@ -47,7 +41,10 @@ function CategorySelect({ onPress, onChange }: CategorySelectProps) {
         }
       });
     } catch (error) {
-      Alert.alert('Lỗi rồi!', 'Có lỗi trong quá trình lấy dữ liệu');
+      showToast({
+        type: 'info',
+        text2: 'Có lỗi trong quá trình lấy dữ liệu',
+      });
     }
   }, 30);
 
@@ -61,7 +58,7 @@ function CategorySelect({ onPress, onChange }: CategorySelectProps) {
 
   useFocusEffect(
     useCallback(() => {
-      fetchCategoryData();
+      fetchCategoryData(categoryId);
     }, [categoryId]),
   );
 

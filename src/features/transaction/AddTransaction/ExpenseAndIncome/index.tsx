@@ -1,7 +1,6 @@
 import { memo } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
-import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constants';
 import CategorySelect from '../components/CategorySelect';
 import DateTimeSelect from '../components/DateTimeSelect';
 import MoreDetail from '../components/MoreDetail';
@@ -14,21 +13,21 @@ import SvgIcon from 'components/SvgIcon';
 import SwitchField from 'components/Switch/SwitchField';
 import FormAction from 'components/common/FormAction';
 import RNText from 'components/Text';
-import styles from '../styles';
 import InputCalculator from 'components/InputCalculator';
 import isEqual from 'react-fast-compare';
 import useExpenseIncomeHook from '../hooks/useExpenseIncomeLogic';
+import styles from '../styles';
 
 function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
   const { colors } = useCustomTheme();
 
   const {
     categoryId,
-    lendBorrowData,
     recordAt,
     isLendBorrowType,
     inputAmountColor,
-    transactionType,
+    isExpenseType,
+    relatedPersonPlaceholder,
     handleOnCategorySelect,
     handleOnDateTimePicker,
     onFeeRemove,
@@ -40,25 +39,16 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
     params,
   });
 
-  const isExpenseType = transactionType === TRANSACTION_TYPE.EXPENSE;
-
   return (
     <>
-      <InputCalculator name="amount" inputTextColor={'green'} autoFocus />
+      <InputCalculator name="amount" inputTextColor={inputAmountColor} autoFocus />
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
         <CategorySelect onPress={handleOnCategorySelect} />
         {isLendBorrowType && categoryId && (
           <RelatedPersonSelect
             required
             fieldName="relatedPerson"
-            title={
-              [
-                TRANSACTION_LEND_BORROW_NAME.BORROW,
-                TRANSACTION_LEND_BORROW_NAME.REPAYMENT,
-              ].includes(lendBorrowData[categoryId])
-                ? 'Người cho vay'
-                : 'Người vay'
-            }
+            title={relatedPersonPlaceholder}
           />
         )}
         <View style={styles.itemGroup}>

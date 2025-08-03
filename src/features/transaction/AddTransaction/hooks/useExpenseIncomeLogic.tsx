@@ -19,8 +19,7 @@ export default function useExpenseIncomeHook({ params, onSubmitSuccess }: AddTra
   const { name: routerName } =
     useRoute<TransactionParamListProps<typeof ROUTES.ADD_TRANSACTION>['route']>();
   const lendBorrowData = useAppSelector((state) => selectLendBorrowData(state));
-  const formContext = useFormContext<any>();
-  const { handleSubmit, setValue, getValues, control, reset } = formContext;
+  const { handleSubmit, setValue, getValues, control, reset } = useFormContext<any>();
 
   const categoryId = useWatch({
     control,
@@ -44,6 +43,14 @@ export default function useExpenseIncomeHook({ params, onSubmitSuccess }: AddTra
   });
 
   const inputAmountColor = INPUT_AMOUNT_COLOR[transactionType] || 'green';
+  const isExpenseType = transactionType === TRANSACTION_TYPE.EXPENSE;
+
+  const relatedPersonPlaceholder = [
+    TRANSACTION_LEND_BORROW_NAME.BORROW,
+    TRANSACTION_LEND_BORROW_NAME.REPAYMENT,
+  ].includes(lendBorrowData[categoryId])
+    ? 'Người cho vay'
+    : 'Người vay';
 
   const isLendBorrowType = useMemo(
     () => Boolean(lendBorrowData && Object.keys(lendBorrowData).includes(categoryId)),
@@ -151,12 +158,13 @@ export default function useExpenseIncomeHook({ params, onSubmitSuccess }: AddTra
   }, [categoryId, relatedPerson, descriptions, lendBorrowData, setValue]);
 
   return {
+    relatedPersonPlaceholder,
     categoryId,
     lendBorrowData,
     recordAt,
     isLendBorrowType,
     inputAmountColor,
-    transactionType,
+    isExpenseType,
     handleOnCategorySelect,
     handleOnDateTimePicker,
     onFeeRemove,

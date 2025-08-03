@@ -22,19 +22,29 @@ export const sharedScreenRegistry = new ScreenRegistry<SharedStackParamsList>()
     }: {
       route: SharedStackParamsListProps<typeof ROUTES.ADD_ACCOUNT>['route'];
     }) => ({
-      title: route.params?.accountId ? 'Sửa tài khoản' : 'Thêm tài khoản',
+      title: (route.params as { accountId?: string })?.accountId
+        ? 'Sửa tài khoản'
+        : 'Thêm tài khoản',
     }),
   })
   .register(ROUTES.ACCOUNT_NORMAL_DETAIL, {
     component: TransactionHistoryNormal,
-    options: ({ route }) => ({
-      title: route.params?.accountName,
+    options: ({
+      route,
+    }: {
+      route: SharedStackParamsListProps<typeof ROUTES.ACCOUNT_NORMAL_DETAIL>['route'];
+    }) => ({
+      title: (route.params as { accountName?: string })?.accountName,
     }),
   })
   .register(ROUTES.ACCOUNT_CREDIT_CARD_DETAIL, {
     component: TransactionHistoryCreditCard,
-    options: ({ route }) => ({
-      title: route.params?.accountName,
+    options: ({
+      route,
+    }: {
+      route: SharedStackParamsListProps<typeof ROUTES.ACCOUNT_CREDIT_CARD_DETAIL>['route'];
+    }) => ({
+      title: (route.params as { accountName?: string })?.accountName,
     }),
   })
   .register(ROUTES.CREATE_TRANSACTION_FROM_ACCOUNT, {
@@ -45,8 +55,12 @@ export const sharedScreenRegistry = new ScreenRegistry<SharedStackParamsList>()
   })
   .register(ROUTES.EXPENSE_INCOME_DETAIL, {
     component: ExpenseIncome,
-    options: ({ route: { params } }) => ({
-      title: `Chi tiêu ${params.dateView.toLowerCase()}`,
+    options: ({
+      route,
+    }: {
+      route: SharedStackParamsListProps<typeof ROUTES.EXPENSE_INCOME_DETAIL>['route'];
+    }) => ({
+      title: `Chi tiêu ${(route.params as { dateView: string })?.dateView.toLowerCase()}`,
     }),
   })
   .register(ROUTES.FINANCE_STATEMENT, {
@@ -63,8 +77,12 @@ export const sharedScreenRegistry = new ScreenRegistry<SharedStackParamsList>()
   })
   .register(ROUTES.DEBT_LOAN_REPORT_DETAIL, {
     component: DebtLoanDetail,
-    options: ({ route: { params } }) => ({
-      title: params.personName,
+    options: ({
+      route,
+    }: {
+      route: SharedStackParamsListProps<typeof ROUTES.DEBT_LOAN_REPORT_DETAIL>['route'];
+    }) => ({
+      title: (route.params as { personName: string }).personName,
     }),
   })
   //modal stack

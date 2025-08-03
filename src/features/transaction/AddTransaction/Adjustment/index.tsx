@@ -161,7 +161,7 @@ function Adjustment({ params, onSubmitSuccess }: AddTransactionType) {
         <RNText>{isEditMode ? 'Số dư tài khoản:' : 'Số dư thực tế:'}</RNText>
         <RNText style={{ fontWeight: '500' }}>{formatNumber(latestCurrentBalance, true)}</RNText>
       </View>
-      <InputCalculator text="Số dư thực tế" name="closingAmount" control={control} />
+      <InputCalculator text="Số dư thực tế" name="closingAmount" />
       <View style={styles.currentBalance}>
         <RNText>Số dư chênh lệch:</RNText>
         <RNText style={{ fontWeight: '500' }} color={differenceValue <= 0 ? 'red' : 'green'}>
@@ -179,7 +179,6 @@ function Adjustment({ params, onSubmitSuccess }: AddTransactionType) {
           <View style={styles.groupContent}>
             <InputField
               name="descriptions"
-              control={control}
               placeholder="Chi tiết"
               style={styles.formInput}
               maxLength={100}
@@ -191,7 +190,6 @@ function Adjustment({ params, onSubmitSuccess }: AddTransactionType) {
           <View style={styles.groupContent}>
             <InputField
               name="location"
-              control={control}
               placeholder="Địa điểm"
               style={[styles.formInput, { width: '90%' }]}
               maxLength={50}
@@ -204,7 +202,7 @@ function Adjustment({ params, onSubmitSuccess }: AddTransactionType) {
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={[styles.itemGroup, styles.itemGroupBetween]}>
             <RNText>Không tính vào báo cáo</RNText>
-            <SwitchField name="excludeReport" control={control} />
+            <SwitchField name="excludeReport" />
           </View>
           <RNText preset="subTitle">Ghi chép này sẽ không thống kê vào các báo cáo.</RNText>
         </View>

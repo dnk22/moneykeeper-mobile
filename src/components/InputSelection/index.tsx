@@ -35,7 +35,7 @@ function Selected({
   onDelete,
   required,
 }: SelectedProps) {
-  const { control, getFieldState, formState } = useFormContext<any>();
+  const { getFieldState, formState } = useFormContext<any>();
   const { colors } = useCustomTheme();
   const iconUri = typeof icon === 'string' ? { uri: icon } : icon;
   const defaultIconUrl = typeof defaultIcon === 'string' ? { uri: defaultIcon } : defaultIcon;
@@ -44,14 +44,7 @@ function Selected({
 
   return (
     <>
-      {fieldName && (
-        <InputField
-          name={fieldName}
-          control={control}
-          rules={{ required }}
-          style={styles.inputField}
-        />
-      )}
+      {fieldName && <InputField name={fieldName} rules={{ required }} style={styles.inputField} />}
       <PressableHaptic style={styles.itemGroup} onPress={onSelect}>
         <FastImage
           defaultSource={unknownIcon}

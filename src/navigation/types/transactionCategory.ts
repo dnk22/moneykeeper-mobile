@@ -1,43 +1,43 @@
-import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
 import { ROUTES } from 'navigation/constants/routes';
-import { RootStackParamList } from './root';
-import { MainTabStackParamsList } from './mainTab';
+import { NavigatorScreenParams } from '@react-navigation/native';
 
 export type TransactionCategoryParams = {
-  [ROUTES.TRANSACTION_CATEGORY_LIST]: { tabHide: string };
+  [ROUTES.TRANSACTION_CATEGORY_LIST]: NavigatorScreenParams<TransactionCategoryTabsParams>;
   [ROUTES.UPDATE_TRANSACTION_CATEGORY]: {
     icon?: string;
     transactionCategoryId?: string;
     transactionCategoryTypeId?: TRANSACTION_CATEGORY_TYPE;
     parentId?: string;
-    type?: any;
-  };
+    type?: TRANSACTION_CATEGORY_TYPE;
+  } | undefined;
   [ROUTES.PARENT_LIST]: { type: TRANSACTION_CATEGORY_TYPE };
   [ROUTES.ICON_SELECT]: undefined;
 };
 
-export type TransactionCategoryParamProps<T extends keyof TransactionCategoryParams> =
-  NativeStackScreenProps<TransactionCategoryParams, T>;
-
 /** transaction category list stack navigation */
-export type TransactionCategoryListParams = {
+export type TransactionCategoryTabsParams = {
   [ROUTES.EXPENSE_CATEGORY]: {
     idActive?: string;
-    returnScreen: keyof RootStackParamList | keyof MainTabStackParamsList;
+    returnScreen: string;
     tabHide?: TRANSACTION_CATEGORY_TYPE[];
   };
   [ROUTES.INCOME_CATEGORY]: {
     idActive?: string;
-    returnScreen: keyof RootStackParamList | keyof MainTabStackParamsList;
+    returnScreen: string;
     tabHide?: TRANSACTION_CATEGORY_TYPE[];
   };
   [ROUTES.LEND_BORROW]: {
     idActive?: string;
-    returnScreen: keyof RootStackParamList | keyof MainTabStackParamsList;
+    returnScreen: string;
     tabHide?: TRANSACTION_CATEGORY_TYPE[];
   };
 };
-export type TransactionCategoryListParamsProps<T extends keyof TransactionCategoryListParams> =
-  MaterialTopTabScreenProps<TransactionCategoryListParams, T>;
+
+// route, navigation
+export type TransactionCategoryParamProps<T extends keyof TransactionCategoryParams> = NativeStackScreenProps<TransactionCategoryParams, T>;
+export type TransactionCategoryTabsParamsProps<T extends keyof TransactionCategoryTabsParams> = {
+  navigation: NativeStackScreenProps<TransactionCategoryTabsParams, T>['navigation'];
+  route: NativeStackScreenProps<TransactionCategoryTabsParams, T>['route'];
+};

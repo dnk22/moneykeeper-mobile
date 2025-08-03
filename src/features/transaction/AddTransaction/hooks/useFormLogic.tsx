@@ -1,5 +1,4 @@
 import { useCallback, useEffect } from 'react';
-import { Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useForm, useWatch } from 'react-hook-form';
 import { TTransactions } from 'database/types';
@@ -13,6 +12,7 @@ import { TransactionParamListProps } from 'navigation/types';
 import { useHeaderOption } from './useHeaderOption';
 import { useTransactionParamsSync } from './useTransactionParamsSync';
 import { accountLocalQuery } from 'database/querying';
+import { showToast } from 'utils/system';
 
 export function useAddTransactionFormLogic({
   navigation,
@@ -50,7 +50,10 @@ export function useAddTransactionFormLogic({
         setValue('accountId', firstAccount.id);
       }
     } catch (error) {
-      Alert.alert('Oops, Lỗi rồi!', 'Có lỗi trong quá trình lấy thông tin tài khoản');
+      showToast({
+        type: 'info',
+        text2: 'Có lỗi trong quá trình lấy thông tin tài khoản',
+      });
     }
   };
 
@@ -76,7 +79,7 @@ export function useAddTransactionFormLogic({
       if (!params?.transactionId && !accountId && !params?.accountId) {
         getDefaultAccountInAddMode();
       }
-    }, [params?.transactionId, accountId, params?.accountId]),
+    }, [params?.transactionId, params?.accountId, accountId]),
   );
 
   useEffect(() => {
@@ -105,6 +108,5 @@ export function useAddTransactionFormLogic({
   return {
     transactionForm,
     onSubmitSuccess,
-    getValues,
   };
 }
