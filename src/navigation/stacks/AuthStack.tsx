@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SignInScreen from 'features/Auth/SignIn';
-import SignUpScreen from 'features/Auth/SignUp';
-import ForgotPasswordScreen from 'features/Auth/ForgotPassword';
+import SignInScreen from 'features/auth/SignIn';
+import SignUpScreen from 'features/auth/SignUp';
+import ForgotPasswordScreen from 'features/auth/ForgotPassword';
 import { AuthStackParamList } from 'navigation/types/auth';
 import { ROUTES } from 'navigation/constants/routes';
 import { useCustomTheme } from 'resources/theme';

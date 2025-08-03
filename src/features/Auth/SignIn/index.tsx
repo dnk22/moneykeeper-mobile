@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, ImageBackground } from 'react-native';
-import { useForm } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import RNText from 'components/Text';
 import { useCustomTheme } from 'resources/theme';
@@ -23,7 +23,7 @@ function SignInScreen() {
   const { appLogin } = useAuth();
   const { colors } = useCustomTheme();
 
-  const { control, handleSubmit } = useForm<TLogin>({
+  const methods = useForm<TLogin>({
     // resolver: yupResolver(validation),
     defaultValues: {
       email: 'duynk198@gmail.com',
@@ -91,95 +91,95 @@ function SignInScreen() {
   ];
 
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={require('assets/images/auth/background.png')}
-        style={[styles.topBlock, { backgroundColor: colors.primary }]}
-      >
-        <View style={styles.logoContainer}>
-          <Nexo style={styles.logo} color="white" variant="Bulk" />
-          <RNText color="white" preset="textSmall" style={styles.appName}>
-            Quản lý chi tiêu
-          </RNText>
-        </View>
-        <View style={styles.actionContainer}>
-          <RNText color="white" fontSize={24} numberOfLines={2} style={styles.title}>
-            Đăng nhập bằng tài khoản của bạn
-          </RNText>
-          <View style={{ flexDirection: 'row' }}>
-            <RNText color="white" preset="textXSmall">
-              Không có tài khoản?
+    <FormProvider {...methods}>
+      <View style={styles.container}>
+        <ImageBackground
+          source={require('assets/images/auth/background.png')}
+          style={[styles.topBlock, { backgroundColor: colors.primary }]}
+        >
+          <View style={styles.logoContainer}>
+            <Nexo style={styles.logo} color="white" variant="Bulk" />
+            <RNText color="white" preset="textSmall" style={styles.appName}>
+              Quản lý chi tiêu
             </RNText>
-            <PressableHaptic onPress={onNavigateToSignUp}>
-              <RNText color="white" preset="textXSmall" style={styles.signup}>
-                Đăng ký ngay
+          </View>
+          <View style={styles.actionContainer}>
+            <RNText color="white" fontSize={24} numberOfLines={2} style={styles.title}>
+              Đăng nhập bằng tài khoản của bạn
+            </RNText>
+            <View style={{ flexDirection: 'row' }}>
+              <RNText color="white" preset="textXSmall">
+                Không có tài khoản?
+              </RNText>
+              <PressableHaptic onPress={onNavigateToSignUp}>
+                <RNText color="white" preset="textXSmall" style={styles.signup}>
+                  Đăng ký ngay
+                </RNText>
+              </PressableHaptic>
+            </View>
+          </View>
+        </ImageBackground>
+        <View style={[styles.bottomBlock, { backgroundColor: colors.surface }]}>
+          <InputField
+            name="email"
+            label="Email"
+            placeholder="Điền email"
+            style={[styles.formInput, { backgroundColor: colors.background }]}
+            autoComplete="email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <InputField
+            name="password"
+            label="Mật khẩu"
+            placeholder="Điền mật khẩu"
+            style={[styles.formInput, { backgroundColor: colors.background }]}
+            secureTextEntry
+          />
+          <View style={styles.forgotPassword}>
+            <PressableHaptic onPress={onNavigateToForgotPassword}>
+              <RNText color={colors.link} preset="textSmall">
+                Quên mật khẩu?
               </RNText>
             </PressableHaptic>
           </View>
-        </View>
-      </ImageBackground>
-      <View style={[styles.bottomBlock, { backgroundColor: colors.surface }]}>
-        <InputField
-          name="email"
-          label="Email"
-          control={control}
-          placeholder="Điền email"
-          style={[styles.formInput, { backgroundColor: colors.background }]}
-          autoComplete="email"
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <InputField
-          name="password"
-          label="Mật khẩu"
-          control={control}
-          placeholder="Điền mật khẩu"
-          style={[styles.formInput, { backgroundColor: colors.background }]}
-          secureTextEntry
-        />
-        <View style={styles.forgotPassword}>
-          <PressableHaptic onPress={onNavigateToForgotPassword}>
-            <RNText color={colors.link} preset="textSmall">
-              Quên mật khẩu?
+          <TouchableHighlightComponent
+            onPress={methods.handleSubmit(onSubmit)}
+            underlayColor={colors.primaryVariant}
+            style={[styles.formInput, styles.submit, { backgroundColor: colors.primary }]}
+          >
+            <RNText color="white" preset="textMedium" style={{ textAlign: 'center' }}>
+              Đăng nhập
             </RNText>
-          </PressableHaptic>
-        </View>
-        <TouchableHighlightComponent
-          onPress={handleSubmit(onSubmit)}
-          underlayColor={colors.primaryVariant}
-          style={[styles.formInput, styles.submit, { backgroundColor: colors.primary }]}
-        >
-          <RNText color="white" preset="textMedium" style={{ textAlign: 'center' }}>
-            Đăng nhập
-          </RNText>
-        </TouchableHighlightComponent>
-        <View style={styles.otherMethods}>
-          <View style={[styles.divider, { backgroundColor: colors.divider }]}>
-            <RNText
-              style={[styles.otherMethodsText, { backgroundColor: colors.surface }]}
-              color={colors.textSecondary}
-              preset="textSmall"
-            >
-              hoặc đăng nhập bằng
-            </RNText>
-          </View>
-          <View style={styles.socialButtonContainer}>
-            {Methods.map((method) => (
-              <TouchableHighlightComponent
-                key={method.name}
-                onPress={method.onPress}
-                style={[
-                  styles.socialButton,
-                  { backgroundColor: colors.background, borderColor: colors.divider },
-                ]}
+          </TouchableHighlightComponent>
+          <View style={styles.otherMethods}>
+            <View style={[styles.divider, { backgroundColor: colors.divider }]}>
+              <RNText
+                style={[styles.otherMethodsText, { backgroundColor: colors.surface }]}
+                color={colors.textSecondary}
+                preset="textSmall"
               >
-                {method.icon}
-              </TouchableHighlightComponent>
-            ))}
+                hoặc đăng nhập bằng
+              </RNText>
+            </View>
+            <View style={styles.socialButtonContainer}>
+              {Methods.map((method) => (
+                <TouchableHighlightComponent
+                  key={method.name}
+                  onPress={method.onPress}
+                  style={[
+                    styles.socialButton,
+                    { backgroundColor: colors.background, borderColor: colors.divider },
+                  ]}
+                >
+                  {method.icon}
+                </TouchableHighlightComponent>
+              ))}
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </FormProvider>
   );
 }
 

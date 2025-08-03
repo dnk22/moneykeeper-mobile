@@ -10,7 +10,7 @@ import { useCustomTheme } from 'resources/theme';
 import { markUserAsOnboarded } from 'services/api/user';
 import { updateAppAuthState } from 'store/app/app.slice';
 import { showToast } from 'utils/system';
-import { getDefaultAppData } from 'features/Auth/helper';
+import { getDefaultAppData } from 'features/auth/helper';
 
 const { width } = Dimensions.get('window'); // Lấy chiều rộng màn hình
 
