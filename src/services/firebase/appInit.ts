@@ -5,7 +5,7 @@ import { FB_PATH } from './config';
 
 export class FirebaseDataSource implements InitializerDataSource {
   async getCategories(): Promise<TTransactionsCategory[]> {
-    const snapshot = await databaseService.get<TTransactionsCategory[]>(
+    const snapshot = await databaseService.getDefaultPath<TTransactionsCategory[]>(
       FB_PATH.DEFAULT_DATA_CATEGORIES,
     );
     return snapshot.data ?? [];
@@ -14,9 +14,6 @@ export class FirebaseDataSource implements InitializerDataSource {
   async getBanks(): Promise<TBank[]> {
     const bankDefault = await databaseService.getDefaultPath<TBank[]>(FB_PATH.DEFAULT_DATA_BANKS);
     const banksOfUser = await databaseService.get<TBank[]>(FB_PATH.BANKS);
-    return [
-      ...(banksOfUser?.data || []),
-      ...(bankDefault?.data || [])
-    ] as TBank[];
+    return [...(banksOfUser?.data || []), ...(bankDefault?.data || [])] as TBank[];
   }
 }

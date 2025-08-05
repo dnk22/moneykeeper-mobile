@@ -4,7 +4,7 @@ export interface InitializerOptions {
   dataSource?: any;
 }
 
-export interface Initializer {
+export interface TInitializer {
   initialize(): Promise<void>;
 }
 

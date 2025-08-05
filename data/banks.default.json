@@ -1,0 +1,632 @@
+[
+  {
+    "id": "yQA7aAh5o9C5tKlF",
+
+    "bankCode": "VCB",
+    "bankName": "NH TMCP Ngoai Thuong VN",
+    "shortName": "VietcomBank",
+    "icon": "https://i.imgur.com/TB9WRRX.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "2r9YKKPbGIGMb5z8",
+
+    "bankCode": "CTG",
+    "bankName": "NH TMCP Cong Thuong VN",
+    "shortName": "VietinBank",
+    "icon": "https://i.imgur.com/eX0eKeO.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "wfCIhTQuGNu49aIV",
+
+    "bankCode": "TCB",
+    "bankName": "NH TMCP Ky Thuong VN",
+    "shortName": "Techcombank",
+    "icon": "https://i.imgur.com/n5GnfGf.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "T3r3ucldHMo8YbuX",
+
+    "bankCode": "BIDV",
+    "bankName": "NH TMCP Dau Tu va Phat Trien VN",
+    "shortName": "BIDV",
+    "icon": "https://i.imgur.com/KjqOXWN.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "tGYP0srhmMRITpj5",
+
+    "bankCode": "VARB",
+    "bankName": "NH Nong Nghiep va Phat Trien Nong Thon Viet Nam",
+    "shortName": "AgriBank",
+    "icon": "https://i.imgur.com/WtXI4Zl.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "0fXWTr3FXe96QrfD",
+
+    "bankCode": "NVB",
+    "bankName": "Ngan hang Thuong Mai Co Phan Quoc Dan",
+    "shortName": "Navibank",
+    "icon": "https://i.imgur.com/scDMKiu.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "phu4FoKZrTmOfPAo",
+
+    "bankCode": "STB",
+    "bankName": "NH TMCP Sai Gon Thuong Tin",
+    "shortName": "Sacombank",
+    "icon": "https://i.imgur.com/d6ijnli.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "URINeuELTCPNwGNU",
+
+    "bankCode": "ACB",
+    "bankName": "NH TMCP A Chau",
+    "shortName": "ACB",
+    "icon": "https://i.imgur.com/As2uoIM.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "BJCerlR07DGFEaxs",
+
+    "bankCode": "MB",
+    "bankName": "NH TMCP Quan Doi",
+    "shortName": "MBBank",
+    "icon": "https://i.imgur.com/m0DlbL4.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "RqP5v80SUuWgkUPm",
+
+    "bankCode": "TPB",
+    "bankName": "NH TMCP Tien Phong",
+    "shortName": "TPBank",
+    "icon": "https://i.imgur.com/YkRVNiY.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "EvyiciGlGdUupwN6",
+
+    "bankCode": "SVB",
+    "bankName": "NH TNHH MTV Shinhan VN",
+    "shortName": "Shinhan Bank",
+    "icon": "https://i.imgur.com/CV1riQY.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "kEuZnnqZizgXMP6y",
+
+    "bankCode": "VIB",
+    "bankName": "NH TMCP Quoc Te VN",
+    "shortName": "VIB Bank",
+    "icon": "https://i.imgur.com/HslVAal.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "guzjCWU2DVEeUlx3",
+
+    "bankCode": "VPB",
+    "bankName": "NH TMCP Viet Nam Thinh Vuong",
+    "shortName": "VPBank",
+    "icon": "https://i.imgur.com/dUQFkff.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "J3nE42c6lcSDXsR7",
+
+    "bankCode": "SHB",
+    "bankName": "NH TMCP Sai Gon Ha Noi",
+    "shortName": "SHB",
+    "icon": "https://i.imgur.com/K3luQTx.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "x8TTtMc68QnXcWU8",
+
+    "bankCode": "EIB",
+    "bankName": "NH TMCP Xuat Nhap khau VN",
+    "shortName": "Eximbank",
+    "icon": "https://i.imgur.com/Q5aWSWL",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "Or5kbsooN59zLNED",
+
+    "bankCode": "BVB",
+    "bankName": "NH TMCP Bao Viet",
+    "shortName": "BaoVietBank",
+    "icon": "https://i.imgur.com/CBW8zUc.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "9oK77Eti87NF4kzz",
+
+    "bankCode": "VCCB",
+    "bankName": "NH TMCP Ban Viet",
+    "shortName": "VietcapitalBank",
+    "icon": "https://i.imgur.com/qH5Wuau.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "dYt2IzD2kgWQ6bGW",
+
+    "bankCode": "SCB",
+    "bankName": "NH TMCP Sai Gon",
+    "shortName": "SCB",
+    "icon": "https://i.imgur.com/73y9Lm9.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "oUeDY5eSaDMiXSZY",
+
+    "bankCode": "VRB",
+    "bankName": "NH Lien Doanh Viet Nga",
+    "shortName": "VietNam - Russia Bank",
+    "icon": "https://i.imgur.com/4oBHVW7.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "RoDyzCUMciW2TaKQ",
+
+    "bankCode": "ABB",
+    "bankName": "NH TMCP An Binh",
+    "shortName": "ABBank",
+    "icon": "https://i.imgur.com/V7u6zaV.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "AIqETaHASvwCWst8",
+
+    "bankCode": "PVCB",
+    "bankName": "NH TMCP Dai Chung VN",
+    "shortName": "PVCombank",
+    "icon": "https://i.imgur.com/ywtoS9t.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "QHMuQCHbOYVayULp",
+
+    "bankCode": "OJB",
+    "bankName": "NH TM TNHH MTV Dai Duong",
+    "shortName": "OceanBank",
+    "icon": "https://i.imgur.com/QZ3JOA3.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "F73zTBBZWDwjLAB6",
+
+    "bankCode": "NAB",
+    "bankName": "NH TMCP Nam A",
+    "shortName": "NamA bank",
+    "icon": "https://i.imgur.com/ugJ8ESI.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "9uLdBsTaVYTdpqSJ",
+
+    "bankCode": "HDB",
+    "bankName": "NH TMCP Phat Trien TP HCM",
+    "shortName": "HDBank",
+    "icon": "https://i.imgur.com/7LQR9Zt.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "F8N0pRicfG0vBcbp",
+
+    "bankCode": "VB",
+    "bankName": "NH TMCP Viet Nam Thuong Tin",
+    "shortName": "VietBank",
+    "icon": "https://i.imgur.com/ZjmOlfF.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "jhniFVWFnPXqaK8K",
+
+    "bankCode": "CFC",
+    "bankName": "Công ty Tài chính Cổ Phần Tín Việt",
+    "shortName": "VietCredit",
+    "icon": "https://i.imgur.com/FqFK4HF.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "CFklYFvaeL3YmECp",
+
+    "bankCode": "PBVN",
+    "bankName": "NH TNHH MTV Public VN",
+    "shortName": "Public bank",
+    "icon": "https://i.imgur.com/Bkn58gi.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "OeuBPFObrYdvHyJ3",
+
+    "bankCode": "HLB",
+    "bankName": "NH TNHH MTV Hongleong VN",
+    "shortName": "Hongleong Bank",
+    "icon": "https://i.imgur.com/iXP0fFM.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "jRtbhKdZRxB9DGow",
+
+    "bankCode": "PGB",
+    "bankName": "NH TMCP Xang Dau Petrolimex",
+    "shortName": "PG Bank",
+    "icon": "https://i.imgur.com/aVQnNOU.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "0TsAAyCEaOd3zuQB",
+
+    "bankCode": "COB",
+    "bankName": "NH Hop Tac",
+    "shortName": "Co.op Bank",
+    "icon": "https://i.imgur.com/fWKmX19.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "v5DCa2rX2sMNxiAd",
+
+    "bankCode": "CIMB",
+    "bankName": "NH TNHH MTV CIMB Viet Nam",
+    "shortName": "CIMB",
+    "icon": "https://i.imgur.com/D10XUTf.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "TQNWoez3322pToAZ",
+
+    "bankCode": "IVB",
+    "bankName": "NH TNHH Indovina",
+    "shortName": "Indovina",
+    "icon": "https://i.imgur.com/ZR4WUGN.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "tiBJbkv8Y0loaCpw",
+
+    "bankCode": "DAB",
+    "bankName": "NH TMCP Dong A",
+    "shortName": "DongABank",
+    "icon": "https://i.imgur.com/iq0Y64t.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "e49xyYDnuNU5x1U4",
+
+    "bankCode": "GPB",
+    "bankName": "NH TM TNHH MTV Dau Khi Toan Cau",
+    "shortName": "GPBank",
+    "icon": "https://i.imgur.com/4Ee5hB7",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "S15vQOqbUBaGJaFK",
+
+    "bankCode": "NASB",
+    "bankName": "NH TMCP Bac A",
+    "shortName": "BacABank",
+    "icon": "https://i.imgur.com/UIqrcT1.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "O9XzAA2BCJpXi0Dw",
+
+    "bankCode": "VAB",
+    "bankName": "NH TMCP Viet A",
+    "shortName": "VietABank",
+    "icon": "https://i.imgur.com/dNvCWLJ.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "ttM2cJMyTjbVnoI0",
+
+    "bankCode": "SGB",
+    "bankName": "NH TMCP Sai Gon Cong Thuong",
+    "shortName": "SaigonBank",
+    "icon": "https://i.imgur.com/FWYLumA.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "nouwPcn6iV1RBCJ8",
+
+    "bankCode": "MSB",
+    "bankName": "NH TMCP Hang Hai VN",
+    "shortName": "Maritime Bank",
+    "icon": "https://i.imgur.com/jxP8DTL.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "pnQALm3St56ZkA1X",
+
+    "bankCode": "LPB",
+    "bankName": "NH TMCP Buu Dien Lien Viet",
+    "shortName": "LienVietPostBank",
+    "icon": "https://i.imgur.com/KG3SUQF.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "9g5RoasnmEOcafCJ",
+
+    "bankCode": "KLB",
+    "bankName": "NH TMCP Kien Long",
+    "shortName": "KienLongBank",
+    "icon": "https://i.imgur.com/0wIOaYT.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "7VX81DioDRJXLlTF",
+
+    "bankCode": "WOO",
+    "bankName": "NH Wooribank",
+    "shortName": "Woori bank",
+    "icon": "https://i.imgur.com/rRGPyfp.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "pJ9QQhibAIbSDtXH",
+
+    "bankCode": "SEAB",
+    "bankName": "NH TMCP Dong Nam A",
+    "shortName": "SeABank",
+    "icon": "https://i.imgur.com/zKeiKDv.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "JIp9tiogWrW8XfFt",
+
+    "bankCode": "UOB",
+    "bankName": "NH TNHH MTV United Overseas Bank",
+    "shortName": "UOB",
+    "icon": "https://i.imgur.com/1PENECa.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "grUOYeMaqLRejH9y",
+
+    "bankCode": "OCB",
+    "bankName": "NH TMCP Phuong Dong",
+    "shortName": "OCB",
+    "icon": "https://i.imgur.com/JtlwP1n.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "oNOMQvWXfxrLzxXB",
+
+    "bankCode": "MAFC",
+    "bankName": "Cong ty Tai chinh TNHH MTV Mirae Asset (Viet Nam)",
+    "shortName": "Mirae Asset",
+    "icon": "https://i.imgur.com/ndvlQal.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "NZbw26hxKMPHeOYb",
+
+    "bankCode": "KEBHANA",
+    "bankName": "Ngan hang Keb Hana",
+    "shortName": "Keb Hana - Ho Chi Minh",
+    "icon": "https://i.imgur.com/GviT1op.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "XAzsLU4hxpHlXa2v",
+
+    "bankCode": "STANDARD",
+    "bankName": "Standard Chartered",
+    "shortName": "Standard Chartered",
+    "icon": "https://i.imgur.com/Mx7DW5P.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "wgzokFLgXzGYkPip",
+
+    "bankCode": "CAKE",
+    "bankName": "NH So CAKE by VPBank",
+    "shortName": "CAKE",
+    "icon": "https://i.imgur.com/QPl1TR8.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "pJBfu8E0Q1sXqoSz",
+
+    "bankCode": "Ubank",
+    "bankName": "NH So Ubank by VPBank",
+    "shortName": "Ubank",
+    "icon": "https://i.imgur.com/EpEdg5l.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "IsVlOtZExIAIoPMg",
+
+    "bankCode": "KBHN",
+    "bankName": "NH Kookmin",
+    "shortName": "Kookmin",
+    "icon": "https://i.imgur.com/ELdSEOf.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "nEO4Nv9YOaverbJh",
+
+    "bankCode": "CBBank",
+    "bankName": "NH TM TNHH MTV Xay Dung Viet Nam",
+    "shortName": "CBBank",
+    "icon": "https://i.imgur.com/cm3AnCT.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "W5d9Loj8x7BuNhfi",
+
+    "bankCode": "KBank",
+    "bankName": "NH Dai chung TNHH Kasikornbank",
+    "shortName": "KBank",
+    "icon": "https://i.imgur.com/ZKBT3R7.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "j3aJ5AhixBq0gM1D",
+
+    "bankCode": "HSBC",
+    "bankName": "NH TNHH MTV HSBC Viet Nam",
+    "shortName": "HSBC",
+    "icon": "https://i.imgur.com/8AIRYD3.png",
+    "isSystem": 1,
+    "type": "0"
+  },
+  {
+    "id": "iYut7ZwJdloWNIjf",
+
+    "bankCode": "shopeepay",
+    "bankName": "Shopee Pay",
+    "shortName": "",
+    "icon": "https://i.imgur.com/dOp33lU.png",
+    "isSystem": 1,
+    "type": "1"
+  },
+  {
+    "id": "Xyk1WgitD7RtzchT",
+
+    "bankCode": "viettelpay",
+    "bankName": "Viettel Pay",
+    "shortName": "",
+    "icon": "https://i.imgur.com/Gs9LLak.png",
+    "isSystem": 1,
+    "type": "1"
+  },
+  {
+    "id": "YfdDJMYu4V5LVGv6",
+
+    "bankCode": "zalopay",
+    "bankName": "Zalo Pay",
+    "shortName": "",
+    "icon": "https://i.imgur.com/Ki5ZITN.png",
+    "isSystem": 1,
+    "type": "1"
+  },
+  {
+    "id": "jGY2A1RWHgLcOS5M",
+
+    "bankCode": "momo",
+    "bankName": "Momo",
+    "shortName": "",
+    "icon": "https://i.imgur.com/l3fKHzf.png",
+    "isSystem": 1,
+    "type": "1"
+  },
+  {
+    "id": "w14utgp3Yk5JbKcm",
+
+    "bankCode": "vnptpay",
+    "bankName": "VNPT Pay",
+    "shortName": "",
+    "icon": "https://i.imgur.com/RAmY3Vf.png",
+    "isSystem": 1,
+    "type": "1"
+  },
+  {
+    "id": "P0Ed35O4MJRZvQkU",
+
+    "bankCode": "tcbs",
+    "bankName": "TCBS",
+    "shortName": "",
+    "icon": "https://i.imgur.com/NMXUgbe.png",
+    "isSystem": 1,
+    "type": "2"
+  },
+  {
+    "id": "R7u2Xf8yHqojAZd3",
+
+    "bankCode": "mbs",
+    "bankName": "MBS",
+    "shortName": "",
+    "icon": "https://i.imgur.com/9Ypg5Dc.png",
+    "isSystem": 1,
+    "type": "2"
+  },
+  {
+    "id": "VCnBQDRahmZzz4ys",
+
+    "bankCode": "ssi",
+    "bankName": "SSI",
+    "shortName": "",
+    "icon": "https://i.imgur.com/m5O9PN2.png",
+    "isSystem": 1,
+    "type": "2"
+  },
+  {
+    "id": "LDhq8sk39ev7Hx5z",
+
+    "bankCode": "vndirect",
+    "bankName": "VNDIRECT",
+    "shortName": "",
+    "icon": "https://i.imgur.com/tjBvXTo.png",
+    "isSystem": 1,
+    "type": "2"
+  },
+  {
+    "id": "4nvukOk969z89R7S",
+
+    "bankCode": "vps",
+    "bankName": "VPS",
+    "shortName": "",
+    "icon": "https://i.imgur.com/MTjCpHs.png",
+    "isSystem": 1,
+    "type": "2"
+  }
+]

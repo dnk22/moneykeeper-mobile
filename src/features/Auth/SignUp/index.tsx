@@ -12,10 +12,10 @@ import { useNavigation } from '@react-navigation/native';
 import { AuthStackNavigationProps } from 'navigation/types/auth';
 import { TRegister } from 'utils/types/auth';
 import { useAuth } from 'services/auth/AuthProvider';
-import styles from './styles';
 import { ROUTES } from 'navigation/constants/routes';
 import { useDispatch } from 'react-redux';
 import { updateAppAuthState } from 'store/app/app.slice';
+import styles from './styles';
 
 function SignUpScreen() {
   const dispatch = useDispatch();
@@ -44,10 +44,6 @@ function SignUpScreen() {
     }
   };
 
-  const onNavigateToSignIn = () => {
-    navigation.popTo(ROUTES.SIGN_IN);
-  };
-
   return (
     <FormProvider {...methods}>
       <View style={styles.container}>
@@ -69,7 +65,7 @@ function SignUpScreen() {
               <RNText color="white" preset="textXSmall">
                 Đã có tài khoản?
               </RNText>
-              <PressableHaptic onPress={onNavigateToSignIn}>
+              <PressableHaptic onPress={() => navigation.navigate(ROUTES.SIGN_IN)}>
                 <RNText color="white" preset="textXSmall" style={styles.signup}>
                   Đăng nhập ngay
                 </RNText>

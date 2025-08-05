@@ -34,5 +34,5 @@ export type TTransactionType = {
   value: TRANSACTION_TYPE;
   name: string;
   icon: string;
-  categoryType?: TRANSACTION_CATEGORY_TYPE;
+  categoryType?: any;
 };

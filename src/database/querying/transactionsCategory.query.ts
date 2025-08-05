@@ -4,7 +4,7 @@ import { TRANSACTION_CATEGORY } from 'database/constants';
 import { TTransactionsCategory } from 'database/types';
 import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constants';
 import { Q } from '@nozbe/watermelondb';
-import { TransactionCategoryData } from 'utils/data/transactionCategory.default';
+import { CategoriesDataDefault } from 'utils/data/transactionCategory.default';
 import { SQLiteQuery } from '@nozbe/watermelondb/adapters/sqlite';
 
 /** read */
@@ -137,7 +137,7 @@ export const queryImportDefaultTransactionCategory = async () => {
       data: [],
     };
   }
-  const updateStatements: SQLiteQuery[] = TransactionCategoryData.map((record) => {
+  const updateStatements: SQLiteQuery[] = CategoriesDataDefault.map((record) => {
     const {
       id,
       categoryName,

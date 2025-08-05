@@ -1,16 +1,16 @@
 import { storageService } from '../storage';
-import { Initializer, InitializerDataSource } from './types';
-import { BankInitializer } from './initializer/Bank';
+import { TInitializer, InitializerDataSource } from './types';
+import { Initializer } from './initializer';
 
 const APP_INITIALIZED_KEY = '@app_initialized';
 
 class AppInitService {
   private static instance: AppInitService;
-  private initializers: Initializer[];
+  private initializers: TInitializer;
 
   private constructor(dataSource: InitializerDataSource) {
     // Register all initializers
-    this.initializers = [new BankInitializer({ dataSource })];
+    this.initializers = new Initializer({ dataSource });
   }
 
   public static getInstance(dataSource: InitializerDataSource): AppInitService {
@@ -20,28 +20,22 @@ class AppInitService {
     return AppInitService.instance;
   }
 
-  async isFirstLaunch(): Promise<boolean> {
-    const initialized = storageService.getItem(APP_INITIALIZED_KEY);
-    return !initialized;
-  }
+  // async isFirstLaunch(): Promise<boolean> {
+  //   const initialized = storageService.getItem(APP_INITIALIZED_KEY);
+  //   return !initialized;
+  // }
 
   async initializeApp(): Promise<void> {
     try {
-      // const isFirst = await this.isFirstLaunch();
-      // if (isFirst) {
       await this.initializeDefaultData();
       storageService.setItem(APP_INITIALIZED_KEY, 'true');
-      // }
     } catch (error) {
-      console.error('Error initializing app:', error);
       throw error;
     }
   }
 
   private async initializeDefaultData(): Promise<void> {
-    for (const initializer of this.initializers) {
-      return await initializer.initialize();
-    }
+    await this.initializers.initialize();
   }
 }
 export default AppInitService;
