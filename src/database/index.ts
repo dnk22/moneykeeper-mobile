@@ -12,7 +12,15 @@ import {
   BalanceModel,
   SyncQueueModel,
 } from './models';
-import { ACCOUNTS, BALANCE, BANKS, CONTACT, SYNC_QUEUE, TRANSACTION_CATEGORY, TRANSACTIONS } from './constants';
+import {
+  ACCOUNTS,
+  BALANCE,
+  BANKS,
+  CONTACT,
+  SYNC_QUEUE,
+  TRANSACTION_CATEGORY,
+  TRANSACTIONS,
+} from './constants';
 
 // First, create the adapter to the underlying database:
 const adapter = new SQLiteAdapter({
@@ -56,26 +64,21 @@ export const database = new Database({
 export const clearAllData = async (): Promise<void> => {
   try {
     await database.write(async () => {
-      // 1. Xóa các bản ghi SyncQueue
-      await database.collections.get(SYNC_QUEUE).query().destroyAllPermanently();
+      // Lấy danh sách các collection
+      const collectionsToClear = [
+        database.collections.get(SYNC_QUEUE),
+        database.collections.get(TRANSACTIONS),
+        database.collections.get(ACCOUNTS),
+        database.collections.get(BALANCE),
+        database.collections.get(CONTACT),
+        database.collections.get(TRANSACTION_CATEGORY),
+        database.collections.get(BANKS),
+      ];
 
-      // 2. Xóa các bản ghi Balance vì nó phụ thuộc vào Transaction và Account
-      await database.collections.get(BALANCE).query().destroyAllPermanently();
-
-      // 3. Xóa các bản ghi Transaction vì nó phụ thuộc vào Account và Category
-      await database.collections.get(TRANSACTIONS).query().destroyAllPermanently();
-
-      // 4. Xóa các bản ghi Account
-      await database.collections.get(ACCOUNTS).query().destroyAllPermanently();
-
-      // 5. Xóa các bản ghi Contact
-      await database.collections.get(CONTACT).query().destroyAllPermanently();
-
-      // 6. Xóa các bản ghi Category
-      await database.collections.get(TRANSACTION_CATEGORY).query().destroyAllPermanently();
-
-      // 7. Xóa các bản ghi Bank
-      await database.collections.get(BANKS).query().destroyAllPermanently();
+      // Xóa tất cả các bản ghi trong mỗi collection
+      for (const collection of collectionsToClear) {
+        await collection.query().destroyAllPermanently();
+      }
     });
   } catch (error) {
     throw new Error('Failed to clear database');
