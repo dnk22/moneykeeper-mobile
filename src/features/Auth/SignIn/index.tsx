@@ -16,7 +16,8 @@ import { useAuth } from 'services/auth/AuthProvider';
 import styles from './styles';
 import { useDispatch } from 'react-redux';
 import { updateAppAuthState, updateAppLoading } from 'store/app/app.slice';
-import { getDefaultAppData } from '../helper';
+import initializeAppData from 'services/initialization/helper';
+import { showToast } from 'utils/system';
 
 function SignInScreen() {
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ function SignInScreen() {
   const methods = useForm<TLogin>({
     // resolver: yupResolver(validation),
     defaultValues: {
-      email: 'duynk198@gmail.com',
+      email: 'duynk1988@gmail.com',
       password: '000000',
     },
   });
@@ -37,7 +38,7 @@ function SignInScreen() {
       const { data } = await appLogin(formData);
       if (data) {
         if (data.isOnBoard) {
-          await getDefaultAppData();
+          await initializeAppData(dispatch);
         }
         dispatch(
           updateAppAuthState({
@@ -47,6 +48,11 @@ function SignInScreen() {
         );
       }
     } catch (error) {
+      console.log(error, 'error');
+      showToast({
+        type: 'error',
+        text2: 'Đăng nhập không thành công. Vui lòng thử lại.',
+      });
     } finally {
       dispatch(updateAppLoading(false));
     }

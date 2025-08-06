@@ -6,9 +6,10 @@ import { TLogin, TRegister } from 'utils/types/auth';
 import { AuthResponse, fireBaseAuthService } from 'services/firebase';
 import { showToast } from 'utils/system';
 import { selectAppAuthState } from 'store/app/app.selector';
-import { RootState } from 'store/index';
+import { persistor, RootState } from 'store/index';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateAppAuthState, updateAppLoading } from 'store/app/app.slice';
+import { clearAllData } from 'database/index';
 
 type TFirebaseAuthResponse = AuthResponse<FirebaseAuthTypes.UserCredential>;
 
@@ -93,6 +94,8 @@ export const AuthProvider = ({ children }: any) => {
   const appLogout = async () => {
     dispatch(updateAppLoading(true));
     try {
+      await persistor.purge();
+      await clearAllData();
       const { error } = await fireBaseAuthService.signOut();
       if (error) {
         showToast({

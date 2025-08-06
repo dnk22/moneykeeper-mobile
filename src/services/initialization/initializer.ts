@@ -28,22 +28,47 @@ export class Initializer implements TInitializer {
         return;
       }
       const banksTable = database.collections.get<BankModel>(BANKS);
+
       await database.write(async () => {
-        await database.batch(
-          ...banksCollection.map((data) =>
-            banksTable.prepareCreate((bank) => {
-              bank._raw.id = data.id;
+        const batchOperations = await Promise.all(
+          banksCollection.map(async (data) => {
+            try {
+              // Kiểm tra xem bank đã tồn tại chưa
+              const existingBank = await banksTable.find(data.id);
               const dataUpdate = { ...data } as Partial<typeof data>;
               delete dataUpdate.id;
-              Object.assign(bank, dataUpdate);
-            }),
-          ),
+
+              if (existingBank) {
+                // Nếu đã tồn tại thì update
+                return existingBank.prepareUpdate((bank) => {
+                  Object.assign(bank, dataUpdate);
+                });
+              } else {
+                // Nếu chưa tồn tại thì create mới
+                return banksTable.prepareCreate((bank) => {
+                  bank._raw.id = data.id;
+                  Object.assign(bank, dataUpdate);
+                });
+              }
+            } catch (error) {
+              // Nếu không tìm thấy bank (find throws error) thì tạo mới
+              return banksTable.prepareCreate((bank) => {
+                bank._raw.id = data.id;
+                const dataUpdate = { ...data } as Partial<typeof data>;
+                delete dataUpdate.id;
+                Object.assign(bank, dataUpdate);
+              });
+            }
+          }),
         );
+
+        await database.batch(...batchOperations);
       });
     } catch (error: any) {
       throw new Error(`Failed to initialize banks: ${error.message}`);
     }
   }
+
   /**
    * Initialize categories data from the data source and store it in the database.
    * If the categories collection is empty, this method will return without making any changes.
@@ -57,20 +82,43 @@ export class Initializer implements TInitializer {
       }
       const categoriesTable =
         database.collections.get<TransactionCategoryModel>(TRANSACTION_CATEGORY);
+
       await database.write(async () => {
-        await database.batch(
-          ...categoriesCollection.map((data) =>
-            categoriesTable.prepareCreate((category) => {
-              category._raw.id = data.id;
+        const batchOperations = await Promise.all(
+          categoriesCollection.map(async (data) => {
+            try {
+              // Kiểm tra xem category đã tồn tại chưa
+              const existingCategory = await categoriesTable.find(data.id);
               const dataUpdate = { ...data } as Partial<typeof data>;
               delete dataUpdate.id;
-              Object.assign(category, dataUpdate);
-            }),
-          ),
+
+              if (existingCategory) {
+                // Nếu đã tồn tại thì update
+                return existingCategory.prepareUpdate((category) => {
+                  Object.assign(category, dataUpdate);
+                });
+              } else {
+                // Nếu chưa tồn tại thì create mới
+                return categoriesTable.prepareCreate((category) => {
+                  category._raw.id = data.id;
+                  Object.assign(category, dataUpdate);
+                });
+              }
+            } catch (error) {
+              // Nếu không tìm thấy category (find throws error) thì tạo mới
+              return categoriesTable.prepareCreate((category) => {
+                category._raw.id = data.id;
+                const dataUpdate = { ...data } as Partial<typeof data>;
+                delete dataUpdate.id;
+                Object.assign(category, dataUpdate);
+              });
+            }
+          }),
         );
+
+        await database.batch(...batchOperations);
       });
     } catch (error: any) {
-      console.log(error);
       throw new Error(`Failed to initialize categories: ${error.message}`);
     }
   }

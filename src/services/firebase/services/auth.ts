@@ -84,13 +84,13 @@ class FireBaseAuthService {
 
   private getSignInErrorMessage(errorCode: string): string {
     switch (errorCode) {
-      case 'auth/user-not-found':
+      case 'user-not-found':
         return 'Người dùng không tồn tại. Vui lòng đăng ký tài khoản mới.';
-      case 'auth/wrong-password':
+      case 'wrong-password':
         return 'Mật khẩu không chính xác. Vui lòng thử lại.';
-      case 'auth/invalid-email':
+      case 'invalid-email':
         return 'Email không hợp lệ. Vui lòng kiểm tra lại.';
-      case 'auth/too-many-requests':
+      case 'too-many-requests':
         return 'Quá nhiều yêu cầu đăng nhập. Vui lòng thử lại sau.';
       default:
         return 'Đã có lỗi xảy ra khi đăng nhập';
@@ -134,14 +134,15 @@ class FireBaseAuthService {
           displayName,
         });
       }
+
+      // Send email verification
+      // await userCredential.user?.sendEmailVerification();
+
       // Create user profile in the database
       await userService.createUserProfile({ email, displayName });
 
       // Initialize app settings for the new user
       await appSettingsFb.updateSettings({ newSettings: defaultSettings });
-
-      // Send email verification
-      // await userCredential.user?.sendEmailVerification();
 
       return { data: userCredential, error: null };
     } catch (error: any) {

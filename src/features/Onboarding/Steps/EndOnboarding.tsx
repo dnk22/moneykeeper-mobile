@@ -1,16 +1,16 @@
-import { View, Dimensions } from 'react-native';
-import { commonStyle, endBoardingStyle } from './styles';
-import Text from 'components/Text';
 import { useEffect, useState } from 'react';
+import { View, Dimensions } from 'react-native';
+import Text from 'components/Text';
 import { useAppDispatch, useAppSelector } from 'store/index';
-import { updateOnboardingSettings } from 'services/api/auth';
+import { updateOnboardingSettings } from 'services/api/app';
 import { useSharedValue, useAnimatedStyle, withTiming, Easing } from 'react-native-reanimated';
 import Animated from 'react-native-reanimated';
 import { useCustomTheme } from 'resources/theme';
 import { markUserAsOnboarded } from 'services/api/user';
 import { updateAppAuthState } from 'store/app/app.slice';
 import { showToast } from 'utils/system';
-import { getDefaultAppData } from 'features/auth/helper';
+import initializeAppData from 'services/initialization/helper';
+import { commonStyle, endBoardingStyle } from './styles';
 
 const { width } = Dimensions.get('window'); // Lấy chiều rộng màn hình
 
@@ -57,13 +57,20 @@ function EndOnboarding() {
   const [rowStatuses, setRowStatuses] = useState([false, false, false]); // Trạng thái của từng hàng
   const translateXValues = [useSharedValue(width), useSharedValue(width), useSharedValue(width)]; // Giá trị translateX cho từng hàng
 
-  useEffect(() => {
-    updateOnboardingSettings({ appearance, report, notification }).then(async () => {
-      await getDefaultAppData();
-      // Bắt đầu hiệu ứng sau khi API thành công
-      startAnimation();
-    });
-  }, []);
+  const endOnboarding = async () => {
+    try {
+      await updateOnboardingSettings({ appearance, report, notification });
+      await markUserAsOnboarded();
+      await initializeAppData(dispatch);
+
+      dispatch(updateAppAuthState({ isOnboarded: true }));
+    } catch (error) {
+      showToast({
+        type: 'error',
+        text2: 'Đã có lỗi xảy ra. Hãy thử khởi động lại ứng dụng.',
+      });
+    }
+  };
 
   const startAnimation = async () => {
     for (let i = 0; i < 3; i++) {
@@ -81,23 +88,12 @@ function EndOnboarding() {
         easing: Easing.out(Easing.ease),
       });
     }
-    setTimeout(() => {
-      markUserAsOnboarded()
-        .then(() => {
-          dispatch(
-            updateAppAuthState({
-              isOnboarded: true,
-            }),
-          );
-        })
-        .catch(() => {
-          showToast({
-            type: 'error',
-            text2: 'Có lỗi xảy ra, vui lòng thử lại.',
-          });
-        });
-    }, 500);
   };
+
+  useEffect(() => {
+    endOnboarding();
+    startAnimation();
+  }, []);
 
   return (
     <View style={commonStyle.containerCenter}>

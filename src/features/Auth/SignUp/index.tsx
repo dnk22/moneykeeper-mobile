@@ -27,7 +27,7 @@ function SignUpScreen() {
   const methods = useForm({
     defaultValues: {
       displayName: 'Khánh Duy',
-      email: 'duynk198@gmail.com',
+      email: 'duynk1988@gmail.com',
       password: '000000',
     },
   });
