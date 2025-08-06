@@ -27,10 +27,12 @@ function ActiveAccount({
   const sortField = useMemo(() => (sortByName ? 'accountName' : 'sortOrder'), [sortByName]);
 
   const accountList = useMemo(() => {
-    const accountList = data.filter((item) => item.isActive === +isActive);
+    const accountList = data.filter((item) => +item.isActive === +isActive);
     return groupByType
       ? groupAccountDataByValue(accountList, sortField)
-      : [{ data: accountList.sort(sortDataByKey(sortField)) }];
+      : accountList.length > 0
+      ? [{ data: accountList.sort(sortDataByKey(sortField)) }]
+      : [];
   }, [data, groupByType, sortField, isActive]);
 
   const renderSectionHeader = ({ section }: { section: SectionListData<TAccount> }) => {
