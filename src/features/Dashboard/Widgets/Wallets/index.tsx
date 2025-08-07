@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { accountLocalQuery } from 'database/querying';
 import PressableHaptic from 'components/PressableHaptic';
-import IconComponent from 'components/IconComponent';
+import ImageComponent from 'components/ImageComponent';
 import RNText from 'components/Text';
 import { ROUTES } from 'navigation/constants/routes';
 import { formatNumber } from 'utils/math';
@@ -64,7 +64,7 @@ function Wallets({ title }: { title: string }) {
           <RNText style={styles.title} fontSize={12}>
             {item.accountName}
           </RNText>
-          <IconComponent name={item.accountLogo} style={styles.accountIcon} />
+          <ImageComponent name={item.accountLogo} style={styles.accountIcon} />
         </View>
       </PressableHaptic>
     );

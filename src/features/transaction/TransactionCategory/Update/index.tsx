@@ -15,7 +15,7 @@ import {
 import PressableHaptic from 'components/PressableHaptic';
 import SvgIcon from 'components/SvgIcon';
 import FormAction from 'components/common/FormAction';
-import IconComponent from 'components/IconComponent';
+import ImageComponent from 'components/ImageComponent';
 import InputField from 'components/InputField';
 import InputSelection from 'components/InputSelection';
 import styles from './styles';
@@ -121,7 +121,7 @@ function UpdateTransactionCategory() {
           ]}
           onPress={navigateToSelectIcon}
         >
-          <IconComponent size={38} name={getValues('icon') || 'unknown'} />
+          <ImageComponent size={38} name={getValues('icon') || 'unknown'} />
           {watch('icon') && (
             <PressableHaptic onPress={handleOnDeleteIcon} style={styles.clearIcon}>
               <SvgIcon size={18} name="closeCircle" color="red" />

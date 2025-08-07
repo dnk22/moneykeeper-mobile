@@ -4,7 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import isEqual from 'react-fast-compare';
 import { useCustomTheme } from 'resources/theme';
 import RNText from 'components/Text';
-import IconComponent from 'components/IconComponent';
+import ImageComponent from 'components/ImageComponent';
 import { queryRecentTransaction } from 'database/querying';
 import { TTransactions } from 'database/types';
 import { isToday, isYesterday } from 'date-fns';
@@ -84,7 +84,7 @@ function RecentTransactions({ title }: { title: string }) {
             <View style={[styles.item, { backgroundColor: colors.surface }]} key={item.id}>
               <View style={styles.itemContent}>
                 <View style={[styles.icon, { backgroundColor: colors.background }]}>
-                  <IconComponent
+                  <ImageComponent
                     name={renderCategoryIcon(item.transactionType, item.categoryIcon, item.amount)}
                   />
                 </View>

@@ -9,7 +9,7 @@ import size from 'lodash/size';
 import ShakeAnimation from 'resources/animations/Shake';
 import { ITEM_WIDTH } from '../../constants.config';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
-import IconComponent from 'components/IconComponent';
+import ImageComponent from 'components/ImageComponent';
 import RNText from 'components/Text';
 import styles from './styles';
 
@@ -41,7 +41,7 @@ function ParentItem({ data, disabled }: ParentItemProps) {
         <View style={styles.itemHeader}>
           <ShakeAnimation isActiveAnim={isUpdate && !disabled}>
             <View style={styles.iconView}>
-              <IconComponent name={data.icon} size={22} />
+              <ImageComponent name={data.icon} size={22} />
             </View>
           </ShakeAnimation>
           <RNText numberOfLines={1} style={styles.headerTitle} fontSize={18}>
@@ -62,7 +62,7 @@ function ParentItem({ data, disabled }: ParentItemProps) {
             <View style={[styles.itemChild, { width: ITEM_WIDTH }]}>
               <ShakeAnimation isActiveAnim={isUpdate && !disabled}>
                 <View style={styles.iconView}>
-                  <IconComponent name={children.icon} size={22} />
+                  <ImageComponent name={children.icon} size={22} />
                 </View>
               </ShakeAnimation>
               <RNText numberOfLines={1} fontSize={12} style={{ opacity: 0.8 }}>

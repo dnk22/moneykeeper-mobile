@@ -13,8 +13,8 @@ import { ACCOUNT_CATEGORY_ID } from 'utils/constants/account';
 import { AccountContext } from 'features/account/AccountDashboard/context';
 import { TAccount } from 'database/types';
 import { accountListStyles as styles } from '../../styles';
-import FastImage from 'react-native-fast-image';
 import { Settings } from 'iconsax-react-native';
+import ImageComponent from 'components/ImageComponent';
 
 type ItemProps = {
   account: TAccount;
@@ -50,7 +50,7 @@ function AccountItem({ account, transparentBackground }: ItemProps) {
         onPress={onHandleItemPress}
       >
         <View style={styles.itemContent}>
-          <FastImage source={{ uri: account.accountLogo }} style={styles.itemIcon} />
+          <ImageComponent name={account.accountLogo} style={styles.itemIcon} />
           <View style={styles.itemCenter}>
             <RNText numberOfLines={1} fontSize={16} style={styles.itemTitle}>
               {account.accountName}
@@ -59,7 +59,7 @@ function AccountItem({ account, transparentBackground }: ItemProps) {
               numberOfLines={1}
               fontSize={13}
               style={styles.itemSubTitle}
-              color={account.closingAmount < 0 ? 'red' : colors.text}
+              color={(account.closingAmount ?? 0) < 0 ? 'red' : colors.text}
             >
               {formatNumber(account.closingAmount, true)}
             </RNText>

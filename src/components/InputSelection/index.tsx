@@ -4,11 +4,11 @@ import RNText from 'components/Text';
 import SvgIcon from 'components/SvgIcon';
 import PressableHaptic from 'components/PressableHaptic';
 import InputField from 'components/InputField';
+import ImageComponent from 'components/ImageComponent';
 import isEqual from 'react-fast-compare';
 import { useCustomTheme } from 'resources/theme';
-import FastImage from 'react-native-fast-image';
-import styles from './styles';
 import { useFormContext } from 'react-hook-form';
+import styles from './styles';
 
 type SelectedProps = {
   fieldName?: string;
@@ -21,8 +21,6 @@ type SelectedProps = {
   onDelete?: () => void;
   required?: boolean;
 };
-
-const unknownIcon = require('assets/images/default/unknown.png');
 
 function Selected({
   fieldName,
@@ -38,7 +36,6 @@ function Selected({
   const { getFieldState, formState } = useFormContext<any>();
   const { colors } = useCustomTheme();
   const iconUri = typeof icon === 'string' ? { uri: icon } : icon;
-  const defaultIconUrl = typeof defaultIcon === 'string' ? { uri: defaultIcon } : defaultIcon;
   const isShowOptional = !required && displayValue;
   const isError = required && fieldName && getFieldState(fieldName, formState)?.invalid;
 
@@ -46,11 +43,7 @@ function Selected({
     <>
       {fieldName && <InputField name={fieldName} rules={{ required }} style={styles.inputField} />}
       <PressableHaptic style={styles.itemGroup} onPress={onSelect}>
-        <FastImage
-          defaultSource={unknownIcon}
-          source={iconUri || defaultIconUrl}
-          style={styles.itemIcon}
-        />
+        <ImageComponent source={iconUri} size={30} defaultIcon={defaultIcon} />
         <View style={styles.groupContent}>
           <View style={styles.title}>
             {displayValue && subTitle && (

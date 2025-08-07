@@ -6,7 +6,7 @@ import { useCustomTheme } from 'resources/theme';
 import { MATERIAL_COLOR } from 'utils/constants';
 import { formatNumber } from 'utils/math';
 import { useNavigation } from '@react-navigation/native';
-import IconComponent from 'components/IconComponent';
+import ImageComponent from 'components/ImageComponent';
 import { ROUTES } from 'navigation/constants/routes';
 import styles from './styles';
 
@@ -54,7 +54,7 @@ function DebtLoanItemDetail({
               onPress={() => onNavigationToTransactionDetail(pack.id)}
             >
               <View style={styles.row}>
-                <IconComponent name={pack.icon} />
+                <ImageComponent name={pack.icon} />
                 <View style={styles.gap2}>
                   <RNText fontSize={15}>{pack.categoryName}</RNText>
                   <RNText style={styles.descriptions} fontSize={11} color={'gray'}>
@@ -67,7 +67,7 @@ function DebtLoanItemDetail({
                   {formatNumber(Math.abs(pack.amount), true)}
                 </RNText>
                 <View style={styles.accountName}>
-                  <IconComponent name={pack.accountLogo} size={14} />
+                  <ImageComponent name={pack.accountLogo} size={14} />
                   <RNText style={styles.descriptions} fontSize={11} color={'gray'}>
                     {pack.accountName}
                   </RNText>

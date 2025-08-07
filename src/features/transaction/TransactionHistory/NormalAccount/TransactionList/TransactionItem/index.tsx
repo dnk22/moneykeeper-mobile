@@ -4,7 +4,7 @@ import isEqual from 'react-fast-compare';
 import RNText from 'components/Text';
 import SwipeableComponent from 'components/SwipeableComponent';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
-import IconComponent from 'components/IconComponent';
+import ImageComponent from 'components/ImageComponent';
 import { useNavigation } from '@react-navigation/native';
 import { AccountStackNavigationProps } from 'navigation/types';
 import { ROUTES } from 'navigation/constants/routes';
@@ -102,7 +102,7 @@ function TransactionItem({
         >
           <View style={[styles.record, { backgroundColor: colors.surface }]}>
             <View style={styles.transactionCategoryInfo}>
-              <IconComponent name={renderCategoryIcon()} />
+              <ImageComponent name={renderCategoryIcon()} />
               <View style={styles.detailInfo}>
                 <RNText>{renderCategoryName()}</RNText>
                 {display.description && data?.descriptions && (

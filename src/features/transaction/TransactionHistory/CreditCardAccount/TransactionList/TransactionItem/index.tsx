@@ -14,7 +14,7 @@ import { TRANSACTION_TYPE } from 'utils/constants';
 import { TransactionHistoryContext } from '../../context';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import SwipeableComponent from 'components/SwipeableComponent';
-import IconComponent from 'components/IconComponent';
+import ImageComponent from 'components/ImageComponent';
 import RNText from 'components/Text';
 import styles from './styles';
 
@@ -100,7 +100,7 @@ function TransactionItem({
         >
           <View style={[styles.record, { backgroundColor: colors.surface }]}>
             <View style={styles.transactionCategoryInfo}>
-              <IconComponent name={renderCategoryIcon()} />
+              <ImageComponent name={renderCategoryIcon()} />
               <View style={styles.detailInfo}>
                 <RNText>{renderCategoryName()}</RNText>
                 {data?.descriptions && display.description && (

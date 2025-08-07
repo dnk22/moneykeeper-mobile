@@ -12,6 +12,12 @@ export type SharedStackParamsList = {
     accountTypeId?: string;
     accountName?: string;
   };
+  [ROUTES.ACCOUNT_NORMAL_DETAIL]: { accountId: string; accountName: string };
+  [ROUTES.ACCOUNT_CREDIT_CARD_DETAIL]: {
+    accountId: string;
+    accountName: string;
+    initialAmount: number;
+  };
   [ROUTES.TRANSACTION_CATEGORY]: NavigatorScreenParams<TransactionCategoryParams>;
   [ROUTES.FINANCE_STATEMENT]: undefined;
   [ROUTES.EXPENSE_INCOME_DETAIL]: {
@@ -24,12 +30,6 @@ export type SharedStackParamsList = {
     transactionType?: TRANSACTION_TYPE;
     amount?: number;
     relatedPerson?: string;
-  };
-  [ROUTES.ACCOUNT_NORMAL_DETAIL]: { accountId: string; accountName: string };
-  [ROUTES.ACCOUNT_CREDIT_CARD_DETAIL]: {
-    accountId: string;
-    accountName: string;
-    initialAmount: number;
   };
   [ROUTES.DEBT_LOAN_REPORT]: undefined;
   [ROUTES.DEBT_LOAN_REPORT_DETAIL]: { personName: string; type: TRANSACTION_CATEGORY_TYPE };

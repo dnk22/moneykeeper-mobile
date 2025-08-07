@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectCategoriesConfig } from 'store/app/app.selector';
 import { updateCategoriesConfig } from 'store/app/app.slice';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
-import IconComponent from 'components/IconComponent';
+import ImageComponent from 'components/ImageComponent';
 import Empty from 'components/Empty';
 import SvgIcon from 'components/SvgIcon';
 import RNText from 'components/Text';
@@ -90,7 +90,7 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
       >
         <View style={[styles.itemChild, { width: ITEM_WIDTH }]}>
           <View style={styles.iconView}>
-            <IconComponent name={item.icon} size={22} />
+            <ImageComponent name={item.icon} size={22} />
           </View>
           <RNText numberOfLines={1} fontSize={12} style={{ opacity: 0.8 }}>
             {item.categoryName}

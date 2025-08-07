@@ -5,7 +5,7 @@ import { TTransactionType } from 'utils/types/request.type';
 import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constants';
 import styles from './styles';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
-import IconComponent from 'components/IconComponent';
+import ImageComponent from 'components/ImageComponent';
 import CheckboxComponent from 'components/Checkbox';
 import PressableHaptic from 'components/PressableHaptic';
 import FlatListComponent from 'components/FlatList';
@@ -70,7 +70,7 @@ function SelectTransactionType({
         <View style={styles.item}>
           <View style={styles.itemContent}>
             <View style={styles.itemIcon}>
-              <IconComponent name={item.icon} />
+              <ImageComponent name={item.icon} />
             </View>
             <RNText>{item.name}</RNText>
           </View>

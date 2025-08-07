@@ -82,6 +82,7 @@ export type TAccount = {
   interestPaymentToAccount?: string;
   savingFromAccountId?: string;
   numberDayOfYear?: number;
+  closingAmount?: number;
 
   // credit card
   isCCReminder: boolean;

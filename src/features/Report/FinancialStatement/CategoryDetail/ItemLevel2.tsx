@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import RNText from 'components/Text';
-import IconComponent from 'components/IconComponent';
+import ImageComponent from 'components/ImageComponent';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import PressableHaptic from 'components/PressableHaptic';
 import SvgIcon from 'components/SvgIcon';
@@ -93,7 +93,7 @@ function ItemLevel2({
       <View style={styles.item}>
         <View style={styles.col}>
           {item.logo ? (
-            <IconComponent name={item.logo} />
+            <ImageComponent name={item.logo} />
           ) : (
             <View style={[styles.personLogo, { backgroundColor: MATERIAL_COLOR[index || 0] }]}>
               <RNText color="white">{String(item.relatedPerson).charAt(0)}</RNText>

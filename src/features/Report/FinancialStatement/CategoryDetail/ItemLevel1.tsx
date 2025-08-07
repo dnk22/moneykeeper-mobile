@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import RNText from 'components/Text';
-import IconComponent from 'components/IconComponent';
+import ImageComponent from 'components/ImageComponent';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import { formatNumber } from 'utils/math';
 import { MATERIAL_COLOR } from 'utils/constants';
@@ -34,7 +34,7 @@ function ItemLevel1({
       <View style={styles.item}>
         <View style={styles.col}>
           {item.logo ? (
-            <IconComponent name={item.logo} />
+            <ImageComponent name={item.logo} />
           ) : (
             <View style={[styles.personLogo, { backgroundColor: MATERIAL_COLOR[index || 0] }]}>
               <RNText color="white">{String(item.relatedPerson).charAt(0)}</RNText>
