@@ -15,7 +15,7 @@ type SelectedProps = {
   displayValue?: string;
   placeholder?: string;
   subTitle?: string;
-  icon?: string;
+  iconName?: string;
   defaultIcon?: string;
   onSelect?: () => void;
   onDelete?: () => void;
@@ -27,7 +27,7 @@ function Selected({
   displayValue,
   placeholder = '',
   subTitle = '',
-  icon,
+  iconName,
   defaultIcon,
   onSelect,
   onDelete,
@@ -35,7 +35,6 @@ function Selected({
 }: SelectedProps) {
   const { getFieldState, formState } = useFormContext<any>();
   const { colors } = useCustomTheme();
-  const iconUri = typeof icon === 'string' ? { uri: icon } : icon;
   const isShowOptional = !required && displayValue;
   const isError = required && fieldName && getFieldState(fieldName, formState)?.invalid;
 
@@ -43,7 +42,7 @@ function Selected({
     <>
       {fieldName && <InputField name={fieldName} rules={{ required }} style={styles.inputField} />}
       <PressableHaptic style={styles.itemGroup} onPress={onSelect}>
-        <ImageComponent source={iconUri} size={30} defaultIcon={defaultIcon} />
+        <ImageComponent name={iconName} size={30} defaultIcon={defaultIcon} />
         <View style={styles.groupContent}>
           <View style={styles.title}>
             {displayValue && subTitle && (

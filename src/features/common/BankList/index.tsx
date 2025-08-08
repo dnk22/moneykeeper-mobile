@@ -4,18 +4,18 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { TBank } from 'database/types';
 import { fetchBankList } from 'services/api/banks';
 import { ROUTES } from 'navigation/constants/routes';
-import { AccountStackNavigationProps, BankStackRouteProps } from 'navigation/types';
-import FastImage from 'react-native-fast-image';
+import { BankStackRouteProps } from 'navigation/types';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import InputSearch from 'components/InputSearch';
 import FlatListComponent from 'components/FlatList';
 import RNText from 'components/Text';
 import { BANK_TYPE } from 'utils/constants/account';
+import ImageComponent from 'components/ImageComponent';
 import styles from './styles';
 
 function BankList() {
   const { params } = useRoute<BankStackRouteProps<typeof ROUTES.BANK_HOME_LIST>>();
-  const navigation = useNavigation<AccountStackNavigationProps>();
+  const navigation = useNavigation<any>();
   const [banks, setBanks] = useState<any>([]);
 
   const inputSearchPlaceHolder =
@@ -42,7 +42,7 @@ function BankList() {
       <TouchableHighlightComponent onPress={() => onItemPress(item)}>
         <View style={styles.item}>
           <View style={styles.itemContent}>
-            <FastImage source={{ uri: item.icon }} style={styles.itemIcon} />
+            <ImageComponent name={item.icon} size={28} />
             <View>
               <RNText fontSize={18}>{item.shortName || item.bankName}</RNText>
               {params?.type === BANK_TYPE.BANK && (

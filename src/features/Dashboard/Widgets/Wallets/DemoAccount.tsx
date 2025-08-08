@@ -6,7 +6,7 @@ import RNText from 'components/Text';
 import { ROUTES } from 'navigation/constants/routes';
 import { AddSquare } from 'iconsax-react-native';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constants/account';
-import FastImage from 'react-native-fast-image';
+import ImageComponent from 'components/ImageComponent';
 import { demoStyles } from './styles';
 
 // Lấy chiều rộng màn hình cho carousel
@@ -58,13 +58,17 @@ const DemoAccount: React.FC<DemoAccountProps> = ({ colors }) => {
     return () => clearTimeout(timer);
   }, []);
 
+  const onNavigateAddAccount = (params?: { accountTypeId?: number; bankId?: string }): void => {
+    navigation.navigate(ROUTES.ADD_ACCOUNT, params);
+  };
+
   // Render một card tài khoản demo
   const renderDemoCard = ({ item }: { item: any }) => {
     return (
-      <PressableHaptic onPress={onNavigateAddAccount}>
+      <PressableHaptic onPress={() => onNavigateAddAccount({ accountTypeId: item.accountTypeId })}>
         <View style={[demoStyles.demoCard, { backgroundColor: colors.card }]}>
           <View style={[demoStyles.demoIconContainer, { backgroundColor: `${colors.primary}20` }]}>
-            <FastImage style={{ width: 40, height: 40 }} source={{ uri: item.accountIcon }} />
+            <ImageComponent name={item.accountIcon} size={40} />
           </View>
           <RNText>{item.accountName}</RNText>
           <RNText preset="subTitle">Nhấn để thêm ví nhanh</RNText>
@@ -78,10 +82,6 @@ const DemoAccount: React.FC<DemoAccountProps> = ({ colors }) => {
     const contentOffset = event.nativeEvent.contentOffset;
     const newIndex = Math.round(contentOffset.x / (CARD_WIDTH + CARD_MARGIN * 2));
     setActiveIndex(newIndex);
-  };
-
-  const onNavigateAddAccount = (params?: { accountTypeId?: number; bankId?: string }): void => {
-    navigation.navigate(ROUTES.ADD_ACCOUNT, params);
   };
 
   return (
@@ -133,7 +133,7 @@ const DemoAccount: React.FC<DemoAccountProps> = ({ colors }) => {
         </View>
       </View>
 
-      <PressableHaptic style={demoStyles.addAccountNow} onPress={onNavigateAddAccount}>
+      <PressableHaptic style={demoStyles.addAccountNow} onPress={() => onNavigateAddAccount()}>
         <View style={demoStyles.addAccountNow}>
           <AddSquare size={15} variant="Broken" color={colors.primary} />
           <RNText color={colors.primary} style={{ fontWeight: '500' }}>

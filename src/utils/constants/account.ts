@@ -15,15 +15,6 @@ export enum BANK_TYPE {
   INVESTMENT,
 }
 
-export const ACCOUNT_TYPE_LOGO: { [key: string]: any } = {
-  cash: require('assets/images/account/cash.png'),
-  bank: require('assets/images/account/bankAccountType.png'),
-  credit: require('assets/images/account/creditCard.png'),
-  investment: require('assets/images/account/investment.png'),
-  eWallet: require('assets/images/account/eWallet.png'),
-  other: require('assets/images/account/cash.png'),
-};
-
 // don't suffer order
 export const ACCOUNT_TYPE_LIST: TAccountType[] = [
   {
@@ -39,7 +30,7 @@ export const ACCOUNT_TYPE_LIST: TAccountType[] = [
   {
     id: ACCOUNT_CATEGORY_ID.CREDITCARD,
     name: 'Thẻ tín dụng',
-    icon: 'credit',
+    icon: 'creditCard',
   },
   {
     id: ACCOUNT_CATEGORY_ID.INVESTMENT,
@@ -54,7 +45,7 @@ export const ACCOUNT_TYPE_LIST: TAccountType[] = [
   {
     id: ACCOUNT_CATEGORY_ID.OTHER,
     name: 'Khác',
-    icon: 'other',
+    icon: 'money',
   },
 ];
 

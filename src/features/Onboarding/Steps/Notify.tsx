@@ -6,7 +6,7 @@ import { welComeStyles } from './styles';
 
 function Notify() {
   return (
-    <View style={welComeStyles.containerCenter}>
+    <View>
       <FastImage
         defaultSource={welcome}
         source={welcome}

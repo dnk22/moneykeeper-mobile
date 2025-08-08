@@ -15,10 +15,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     columnGap: 10,
   },
-  itemIcon: {
-    width: 26,
-    height: 26,
-  },
 });
 
 export default styles;

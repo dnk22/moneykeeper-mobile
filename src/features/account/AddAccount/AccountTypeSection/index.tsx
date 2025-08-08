@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import InputSelection from 'components/InputSelection';
 import { useFormContext } from 'react-hook-form';
-import { ACCOUNT_TYPE_LIST, ACCOUNT_TYPE_LOGO } from 'utils/constants/account';
+import { ACCOUNT_TYPE_LIST } from 'utils/constants/account';
 import { TAccountType } from 'database/types';
 import ModalComponent from 'components/Modal';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import { View } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import RNText from 'components/Text';
 import CheckboxComponent from 'components/Checkbox';
 import { useCustomTheme } from 'resources/theme';
+import ImageComponent from 'components/ImageComponent';
 import styles from './styles';
 
 const BANK_ACCOUNT_TYPE = [ACCOUNT_TYPE_LIST[1].id, ACCOUNT_TYPE_LIST[2].id];
@@ -51,7 +51,7 @@ function AccountTypeSelect({ accountTypeId }: { accountTypeId: number }) {
       <TouchableHighlightComponent onPress={() => handleItemPress(item)} key={item.name}>
         <View style={[styles.item, isItemSelected && { backgroundColor: colors.background }]}>
           <View style={styles.itemContent}>
-            <FastImage source={ACCOUNT_TYPE_LOGO[item.icon]} style={styles.itemIcon} />
+            <ImageComponent name={item.icon} size={28} />
             <RNText>{item.name}</RNText>
           </View>
           {isItemSelected && <CheckboxComponent check disabled color={colors.primaryVariant} />}
@@ -65,7 +65,7 @@ function AccountTypeSelect({ accountTypeId }: { accountTypeId: number }) {
       <InputSelection
         required
         fieldName="accountTypeId"
-        icon={ACCOUNT_TYPE_LOGO[currentAccountType.icon]}
+        iconName={currentAccountType.icon}
         displayValue={currentAccountType.name}
         onSelect={onToggleModal}
       />

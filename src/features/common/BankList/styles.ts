@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { normalize } from 'share/dimensions';
 
 const styles = StyleSheet.create({
   body: {
@@ -24,10 +23,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: 10,
-  },
-  itemIcon: {
-    width: 28,
-    height: 28,
   },
   list: {
     height: '90%',
