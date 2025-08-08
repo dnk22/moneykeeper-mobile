@@ -8,13 +8,24 @@ import { Q } from '@nozbe/watermelondb';
 import isEmpty from 'lodash/isEmpty';
 import { SQLiteQuery } from '@nozbe/watermelondb/adapters/sqlite';
 
-// --- BalanceLocalDataSource Class ---
+/**
+ * Class xử lý các thao tác với dữ liệu số dư (Balance) trong local database
+ * Sử dụng mẫu Singleton để đảm bảo chỉ có một instance duy nhất
+ */
 export class BalanceLocalDataSource {
+  /** Instance duy nhất của class */
   private static instance: BalanceLocalDataSource;
+
+  /** Collection balance trong WatermelonDB */
   private balancesCollection = database.collections.get<BalanceModel>(BALANCE);
 
+  /** Constructor private để ngăn tạo instance trực tiếp */
   private constructor() {}
 
+  /**
+   * Lấy instance duy nhất của class (Singleton pattern)
+   * @returns Instance của BalanceLocalDataSource
+   */
   public static getInstance(): BalanceLocalDataSource {
     if (!BalanceLocalDataSource.instance) {
       BalanceLocalDataSource.instance = new BalanceLocalDataSource();
@@ -22,13 +33,25 @@ export class BalanceLocalDataSource {
     return BalanceLocalDataSource.instance;
   }
 
-  // Helper to throw errors consistently
+  /**
+   * Helper method để xử lý lỗi một cách nhất quán
+   * @param code - Mã lỗi
+   * @throws Error với mã lỗi được định nghĩa
+   */
   private throwError(code: string): never {
     throw new Error(code);
   }
 
   /**
-   * Truy vấn số dư gần nhất trước một ngày cụ thể cho một tài khoản.
+   * Truy vấn số dư gần nhất trước một ngày cụ thể cho một tài khoản
+   * @param accountId - ID của tài khoản cần truy vấn
+   * @param date - Timestamp của ngày cần truy vấn
+   * @returns Promise chứa bản ghi balance gần nhất trước ngày được chỉ định
+   *
+   * Phương thức này sẽ:
+   * 1. Tìm bản ghi balance có dateRecord gần nhất trước ngày chỉ định
+   * 2. Trả về closingAmount và dateRecord của bản ghi đó
+   * 3. Nếu không có bản ghi nào thỏa mãn, trả về undefined
    */
   private async getLatestAccountBalanceByDate(accountId: string, date: number) {
     const query = `SELECT closingAmount, dateRecord FROM ${BALANCE}
@@ -46,7 +69,15 @@ export class BalanceLocalDataSource {
   }
 
   /**
-   * Truy vấn tất cả các bản ghi số dư sau một ngày cụ thể cho một tài khoản.
+   * Truy vấn tất cả các bản ghi số dư sau một ngày cụ thể cho một tài khoản
+   * @param accountId - ID của tài khoản cần truy vấn
+   * @param date - Timestamp của ngày bắt đầu truy vấn
+   * @returns Promise chứa danh sách các bản ghi balance sau ngày được chỉ định
+   *
+   * Phương thức này sẽ:
+   * 1. Lấy tất cả các bản ghi balance có dateRecord lớn hơn ngày chỉ định
+   * 2. Sắp xếp kết quả theo dateRecord và ID
+   * 3. Trả về raw data để dễ dàng xử lý tiếp
    */
   private async getAllBalanceAfterDate(accountId: string, date: number) {
     const query = `SELECT * FROM ${BALANCE}
@@ -59,7 +90,18 @@ export class BalanceLocalDataSource {
   }
 
   /**
-   * Tính toán lại tất cả các số dư sau một ngày cụ thể.
+   * Tính toán lại tất cả các số dư sau một ngày cụ thể
+   * @param options - Các tùy chọn tính toán
+   * @param options.accountId - ID của tài khoản cần tính toán lại
+   * @param options.date - Timestamp của ngày bắt đầu tính toán (mặc định là 0)
+   * @returns Promise<boolean> - true nếu tính toán thành công
+   *
+   * Phương thức này sẽ:
+   * 1. Lấy số dư gần nhất trước ngày chỉ định làm cơ sở
+   * 2. Lấy tất cả bản ghi balance sau ngày đó
+   * 3. Tính toán lại openAmount và closingAmount cho mỗi bản ghi
+   * 4. Cập nhật đồng thời tất cả các thay đổi vào database
+   * 5. Throw error nếu có lỗi xảy ra trong quá trình tính toán
    */
   public async calculateAllBalanceAfterDate({
     accountId,
@@ -109,7 +151,14 @@ export class BalanceLocalDataSource {
   }
 
   /**
-   * Truy vấn số dư hiện tại (mới nhất) cho một tài khoản.
+   * Truy vấn số dư hiện tại (mới nhất) cho một tài khoản
+   * @param accountId - ID của tài khoản cần truy vấn
+   * @returns Promise chứa bản ghi balance mới nhất của tài khoản
+   *
+   * Phương thức này sẽ:
+   * 1. Lấy bản ghi balance có dateRecord mới nhất
+   * 2. Trả về closingAmount và dateRecord của bản ghi đó
+   * 3. Trả về undefined nếu không có bản ghi nào
    */
   public async getCurrentBalance(accountId: string) {
     const query = `SELECT closingAmount, dateRecord FROM ${BALANCE}
@@ -123,12 +172,20 @@ export class BalanceLocalDataSource {
   }
 
   /**
-   * Thêm một bản ghi số dư ban đầu cho tài khoản.
+   * Thêm một bản ghi số dư ban đầu cho tài khoản
+   * @param balanceData - Dữ liệu số dư cần thêm mới
+   * @returns Promise chứa bản ghi balance vừa được tạo
+   *
+   * Phương thức này sẽ:
+   * 1. Tìm ID lớn nhất hiện tại để tạo ID mới
+   * 2. Tạo bản ghi balance mới với các giá trị mặc định nếu không được cung cấp
+   * 3. Tính toán lại các số dư sau ngày của bản ghi mới (nếu có)
+   * 4. Trả về bản ghi balance mới được tạo
    */
   public async addNewBalance(balanceData: TBalance) {
     const queryMaxId = `SELECT MAX(_id) AS maxId from ${BALANCE}`;
 
-    return await database.write(async () => {
+    const balanceCreated = await database.write(async () => {
       let nextId = 1;
       const result = await this.balancesCollection
         .query(Q.unsafeSqlQuery(queryMaxId))
@@ -146,22 +203,38 @@ export class BalanceLocalDataSource {
           _id: nextId,
         });
       });
-      // tính toán lại balance
-      if (newBalance.dateRecord) {
-        await this.calculateAllBalanceAfterDate({
-          accountId: newBalance.accountId,
-          date: new Date(newBalance.dateRecord).getTime(),
-        });
-      }
+
       return newBalance;
     });
+    // tính toán lại balance
+    if (balanceCreated.dateRecord) {
+      await this.calculateAllBalanceAfterDate({
+        accountId: balanceCreated.accountId,
+        date: new Date(balanceCreated.dateRecord).getTime(),
+      });
+    }
+    return balanceCreated;
   }
 
   /**
-   * Cập nhật bản ghi số dư liên quan đến một giao dịch.
-   * Chỉ cần update movementAmount. Tự tính các giá trị còn lại sau khi update : calculateAllBalanceAfterDate
+   * Cập nhật bản ghi số dư liên quan đến một giao dịch
+   * @param balanceData - Dữ liệu số dư cần cập nhật
+   * @returns Promise<boolean> - true nếu cập nhật thành công
+   *
+   * Phương thức này sẽ:
+   * 1. Tìm bản ghi balance dựa trên:
+   *    - Nếu có transactionId: tìm theo accountId và transactionId
+   *    - Nếu không có transactionId: tìm theo accountId và dateRecord là null
+   * 2. Nếu tìm thấy:
+   *    - Cập nhật các giá trị mới
+   *    - Tính toán lại các số dư sau ngày được cập nhật
+   * 3. Nếu không tìm thấy:
+   *    - Tạo bản ghi balance mới
+   * 4. Trả về true nếu thao tác thành công
    */
   public async updateBalance(balanceData: TBalance) {
+    let isCreate = false;
+
     let queryConditions = [
       Q.where('accountId', balanceData.accountId),
       Q.where('dateRecord', null),
@@ -175,36 +248,50 @@ export class BalanceLocalDataSource {
       ];
     }
 
-    return await database.write(async () => {
+    const balanceUpdated = await database.write(async () => {
       const currentBalanceRecords = await this.balancesCollection.query(...queryConditions).fetch();
+      const balanceToUpdate = currentBalanceRecords[0];
+      await balanceToUpdate.update((bal) => {
+        bal.accountId = balanceData.accountId;
+        bal.transactionId = balanceData.transactionId;
+        bal.openAmount = balanceData.openAmount || 0;
+        bal.movementAmount = balanceData.movementAmount || 0;
+        bal.closingAmount = balanceData.closingAmount || 0;
+        bal.dateRecord = balanceData.dateRecord ? new Date(balanceData.dateRecord) : undefined;
+      });
 
-      if (!isEmpty(currentBalanceRecords)) {
-        const balanceToUpdate = currentBalanceRecords[0];
-        await balanceToUpdate.update((bal) => {
-          bal.accountId = balanceData.accountId;
-          bal.transactionId = balanceData.transactionId;
-          bal.openAmount = balanceData.openAmount || 0;
-          bal.movementAmount = balanceData.movementAmount || 0;
-          bal.closingAmount = balanceData.closingAmount || 0;
-          bal.dateRecord = balanceData.dateRecord ? new Date(balanceData.dateRecord) : undefined;
-        });
-
-        // tính toán lại balance
-        await this.calculateAllBalanceAfterDate({
-          accountId: balanceToUpdate.accountId,
-          date: balanceData.dateRecord,
-        });
-        return true;
-      } else {
-        // Nếu không tìm thấy bản ghi số dư, tạo mới
-        await this.addNewBalance(balanceData);
-        return true;
+      if (isEmpty(currentBalanceRecords)) {
+        isCreate = true;
       }
+      return balanceToUpdate;
     });
+
+    // Nếu không tìm thấy bản ghi số dư, tạo mới
+    if (isCreate) {
+      await this.addNewBalance(balanceData);
+      return true;
+    }
+
+    // tính toán lại balance
+    await this.calculateAllBalanceAfterDate({
+      accountId: balanceUpdated.accountId,
+      date: balanceData.dateRecord,
+    });
+
+    return true;
   }
 
   /**
-   * Xóa vĩnh viễn bản ghi số dư theo transactionId.
+   * Xóa vĩnh viễn bản ghi số dư theo transactionId
+   * @param transactionId - ID của giao dịch cần xóa số dư
+   * @param accountId - (Tùy chọn) ID của tài khoản để lọc thêm
+   * @returns Promise<boolean> - true nếu xóa thành công
+   *
+   * Phương thức này sẽ:
+   * 1. Tạo điều kiện xóa theo transactionId
+   * 2. Thêm điều kiện accountId nếu được cung cấp
+   * 3. Xóa vĩnh viễn (không phải soft delete) các bản ghi thỏa mãn
+   * 4. Throw error nếu có lỗi trong quá trình xóa
    */
   public async deleteBalanceByTransactionId(transactionId: string, accountId?: string) {
     try {
@@ -221,6 +308,15 @@ export class BalanceLocalDataSource {
     }
   }
 
+  /**
+   * Xóa nhiều bản ghi số dư theo danh sách transactionId
+   * @param ids - Mảng các transactionId cần xóa số dư
+   * @returns Promise<void>
+   *
+   * Phương thức này sẽ:
+   * 1. Xóa vĩnh viễn tất cả các bản ghi balance có transactionId nằm trong danh sách
+   * 2. Sử dụng Q.oneOf để tối ưu hiệu suất truy vấn
+   */
   public async deleteBalancesByIds(ids: string[]) {
     await this.balancesCollection
       .query(Q.where('transactionId', Q.oneOf(ids)))
