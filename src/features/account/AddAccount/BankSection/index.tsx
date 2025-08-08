@@ -93,7 +93,7 @@ function BankSection({ bankIdParam }: { bankIdParam?: string }) {
   return (
     <InputSelection
       fieldName="bankId"
-      icon={currentBank?.icon}
+      iconName={currentBank?.icon}
       displayValue={currentBank?.bankName}
       placeholder={getPlaceholder}
       onSelect={handleSelectBank}

@@ -25,11 +25,20 @@ export default function useHook() {
     }
   };
 
-  const fetchAccounts = () => {
+  const fetchAccounts = (redirect?: boolean) => {
     accountLocalQuery
       .getAccounts()
       .then((data) => {
         setAccountData(data);
+        // If redirect is true, all account active => go to first page
+        // If any account is inactive, do not redirect
+        if (redirect) {
+          const isSomeAccountInactive = data.some((account) => !account.isActive);
+          if (isSomeAccountInactive) {
+            return;
+          }
+          onChangePageIndex(0);
+        }
       })
       .catch(() => {
         showToast({

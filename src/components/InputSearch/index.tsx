@@ -1,8 +1,8 @@
 import { memo } from 'react';
 import { TextInput, TextInputProps, View } from 'react-native';
 import isEqual from 'react-fast-compare';
-import SvgIcon from 'components/SvgIcon';
 import { useCustomTheme } from 'resources/theme';
+import { SearchNormal1 } from 'iconsax-react-native';
 import styles from './styles';
 
 type InputSearch = TextInputProps & {
@@ -26,7 +26,7 @@ function InputSearch({
         onChangeText={onChangeText}
         {...rest}
       />
-      <SvgIcon name="search" style={styles.iconSearch} size={18} color="gray" />
+      <SearchNormal1 size="18" color="gray" style={styles.iconSearch} />
     </View>
   );
 }

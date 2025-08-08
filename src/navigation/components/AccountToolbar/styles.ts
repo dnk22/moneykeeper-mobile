@@ -19,6 +19,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  groupItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 15,
+  },
 });
 
 export default styles;

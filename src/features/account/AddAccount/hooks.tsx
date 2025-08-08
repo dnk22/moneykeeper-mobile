@@ -63,7 +63,7 @@ const useFormHooks = (accountId?: string) => {
 
   const onConfirmDeleteAccount = () =>
     Alert.alert(
-      `Xóa ${getValues('accountName')}`,
+      `Xóa [ ${getValues('accountName')} ]`,
       'Xóa tài khoản đồng này nghĩa với việc tất cả các ghi chép của tài khoản này và các tài khoản liên quan sẽ bị xóa theo, HÃY CẨN THẬN!',
       [
         {

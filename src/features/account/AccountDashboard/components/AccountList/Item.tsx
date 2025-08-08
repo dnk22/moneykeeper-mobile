@@ -12,9 +12,9 @@ import { AccountStackNavigationProps } from 'navigation/types';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constants/account';
 import { AccountContext } from 'features/account/AccountDashboard/context';
 import { TAccount } from 'database/types';
-import { accountListStyles as styles } from '../../styles';
-import { Settings } from 'iconsax-react-native';
+import { More } from 'iconsax-react-native';
 import ImageComponent from 'components/ImageComponent';
+import { accountListStyles as styles } from '../../styles';
 
 type ItemProps = {
   account: TAccount;
@@ -35,6 +35,7 @@ function AccountItem({ account, transparentBackground }: ItemProps) {
         navigation.navigate(ROUTES.ACCOUNT_CREDIT_CARD_DETAIL, {
           accountId: id,
           accountName,
+          initialAmount: account.closingAmount ?? 0,
         });
         break;
       default:
@@ -68,7 +69,7 @@ function AccountItem({ account, transparentBackground }: ItemProps) {
             style={styles.itemAction}
             onPress={() => onActionPress && onActionPress(account)}
           >
-            <Settings size="26" color={colors.text} />
+            <More size="26" color={colors.text} />
           </PressableHaptic>
         </View>
       </TouchableHighlightComponent>

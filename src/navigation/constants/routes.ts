@@ -74,7 +74,7 @@ export const ROUTES = {
   DEBT: 'debt',
   LOAN: 'loan',
   CONTACT_REPORT: 'contactReport',
-};
+} as const;
 
-export type RouteKeys = keyof typeof ROUTES;
-export type RouteValues = (typeof ROUTES)[RouteKeys];
+// export type RouteKeys = keyof typeof ROUTES;
+export type ROUTE_KEYS = typeof ROUTES[keyof typeof ROUTES];

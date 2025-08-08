@@ -4,11 +4,12 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useRoute } from '@react-navigation/native';
 import { useCustomTheme } from 'resources/theme';
 
-import SvgIcon from 'components/SvgIcon';
 import InputField from 'components/InputField';
 import FormAction from 'components/common/FormAction';
 import SwitchField from 'components/Switch/SwitchField';
 import RNText from 'components/Text';
+import InputCalculator from 'components/InputCalculator';
+import { Autobrightness, Stickynote } from 'iconsax-react-native';
 
 import { ACCOUNT_TYPE_LIST } from 'utils/constants/account';
 import { FormProvider } from 'react-hook-form';
@@ -19,7 +20,6 @@ import BankSection from './BankSection';
 import CreditCardSection from './CreditCardSection';
 import useFormHooks from './hooks';
 import styles from './styles';
-import InputCalculator from 'components/InputCalculator';
 
 const ACCOUNT_TYPES_NOT_BANK = [ACCOUNT_TYPE_LIST[0].id, ACCOUNT_TYPE_LIST[5].id];
 
@@ -46,7 +46,7 @@ function AddAccount() {
           />
           <View style={[styles.group, { backgroundColor: colors.surface }]}>
             <View style={styles.itemGroup}>
-              <SvgIcon name="clipboard" style={styles.icon} />
+              <Autobrightness size="28" color={colors.text} style={styles.icon} />
               <View style={styles.groupContent}>
                 <InputField
                   name="accountName"
@@ -58,7 +58,7 @@ function AddAccount() {
               </View>
             </View>
             <View style={styles.itemGroup}>
-              <SvgIcon name="textWord" style={styles.icon} />
+              <Stickynote size="28" color={colors.text} style={styles.icon} />
               <View style={styles.groupContent}>
                 <InputField
                   name="descriptions"

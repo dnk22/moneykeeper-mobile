@@ -14,7 +14,7 @@ type ModalType = 'paymentDate' | 'statementDay';
 function CreditCardSection({ colors }: { colors: any }) {
   const isModalType = useRef<ModalType>('statementDay');
   const [isShowModalStatement, setIsShowModalStatement] = useState(false);
-  const { control, setValue, watch } = useFormContext();
+  const { control, setValue } = useFormContext();
   const [isCollapse, setCollapse] = useState(true);
 
   const statementDay = useWatch({ control, name: 'creditCardStatementDay' });
@@ -94,7 +94,7 @@ function CreditCardSection({ colors }: { colors: any }) {
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
         <View style={[styles.itemGroup, styles.itemGroupBetween]}>
           <RNText preset="title">Thông báo thanh toán ?</RNText>
-          <SwitchField name="isCCReminder" control={control} />
+          <SwitchField name="isCCReminder" />
         </View>
         <Collapsible collapsed={isCollapse}>
           <Notifications value={ccReminderList} onValueChange={onNotificationListChange} />

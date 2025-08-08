@@ -1,18 +1,18 @@
+import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { SharedStackParamsList } from './shared';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ROUTES } from 'navigation/constants/routes';
 
 /** account stack navigation */
 export type AccountStackParamList = {
   [ROUTES.ACCOUNT_TAB]?: undefined;
-} | SharedStackParamsList;
+} & SharedStackParamsList;
 
-export type AccountStackNavigationProps = NativeStackScreenProps<
+export type AccountStackNavigationProps = NavigationProp<
   AccountStackParamList,
   keyof AccountStackParamList
->['navigation'];
+>;
 
-export type AccountStackRouteProps<T extends keyof AccountStackParamList> = NativeStackScreenProps<
+export type AccountStackRouteProps<T extends keyof AccountStackParamList> = RouteProp<
   AccountStackParamList,
   T
->['route'];
+>;

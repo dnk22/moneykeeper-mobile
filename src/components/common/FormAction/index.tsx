@@ -4,6 +4,7 @@ import RNText from 'components/Text';
 import { useCustomTheme } from 'resources/theme';
 import SvgIcon from 'components/SvgIcon';
 import Loading from 'components/Loading';
+import { BagCross } from 'iconsax-react-native';
 import styles from './styles';
 
 type FormActionProps = {
@@ -22,7 +23,7 @@ function FormAction({ isShowDelete = false, onDelete, onSubmit, loading }: FormA
         text: 'Hủy bỏ',
         style: 'cancel',
       },
-      { text: 'Đồng ý', style: 'destructive', onPress: () => onDelete && onDelete() },
+      { text: 'Tiếp tục', style: 'destructive', onPress: () => onDelete && onDelete() },
     ]);
   };
 
@@ -31,7 +32,7 @@ function FormAction({ isShowDelete = false, onDelete, onSubmit, loading }: FormA
       {isShowDelete && (
         <TouchableHighlightComponent style={styles.buttonDel} onPress={onConfirmDelete}>
           <>
-            {loading ? <Loading color={'red'} /> : <SvgIcon name="trash" color="red" />}
+            {loading ? <Loading color={colors.error} /> : <BagCross color={colors.error} />}
             <RNText color="red">Xóa</RNText>
           </>
         </TouchableHighlightComponent>

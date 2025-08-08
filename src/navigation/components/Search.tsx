@@ -1,10 +1,10 @@
 import PressableHaptic from 'components/PressableHaptic';
-import SvgIcon from 'components/SvgIcon';
+import { SearchStatus } from 'iconsax-react-native';
 
 function Search() {
   return (
     <PressableHaptic>
-      <SvgIcon name="search" color="white" />
+      <SearchStatus size="28" color="white" />
     </PressableHaptic>
   );
 }

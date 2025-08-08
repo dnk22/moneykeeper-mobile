@@ -6,7 +6,6 @@ import PressableHaptic from 'components/PressableHaptic';
 import ModalComponent from 'components/Modal';
 import RNText from 'components/Text';
 import Switch from 'components/Switch';
-import SvgIcon from 'components/SvgIcon';
 
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import { updateAccountViewSettings } from 'store/app/app.slice';
@@ -15,9 +14,12 @@ import { appSettingsFb } from 'services/firebase/db/appSettings';
 import { FB_PATH } from 'services/firebase/config';
 import { syncQueueLocalQuery } from 'database/querying';
 import { SyncQueueAction } from 'database/models/syncQueue.model';
+import { Autobrightness, Link, Setting5, Sort } from 'iconsax-react-native';
+import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 
 function Toolbar() {
+  const { colors } = useCustomTheme();
   const { groupByType, sortByName } = useAppSelector((state) => selectAccountViewSettings(state));
   const useDispatch = useAppDispatch();
 
@@ -61,7 +63,10 @@ function Toolbar() {
               Nhóm
             </RNText>
             <View style={styles.groupContent}>
-              <RNText preset="textMedium">Nhóm theo loại tài khoản</RNText>
+              <View style={styles.groupItem}>
+                <Link color={colors.primaryVariant} />
+                <RNText preset="textMedium">Nhóm theo loại tài khoản</RNText>
+              </View>
               <Switch value={groupByType} onValueChange={onGroupChange} />
             </View>
           </View>
@@ -71,13 +76,19 @@ function Toolbar() {
             </RNText>
             <TouchableHighlightComponent disabled={groupByType} onPress={() => onSortChange(true)}>
               <View style={styles.groupContent}>
-                <RNText preset="textMedium">Tên tài khoản</RNText>
+                <View style={styles.groupItem}>
+                  <Autobrightness color={colors.primaryVariant} />
+                  <RNText preset="textMedium">Tên tài khoản</RNText>
+                </View>
                 {sortByName && <CheckboxComponent type="radio" check />}
               </View>
             </TouchableHighlightComponent>
             <TouchableHighlightComponent disabled={groupByType} onPress={() => onSortChange(false)}>
               <View style={styles.groupContent}>
-                <RNText preset="textMedium">Tự chọn</RNText>
+                <View style={styles.groupItem}>
+                  <Sort color={colors.primaryVariant} />
+                  <RNText preset="textMedium">Tự chọn</RNText>
+                </View>
                 {!sortByName && <CheckboxComponent type="radio" check />}
               </View>
             </TouchableHighlightComponent>
@@ -85,7 +96,7 @@ function Toolbar() {
         </View>
       </ModalComponent>
       <PressableHaptic onPress={onToggleModal}>
-        <SvgIcon name="panel" color="white" />
+        <Setting5 size="28" color="white" variant="Bold" />
       </PressableHaptic>
     </>
   );

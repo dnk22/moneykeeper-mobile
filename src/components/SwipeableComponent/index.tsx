@@ -2,8 +2,8 @@ import { useRef, useCallback } from 'react';
 import { Animated, View } from 'react-native';
 import { RectButton, Swipeable } from 'react-native-gesture-handler';
 import { SwipeableProps } from 'react-native-gesture-handler/lib/typescript/components/Swipeable';
+import { BagCross } from 'iconsax-react-native';
 import styles from './styles';
-import { Trash } from 'iconsax-react-native';
 
 interface ISwipeableComponentProps extends SwipeableProps {
   children: React.ReactNode;
@@ -12,7 +12,12 @@ interface ISwipeableComponentProps extends SwipeableProps {
 
 const AnimatedView = Animated.createAnimatedComponent(View);
 
-function SwipeableComponent({ children, onSwipeableClose, onDelete, ...rest }: ISwipeableComponentProps) {
+function SwipeableComponent({
+  children,
+  onSwipeableClose,
+  onDelete,
+  ...rest
+}: ISwipeableComponentProps) {
   const swipeableRef = useRef<Swipeable | null>(null);
 
   const close = useCallback(() => {
@@ -21,7 +26,10 @@ function SwipeableComponent({ children, onSwipeableClose, onDelete, ...rest }: I
   }, [onDelete]);
 
   const renderRightActions = useCallback(
-    (_progress: Animated.AnimatedInterpolation<any>, dragX: Animated.AnimatedInterpolation<any>) => {
+    (
+      _progress: Animated.AnimatedInterpolation<any>,
+      dragX: Animated.AnimatedInterpolation<any>,
+    ) => {
       const scale = dragX.interpolate({
         inputRange: [-80, 0],
         outputRange: [1, 0],
@@ -32,13 +40,13 @@ function SwipeableComponent({ children, onSwipeableClose, onDelete, ...rest }: I
         <View style={{ width: 80, zIndex: 1 }}>
           <RectButton style={styles.rightAction} onPress={close}>
             <AnimatedView style={{ transform: [{ scale }] }}>
-              <Trash size="32" color="#FF8A65" variant="Broken" />
+              <BagCross size="32" color="#FF8A65" />
             </AnimatedView>
           </RectButton>
         </View>
       );
     },
-    [close]
+    [close],
   );
 
   return (

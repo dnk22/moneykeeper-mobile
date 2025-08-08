@@ -73,7 +73,7 @@ function DateFilter({
         onToggleModal={onToggleModal}
         animationIn="zoomIn"
         animationOut="zoomOut"
-        disableCloseOnPressBackDrop
+        disabledBackDropClose
       >
         <View style={[styles.modalTitle, { borderColor: colors.divider }]}>
           <RNText preset="modalTitle">{formatDateLocal(value.startDate, formatDate)}</RNText>

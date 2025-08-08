@@ -34,15 +34,6 @@ export async function requestUpdateAccount(account: TAccount): Promise<void> {
         accountData: accountUpdates,
       });
 
-      // nếu isInitialAmountChanged thay đổi, xử lý logic liên quan đến Balance
-      if (isInitialAmountChanged) {
-        await balanceLocalQuery.updateBalance({
-          accountId: updatedAccount.id,
-          openAmount: updatedAccount.initialAmount,
-          closingAmount: updatedAccount.initialAmount,
-        });
-      }
-
       // Sync to firebase
       await accountsFb.updateAccount({ account: updatedAccount._raw }).catch(async (error) => {
         await syncQueueLocalQuery.updateSyncQueueItem({
@@ -52,15 +43,18 @@ export async function requestUpdateAccount(account: TAccount): Promise<void> {
           action: SyncQueueAction.UPDATE,
         });
       });
+
+      // nếu isInitialAmountChanged thay đổi, xử lý logic liên quan đến Balance
+      if (isInitialAmountChanged) {
+        await balanceLocalQuery.updateBalance({
+          accountId: updatedAccount.id,
+          openAmount: updatedAccount.initialAmount,
+          closingAmount: updatedAccount.initialAmount,
+        });
+      }
     } else {
       // create
       await accountLocalQuery.addAccount(account).then(async (newAccount) => {
-        await balanceLocalQuery.addNewBalance({
-          accountId: newAccount.id,
-          openAmount: newAccount.initialAmount,
-          closingAmount: newAccount.initialAmount,
-        });
-
         // Sync to firebase
         await accountsFb.addNewAccount({ account: newAccount._raw }).catch(async (error) => {
           await syncQueueLocalQuery.updateSyncQueueItem({
@@ -69,6 +63,11 @@ export async function requestUpdateAccount(account: TAccount): Promise<void> {
             tableName: ACCOUNTS,
             action: SyncQueueAction.CREATE,
           });
+        });
+        await balanceLocalQuery.addNewBalance({
+          accountId: newAccount.id,
+          openAmount: newAccount.initialAmount,
+          closingAmount: newAccount.initialAmount,
         });
       });
     }

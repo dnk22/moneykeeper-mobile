@@ -61,7 +61,7 @@ const StatementModalPicker = ({
   ));
 
   return (
-    <ModalComponent isVisible={isVisible} onToggleModal={onToggleModal} disableCloseOnPressBackDrop>
+    <ModalComponent isVisible={isVisible} onToggleModal={onToggleModal} disabledBackDropClose>
       <HeaderComponent />
       <Picker selectedValue={currentValue} onValueChange={handleValueChange}>
         {renderPickerItems()}

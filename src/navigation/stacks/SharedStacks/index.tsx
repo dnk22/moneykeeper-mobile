@@ -1,11 +1,11 @@
 // src/navigation/components/SharedScreens.tsx
 import React from 'react';
 import { sharedScreenRegistry } from './ShareStacksRegistry';
-import { RouteKeys } from 'navigation/constants/routes';
+import { ROUTE_KEYS } from 'navigation/constants/routes';
 
 interface SharedScreensProps {
   stack: any;
-  screens: Pick<RouteKeys, keyof RouteKeys>[] | 'all';
+  screens: Pick<ROUTE_KEYS, keyof ROUTE_KEYS>[] | 'all';
 }
 
 export default function SharedScreens({ stack: Stack, screens = 'all' }: SharedScreensProps) {

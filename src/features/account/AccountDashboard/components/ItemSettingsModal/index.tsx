@@ -8,8 +8,9 @@ import { changeAccountStatusById, requestDeleteAccount } from 'services/api/acco
 import { TRANSACTION_TYPE } from 'utils/constants';
 import { showToast } from 'utils/system';
 import { TAccount } from 'database/types';
-import { CardEdit, Lock1, Unlock, Math, MoneySend, Trash } from 'iconsax-react-native';
+import { CardEdit, Lock1, Unlock, Math, MoneySend, BagCross } from 'iconsax-react-native';
 import { useCustomTheme } from 'resources/theme';
+import { AccountStackNavigationProps } from 'navigation/types';
 import styles from './styles';
 
 const TRANSFER = 'transfer';
@@ -26,11 +27,11 @@ function ItemSettingsModal({
 }: {
   isShowModal: boolean;
   onToggleModal: () => void;
-  onRefresh: () => void;
+  onRefresh: (redirect?: boolean) => void;
   currentAccount: TAccount;
 }) {
   const { colors } = useCustomTheme();
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<AccountStackNavigationProps>();
   const isDisabledAction = !currentAccount?.isActive;
 
   const onOk = () => {
@@ -89,7 +90,7 @@ function ItemSettingsModal({
       default:
         if (currentAccount?.id) {
           changeAccountStatusById(currentAccount)
-            .then(() => onRefresh())
+            .then(() => onRefresh(true))
             .catch((error) => {
               showToast({
                 type: 'error',
@@ -148,7 +149,7 @@ function ItemSettingsModal({
           isDisable={isDisabledAction}
         >
           <View style={styles.item}>
-            <Trash size="28" color={colors.error} variant="Broken" />
+            <BagCross size="28" color={colors.error} variant="Broken" />
             <RNText>Xóa tài khoản</RNText>
           </View>
         </TouchableHighlightComponent>
