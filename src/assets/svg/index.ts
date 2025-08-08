@@ -39,16 +39,12 @@ import important from './important.svg';
 import list from './list.svg';
 import location from './location.svg';
 import locationFill from './locationFill.svg';
-import lock from './lock.svg';
-import lockOpen from './lockOpen.svg';
 import map from './map.svg';
 import more from './more.svg';
 import panel from './panel.svg';
 import pen from './pen.svg';
-import pencil from './pencil.svg';
 import pencilCircle from './pencilCircle.svg';
 import people from './people.svg';
-import plusMinus from './plusMinus.svg';
 import questionCircle from './questionCircle.svg';
 import remote from './remote.svg';
 import report from './report.svg';
@@ -58,11 +54,9 @@ import settings from './settings.svg';
 import syncCloud from './syncCloud.svg';
 import text from './text.svg';
 import textWord from './textWord.svg';
-import trash from './trash.svg';
 import up from './up.svg';
 import view from './view.svg';
 import work from './work.svg';
-import trayUp from './trayUp.svg';
 import display from './display.svg';
 import filter from './filter.svg';
 import selector from './selector.svg';
@@ -146,16 +140,12 @@ export {
   list,
   location,
   locationFill,
-  lock,
-  lockOpen,
   map,
   more,
   panel,
   pen,
-  pencil,
   pencilCircle,
   people,
-  plusMinus,
   questionCircle,
   remote,
   report,
@@ -165,9 +155,7 @@ export {
   syncCloud,
   text,
   textWord,
-  trash,
   up,
   view,
   work,
-  trayUp,
 };

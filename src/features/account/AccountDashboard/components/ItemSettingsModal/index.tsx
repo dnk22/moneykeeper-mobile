@@ -2,13 +2,14 @@ import { Alert, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ModalComponent from 'components/Modal';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
-import SvgIcon from 'components/SvgIcon';
 import RNText from 'components/Text';
 import { ROUTES } from 'navigation/constants/routes';
 import { changeAccountStatusById, requestDeleteAccount } from 'services/api/accounts';
 import { TRANSACTION_TYPE } from 'utils/constants';
 import { showToast } from 'utils/system';
 import { TAccount } from 'database/types';
+import { CardEdit, Lock1, Unlock, Math, MoneySend, Trash } from 'iconsax-react-native';
+import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 
 const TRANSFER = 'transfer';
@@ -28,6 +29,7 @@ function ItemSettingsModal({
   onRefresh: () => void;
   currentAccount: TAccount;
 }) {
+  const { colors } = useCustomTheme();
   const navigation = useNavigation<any>();
   const isDisabledAction = !currentAccount?.isActive;
 
@@ -112,7 +114,7 @@ function ItemSettingsModal({
           isDisable={isDisabledAction}
         >
           <View style={styles.item}>
-            <SvgIcon name="trayUp" size={22} />
+            <MoneySend size={28} color={colors.primary} variant="Broken" />
             <RNText>Chuyển khoản</RNText>
           </View>
         </TouchableHighlightComponent>
@@ -121,19 +123,23 @@ function ItemSettingsModal({
           isDisable={isDisabledAction}
         >
           <View style={styles.item}>
-            <SvgIcon name="plusMinus" size={22} />
+            <Math size="28" color={colors.primary} variant="Broken" />
             <RNText>Điều chỉnh số dư tài khoản</RNText>
           </View>
         </TouchableHighlightComponent>
         <TouchableHighlightComponent onPress={() => onItemPress(EDIT)} isDisable={isDisabledAction}>
           <View style={styles.item}>
-            <SvgIcon name="pencil" size={22} />
+            <CardEdit size="28" color={colors.primary} variant="Broken" />
             <RNText>Sửa tài khoản</RNText>
           </View>
         </TouchableHighlightComponent>
         <TouchableHighlightComponent onPress={() => onItemPress(INACTIVE)}>
           <View style={styles.item}>
-            <SvgIcon name={isDisabledAction ? 'lockOpen' : 'lock'} size={22} color="red" />
+            {isDisabledAction ? (
+              <Unlock size="28" color={colors.primary} variant="Broken" />
+            ) : (
+              <Lock1 size="28" color={colors.error} variant="Broken" />
+            )}
             <RNText>{isDisabledAction ? 'Tái sử dụng' : 'Ngừng sử dụng'}</RNText>
           </View>
         </TouchableHighlightComponent>
@@ -142,7 +148,7 @@ function ItemSettingsModal({
           isDisable={isDisabledAction}
         >
           <View style={styles.item}>
-            <SvgIcon name="trash" size={22} color="red" />
+            <Trash size="28" color={colors.error} variant="Broken" />
             <RNText>Xóa tài khoản</RNText>
           </View>
         </TouchableHighlightComponent>

@@ -1,9 +1,9 @@
 import { useRef, useCallback } from 'react';
 import { Animated, View } from 'react-native';
 import { RectButton, Swipeable } from 'react-native-gesture-handler';
-import TrashIcon from 'assets/svg/trash.svg';
 import { SwipeableProps } from 'react-native-gesture-handler/lib/typescript/components/Swipeable';
 import styles from './styles';
+import { Trash } from 'iconsax-react-native';
 
 interface ISwipeableComponentProps extends SwipeableProps {
   children: React.ReactNode;
@@ -32,7 +32,7 @@ function SwipeableComponent({ children, onSwipeableClose, onDelete, ...rest }: I
         <View style={{ width: 80, zIndex: 1 }}>
           <RectButton style={styles.rightAction} onPress={close}>
             <AnimatedView style={{ transform: [{ scale }] }}>
-              <TrashIcon color={'white'} />
+              <Trash size="32" color="#FF8A65" variant="Broken" />
             </AnimatedView>
           </RectButton>
         </View>
