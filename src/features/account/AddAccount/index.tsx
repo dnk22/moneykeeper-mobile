@@ -13,7 +13,7 @@ import { Autobrightness, Stickynote } from 'iconsax-react-native';
 
 import { ACCOUNT_TYPE_LIST } from 'utils/constants/account';
 import { FormProvider } from 'react-hook-form';
-import { AccountStackRouteProps } from 'navigation/types';
+import { AccountParamListProps } from 'navigation/types';
 import { ROUTES } from 'navigation/constants/routes';
 import AccountTypeSection from './AccountTypeSection';
 import BankSection from './BankSection';
@@ -24,7 +24,7 @@ import styles from './styles';
 const ACCOUNT_TYPES_NOT_BANK = [ACCOUNT_TYPE_LIST[0].id, ACCOUNT_TYPE_LIST[5].id];
 
 function AddAccount() {
-  const { params } = useRoute<AccountStackRouteProps<typeof ROUTES.ADD_ACCOUNT>>();
+  const { params } = useRoute<AccountParamListProps<typeof ROUTES.ADD_ACCOUNT>['route']>();
   const { colors } = useCustomTheme();
 
   const { methods, onFormSubmit, isCreditCard, accountTypeId, onConfirmDeleteAccount } =

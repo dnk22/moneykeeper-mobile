@@ -7,12 +7,9 @@ export type AccountStackParamList = {
   [ROUTES.ACCOUNT_TAB]?: undefined;
 } & SharedStackParamsList;
 
-export type AccountStackNavigationProps = NavigationProp<
-  AccountStackParamList,
-  keyof AccountStackParamList
->;
-
-export type AccountStackRouteProps<T extends keyof AccountStackParamList> = RouteProp<
-  AccountStackParamList,
-  T
->;
+export type AccountParamListProps<
+  T extends keyof AccountStackParamList = keyof AccountStackParamList,
+> = {
+  navigation: NavigationProp<AccountStackParamList, keyof AccountStackParamList>;
+  route: RouteProp<AccountStackParamList, T>;
+};

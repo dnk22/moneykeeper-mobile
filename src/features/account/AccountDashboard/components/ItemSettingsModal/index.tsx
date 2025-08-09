@@ -10,7 +10,7 @@ import { showToast } from 'utils/system';
 import { TAccount } from 'database/types';
 import { CardEdit, Lock1, Unlock, Math, MoneySend, BagCross } from 'iconsax-react-native';
 import { useCustomTheme } from 'resources/theme';
-import { AccountStackNavigationProps } from 'navigation/types';
+import { AccountParamListProps } from 'navigation/types';
 import styles from './styles';
 
 const TRANSFER = 'transfer';
@@ -31,7 +31,7 @@ function ItemSettingsModal({
   currentAccount: TAccount;
 }) {
   const { colors } = useCustomTheme();
-  const navigation = useNavigation<AccountStackNavigationProps>();
+  const navigation = useNavigation<AccountParamListProps['navigation']>();
   const isDisabledAction = !currentAccount?.isActive;
 
   const onOk = () => {

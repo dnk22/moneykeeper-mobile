@@ -8,7 +8,7 @@ import PressableHaptic from 'components/PressableHaptic';
 import RNText from 'components/Text';
 import { useCustomTheme } from 'resources/theme';
 import { formatNumber } from 'utils/math';
-import { AccountStackNavigationProps } from 'navigation/types';
+import { AccountParamListProps } from 'navigation/types';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constants/account';
 import { AccountContext } from 'features/account/AccountDashboard/context';
 import { TAccount } from 'database/types';
@@ -24,7 +24,7 @@ type ItemProps = {
 function AccountItem({ account, transparentBackground }: ItemProps) {
   const { colors } = useCustomTheme();
   const { onActionPress } = useContext(AccountContext);
-  const navigation = useNavigation<AccountStackNavigationProps>();
+  const navigation = useNavigation<AccountParamListProps['navigation']>();
 
   const onHandleItemPress = () => {
     const { id, accountName, accountTypeId } = account;

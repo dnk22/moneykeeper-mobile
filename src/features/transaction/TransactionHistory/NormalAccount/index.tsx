@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 import { ROUTES } from 'navigation/constants/routes';
-import { AccountStackNavigationProps, AccountStackRouteProps } from 'navigation/types';
+import { AccountParamListProps } from 'navigation/types';
 import ButtonText from 'navigation/components/ButtonText';
 import Summary from './Summary';
 import TransactionList from './TransactionList';
@@ -11,12 +11,10 @@ import styles from './styles';
 import PressableHaptic from 'components/PressableHaptic';
 import SvgIcon from 'components/SvgIcon';
 
-type NormalAccountProps = {
-  navigation: AccountStackNavigationProps;
-  route: AccountStackRouteProps<typeof ROUTES.ACCOUNT_NORMAL_DETAIL>;
-};
-
-function NormalAccount({ navigation, route }: NormalAccountProps) {
+function NormalAccount({
+  navigation,
+  route,
+}: AccountParamListProps<typeof ROUTES.ACCOUNT_NORMAL_DETAIL>) {
   const { params } = route;
   const { colors } = useCustomTheme();
   const [isSelectMode, setIsSelectMode] = useState(false);

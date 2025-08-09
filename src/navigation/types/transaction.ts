@@ -1,10 +1,10 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TRANSACTION_TYPE } from 'utils/constants';
 import { ROUTES } from 'navigation/constants/routes';
 import { SharedStackParamsList } from './shared';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
 
 /** transaction stack navigation */
-export type TransactionParamList = SharedStackParamsList & {
+export type TransactionParamList = {
   [ROUTES.ADD_TRANSACTION]: {
     transactionId?: string;
     categoryId?: string;
@@ -13,9 +13,9 @@ export type TransactionParamList = SharedStackParamsList & {
     amount?: number;
     relatedPerson?: string;
   };
-};
+} & SharedStackParamsList;
 
 export type TransactionParamListProps<T extends keyof TransactionParamList> = {
-  navigation: NativeStackScreenProps<TransactionParamList, T>['navigation'];
-  route: NativeStackScreenProps<TransactionParamList, T>['route'];
+  navigation: NavigationProp<TransactionParamList, keyof TransactionParamList>;
+  route: RouteProp<TransactionParamList, T>;
 };
