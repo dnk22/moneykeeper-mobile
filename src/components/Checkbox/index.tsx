@@ -1,16 +1,11 @@
 import React from 'react';
-import { TouchableWithoutFeedback, View, Image, StyleProp, ViewStyle } from 'react-native';
-import { useCustomTheme } from 'resources/theme';
+import { TouchableWithoutFeedback, View, StyleProp, ViewStyle } from 'react-native';
+import RnText from 'components/Text';
 import { styles } from './styles';
-
-const checkbox_check = require('./icon/checkbox-check.png');
-const checkbox_uncheck = require('./icon/checkbox-uncheck.png');
-const radio_check = require('./icon/radio-check.png');
-const radio_uncheck = require('./icon/radio-uncheck.png');
 
 type CheckboxComponentProps = {
   style?: StyleProp<ViewStyle>;
-  type?: 'checkbox' | 'radio';
+  checkbox?: boolean;
   check?: boolean;
   size?: number;
   color?: string;
@@ -21,24 +16,14 @@ type CheckboxComponentProps = {
 const CheckboxComponent = ({
   style,
   size = 20,
-  type = 'radio',
-  color = 'gray',
+  checkbox = false,
+  color = 'green',
   check = false,
   disabled = false,
   onPress,
 }: CheckboxComponentProps) => {
-  const {
-    colors: { primary },
-  } = useCustomTheme();
-
-  const imageSource =
-    type === 'checkbox'
-      ? check
-        ? checkbox_check
-        : checkbox_uncheck
-      : check
-      ? radio_check
-      : radio_uncheck;
+  const radioCenterSize = size - 8;
+  const radioRadius = size / 2;
 
   const onClick = () => {
     if (disabled) return;
@@ -49,15 +34,39 @@ const CheckboxComponent = ({
 
   return (
     <TouchableWithoutFeedback onPress={onClick}>
-      <View style={[styles.container, style, { opacity: disabled ? 0.5 : 1 }]}>
-        <Image
-          style={{
+      <View
+        style={[
+          styles.container,
+          style,
+          {
+            opacity: disabled ? 0.3 : 1,
+            borderRadius: !checkbox ? radioRadius : 6,
             width: size,
             height: size,
-            tintColor: color ?? (check ? primary : undefined),
-          }}
-          source={imageSource}
-        />
+          },
+        ]}
+      >
+        {!checkbox ? (
+          <View
+            style={[
+              styles.centerPoint,
+              {
+                backgroundColor: check ? color : 'transparent',
+                width: radioCenterSize,
+                height: radioCenterSize,
+                borderRadius: radioRadius,
+              },
+            ]}
+          />
+        ) : (
+          <>
+            {check && (
+              <RnText fontSize={size - 5} color={color} style={styles.text}>
+                ✓
+              </RnText>
+            )}
+          </>
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
