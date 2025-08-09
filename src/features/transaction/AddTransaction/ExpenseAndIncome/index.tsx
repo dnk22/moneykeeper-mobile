@@ -1,13 +1,6 @@
 import { memo } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
-import CategorySelect from '../components/CategorySelect';
-import DateTimeSelect from '../components/DateTimeSelect';
-import MoreDetail from '../components/MoreDetail';
-import AccountSelect from '../components/AccountSelect';
-import RelatedPersonSelect from '../components/RelatedPersonSelect';
-import Fee from '../components/Fee';
-import { AddTransactionType } from '../type';
 import InputField from 'components/InputField';
 import SvgIcon from 'components/SvgIcon';
 import SwitchField from 'components/Switch/SwitchField';
@@ -15,6 +8,13 @@ import FormAction from 'components/common/FormAction';
 import RNText from 'components/Text';
 import InputCalculator from 'components/InputCalculator';
 import isEqual from 'react-fast-compare';
+import CategorySelect from '../components/CategorySelect';
+import DateTimeSelect from '../components/DateTimeSelect';
+import MoreDetail from '../components/MoreDetail';
+import AccountSelect from '../components/AccountSelect';
+import RelatedPersonSelect from '../components/RelatedPersonSelect';
+import Fee from '../components/Fee';
+import { AddTransactionType } from '../type';
 import useExpenseIncomeHook from '../hooks/useExpenseIncomeLogic';
 import styles from '../styles';
 

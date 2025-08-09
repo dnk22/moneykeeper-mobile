@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
 import { SCREEN_HEIGHT } from 'share/dimensions';
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   addIcon: {
     zIndex: 1,
     position: 'absolute',
-    top: SCREEN_HEIGHT * 0.65,
+    top: SCREEN_HEIGHT * 0.6,
     right: 20,
     width: 60,
     height: 60,
@@ -14,5 +14,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-export default styles;

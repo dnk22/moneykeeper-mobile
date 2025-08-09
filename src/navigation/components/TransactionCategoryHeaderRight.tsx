@@ -1,16 +1,18 @@
-import TouchableHighlightComponent from 'components/TouchableHighlight';
-import { Edit } from 'iconsax-react-native';
 import { Button, View } from 'react-native';
 
-function TransactionCategoryHeaderRight({ onPress, isUpdateMode, show }: any) {
+function TransactionCategoryHeaderRight({
+  onPress,
+  isUpdateMode,
+}: {
+  onPress: () => void;
+  isUpdateMode: boolean;
+}) {
   return (
-    <View style={{ display: show ? 'flex' : 'none' }}>
+    <View>
       {isUpdateMode ? (
         <Button title="Hủy" onPress={onPress} />
       ) : (
-        <TouchableHighlightComponent onPress={onPress}>
-          <Edit size="28" color="#FF8A65"/>
-        </TouchableHighlightComponent>
+        <Button title="Sửa" onPress={onPress} />
       )}
     </View>
   );

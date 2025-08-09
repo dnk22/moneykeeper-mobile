@@ -167,3 +167,10 @@ export function convertDataToFb(data: any) {
     _changed: undefined,
   };
 }
+
+export function normalizeText(text: string) {
+  return text
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLowerCase();
+}

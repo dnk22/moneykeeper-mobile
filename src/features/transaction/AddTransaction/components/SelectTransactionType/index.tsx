@@ -1,9 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
-import { TransactionTypeData } from 'utils/data';
-import { TTransactionType } from 'utils/types/request.type';
-import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constants';
-import styles from './styles';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import ImageComponent from 'components/ImageComponent';
 import CheckboxComponent from 'components/Checkbox';
@@ -11,6 +7,10 @@ import PressableHaptic from 'components/PressableHaptic';
 import FlatListComponent from 'components/FlatList';
 import RNText from 'components/Text';
 import ModalComponent from 'components/Modal';
+import { TRANSACTION_TYPE_DATA } from 'utils/constants/transactions';
+import { TTransactionType } from 'utils/types/request.type';
+import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constants';
+import styles from './styles';
 
 type SelectTransactionTypeProps = {
   lendBorrowData: any;
@@ -52,21 +52,26 @@ function SelectTransactionType({
     setIsActive(currentType);
   }, [currentCategoryId, currentType]);
 
-  function renderItem({ item, index }: { item: TTransactionType }) {
-    const onHandleTransactionTypeItemPress = () => {
-      if (prevActive.current !== +item.id) {
-        prevActive.current = +item.id;
-        setIsActive(item.id);
-        onItemPress(item);
-      }
-      onToggleTransactionTypeModal();
-    };
-    if (isEditMode && currentType !== TRANSACTION_TYPE.ADJUSTMENT && index === 5) {
+  const onHandleTransactionTypeItemPress = (item: TTransactionType) => {
+    if (prevActive.current !== +item.id) {
+      prevActive.current = +item.id;
+      setIsActive(item.id);
+      onItemPress(item);
+    }
+    onToggleTransactionTypeModal();
+  };
+
+  function renderItem({ item, index }: { item: TTransactionType; index: number }) {
+    if (
+      isEditMode &&
+      currentType !== TRANSACTION_TYPE.ADJUSTMENT &&
+      index === +TRANSACTION_TYPE_DATA[TRANSACTION_TYPE_DATA.length - 1].id
+    ) {
       return <></>;
     }
 
     return (
-      <TouchableHighlightComponent onPress={onHandleTransactionTypeItemPress}>
+      <TouchableHighlightComponent onPress={() => onHandleTransactionTypeItemPress(item)}>
         <View style={styles.item}>
           <View style={styles.itemContent}>
             <View style={styles.itemIcon}>
@@ -74,7 +79,10 @@ function SelectTransactionType({
             </View>
             <RNText>{item.name}</RNText>
           </View>
-          <CheckboxComponent check={+isActive === +item.id} disabled />
+          <CheckboxComponent
+            check={+isActive === +item.id}
+            onPress={() => onHandleTransactionTypeItemPress(item)}
+          />
         </View>
       </TouchableHighlightComponent>
     );
@@ -89,14 +97,14 @@ function SelectTransactionType({
         styleDefaultContent={styles.modal}
       >
         <FlatListComponent
-          data={TransactionTypeData}
+          data={TRANSACTION_TYPE_DATA}
           renderItem={renderItem}
           initialNumToRender={6}
           maxToRenderPerBatch={6}
         />
       </ModalComponent>
       <PressableHaptic style={styles.transactionTypePicker} onPress={onToggleTransactionTypeModal}>
-        <RNText color="white">{TransactionTypeData[+isActive]?.name}</RNText>
+        <RNText color="white">{TRANSACTION_TYPE_DATA[+isActive]?.name}</RNText>
       </PressableHaptic>
     </>
   );

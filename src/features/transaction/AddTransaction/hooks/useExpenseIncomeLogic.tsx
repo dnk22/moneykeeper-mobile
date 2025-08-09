@@ -81,7 +81,7 @@ export default function useExpenseIncomeHook({ params, onSubmitSuccess }: AddTra
     }
 
     navigation.navigate(ROUTES.TRANSACTION_CATEGORY, {
-      screen: ROUTES.TRANSACTION_CATEGORY_LIST,
+      screen: ROUTES.TRANSACTION_CATEGORY_TABS,
       params: {
         screen: screenTarget,
         params: {

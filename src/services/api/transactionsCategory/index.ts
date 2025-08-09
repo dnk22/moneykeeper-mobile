@@ -5,7 +5,6 @@ import {
   queryTransactionCategoryById,
   queryAddTransactionCategory,
   queryUpdateTransactionCategory,
-  queryGetExpenseIncome,
   queryImportDefaultTransactionCategory,
 } from 'database/querying';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
@@ -13,12 +12,6 @@ import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
 type getMostUsedOrRecentTransactionProps = {
   categoryType: TRANSACTION_CATEGORY_TYPE;
   column: 'lastUseAt' | 'useCount';
-};
-
-/** read */
-
-export const getExpenseAndIncome = async ({ type }: { type: TRANSACTION_CATEGORY_TYPE }) => {
-  return await queryGetExpenseIncome({ type });
 };
 
 export const getMostUsedOrRecentTransaction = async (

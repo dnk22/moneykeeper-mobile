@@ -15,9 +15,9 @@ import styles from './styles';
 
 function ParentList() {
   const navigation =
-    useNavigation<TransactionCategoryParamProps<typeof ROUTES.TRANSACTION_CATEGORY_LIST>['navigation']>();
+    useNavigation<TransactionCategoryParamProps<typeof ROUTES.TRANSACTION_CATEGORY_TABS>['navigation']>();
   const { colors } = useCustomTheme();
-  const { params } = useRoute<TransactionCategoryParamProps<typeof ROUTES.TRANSACTION_CATEGORY_LIST>['route']>();
+  const { params } = useRoute<TransactionCategoryParamProps<typeof ROUTES.TRANSACTION_CATEGORY_TABS>['route']>();
   const [data, setData] = useState<any>([]);
 
   useEffect(() => {

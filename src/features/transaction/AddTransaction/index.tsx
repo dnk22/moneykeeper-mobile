@@ -5,11 +5,11 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { TransactionParamListProps } from 'navigation/types';
 import { FormProvider, useWatch } from 'react-hook-form';
 import { ROUTES } from 'navigation/constants/routes';
-import { useAddTransactionFormLogic } from './hooks/useFormLogic';
 import { TRANSACTION_TYPE } from 'utils/constants';
 import ExpenseAndIncome from './ExpenseAndIncome';
 import Transfer from './Transfer';
 import Adjustment from './Adjustment';
+import { useAddTransactionFormLogic } from './hooks/useFormLogic';
 import styles from './styles';
 
 export const COMPONENT_MAPPING = {

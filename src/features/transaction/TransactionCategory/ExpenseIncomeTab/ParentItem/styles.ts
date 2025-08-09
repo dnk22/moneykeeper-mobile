@@ -45,6 +45,9 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0,
   },
+  childContent: {
+    padding: 2,
+  },
 });
 
 export default styles;

@@ -19,10 +19,10 @@ function TransactionCategoryNavigation() {
           fontSize: HEADER_TITLE_FONT_SIZE,
         },
       }}
-      initialRouteName={ROUTES.TRANSACTION_CATEGORY_LIST}
+      initialRouteName={ROUTES.TRANSACTION_CATEGORY_TABS}
     >
       <TransactionCategoryStack.Screen
-        name={ROUTES.TRANSACTION_CATEGORY_LIST}
+        name={ROUTES.TRANSACTION_CATEGORY_TABS}
         component={TransactionCategoryTaBBar}
         options={{
           headerTitleStyle: {

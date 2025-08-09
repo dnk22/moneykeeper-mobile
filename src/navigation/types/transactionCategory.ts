@@ -1,17 +1,21 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
 import { ROUTES } from 'navigation/constants/routes';
-import { NavigatorScreenParams } from '@react-navigation/native';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 export type TransactionCategoryParams = {
-  [ROUTES.TRANSACTION_CATEGORY_LIST]: NavigatorScreenParams<TransactionCategoryTabsParams>;
-  [ROUTES.UPDATE_TRANSACTION_CATEGORY]: {
-    icon?: string;
-    transactionCategoryId?: string;
-    transactionCategoryTypeId?: TRANSACTION_CATEGORY_TYPE;
-    parentId?: string;
-    type?: TRANSACTION_CATEGORY_TYPE;
-  } | undefined;
+  [ROUTES.TRANSACTION_CATEGORY_TABS]: {
+    tabsHide?: TRANSACTION_CATEGORY_TYPE;
+  };
+  [ROUTES.UPDATE_TRANSACTION_CATEGORY]:
+    | {
+        icon?: string;
+        transactionCategoryId?: string;
+        transactionCategoryTypeId?: TRANSACTION_CATEGORY_TYPE;
+        parentId?: string;
+        type?: TRANSACTION_CATEGORY_TYPE;
+      }
+    | undefined;
   [ROUTES.PARENT_LIST]: { type: TRANSACTION_CATEGORY_TYPE };
   [ROUTES.ICON_SELECT]: undefined;
 };
@@ -21,23 +25,29 @@ export type TransactionCategoryTabsParams = {
   [ROUTES.EXPENSE_CATEGORY]: {
     idActive?: string;
     returnScreen: string;
-    tabHide?: TRANSACTION_CATEGORY_TYPE[];
   };
   [ROUTES.INCOME_CATEGORY]: {
     idActive?: string;
     returnScreen: string;
-    tabHide?: TRANSACTION_CATEGORY_TYPE[];
   };
   [ROUTES.LEND_BORROW]: {
     idActive?: string;
     returnScreen: string;
-    tabHide?: TRANSACTION_CATEGORY_TYPE[];
   };
 };
 
 // route, navigation
-export type TransactionCategoryParamProps<T extends keyof TransactionCategoryParams> = NativeStackScreenProps<TransactionCategoryParams, T>;
-export type TransactionCategoryTabsParamsProps<T extends keyof TransactionCategoryTabsParams> = {
+
+export type TransactionCategoryParamProps<
+  T extends keyof TransactionCategoryParams = keyof TransactionCategoryParams,
+> = {
+  navigation: NativeStackScreenProps<TransactionCategoryParams, T>['navigation'];
+  route: RouteProp<TransactionCategoryParams, T>;
+};
+
+export type TransactionCategoryTabsParamsProps<
+  T extends keyof TransactionCategoryTabsParams = keyof TransactionCategoryTabsParams,
+> = {
   navigation: NativeStackScreenProps<TransactionCategoryTabsParams, T>['navigation'];
-  route: NativeStackScreenProps<TransactionCategoryTabsParams, T>['route'];
+  route: RouteProp<TransactionCategoryTabsParams, T>;
 };

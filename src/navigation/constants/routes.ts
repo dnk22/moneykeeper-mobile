@@ -1,6 +1,3 @@
-import { createContext } from 'react';
-export const TransactionCategoryContext = createContext({});
-
 export const ROUTES = {
   // Main screen constants
   MAIN: 'main',
@@ -37,7 +34,7 @@ export const ROUTES = {
   TRANSACTIONS: 'transactions',
   ADD_TRANSACTION: 'addTransaction',
   TRANSACTION_CATEGORY: 'transactionCategory',
-  TRANSACTION_CATEGORY_LIST: 'transactionCategoryList',
+  TRANSACTION_CATEGORY_TABS: 'transactionCategoryTabs',
   UPDATE_TRANSACTION_CATEGORY: 'updateTransactionCategory',
   PARENT_LIST: 'parentList',
   ICON_SELECT: 'icon_select',

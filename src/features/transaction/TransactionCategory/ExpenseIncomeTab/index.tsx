@@ -1,94 +1,77 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import FlatListComponent from 'components/FlatList';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { useCustomTheme } from 'resources/theme';
-import { getExpenseAndIncome } from 'services/api/transactionsCategory';
 import { TTransactionsCategory } from 'database/types';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
+import InputSearch from 'components/InputSearch';
+import PressableHaptic from 'components/PressableHaptic';
+import { ROUTES } from 'navigation/constants/routes';
+import { Add } from 'iconsax-react-native';
+import { TransactionCategoryParamProps } from 'navigation/types/transactionCategory';
+import TransactionCategoryHeaderRight from 'navigation/components/TransactionCategoryHeaderRight';
+import { CategoryContext } from 'navigation/tabs/TransactionCategoryTabs';
+import { categoriesLocalQuery } from 'database/querying/categories';
+import { showToast } from 'utils/system';
+import debounce from 'lodash/debounce';
 import ParentItem from './ParentItem';
 import MostAndRecent from './MostAndRecent';
-import isEmpty from 'lodash/isEmpty';
-import InputSearch from 'components/InputSearch';
+import { mapTitle, mapTransactionCategoryType } from '../constants.config';
+import { filterAndBuildParentChild } from './helpter';
+import { styles } from './styles';
 
-type ExpenseIncomeTabProps = {
-  type: TRANSACTION_CATEGORY_TYPE;
-};
-
-function ExpenseIncomeTab({ type }: ExpenseIncomeTabProps) {
+function ExpenseIncomeTab({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
   const { colors } = useCustomTheme();
-  const initialData = useRef<any>([]);
-  const [data, setData] = useState<any>([]);
+  const navigation = useNavigation<TransactionCategoryParamProps['navigation']>();
+  const { name } = useRoute<TransactionCategoryParamProps['route']>();
 
-  const getExpenseIncomeData = async () => {
-    const result = await getExpenseAndIncome({ type });
-    initialData.current = result;
-    convertDataToGroup(result);
-  };
-
-  const convertDataToGroup = (data: TTransactionsCategory[]) => {
-    if (isEmpty(data)) {
-      setData([]);
-      return;
-    }
-
-    // Group the data by parentId
-    const groupedData: { [key: string]: TTransactionsCategory[] } = data.reduce((acc, item) => {
-      const parentId = item.parentId || 'parent'; // Use empty string if parentId is null
-      if (!acc[parentId]) {
-        acc[parentId] = [];
-      }
-      acc[parentId].push(item);
-      return acc;
-    }, {});
-
-    if (!groupedData['parent']) {
-      return;
-    }
-
-    // Create a new array with the desired structure
-    const newData = groupedData['parent'].map((item) => {
-      const newItem = { ...item };
-      newItem.children = groupedData[item.id] || [];
-      return newItem;
-    });
-    setData(newData);
-  };
-
-  function searchByText(
-    data: TTransactionsCategory[],
-    searchText: string,
-  ): TTransactionsCategory[] {
-    const resultMap = new Map<string, TTransactionsCategory>();
-    function searchRecursive(item: TTransactionsCategory): TTransactionsCategory | null {
-      const isMatch = item.categoryName.toLowerCase().includes(searchText.toLowerCase());
-      const newItem: TTransactionsCategory = { ...item };
-      if (isMatch || (item.children && item.children.length > 0)) {
-        newItem.children = (item.children || []).map(searchRecursive).filter(Boolean);
-        if (!resultMap.has(item.id)) {
-          resultMap.set(item.id, newItem);
-        }
-        if (item.parentId && !resultMap.has(item.parentId)) {
-          const parent = data.find((parentItem) => parentItem.id === item.parentId);
-          if (parent) {
-            resultMap.set(parent.id, parent);
-            searchRecursive(parent);
-          }
-        }
-      }
-      return newItem;
-    }
-    data.forEach((item) => {
-      searchRecursive(item);
-    });
-    return Array.from(resultMap.values());
-  }
+  const [searchText, setSearchText] = useState('');
+  const [data, setCategoryData] = useState<any[]>([]);
+  const { isUpdate, setUpdateMode } = useContext(CategoryContext);
 
   useFocusEffect(
     useCallback(() => {
-      getExpenseIncomeData();
+      try {
+        categoriesLocalQuery.getExpenseIncome({ type }).then((result) => {
+          setCategoryData(result);
+        });
+      } catch (error) {
+        showToast({
+          type: 'error',
+          text2: 'Không thể tải danh sách danh mục',
+        });
+      }
     }, [type]),
   );
+
+  useFocusEffect(
+    useCallback(() => {
+      // Set the header title and right button based on the current tab
+      const parent = navigation.getParent();
+      if (parent) {
+        parent.setOptions({
+          headerTitle: mapTitle[name],
+          headerRight: () => (
+            <TransactionCategoryHeaderRight
+              isUpdateMode={isUpdate}
+              onPress={() => setUpdateMode(!isUpdate)}
+            />
+          ),
+        });
+      }
+    }, [isUpdate]),
+  );
+
+  const handleOnSearch = debounce((text: string) => {
+    setSearchText(text);
+  }, 200);
+
+  const navigateToAddCategory = () => {
+    navigation.navigate(ROUTES.UPDATE_TRANSACTION_CATEGORY, {
+      type: mapTransactionCategoryType[name ?? ROUTES.EXPENSE_CATEGORY],
+    });
+  };
 
   const renderItem = ({
     item,
@@ -98,26 +81,27 @@ function ExpenseIncomeTab({ type }: ExpenseIncomeTabProps) {
     return <ParentItem data={item} />;
   };
 
-  const handleOnSearch = (text: string) => {
-    if (!text) {
-      convertDataToGroup(initialData.current);
-    } else {
-      const searchResults = searchByText(initialData.current, text);
-      convertDataToGroup(searchResults);
-    }
-  };
+  const dataGrouped = useMemo(() => {
+    return filterAndBuildParentChild({ data, searchText, sortBy: 'categoryName' });
+  }, [data, searchText]);
 
   return (
     <View style={{ padding: 6, flex: 1 }}>
       <InputSearch
-        placeholder="Nhập tên"
+        placeholder="Tìm kiếm danh mục"
         onChangeText={handleOnSearch}
         backgroundColor={colors.surface}
         style={{ marginBottom: 10 }}
       />
       <MostAndRecent type={type} />
       <View style={{ flex: 1 }}>
-        <FlatListComponent data={data} renderItem={renderItem} />
+        <FlatListComponent data={dataGrouped} renderItem={renderItem} />
+        <PressableHaptic
+          style={[styles.addIcon, { backgroundColor: colors.primary }]}
+          onPress={navigateToAddCategory}
+        >
+          <Add size="28" color="white" />
+        </PressableHaptic>
       </View>
     </View>
   );

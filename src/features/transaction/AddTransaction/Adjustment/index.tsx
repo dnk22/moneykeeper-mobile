@@ -109,11 +109,11 @@ function Adjustment({ params, onSubmitSuccess }: AddTransactionType) {
 
   const handleOnCategoryPress = () => {
     navigation.navigate(ROUTES.TRANSACTION_CATEGORY, {
-      screen: ROUTES.TRANSACTION_CATEGORY_LIST,
+      screen: ROUTES.TRANSACTION_CATEGORY_TABS,
       params: {
         screen: differenceValue <= 0 ? ROUTES.EXPENSE_CATEGORY : ROUTES.INCOME_CATEGORY,
         params: { idActive: getValues('categoryId'), returnScreen: routerName },
-        tabHide: differenceValue <= 0 ? INCOME_CATEGORY : EXPENSE_CATEGORY,
+        tabsHide: differenceValue <= 0 ? INCOME_CATEGORY : EXPENSE_CATEGORY,
       },
     });
   };

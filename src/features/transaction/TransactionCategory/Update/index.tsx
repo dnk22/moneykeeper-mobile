@@ -76,7 +76,7 @@ function UpdateTransactionCategory() {
   };
 
   const handleOnSelectParent = () => {
-    navigation.navigate(ROUTES.TRANSACTION_CATEGORY_LIST, {
+    navigation.navigate(ROUTES.TRANSACTION_CATEGORY_TABS, {
       type: params?.type || getValues('categoryType'),
     });
   };

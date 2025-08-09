@@ -22,19 +22,6 @@ export const queryGetLendBorrowData = async () => {
   } catch (error) {}
 };
 
-export const queryGetExpenseIncome = async ({ type }: { type: TRANSACTION_CATEGORY_TYPE }) => {
-  const lendBorrow = Object.values(TRANSACTION_LEND_BORROW_NAME).map((item) => `"${item}"`);
-  return await database.read(async () => {
-    const query = `SELECT id, categoryName, categoryType, parentId, dictionaryKey, icon, isSystem, sortOrder FROM ${TRANSACTION_CATEGORY}
-    WHERE _status!='deleted' AND categoryType=${type} AND categoryName NOT IN (${lendBorrow})`;
-    const result = await database
-      .get<TransactionCategoryModel>(TRANSACTION_CATEGORY)
-      .query(Q.unsafeSqlQuery(query))
-      .unsafeFetchRaw();
-    return result;
-  });
-};
-
 export const queryTransactionCategoryById = async (id: string) => {
   try {
     const query = `SELECT * FROM ${TRANSACTION_CATEGORY} WHERE id='${id}' AND _status != 'deleted'`;
