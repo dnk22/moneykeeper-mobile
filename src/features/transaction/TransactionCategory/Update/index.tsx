@@ -1,179 +1,109 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { TransactionCategoryParamProps } from 'navigation/types';
-import { useForm } from 'react-hook-form';
 import { useCustomTheme } from 'resources/theme';
-import { TTransactionsCategory } from 'database/types';
-import { ROUTES } from 'navigation/constants/routes';
-import TransactionCategoryModel from 'database/models/transactionCategory.model';
-import {
-  deleteTransactionCategoryByID,
-  getTransactionCategoryByID,
-  updateTransactionCategory,
-} from 'services/api/transactionsCategory';
 import PressableHaptic from 'components/PressableHaptic';
-import SvgIcon from 'components/SvgIcon';
 import FormAction from 'components/common/FormAction';
 import ImageComponent from 'components/ImageComponent';
 import InputField from 'components/InputField';
 import InputSelection from 'components/InputSelection';
+import { TransactionCategoryParamProps } from 'navigation/types';
+import { ROUTES } from 'navigation/constants/routes';
+import { FormProvider, useWatch } from 'react-hook-form';
+import { Autobrightness, CloseCircle, Stickynote } from 'iconsax-react-native';
+import useHook from './hook';
 import styles from './styles';
 
-function UpdateTransactionCategory() {
+function UpdateTransactionCategory({
+  route,
+  navigation,
+}: {
+  route: TransactionCategoryParamProps<typeof ROUTES.UPDATE_TRANSACTION_CATEGORY>['route'];
+  navigation: TransactionCategoryParamProps<
+    typeof ROUTES.UPDATE_TRANSACTION_CATEGORY
+  >['navigation'];
+}) {
   const { colors } = useCustomTheme();
-  const navigation =
-    useNavigation<
-      TransactionCategoryParamProps<typeof ROUTES.UPDATE_TRANSACTION_CATEGORY>['navigation']
-    >();
-  const { params } =
-    useRoute<TransactionCategoryParamProps<typeof ROUTES.UPDATE_TRANSACTION_CATEGORY>['route']>();
-  const [parentGroup, setParentGroup] = useState<TransactionCategoryModel | undefined>(undefined);
-  const [isShowSelectParent, setIsShowSelectParent] = useState(true);
 
-  const { control, handleSubmit, reset, setValue, watch, getValues } =
-    useForm<TTransactionsCategory>({
-      defaultValues: {
-        isSystem: false,
-        useCount: 0,
-        parentId: null,
-      },
-    });
-
-  useEffect(() => {
-    if (params?.icon) {
-      setValue('icon', params.icon);
-    }
-  }, [params?.icon]);
-
-  useEffect(() => {
-    fetchDataInEditMode(params?.transactionCategoryId);
-  }, [params?.transactionCategoryId]);
-
-  useEffect(() => {
-    setValue('categoryType', params?.type);
-  }, [params?.type]);
-
-  useEffect(() => {
-    if (params?.parentId) {
-      setValue('parentId', params.parentId);
-      getTransactionCategoryByID(params?.parentId).then((res) => {
-        setParentGroup(res);
-      });
-    } else {
-      setValue('parentId', null);
-      setParentGroup(undefined);
-    }
-  }, [params?.parentId]);
-
-  const fetchDataInEditMode = async (id?: string) => {
-    if (!id) return;
-    const res = await getTransactionCategoryByID(id);
-    if (res?.id) {
-      setIsShowSelectParent(res.parentId);
-      reset(res);
-    }
-  };
-
-  const handleOnSelectParent = () => {
-    navigation.navigate(ROUTES.TRANSACTION_CATEGORY_TABS, {
-      type: params?.type || getValues('categoryType'),
-    });
-  };
-
-  const handleOnDeleteRecord = async () => {
-    if (params?.transactionCategoryId) {
-      deleteTransactionCategoryByID(params.transactionCategoryId).then(({ status }) => {
-        if (status) {
-          navigation.goBack();
-        }
-      });
-    }
-  };
-
-  const handleOnDeleteParent = () => {
-    navigation.setParams({
-      parentId: undefined,
-    });
-  };
-
-  const handleOnDeleteIcon = () => {
-    setValue('icon', '');
-  };
-
-  const navigateToSelectIcon = () => {
-    navigation.navigate(ROUTES.ICON_SELECT);
-  };
-
-  const onHandleSubmit = (data: TTransactionsCategory) => {
-    delete data.id;
-    updateTransactionCategory({ id: params.transactionCategoryId, data });
-    navigation.goBack();
-  };
+  const {
+    parentGroup,
+    formMethods,
+    handleSubmit,
+    handleOnSelectParent,
+    handleOnDeleteRecord,
+    handleOnDeleteParent,
+    handleOnDeleteIcon,
+    onFormSubmit,
+  } = useHook({
+    route,
+    navigation,
+  });
+  const iconValue = useWatch({ control: formMethods.control, name: 'icon' });
+  const parentId = useWatch({ control: formMethods.control, name: 'parentId' });
+  const isShowParent = !route.params?.transactionCategoryId || parentId;
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.form}>
-        <PressableHaptic
-          style={[
-            styles.selectIcon,
-            { backgroundColor: colors.surface, borderColor: colors.primary },
-          ]}
-          onPress={navigateToSelectIcon}
-        >
-          <ImageComponent size={38} name={getValues('icon') || 'unknown'} />
-          {watch('icon') && (
-            <PressableHaptic onPress={handleOnDeleteIcon} style={styles.clearIcon}>
-              <SvgIcon size={18} name="closeCircle" color="red" />
-            </PressableHaptic>
-          )}
-        </PressableHaptic>
-        <View style={[styles.group, { backgroundColor: colors.surface }]}>
-          <View style={styles.itemGroup}>
-            <SvgIcon name="clipboard" opacity={0.7} />
-            <View style={styles.groupContent}>
-              <InputField
-                name="categoryName"
-                control={control}
-                placeholder="Tên danh mục"
-                style={styles.formInput}
-                maxLength={50}
-                rules={{ required: true }}
-                autoFocus
-              />
-            </View>
-          </View>
-          <View style={styles.itemGroup}>
-            <SvgIcon name="textWord" opacity={0.7} />
-            <View style={styles.groupContent}>
-              <InputField
-                name="description"
-                control={control}
-                placeholder="Mô tả"
-                style={styles.formInput}
-                maxLength={50}
-              />
-            </View>
-          </View>
-        </View>
-        {isShowSelectParent && (
+    <FormProvider {...formMethods}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={styles.form}>
+          <PressableHaptic
+            style={[
+              styles.selectIcon,
+              { backgroundColor: colors.surface, borderColor: colors.primary },
+            ]}
+            onPress={() => navigation.navigate(ROUTES.ICON_SELECT)}
+          >
+            <ImageComponent size={38} name={iconValue || 'unknown'} />
+            {iconValue && (
+              <PressableHaptic onPress={handleOnDeleteIcon} style={styles.clearIcon}>
+                <CloseCircle color={colors.error} variant="Bold" />
+              </PressableHaptic>
+            )}
+          </PressableHaptic>
           <View style={[styles.group, { backgroundColor: colors.surface }]}>
-            <InputSelection
-              title="Chọn nhóm"
-              icon={parentGroup?.icon || 'group'}
-              value={parentGroup?.categoryName}
-              onSelect={handleOnSelectParent}
-              onDelete={handleOnDeleteParent}
-            />
+            <View style={styles.itemGroup}>
+              <Autobrightness size="28" color={colors.text} style={styles.icon} />
+              <View style={styles.groupContent}>
+                <InputField
+                  name="categoryName"
+                  placeholder="Tên danh mục"
+                  style={styles.formInput}
+                  maxLength={50}
+                  rules={{ required: true }}
+                  autoFocus
+                />
+              </View>
+            </View>
+            <View style={styles.itemGroup}>
+              <Stickynote size="28" color={colors.text} style={styles.icon} />
+              <View style={styles.groupContent}>
+                <InputField
+                  name="description"
+                  placeholder="Mô tả"
+                  style={styles.formInput}
+                  maxLength={50}
+                />
+              </View>
+            </View>
           </View>
-        )}
-        <FormAction
-          isShowDelete={Boolean(params?.transactionCategoryId)}
-          onSubmit={handleSubmit(onHandleSubmit)}
-          onDelete={handleOnDeleteRecord}
-        />
-      </View>
-    </TouchableWithoutFeedback>
+          {isShowParent && (
+            <View style={[styles.group, { backgroundColor: colors.surface }]}>
+              <InputSelection
+                placeholder="Chọn nhóm"
+                iconName={parentGroup?.icon}
+                displayValue={parentGroup?.categoryName}
+                onSelect={handleOnSelectParent}
+                onDelete={handleOnDeleteParent}
+              />
+            </View>
+          )}
+          <FormAction
+            isShowDelete={Boolean(route.params?.transactionCategoryId)}
+            onSubmit={handleSubmit(onFormSubmit)}
+            onDelete={handleOnDeleteRecord}
+          />
+        </View>
+      </TouchableWithoutFeedback>
+    </FormProvider>
   );
 }
 export default UpdateTransactionCategory;

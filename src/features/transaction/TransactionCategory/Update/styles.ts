@@ -35,13 +35,16 @@ const styles = StyleSheet.create({
   },
   clearIcon: {
     position: 'absolute',
-    top: 0,
-    right: 0,
+    top: -5,
+    right: -5,
   },
   formInput: {
     height: 50,
     fontSize: 20,
     width: '100%',
+  },
+  icon: {
+    opacity: 0.7,
   },
 });
 

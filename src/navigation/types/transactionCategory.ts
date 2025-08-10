@@ -1,21 +1,18 @@
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
 import { ROUTES } from 'navigation/constants/routes';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { RouteProp } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 export type TransactionCategoryParams = {
   [ROUTES.TRANSACTION_CATEGORY_TABS]: {
     tabsHide?: TRANSACTION_CATEGORY_TYPE;
   };
-  [ROUTES.UPDATE_TRANSACTION_CATEGORY]:
-    | {
-        icon?: string;
-        transactionCategoryId?: string;
-        transactionCategoryTypeId?: TRANSACTION_CATEGORY_TYPE;
-        parentId?: string;
-        type?: TRANSACTION_CATEGORY_TYPE;
-      }
-    | undefined;
+  [ROUTES.UPDATE_TRANSACTION_CATEGORY]: {
+    icon?: string;
+    transactionCategoryId?: string;
+    parentId?: string;
+    type?: TRANSACTION_CATEGORY_TYPE;
+  };
   [ROUTES.PARENT_LIST]: { type: TRANSACTION_CATEGORY_TYPE };
   [ROUTES.ICON_SELECT]: undefined;
 };

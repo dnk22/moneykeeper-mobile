@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import FlatListComponent from 'components/FlatList';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
@@ -20,21 +20,38 @@ import MostAndRecent from './MostAndRecent';
 import { mapTitle, mapTransactionCategoryType } from '../constants.config';
 import { filterAndBuildParentChild } from './helpter';
 import { styles } from './styles';
+import { isEqual } from 'lodash';
 
 function ExpenseIncomeTab({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation<TransactionCategoryParamProps['navigation']>();
   const { name } = useRoute<TransactionCategoryParamProps['route']>();
 
+  const { isEditable, setUpdateMode } = useContext(CategoryContext);
+  const [data, setCategoryData] = useState<any>([]);
   const [searchText, setSearchText] = useState('');
-  const [data, setCategoryData] = useState<any[]>([]);
-  const { isUpdate, setUpdateMode } = useContext(CategoryContext);
+
+  // useEffect(() => {
+  //   try {
+  //     categoriesLocalQuery.getExpenseIncome({ type }).then((result) => {
+  //       setCategoryData(result);
+  //     });
+  //   } catch (error) {
+  //     showToast({
+  //       type: 'error',
+  //       text2: 'Không thể tải danh sách danh mục',
+  //     });
+  //   }
+  // }, [type]);
 
   useFocusEffect(
     useCallback(() => {
       try {
         categoriesLocalQuery.getExpenseIncome({ type }).then((result) => {
-          setCategoryData(result);
+          if (!isEqual(result, data)) {
+            console.log('hehe');
+            setCategoryData(result);
+          }
         });
       } catch (error) {
         showToast({
@@ -54,13 +71,13 @@ function ExpenseIncomeTab({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
           headerTitle: mapTitle[name],
           headerRight: () => (
             <TransactionCategoryHeaderRight
-              isUpdateMode={isUpdate}
-              onPress={() => setUpdateMode(!isUpdate)}
+              isEditable={isEditable}
+              onPress={() => setUpdateMode(!isEditable)}
             />
           ),
         });
       }
-    }, [isUpdate]),
+    }, [isEditable]),
   );
 
   const handleOnSearch = debounce((text: string) => {
@@ -86,7 +103,7 @@ function ExpenseIncomeTab({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
   }, [data, searchText]);
 
   return (
-    <View style={{ padding: 6, flex: 1 }}>
+    <View style={styles.container}>
       <InputSearch
         placeholder="Tìm kiếm danh mục"
         onChangeText={handleOnSearch}
@@ -96,12 +113,14 @@ function ExpenseIncomeTab({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
       <MostAndRecent type={type} />
       <View style={{ flex: 1 }}>
         <FlatListComponent data={dataGrouped} renderItem={renderItem} />
-        <PressableHaptic
-          style={[styles.addIcon, { backgroundColor: colors.primary }]}
-          onPress={navigateToAddCategory}
-        >
-          <Add size="28" color="white" />
-        </PressableHaptic>
+        {isEditable && (
+          <PressableHaptic
+            style={[styles.addIcon, { backgroundColor: colors.primary }]}
+            onPress={navigateToAddCategory}
+          >
+            <Add size="28" color="white" />
+          </PressableHaptic>
+        )}
       </View>
     </View>
   );

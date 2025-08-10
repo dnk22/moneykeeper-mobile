@@ -65,11 +65,11 @@ class DatabaseService {
     }
   }
 
-  public async update(path: string, updates: object): Promise<FirebaseResponse<void>> {
+  public async update(path: string, updates: object): Promise<FirebaseResponse<any>> {
     try {
       const fullPath = `${this.getUserProfilePath()}/${path}`;
       await this.database.ref(fullPath).update(updates);
-      return { data: undefined, error: null };
+      return { data: updates, error: null };
     } catch (error: any) {
       throw new FirebaseError(error.code || 'unknown', error.message);
     }

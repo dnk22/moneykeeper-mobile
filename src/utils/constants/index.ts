@@ -1,8 +1,5 @@
 export const CREATE_MODE = 'create';
-export const VIEW_CATEGORY_FAST_BY_COLUMN = {
-  MOST: 'useCount',
-  RECENT: 'lastUseAt',
-};
+
 export const BASE_URL = '';
 export const DAY_IN_MONTH = Array.from({ length: 31 }, (v, k) => k + 1);
 

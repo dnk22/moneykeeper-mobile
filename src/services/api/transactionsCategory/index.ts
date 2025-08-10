@@ -1,77 +1,58 @@
-import {
-  queryGetParentCategoryList,
-  queryMostUsedOrRecentTransactionCategoryUsed,
-  queryDeleteTransactionCategoryById,
-  queryTransactionCategoryById,
-  queryAddTransactionCategory,
-  queryUpdateTransactionCategory,
-  queryImportDefaultTransactionCategory,
-} from 'database/querying';
-import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
+import { TRANSACTION_CATEGORY } from 'database/constants';
+import { SyncQueueAction } from 'database/models/syncQueue.model';
+import { queryDeleteTransactionCategoryById, syncQueueLocalQuery } from 'database/querying';
+import { categoriesLocalQuery } from 'database/querying/categories';
+import { categoriesFb } from 'services/firebase/db/categories';
 
-type getMostUsedOrRecentTransactionProps = {
-  categoryType: TRANSACTION_CATEGORY_TYPE;
-  column: 'lastUseAt' | 'useCount';
-};
-
-export const getMostUsedOrRecentTransaction = async (
-  params: getMostUsedOrRecentTransactionProps,
-) => {
+export const updateTransactionCategory = async ({ category }: { category: any }) => {
   try {
-    const res = await queryMostUsedOrRecentTransactionCategoryUsed(params);
-    return res;
-  } catch (error) {
-    console.log(error, 'getMostUsedOrRecentTransaction err ');
-    return [];
-  }
-};
+    if (category?.id) {
+      const id = category.id;
+      delete category.id; // Remove id from category to avoid conflicts
+      await categoriesLocalQuery.updateCategory({ id, category });
 
-export const getParentList = async (type: any) => {
-  try {
-    const res = await queryGetParentCategoryList(type);
-    return res;
-  } catch (error) {
-    console.log(error, 'getParentList err ');
-    return [];
-  }
-};
-
-export const getTransactionCategoryByID = async (id: string) => {
-  try {
-    const res = await queryTransactionCategoryById(id);
-    return res;
-  } catch (error) {
-    console.log(error, 'getTransactionCategoryByID err ');
-    return [];
-  }
-};
-
-/** create */
-export async function importTransactionCategoryData() {
-  return await queryImportDefaultTransactionCategory();
-}
-
-/** update */
-export const updateTransactionCategory = async ({ id, data }: { id?: string; data: any }) => {
-  try {
-    if (id) {
-      return await queryUpdateTransactionCategory({ id, data });
+      // sync to firebase
+      categoriesFb.updateCategory({ category }).catch(async () => {
+        await syncQueueLocalQuery.updateSyncQueueItem({
+          recordId: id,
+          tableName: TRANSACTION_CATEGORY,
+          payload: category,
+          action: SyncQueueAction.UPDATE,
+        });
+      });
     } else {
-      return await queryAddTransactionCategory(data);
+      const newCategory = await categoriesLocalQuery.addCategory(category);
+      // sync to firebase
+      categoriesFb.addNewCategory({ category: newCategory }).catch(async () => {
+        await syncQueueLocalQuery.updateSyncQueueItem({
+          recordId: newCategory.id,
+          tableName: TRANSACTION_CATEGORY,
+          payload: newCategory,
+          action: SyncQueueAction.CREATE,
+        });
+      });
     }
   } catch (error) {
-    console.log(error, 'deleteTransactionCategoryByID err ');
     return { status: false, errorMessage: 'fail' };
   }
 };
 
 /** delete */
-export const deleteTransactionCategoryByID = async (id: string) => {
+export const deleteCategoryById = async (id: string) => {
   try {
-    const res = await queryDeleteTransactionCategoryById(id);
-    return res;
+    // delete from local database
+    await categoriesLocalQuery.deleteCategoryById(id);
+
+    // sync to firebase
+    categoriesFb.deleteCategoryById(id).catch(async () => {
+      await syncQueueLocalQuery.updateSyncQueueItem({
+        recordId: id,
+        tableName: TRANSACTION_CATEGORY,
+        payload: { id },
+        action: SyncQueueAction.DELETE,
+      });
+    });
   } catch (error) {
-    console.log(error, 'deleteTransactionCategoryByID err ');
     return { status: false, errorMessage: 'fail' };
   }
 };

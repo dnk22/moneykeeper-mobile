@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { produce } from 'immer';
 import defaultSettings from 'utils/constants/appSettings';
 import { AppStateProps } from 'utils/types/store.type';
+import { updateCategoriesConfig } from './app.thunk';
 
 const initialState = {
   ...defaultSettings,
@@ -40,9 +41,6 @@ export const appSlice = createSlice({
     ) {
       Object.assign(state.transactions, payload);
     },
-    updateCategoriesConfig(state, { payload }: PayloadAction<AppStateProps['categories']>) {
-      state.categories = payload;
-    },
     updateAppLoading(state, { payload }: PayloadAction<AppStateProps['appLoading']>) {
       state.appLoading = payload;
     },
@@ -52,6 +50,11 @@ export const appSlice = createSlice({
       });
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(updateCategoriesConfig.fulfilled, (state, action) => {
+      Object.assign(state.categories, action.payload);
+    });
+  },
 });
 
 // Action creators are generated for each case reducer function
@@ -59,7 +62,6 @@ export const {
   updateAppConfig,
   updateAccountViewSettings,
   updateTransactionConfig,
-  updateCategoriesConfig,
   updateAppearanceConfig,
   updateAppLoading,
   updateAppAuthState,

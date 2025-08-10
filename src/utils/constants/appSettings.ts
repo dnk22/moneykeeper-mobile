@@ -45,8 +45,8 @@ const defaultSettings: TSettings = {
     },
   },
   categories: {
-    orderBy: 'name',
-    fastViewByMost: true,
+    orderBy: 'categoryName',
+    isMostView: true,
   },
 };
 

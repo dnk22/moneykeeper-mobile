@@ -1,84 +1,62 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import isEqual from 'react-fast-compare';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { MenuAction, MenuView, NativeActionEvent } from '@react-native-menu/menu';
-
-import { useCustomTheme } from 'resources/theme';
-import { TRANSACTION_CATEGORY_TYPE, VIEW_CATEGORY_FAST_BY_COLUMN } from 'utils/constants';
-import { TTransactionsCategory } from 'database/types';
-import { getMostUsedOrRecentTransaction } from 'services/api/transactionsCategory';
-import { ITEM_WIDTH } from 'features/transaction/TransactionCategory/constants.config';
-import { useAppDispatch, useAppSelector } from 'store/index';
-import { selectCategoriesConfig } from 'store/app/app.selector';
-import { updateCategoriesConfig } from 'store/app/app.slice';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { MenuView, NativeActionEvent } from '@react-native-menu/menu';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import ImageComponent from 'components/ImageComponent';
 import Empty from 'components/Empty';
-import SvgIcon from 'components/SvgIcon';
 import RNText from 'components/Text';
 import FlatListComponent from 'components/FlatList';
+
+import { useCustomTheme } from 'resources/theme';
+import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';
+import { TTransactionsCategory } from 'database/types';
+import { ITEM_WIDTH } from 'features/transaction/TransactionCategory/constants.config';
+import { TransactionCategoryParamProps } from 'navigation/types';
+import { categoriesLocalQuery } from 'database/querying/categories';
+import TransactionCategoryModel from 'database/models/transactionCategory.model';
+import { ArrowRight2 } from 'iconsax-react-native';
+import { updateCategoriesConfig } from 'store/app/app.thunk';
+import { useAppDispatch, useAppSelector } from 'store/index';
+import { selectCategoriesConfig } from 'store/app/app.selector';
+import { mapTitle, MENU_DATA, VIEW_OPTION } from './const';
 import styles from './styles';
-
-const ON = 'on';
-const OFF = 'off';
-
-export const mapTitle: { [key: string]: string } = {
-  [VIEW_CATEGORY_FAST_BY_COLUMN.RECENT]: 'Sử dụng gần đây',
-  [VIEW_CATEGORY_FAST_BY_COLUMN.MOST]: 'Hay sử dụng',
-};
-
-const dropDownDefault: MenuAction[] = [
-  {
-    id: VIEW_CATEGORY_FAST_BY_COLUMN.RECENT,
-    title: 'Sử dụng gần đây',
-  },
-  {
-    id: VIEW_CATEGORY_FAST_BY_COLUMN.MOST,
-    title: 'Hay sử dụng',
-  },
-];
 
 function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
   const { colors } = useCustomTheme();
-  const navigation = useNavigation<any>();
-  const viewCategoryMostAndRecent = useAppSelector((state) =>
+  const dispatch = useAppDispatch();
+  const { params } = useRoute<any>();
+  const navigation = useNavigation<TransactionCategoryParamProps['navigation']>();
+
+  const { quickSelectBy = VIEW_OPTION.useCount } = useAppSelector((state) =>
     selectCategoriesConfig(state),
   );
-  const dispatch = useAppDispatch();
-  const [data, setData] = useState<TTransactionsCategory[]>([]);
+  const [data, setData] = useState<TransactionCategoryModel[]>([]);
 
   useFocusEffect(
     useCallback(() => {
-      getRecentTransactionCategory(viewCategoryMostAndRecent);
-    }, [type, viewCategoryMostAndRecent]),
+      categoriesLocalQuery
+        .getMostUsedOrRecentCategories({
+          categoryType: type,
+          column: quickSelectBy,
+        })
+        .then((res) => {
+          setData(res);
+        });
+    }, [type, quickSelectBy]),
   );
 
-  const getRecentTransactionCategory = async (queryColumn: any) => {
-    const res = await getMostUsedOrRecentTransaction({
-      categoryType: type,
-      column: queryColumn,
-    });
-    setData(res);
-  };
-
-  const renderActions = useMemo(() => {
-    return dropDownDefault.map((x) => {
-      x.state = x.id === viewCategoryMostAndRecent ? ON : OFF;
-      return x;
-    });
-  }, [viewCategoryMostAndRecent]);
-
-  const onHandlePressAction = ({ nativeEvent: { event } }: NativeActionEvent) => {
-    dispatch(updateCategoriesConfig(event));
+  const onMenuChange = ({ nativeEvent: { event } }: NativeActionEvent) => {
+    dispatch(
+      updateCategoriesConfig({
+        quickSelectBy: event as 'useCount' | 'lastUseAt',
+      }),
+    );
   };
 
   const onItemCategoryPress = (category: TTransactionsCategory) => {
-    navigation.navigate({
-      name: navigation.getParent()?.getState().routes[0].params?.params?.returnScreen,
-      params: { categoryId: category.id },
-      merge: true,
-    });
+    navigation.popTo(params.returnScreen, { categoryId: category.id });
   };
 
   const renderItem = ({ item }: { item: TTransactionsCategory }) => {
@@ -100,19 +78,24 @@ function MostAndRecent({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
     );
   };
 
+  const renderActions = useMemo(() => {
+    return MENU_DATA.map((x) => ({
+      ...x,
+      state: x.id === quickSelectBy ? ('on' as const) : ('off' as const),
+    }));
+  }, [quickSelectBy]);
+
   return (
     <View style={[styles.group, { backgroundColor: colors.surface }]}>
       <MenuView
         style={styles.selectAs}
         title="Chọn nhanh theo"
-        onPressAction={onHandlePressAction}
+        onPressAction={onMenuChange}
         actions={renderActions}
       >
         <View style={styles.menu}>
-          <RNText color="#1BA7EF" style={{ opacity: 0.7 }}>
-            {mapTitle[viewCategoryMostAndRecent]}
-          </RNText>
-          <SvgIcon name="forward" preset="forwardLink" color="#00a8e8" />
+          <RNText color={colors.primary}>{mapTitle[quickSelectBy]}</RNText>
+          <ArrowRight2 size={16} color={colors.primaryVariant} />
         </View>
       </MenuView>
       <FlatListComponent data={data} horizontal renderItem={renderItem} />

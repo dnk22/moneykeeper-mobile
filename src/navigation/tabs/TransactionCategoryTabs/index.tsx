@@ -12,22 +12,21 @@ import Loading from 'components/Loading';
 const TabBar = createMaterialTopTabNavigator<TransactionCategoryTabsParams>();
 
 export const CategoryContext = createContext<{
-  isUpdate: boolean;
+  isEditable: boolean;
   setUpdateMode: (value: boolean) => void;
-}>({ isUpdate: false, setUpdateMode: () => {} });
+}>({ isEditable: false, setUpdateMode: () => {} });
 
 function TransactionCategoryTabs({
   route,
 }: {
   route: TransactionCategoryParamProps<typeof ROUTES.TRANSACTION_CATEGORY_TABS>['route'];
 }) {
-  const [isUpdate, setUpdateMode] = useState<boolean>(false);
+  const [isEditable, setUpdateMode] = useState<boolean>(false);
   const { colors } = useCustomTheme();
-  const { params } = route;
-  const tabsHide = params?.tabsHide;
+  const tabsHide = route.params?.tabsHide;
 
   return (
-    <CategoryContext.Provider value={{ isUpdate, setUpdateMode }}>
+    <CategoryContext.Provider value={{ isEditable, setUpdateMode }}>
       <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface }}>
         <TabBar.Navigator
           initialRouteName={ROUTES.EXPENSE_CATEGORY}
@@ -54,7 +53,7 @@ function TransactionCategoryTabs({
               {() => <ExpenseIncomeTab type={TRANSACTION_CATEGORY_TYPE.EXPENSE} />}
             </TabBar.Screen>
           )}
-          {!isUpdate && (
+          {!isEditable && (
             <TabBar.Screen name={ROUTES.LEND_BORROW} options={{ title: 'Vay mượn' }}>
               {() => <LendAndBorrowTab />}
             </TabBar.Screen>

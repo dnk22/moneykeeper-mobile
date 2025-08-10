@@ -1,18 +1,21 @@
+import { Edit2 } from 'iconsax-react-native';
 import { Button, View } from 'react-native';
+import { useCustomTheme } from 'resources/theme';
 
 function TransactionCategoryHeaderRight({
   onPress,
-  isUpdateMode,
+  isEditable,
 }: {
   onPress: () => void;
-  isUpdateMode: boolean;
+  isEditable: boolean;
 }) {
+  const { colors } = useCustomTheme();
   return (
-    <View>
-      {isUpdateMode ? (
+    <View style={{ width: 50, alignItems: 'flex-end' }}>
+      {isEditable ? (
         <Button title="Hủy" onPress={onPress} />
       ) : (
-        <Button title="Sửa" onPress={onPress} />
+        <Edit2 size="30" color={colors.text} onPress={onPress} />
       )}
     </View>
   );

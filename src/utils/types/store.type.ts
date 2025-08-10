@@ -8,11 +8,11 @@ export type ThemeProps = {
 
 export type TSettings = {
   config: {
-    dateFormat?: string;
-    screenDefault?: string;
-    hideBalance?: boolean;
+    dateFormat: string;
+    screenDefault: string;
+    hideBalance: boolean;
   };
-  notification?: {
+  notification: {
     enabled: boolean;
     sound: boolean;
     time: string;
@@ -28,32 +28,33 @@ export type TSettings = {
       isActive: boolean;
     }>;
   };
-  report?: {
-    startDayOfWeek?: number;
-    startDateOfMonth?: number;
-    startMonthOfYear?: number;
+  report: {
+    startDayOfWeek: number;
+    startDateOfMonth: number;
+    startMonthOfYear: number;
   };
-  security?: {
-    pinCode?: string;
-    biometricEnabled?: boolean;
+  security: {
+    pinCode: string;
+    biometricEnabled: boolean;
   };
   accounts: {
-    sortByName?: boolean;
-    sortOrder?: Array<string>[];
-    sortOrderInGroup?: Array<{ key: string; value: Array<string> }>[];
-    groupByType?: boolean;
+    sortByName: boolean;
+    sortOrder: Array<string>[];
+    sortOrderInGroup: Array<{ key: string; value: Array<string> }>[];
+    groupByType: boolean;
   };
   transactions: {
     display: {
-      income?: boolean;
-      expense?: boolean;
-      amount?: boolean;
-      description?: boolean;
+      income: boolean;
+      expense: boolean;
+      amount: boolean;
+      description: boolean;
     };
   };
-  categories?: {
-    orderBy?: string;
-    fastViewByMost?: boolean;
+  categories: {
+    orderBy: 'categoryName' | 'lastUseAt' | 'useCount';
+    quickSelectBy: 'lastUseAt' | 'useCount';
+    isGridView: boolean;
   };
 };
 

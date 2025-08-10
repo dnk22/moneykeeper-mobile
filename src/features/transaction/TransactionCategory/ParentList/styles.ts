@@ -6,13 +6,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   item: {
-    marginBottom: 8,
     borderRadius: 10,
-    padding: 5,
-    paddingVertical: 10,
+    padding: 10,
+    paddingVertical: 12,
     flexDirection: 'row',
     alignItems: 'center',
-    columnGap: 10,
+    columnGap: 12,
   },
 });
 

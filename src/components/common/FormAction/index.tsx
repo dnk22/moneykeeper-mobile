@@ -18,7 +18,7 @@ function FormAction({ isShowDelete = false, onDelete, onSubmit, loading }: FormA
   const { colors } = useCustomTheme();
 
   const onConfirmDelete = () => {
-    Alert.alert('Xác nhận xóa', 'Bạn có chắc muốn xóa?', [
+    Alert.alert('Xác nhận xóa', 'Bạn có chắc chắn muốn xóa?', [
       {
         text: 'Hủy bỏ',
         style: 'cancel',

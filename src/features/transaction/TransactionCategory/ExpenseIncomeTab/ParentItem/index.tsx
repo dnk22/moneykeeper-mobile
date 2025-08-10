@@ -14,16 +14,14 @@ import { ITEM_WIDTH } from '../../constants.config';
 import styles from './styles';
 
 type ParentItemProps = {
-  disabled?: boolean;
-  data: TTransactionsCategory & { children: TTransactionsCategory[] };
+  data: TTransactionsCategory & { children?: TTransactionsCategory[] };
 };
 
-function ParentItem({ data, disabled }: ParentItemProps) {
+function ParentItem({ data }: ParentItemProps) {
   const { colors } = useCustomTheme();
-  const { isUpdate } = useContext(CategoryContext) as { isUpdate: boolean };
+  const { isEditable } = useContext(CategoryContext) as { isEditable: boolean };
   const navigation = useNavigation<TransactionCategoryParamProps['navigation']>();
   const { params } = useRoute<any>();
-  const isEditable = isUpdate && !disabled;
 
   const onItemCategoryPress = useCallback(
     (category: TTransactionsCategory) => {
@@ -32,15 +30,15 @@ function ParentItem({ data, disabled }: ParentItemProps) {
           transactionCategoryId: category.id,
         });
       } else {
-        if (params.returnScreen) {
+        if (params?.returnScreen) {
           navigation.popTo(params.returnScreen, { categoryId: category.id });
         }
       }
     },
-    [isEditable, navigation, params.returnScreen],
+    [isEditable, navigation, params],
   );
 
-  const children = data.children || [];
+  const children = data?.children || [];
 
   return (
     <View style={[styles.group, { backgroundColor: colors.surface }]}>

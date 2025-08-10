@@ -90,23 +90,21 @@ export class CategoriesLocalData {
    * @returns Promise chứa danh sách các danh mục cha
    */
   public async getParentCategoryList(type: TRANSACTION_CATEGORY_TYPE) {
-    try {
-      return await database.read(async () => {
-        return await this.categoriesCollection
-          .query(
-            Q.and(
-              Q.where('parentId', Q.eq('')),
-              Q.where('_status', Q.notEq('deleted')),
-              Q.where('categoryType', type),
-              Q.where('categoryName', Q.notIn(Object.values(TRANSACTION_LEND_BORROW_NAME))),
+    return await database.read(async () => {
+      return await this.categoriesCollection
+        .query(
+          Q.and(
+            Q.where('parentId', Q.eq(null)),
+            Q.where('categoryType', type),
+            Q.where('_status', Q.notEq('deleted')),
+            Q.where(
+              'categoryName',
+              Q.notIn(Object.values(TRANSACTION_LEND_BORROW_NAME).map((item) => `"${item}"`)),
             ),
-          )
-          .fetch();
-      });
-    } catch (error) {
-      console.log(error, 'getParentCategoryList err');
-      return [];
-    }
+          ),
+        )
+        .unsafeFetchRaw();
+    });
   }
 
   /**
@@ -233,9 +231,10 @@ export class CategoriesLocalData {
   public async addCategory(category: TTransactionsCategory) {
     try {
       return await database.write(async () => {
-        return await this.categoriesCollection.create((item) => {
+        const res = await this.categoriesCollection.create((item) => {
           Object.assign(item, category);
         });
+        return res._raw;
       });
     } catch (error) {
       this.throwError('ADD-CAT', 'Failed to add category');
@@ -245,14 +244,14 @@ export class CategoriesLocalData {
   /**
    * Cập nhật thông tin một danh mục
    * @param id - ID của danh mục cần cập nhật
-   * @param data - Dữ liệu cần cập nhật
+   * @param category - Dữ liệu cần cập nhật
    */
-  public async updateCategory({ id, data }: { id: string; data: TTransactionsCategory }) {
+  public async updateCategory({ id, category }: { id: string; category: TTransactionsCategory }) {
     try {
       await database.write(async () => {
-        const category = await this.categoriesCollection.find(id);
-        await category.update((item) => {
-          Object.assign(item, data);
+        const categoryCollection = await this.categoriesCollection.find(id);
+        await categoryCollection.update((item) => {
+          Object.assign(item, category);
         });
       });
     } catch (error) {
@@ -292,41 +291,27 @@ export class CategoriesLocalData {
    *          - status: boolean - true nếu xóa thành công
    *          - message: string - thông báo kết quả hoặc lỗi nếu có
    */
-  public async deleteCategory(id: string) {
-    try {
-      return await database.write(async () => {
-        // Tìm danh mục cha
-        const parentCategory = await this.categoriesCollection.find(id);
+  public async deleteCategoryById(id: string) {
+    return await database.write(async () => {
+      // Tìm danh mục cha
+      const parentCategory = await this.categoriesCollection.find(id);
 
-        // Tìm tất cả danh mục con
-        const childCategories = await this.categoriesCollection
-          .query(Q.where('parentId', id))
-          .fetch();
+      // Tìm tất cả danh mục con
+      const childCategories = await this.categoriesCollection
+        .query(Q.where('parentId', id))
+        .fetch();
 
+      if (childCategories.length > 0) {
         // Xóa tất cả danh mục con
         for (const category of childCategories) {
           await category.markAsDeleted();
         }
+      }
 
-        // Xóa danh mục cha
-        await parentCategory.markAsDeleted();
-
-        return {
-          status: true,
-          message: 'Deleted Successfully',
-        };
-      });
-    } catch (error) {
-      return {
-        status: false,
-        message: error,
-      };
-    }
+      // Xóa danh mục cha
+      return await parentCategory.markAsDeleted();
+    });
   }
 }
 
-/**
- * Export instance singleton của CategoriesLocalData
- * Sử dụng biến này để truy cập các phương thức của CategoriesLocalData trong toàn bộ ứng dụng
- */
 export const categoriesLocalQuery = CategoriesLocalData.getInstance();

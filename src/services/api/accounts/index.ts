@@ -135,7 +135,7 @@ export async function requestDeleteAccount(accountId: string) {
         await syncQueueLocalQuery.updateSyncQueueItem({
           recordId: accountId,
           tableName: TRANSACTIONS,
-          payload: transactionIdsToDelete.toString(),
+          payload: { ids: transactionIdsToDelete },
           action: SyncQueueAction.DELETE,
         });
       });

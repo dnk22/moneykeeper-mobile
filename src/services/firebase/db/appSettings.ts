@@ -43,7 +43,7 @@ export class AppSettings {
     newSettings,
   }: {
     path?: string;
-    newSettings: Partial<TSettings>;
+    newSettings: any;
   }): Promise<Error | void> {
     if (path) {
       const currentSettings = await this.getSettingStatus(path);
