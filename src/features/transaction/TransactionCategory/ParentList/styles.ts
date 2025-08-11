@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
   },
   item: {
     borderRadius: 10,
@@ -12,6 +11,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: 12,
+  },
+  flatListContainer: {
+    padding: 10,
+    paddingBottom: 100,
   },
 });
 

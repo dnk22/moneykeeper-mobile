@@ -10,7 +10,9 @@ import ImageComponent from 'components/ImageComponent';
 import RNText from 'components/Text';
 import { CategoryContext } from 'navigation/tabs/TransactionCategoryTabs';
 import { TransactionCategoryParamProps } from 'navigation/types';
+import { useMappingHelper } from '@shopify/flash-list';
 import { ITEM_WIDTH } from '../../constants.config';
+import isEqual from 'react-fast-compare';
 import styles from './styles';
 
 type ParentItemProps = {
@@ -18,10 +20,11 @@ type ParentItemProps = {
 };
 
 function ParentItem({ data }: ParentItemProps) {
-  const { colors } = useCustomTheme();
-  const { isEditable } = useContext(CategoryContext) as { isEditable: boolean };
+  const { getMappingKey } = useMappingHelper();
   const navigation = useNavigation<TransactionCategoryParamProps['navigation']>();
   const { params } = useRoute<any>();
+  const { colors } = useCustomTheme();
+  const { isEditable } = useContext(CategoryContext) as { isEditable: boolean };
 
   const onItemCategoryPress = useCallback(
     (category: TTransactionsCategory) => {
@@ -60,9 +63,9 @@ function ParentItem({ data }: ParentItemProps) {
       )}
 
       <View style={styles.childView}>
-        {children.map((child) => (
+        {children.map((child, index) => (
           <TouchableHighlightComponent
-            key={child.id}
+            key={getMappingKey(child.id, index)}
             style={styles.childContent}
             onPress={() => onItemCategoryPress(child)}
           >
@@ -83,4 +86,4 @@ function ParentItem({ data }: ParentItemProps) {
   );
 }
 
-export default React.memo(ParentItem);
+export default React.memo(ParentItem, isEqual);

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import FlatListComponent from 'components/FlatList';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
@@ -20,7 +20,6 @@ import MostAndRecent from './MostAndRecent';
 import { mapTitle, mapTransactionCategoryType } from '../constants.config';
 import { filterAndBuildParentChild } from './helpter';
 import { styles } from './styles';
-import { isEqual } from 'lodash';
 
 function ExpenseIncomeTab({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
   const { colors } = useCustomTheme();
@@ -31,27 +30,11 @@ function ExpenseIncomeTab({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
   const [data, setCategoryData] = useState<any>([]);
   const [searchText, setSearchText] = useState('');
 
-  // useEffect(() => {
-  //   try {
-  //     categoriesLocalQuery.getExpenseIncome({ type }).then((result) => {
-  //       setCategoryData(result);
-  //     });
-  //   } catch (error) {
-  //     showToast({
-  //       type: 'error',
-  //       text2: 'Không thể tải danh sách danh mục',
-  //     });
-  //   }
-  // }, [type]);
-
   useFocusEffect(
     useCallback(() => {
       try {
         categoriesLocalQuery.getExpenseIncome({ type }).then((result) => {
-          if (!isEqual(result, data)) {
-            console.log('hehe');
-            setCategoryData(result);
-          }
+          setCategoryData(result);
         });
       } catch (error) {
         showToast({
@@ -104,15 +87,20 @@ function ExpenseIncomeTab({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
 
   return (
     <View style={styles.container}>
-      <InputSearch
-        placeholder="Tìm kiếm danh mục"
-        onChangeText={handleOnSearch}
-        backgroundColor={colors.surface}
-        style={{ marginBottom: 10 }}
-      />
-      <MostAndRecent type={type} />
+      <View style={styles.top}>
+        <InputSearch
+          placeholder="Tìm kiếm danh mục"
+          onChangeText={handleOnSearch}
+          backgroundColor={colors.surface}
+        />
+        <MostAndRecent type={type} />
+      </View>
       <View style={{ flex: 1 }}>
-        <FlatListComponent data={dataGrouped} renderItem={renderItem} />
+        <FlatListComponent
+          data={dataGrouped}
+          renderItem={renderItem}
+          contentContainerStyle={styles.flatListContainer}
+        />
         {isEditable && (
           <PressableHaptic
             style={[styles.addIcon, { backgroundColor: colors.primary }]}

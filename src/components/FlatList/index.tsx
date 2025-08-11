@@ -1,78 +1,46 @@
-import React, { memo, useCallback, useMemo } from 'react';
-import { FlatList, RefreshControl, View } from 'react-native';
-import { useCustomTheme } from 'resources/theme';
-import isEqual from 'react-fast-compare';
-import { PropsFlatList } from './model';
+import React, { useCallback } from 'react';
+import { View } from 'react-native';
+import { FlashList, FlashListProps } from '@shopify/flash-list';
+import styles from './styles';
 
-const FlatListComponent: PropsFlatList = ({
-  data,
-  renderItem,
-  onRefresh,
-  onLoadMore,
-  maxToRenderPerBatch = 10,
-  initialNumToRender = 10,
-  showsVerticalScrollIndicator = false,
-  showsHorizontalScrollIndicator = false,
-  refreshing,
-  hasPull = false,
+type FlatListComponentProps = FlashListProps<any> & {
+  showSeparator?: boolean;
+  gap?: number;
+};
+
+function FlatListComponent({
+  contentContainerStyle,
   id = 'id',
   showSeparator,
+  gap = 10,
   ...rest
-}) => {
-  const { colors } = useCustomTheme();
-
-  const onEndReached = useCallback(() => {
-    if (onLoadMore) {
-      onLoadMore();
-    }
-  }, [onLoadMore]);
-
-  const renderRefreshControl = useMemo(
-    () => (
-      <RefreshControl
-        refreshing={refreshing || false}
-        onRefresh={() => {
-          onRefresh && onRefresh();
-        }}
-      />
-    ),
-    [onRefresh, refreshing],
+}: FlatListComponentProps) {
+  const renderSeparator = useCallback(
+    () =>
+      showSeparator || gap ? (
+        <View
+          style={{
+            height: gap,
+          }}
+        >
+          {showSeparator && <View style={[styles.separator, { height: gap }]} />}
+        </View>
+      ) : undefined,
+    [showSeparator],
   );
 
   const keyExtractor = useCallback((item: any) => (id === '' ? item : item[id]), [id]);
 
   return (
-    <FlatList
-      data={data}
+    <FlashList
       keyExtractor={keyExtractor}
-      extraData={data}
       keyboardShouldPersistTaps="handled"
-      renderItem={renderItem}
-      refreshControl={hasPull ? renderRefreshControl : undefined}
       onEndReachedThreshold={0.5}
-      onEndReached={onEndReached}
-      maxToRenderPerBatch={maxToRenderPerBatch}
-      initialNumToRender={initialNumToRender}
-      showsVerticalScrollIndicator={showsVerticalScrollIndicator}
-      showsHorizontalScrollIndicator={showsHorizontalScrollIndicator}
-      contentContainerStyle={{ gap: 8 }}
-      ItemSeparatorComponent={
-        showSeparator
-          ? () => (
-              <View
-                style={{
-                  height: 0.8,
-                  width: '95%',
-                  backgroundColor: colors.divider,
-                  alignSelf: 'center',
-                }}
-              />
-            )
-          : undefined
-      }
+      contentContainerStyle={contentContainerStyle}
+      ItemSeparatorComponent={renderSeparator}
       {...rest}
     />
   );
-};
+}
 
-export default memo(FlatListComponent, isEqual);
+export default FlatListComponent;

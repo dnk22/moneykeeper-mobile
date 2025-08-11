@@ -4,7 +4,6 @@ const styles = StyleSheet.create({
   group: {
     borderRadius: 10,
     padding: 8,
-    marginBottom: 10,
   },
   itemHeader: {
     flexDirection: 'row',

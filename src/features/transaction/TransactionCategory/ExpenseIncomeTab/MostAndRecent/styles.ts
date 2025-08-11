@@ -4,7 +4,6 @@ const styles = StyleSheet.create({
   group: {
     borderRadius: 10,
     padding: 10,
-    marginBottom: 10,
   },
   menu: {
     paddingBottom: 8,

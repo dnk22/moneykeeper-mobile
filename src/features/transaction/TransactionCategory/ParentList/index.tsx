@@ -45,7 +45,13 @@ function ParentList() {
 
   return (
     <View style={styles.container}>
-      <FlatListComponent data={data} renderItem={onRenderItem} ListEmptyComponent={<Empty />} />
+      <FlatListComponent
+        data={data}
+        renderItem={onRenderItem}
+        ListEmptyComponent={<Empty />}
+        contentContainerStyle={styles.flatListContainer}
+        showSeparator
+      />
     </View>
   );
 }

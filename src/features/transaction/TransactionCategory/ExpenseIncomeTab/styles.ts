@@ -3,9 +3,12 @@ import { SCREEN_HEIGHT } from 'share/dimensions';
 
 export const styles = StyleSheet.create({
   container: {
-    padding: 6,
     flex: 1,
     position: 'relative',
+  },
+  top: {
+    gap: 10,
+    padding: 8,
   },
   addIcon: {
     zIndex: 1,
@@ -17,5 +20,10 @@ export const styles = StyleSheet.create({
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  flatListContainer: {
+    paddingTop: 2,
+    paddingHorizontal: 8,
+    paddingBottom: 100,
   },
 });
