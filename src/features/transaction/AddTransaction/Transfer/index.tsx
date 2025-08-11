@@ -13,7 +13,6 @@ import MoreDetail from '../components/MoreDetail';
 import AccountSelect from '../components/AccountSelect';
 import Fee from '../components/Fee';
 import DateTimeSelect from '../components/DateTimeSelect';
-import InputCalculator from '../components/InputCalculator';
 import { defaultValues } from '../constant';
 import { AddTransactionType } from '../type';
 import styles from '../styles';
@@ -22,6 +21,7 @@ import InputField from 'components/InputField';
 import SvgIcon from 'components/SvgIcon';
 import SwitchField from 'components/Switch/SwitchField';
 import RNText from 'components/Text';
+import InputCalculator from 'components/InputCalculator';
 
 function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
   const { colors } = useCustomTheme();
@@ -89,7 +89,7 @@ function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
 
   return (
     <>
-      <InputCalculator name="amount" control={control} />
+      <InputCalculator name="amount" />
       <View
         style={[
           styles.group,
@@ -100,13 +100,8 @@ function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
           <SvgIcon name="exchange" style={styles.iconExchange} />
         </Pressable>
         <View style={{ flex: 1 }}>
-          <AccountSelect title="Từ tài khoản" swapId="toAccountId" isShowSubTitle />
-          <AccountSelect
-            name="toAccountId"
-            title="Tới tài khoản"
-            excludeId="accountId"
-            isShowSubTitle
-          />
+          <AccountSelect title="Từ tài khoản" swapId="toAccountId" />
+          <AccountSelect name="toAccountId" title="Tới tài khoản" excludeId="accountId" />
         </View>
       </View>
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
@@ -116,7 +111,6 @@ function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
           <View style={styles.groupContent}>
             <InputField
               name="descriptions"
-              control={control}
               placeholder="Chi tiết"
               style={styles.formInput}
               maxLength={100}
@@ -128,7 +122,6 @@ function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
           <View style={styles.groupContent}>
             <InputField
               name="location"
-              control={control}
               placeholder="Địa điểm"
               style={[styles.formInput, { width: '90%' }]}
               maxLength={50}
@@ -139,12 +132,12 @@ function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
       </View>
       <MoreDetail>
         <Fee onClose={handleOnClearFee}>
-          <InputCalculator name="fee" control={control} />
+          <InputCalculator name="fee" />
         </Fee>
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={[styles.itemGroup, styles.itemGroupBetween]}>
             <RNText>Không tính vào báo cáo</RNText>
-            <SwitchField name="excludeReport" control={control} />
+            <SwitchField name="excludeReport" />
           </View>
           <RNText preset="subTitle">Ghi chép này sẽ không thống kê vào các báo cáo.</RNText>
         </View>
