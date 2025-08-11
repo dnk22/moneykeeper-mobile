@@ -2,7 +2,7 @@ import { Edit2 } from 'iconsax-react-native';
 import { Button, View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
 
-function TransactionCategoryHeaderRight({
+function CategoryHeaderRight({
   onPress,
   isEditable,
 }: {
@@ -11,13 +11,15 @@ function TransactionCategoryHeaderRight({
 }) {
   const { colors } = useCustomTheme();
   return (
-    <View style={{ width: 50, alignItems: 'flex-end' }}>
+    <>
       {isEditable ? (
-        <Button title="Hủy" onPress={onPress} />
+        <View style={{ width: 50, height: 50, alignItems: 'flex-end', justifyContent: 'center' }}>
+          <Button title="Hủy" onPress={onPress} />
+        </View>
       ) : (
         <Edit2 size="30" color={colors.text} onPress={onPress} />
       )}
-    </View>
+    </>
   );
 }
-export default TransactionCategoryHeaderRight;
+export default CategoryHeaderRight;

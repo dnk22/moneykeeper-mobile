@@ -10,7 +10,7 @@ import PressableHaptic from 'components/PressableHaptic';
 import { ROUTES } from 'navigation/constants/routes';
 import { Add } from 'iconsax-react-native';
 import { TransactionCategoryParamProps } from 'navigation/types/transactionCategory';
-import TransactionCategoryHeaderRight from 'navigation/components/TransactionCategoryHeaderRight';
+import CategoryHeaderRight from 'navigation/components/CategoryHeaderRight';
 import { CategoryContext } from 'navigation/tabs/TransactionCategoryTabs';
 import { categoriesLocalQuery } from 'database/querying/categories';
 import { showToast } from 'utils/system';
@@ -53,7 +53,7 @@ function ExpenseIncomeTab({ type }: { type: TRANSACTION_CATEGORY_TYPE }) {
         parent.setOptions({
           headerTitle: mapTitle[name],
           headerRight: () => (
-            <TransactionCategoryHeaderRight
+            <CategoryHeaderRight
               isEditable={isEditable}
               onPress={() => setUpdateMode(!isEditable)}
             />
