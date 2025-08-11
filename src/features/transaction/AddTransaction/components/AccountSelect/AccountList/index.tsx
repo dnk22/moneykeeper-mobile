@@ -5,12 +5,13 @@ import { Observable } from '@nozbe/watermelondb/utils/rx';
 import { AccountModel } from 'database/models';
 import { groupAccountDataByValue } from 'utils/algorithm';
 import { accountLocalQuery, TGetAllAccountsOptions } from 'database/querying';
-import { BottomSheetSectionList, BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { useCustomTheme } from 'resources/theme';
 import Item from './Item';
 import Empty from 'components/Empty';
 import RNText from 'components/Text';
 import styles from './styles';
+import SectionList from 'components/SectionList';
 
 type AccountListProps = {
   isItemSelected?: string;
@@ -64,7 +65,7 @@ function AccountList({ isItemSelected, onItemPress, excludeId }: AccountListProp
           />
         </View>
       </View>
-      <BottomSheetSectionList
+      <SectionList
         sections={accounts}
         initialNumToRender={8}
         renderItem={renderItem}

@@ -4,10 +4,10 @@ import { useFocusEffect } from '@react-navigation/native';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 import InputSelection from 'components/InputSelection';
-import { getTransactionCategoryByID } from 'services/api/transactionsCategory';
 import { TTransactionsCategory } from 'database/types';
 import { TRANSACTION_TYPE } from 'utils/constants';
 import { showToast } from 'utils/system';
+import { categoriesLocalQuery } from 'database/querying/categories';
 
 type CategorySelectProps = {
   onPress: (item?: TTransactionsCategory) => void;
@@ -31,7 +31,7 @@ function CategorySelect({ onPress, onChange }: CategorySelectProps) {
       return;
     }
     try {
-      getTransactionCategoryByID(id).then((res) => {
+      categoriesLocalQuery.getCategoryById(id).then((res) => {
         // if data no change , don't setState
         if (!isEqual(res, categorySelected)) {
           setCategorySelected(res);
@@ -43,10 +43,10 @@ function CategorySelect({ onPress, onChange }: CategorySelectProps) {
     } catch (error) {
       showToast({
         type: 'info',
-        text2: 'Có lỗi trong quá trình lấy dữ liệu',
+        text2: 'Chọn danh mục thất bại',
       });
     }
-  }, 30);
+  }, 100);
 
   const handleOnSelectCategory = () => {
     onPress && onPress(categorySelected);
@@ -66,7 +66,7 @@ function CategorySelect({ onPress, onChange }: CategorySelectProps) {
     <InputSelection
       required
       fieldName="categoryId"
-      icon={categorySelected?.icon}
+      iconName={categorySelected?.icon}
       placeholder="Chọn danh mục"
       displayValue={categorySelected?.categoryName}
       onSelect={handleOnSelectCategory}

@@ -95,14 +95,14 @@ function AccountSelect({
     <>
       <InputSelection
         required
-        icon={accountSelected?.accountLogo}
+        fieldName={name}
+        iconName={accountSelected?.accountLogo}
         displayValue={accountSelected?.accountName}
         placeholder={title}
         subTitle={subTitle}
-        fieldName={name}
         onSelect={handleOnSelectAccount}
       />
-      <BottomSheet ref={bottomSheetModalRef}>
+      <BottomSheet ref={bottomSheetModalRef} index={1} snapPoints={['80%']}>
         <AccountList
           excludeId={getValues(excludeId)}
           isItemSelected={getValues(name)}

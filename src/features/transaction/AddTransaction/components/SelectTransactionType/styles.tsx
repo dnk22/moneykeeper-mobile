@@ -3,20 +3,24 @@ import { SCREEN_WIDTH } from 'share/dimensions';
 
 const styles = StyleSheet.create({
   transactionTypePicker: {
-    height: 35,
+    height: 36,
     width: SCREEN_WIDTH / 2.5,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#BCCEF8',
-    borderRadius: 30,
+    borderRadius: 10,
   },
   modal: {
-    padding: 5,
+    padding: 8,
+    height: 'auto',
+    minHeight: 420,
+    flexDirection: 'column',
+    borderRadius: 20,
   },
   item: {
-    flex: 1,
-    padding: 20,
+    height: 60,
+    borderRadius: 10,
     paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'center',
@@ -27,7 +31,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   itemIcon: {
-    marginRight: 10,
+    marginRight: 12,
   },
   title: {
     fontSize: 16,

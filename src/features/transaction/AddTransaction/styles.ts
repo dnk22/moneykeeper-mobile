@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   iconShadow: {
-    color: '#adb5bd',
+    opacity: 0.6,
   },
   iconForward: {
     position: 'absolute',

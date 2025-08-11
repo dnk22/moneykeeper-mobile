@@ -17,6 +17,7 @@ import Fee from '../components/Fee';
 import { AddTransactionType } from '../type';
 import useExpenseIncomeHook from '../hooks/useExpenseIncomeLogic';
 import styles from '../styles';
+import { QuoteDownSquare, Map, Stickynote, DirectUp } from 'iconsax-react-native';
 
 function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
   const { colors } = useCustomTheme();
@@ -52,7 +53,7 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
           />
         )}
         <View style={styles.itemGroup}>
-          <SvgIcon name="textWord" color={styles.iconShadow.color} />
+          <Stickynote size="28" color={colors.text} style={styles.iconShadow} />
           <View style={styles.groupContent}>
             <InputField
               name="descriptions"
@@ -74,7 +75,7 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
                 title={isExpenseType ? 'Chi cho ai' : 'Nhận từ ai'}
               />
               <View style={styles.itemGroup}>
-                <SvgIcon name="camp" color={styles.iconShadow.color} />
+                <QuoteDownSquare size="28" color={colors.text} style={styles.iconShadow} />
                 <View style={styles.groupContent}>
                   <InputField
                     name="eventName"
@@ -87,7 +88,7 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
             </>
           )}
           <View style={styles.itemGroup}>
-            <SvgIcon name="map" color={styles.iconShadow.color} />
+            <Map size="28" color={colors.text} style={styles.iconShadow} />
             <View style={styles.groupContent}>
               <InputField
                 name="location"
@@ -95,7 +96,7 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
                 style={[styles.formInput, { width: '90%' }]}
                 maxLength={50}
               />
-              <SvgIcon name="location" size={18} style={styles.iconForward} />
+              <DirectUp size="28" color={colors.primary} />
             </View>
           </View>
         </View>

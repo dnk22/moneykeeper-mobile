@@ -14,14 +14,14 @@ import styles from './styles';
 interface DateTimeModalPickerProps {
   isVisible: boolean;
   value?: Date | number;
-  mode?: 'date' | 'time';
+  dateMode?: boolean;
   onToggleModal: () => void;
   onDateTimePicker?: (date: Date) => void;
 }
 
 function DateTimeModalPicker({
   isVisible,
-  mode = 'date',
+  dateMode = true,
   value,
   onToggleModal,
   onDateTimePicker,
@@ -29,15 +29,15 @@ function DateTimeModalPicker({
   const { colors } = useCustomTheme();
 
   const [datePicker, setDatePicker] = useState<Date>(value ? new Date(value) : new Date());
-  const [isMode, setIsMode] = useState<'date' | 'time'>(mode);
-  const actionName = isMode === 'date' ? 'Hôm nay' : 'Giờ hiện tại';
+  const [isDateMode, setMode] = useState<boolean>(dateMode);
+  const actionName = isDateMode ? 'Hôm nay' : 'Giờ hiện tại';
 
   useEffect(() => {
     if (isVisible) {
       setDatePicker(value ? new Date(value) : new Date());
-      setIsMode(mode);
+      setMode(dateMode);
     }
-  }, [isVisible, mode, value]);
+  }, [isVisible, dateMode, value]);
 
   const onModalHide = () => {
     onDateTimePicker && onDateTimePicker(datePicker);
@@ -53,13 +53,13 @@ function DateTimeModalPicker({
     const now = new Date();
     setDatePicker((prevDate) => {
       const newValue = set(prevDate, {
-        hours: isMode === 'date' ? getHours(prevDate) : getHours(now),
-        minutes: isMode === 'date' ? getMinutes(prevDate) : getMinutes(now),
+        hours: isDateMode ? getHours(prevDate) : getHours(now),
+        minutes: isDateMode ? getMinutes(prevDate) : getMinutes(now),
         seconds: getSeconds(prevDate),
       });
       return newValue;
     });
-  }, [isMode]);
+  }, [isDateMode]);
 
   return (
     <ModalComponent
@@ -73,14 +73,14 @@ function DateTimeModalPicker({
       animationOut="zoomOut"
     >
       <View style={[styles.pickerHeader, { backgroundColor: colors.surface }]}>
-        <PressableHaptic style={styles.itemHeader} onPress={() => setIsMode('date')}>
-          <RNText fontSize={18} color={isMode === 'date' ? colors.primary : undefined}>
+        <PressableHaptic style={styles.itemHeader} onPress={() => setMode(true)}>
+          <RNText fontSize={18} color={isDateMode ? colors.primary : undefined}>
             {formatDateLocal(datePicker, 'dd/MM/yyyy')}
           </RNText>
         </PressableHaptic>
         <View style={[styles.divider, { backgroundColor: colors.divider }]} />
-        <PressableHaptic style={styles.itemHeader} onPress={() => setIsMode('time')}>
-          <RNText fontSize={18} color={isMode === 'time' ? colors.primary : undefined}>
+        <PressableHaptic style={styles.itemHeader} onPress={() => setMode(false)}>
+          <RNText fontSize={18} color={!isDateMode ? colors.primary : undefined}>
             {formatDateLocal(datePicker, 'HH:mm')}
           </RNText>
         </PressableHaptic>
@@ -90,8 +90,8 @@ function DateTimeModalPicker({
           <DateTimePicker
             value={datePicker}
             onDateChange={onDateChange}
-            mode={isMode}
-            display={isMode === 'date' ? 'inline' : 'spinner'}
+            mode={isDateMode ? 'date' : 'time'}
+            display={isDateMode ? 'inline' : 'spinner'}
           />
         </View>
         <TouchableHighlightComponent style={styles.bottomBar} onPress={getCurrentDateTime}>

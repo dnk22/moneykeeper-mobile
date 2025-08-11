@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import ImageComponent from 'components/ImageComponent';
 import CheckboxComponent from 'components/Checkbox';
 import PressableHaptic from 'components/PressableHaptic';
-import FlatListComponent from 'components/FlatList';
 import RNText from 'components/Text';
 import ModalComponent from 'components/Modal';
 import { TRANSACTION_TYPE_DATA } from 'utils/constants/transactions';
@@ -91,17 +90,16 @@ function SelectTransactionType({
   return (
     <>
       <ModalComponent
+        animationIn="zoomIn"
         isVisible={isShowTransactionTypeModal}
         onToggleModal={onToggleTransactionTypeModal}
-        animationIn="zoomIn"
         styleDefaultContent={styles.modal}
       >
-        <FlatListComponent
-          data={TRANSACTION_TYPE_DATA}
-          renderItem={renderItem}
-          initialNumToRender={6}
-          maxToRenderPerBatch={6}
-        />
+        <ScrollView>
+          {TRANSACTION_TYPE_DATA.map((item, index) => {
+            return renderItem({ item, index });
+          })}
+        </ScrollView>
       </ModalComponent>
       <PressableHaptic style={styles.transactionTypePicker} onPress={onToggleTransactionTypeModal}>
         <RNText color="white">{TRANSACTION_TYPE_DATA[+isActive]?.name}</RNText>

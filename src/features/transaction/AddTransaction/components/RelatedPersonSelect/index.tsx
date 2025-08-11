@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import Contact from 'features/common/Contact';
 import InputSelection from 'components/InputSelection';
 import BottomSheet from 'components/BottomSheetModal';
@@ -14,13 +14,13 @@ function RelatedPersonSelect({
   fieldName: string;
   required?: boolean;
 }) {
-  const {
-    control,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useFormContext<any>();
+  const { setValue, control } = useFormContext<any>();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  const fieldValue = useWatch({
+    control,
+    name: fieldName,
+  });
 
   const handleOnSelectContact = () => {
     bottomSheetModalRef.current?.present();
@@ -34,10 +34,11 @@ function RelatedPersonSelect({
   return (
     <>
       <InputSelection
+        iconName="user"
+        iconSize={26}
         required={required}
-        defaultIcon={'user'}
         fieldName={fieldName}
-        displayValue={watch(fieldName)}
+        displayValue={fieldValue}
         placeholder={title}
         onSelect={handleOnSelectContact}
         onDelete={() => setValue(fieldName, '')}

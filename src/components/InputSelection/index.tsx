@@ -20,6 +20,7 @@ type SelectedProps = {
   onSelect?: () => void;
   onDelete?: () => void;
   required?: boolean;
+  iconSize?: number;
 };
 
 function Selected({
@@ -28,6 +29,7 @@ function Selected({
   placeholder = '',
   subTitle = '',
   iconName,
+  iconSize = 30,
   defaultIcon,
   onSelect,
   onDelete,
@@ -42,7 +44,7 @@ function Selected({
     <>
       {fieldName && <InputField name={fieldName} rules={{ required }} style={styles.inputField} />}
       <PressableHaptic style={styles.itemGroup} onPress={onSelect}>
-        <ImageComponent name={iconName} size={30} defaultIcon={defaultIcon} />
+        <ImageComponent name={iconName} size={iconSize} defaultIcon={defaultIcon} />
         <View style={styles.groupContent}>
           <View style={styles.title}>
             {displayValue && subTitle && (

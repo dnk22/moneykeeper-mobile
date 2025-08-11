@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { View } from 'react-native';
-import styles from '../../styles';
+import Switch from 'components/Switch';
+import RNText from 'components/Text';
 import { useCustomTheme } from 'resources/theme';
 import Collapsible from 'react-native-collapsible';
 import Animated, { StretchInY } from 'react-native-reanimated';
-import Switch from 'components/Switch';
-import RNText from 'components/Text';
+import styles from '../../styles';
 
 type FeeProps = {
   children: any;
