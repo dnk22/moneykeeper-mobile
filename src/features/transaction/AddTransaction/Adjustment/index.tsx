@@ -15,7 +15,6 @@ import { queryGetCurrentBalance } from 'database/querying';
 import MoreDetail from '../components/MoreDetail';
 import AccountSelect from '../components/AccountSelect';
 import DateTimeSelect from '../components/DateTimeSelect';
-import InputCalculator from '../components/InputCalculator';
 import { defaultValues } from '../constant';
 import { AddTransactionType } from '../type';
 import CategorySelect from '../components/CategorySelect';
@@ -25,6 +24,7 @@ import SvgIcon from 'components/SvgIcon';
 import SwitchField from 'components/Switch/SwitchField';
 import FormAction from 'components/common/FormAction';
 import RNText from 'components/Text';
+import InputCalculator from 'components/InputCalculator';
 
 function Adjustment({ params, onSubmitSuccess }: AddTransactionType) {
   const isEditMode = !!params?.transactionId;
