@@ -2,16 +2,13 @@ import { useCallback, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { useForm, useWatch } from 'react-hook-form';
 import { TTransactions } from 'database/types';
-import { getTransactionById } from 'services/api/transactions';
-import { useAppSelector } from 'store/index';
-import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';
 import { TRANSACTION_TYPE } from 'utils/constants';
 import { defaultValues } from '../constant';
 import { ROUTES } from 'navigation/constants/routes';
 import { TransactionParamListProps } from 'navigation/types';
 import { useHeaderOption } from './useHeaderOption';
 import { useTransactionParamsSync } from './useTransactionParamsSync';
-import { accountLocalQuery } from 'database/querying';
+import { accountLocalQuery, transactionLocalQuery } from 'database/querying';
 import { showToast } from 'utils/system';
 import { formatDataDetail } from './utility';
 
@@ -20,7 +17,6 @@ export function useAddTransactionFormLogic({
   route,
 }: TransactionParamListProps<typeof ROUTES.ADD_TRANSACTION>) {
   const { params, name: routerName } = route;
-  const lendBorrowData = useAppSelector(selectLendBorrowData);
 
   const transactionForm = useForm<TTransactions>({
     defaultValues: {
@@ -49,7 +45,6 @@ export function useAddTransactionFormLogic({
 
   useHeaderOption({
     navigation,
-    lendBorrowData,
     currentCategoryId: categoryId,
     transactionType: transactionType,
     isEditMode: !!params?.transactionId,
@@ -64,23 +59,9 @@ export function useAddTransactionFormLogic({
   });
 
   const getDetailTransaction = async (id: string) => {
-    const res = await getTransactionById(id);
+    const res = await transactionLocalQuery.getTransactionById(id);
     if (res?.id) {
       reset(formatDataDetail(res));
-    }
-  };
-
-  const getDefaultAccountInAddMode = async () => {
-    try {
-      const firstAccount = await accountLocalQuery.getFirstActiveAccount();
-      if (firstAccount) {
-        setValue('accountId', firstAccount.id);
-      }
-    } catch (error) {
-      showToast({
-        type: 'info',
-        text2: 'Có lỗi trong quá trình lấy thông tin tài khoản',
-      });
     }
   };
 
@@ -88,7 +69,18 @@ export function useAddTransactionFormLogic({
   useFocusEffect(
     useCallback(() => {
       if (!params?.transactionId && !accountId && !params?.accountId) {
-        getDefaultAccountInAddMode();
+        try {
+          accountLocalQuery.getFirstActiveAccount().then((firstAccount) => {
+            if (firstAccount) {
+              setValue('accountId', firstAccount.id);
+            }
+          });
+        } catch (error) {
+          showToast({
+            type: 'info',
+            text2: 'Có lỗi trong quá trình lấy thông tin tài khoản',
+          });
+        }
       }
     }, [params?.transactionId, params?.accountId, accountId]),
   );

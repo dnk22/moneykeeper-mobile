@@ -5,7 +5,7 @@ import isEqual from 'react-fast-compare';
 import { useCustomTheme } from 'resources/theme';
 import RNText from 'components/Text';
 import ImageComponent from 'components/ImageComponent';
-import { queryRecentTransaction } from 'database/querying';
+import { transactionLocalQuery } from 'database/querying';
 import { TTransactions } from 'database/types';
 import { isToday, isYesterday } from 'date-fns';
 import { formatDateLocal } from 'utils/date';
@@ -19,7 +19,7 @@ function RecentTransactions({ title }: { title: string }) {
 
   useFocusEffect(
     useCallback(() => {
-      queryRecentTransaction(4).then((res) => {
+      transactionLocalQuery.getRecentTransactions(4).then((res) => {
         setTransactionList(res);
       });
     }, []),

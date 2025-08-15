@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import isArray from 'lodash/isArray';
 import size from 'lodash/size';
-import { queryGetTransactionsListByMonth } from 'database/querying';
+import { transactionLocalQuery } from 'database/querying';
 import { groupTransactionsByDay } from 'utils/algorithm';
 import { GroupedTransactionProps } from 'utils/types';
 import HeaderItem from './HeaderItem';
@@ -27,16 +27,18 @@ function TransactionList() {
     if (!size(monthData)) {
       return;
     }
-    queryGetTransactionsListByMonth({
-      accountId,
-      startDate: monthData.startDate,
-      endDate: monthData.endDate,
-      getAll: monthData.month,
-    }).then((res) => {
-      if (isArray(res)) {
-        setData(groupTransactionsByDay(res));
-      }
-    });
+    transactionLocalQuery
+      .getTransactionsListByMonth({
+        accountId,
+        startDate: monthData.startDate,
+        endDate: monthData.endDate,
+        getAll: monthData.month,
+      })
+      .then((res) => {
+        if (isArray(res)) {
+          setData(groupTransactionsByDay(res));
+        }
+      });
   };
 
   const renderItem = ({ item }: { item: GroupedTransactionProps }) => {

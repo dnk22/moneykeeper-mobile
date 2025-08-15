@@ -18,13 +18,13 @@ import DateTimeSelect from '../components/DateTimeSelect';
 import { defaultValues } from '../constant';
 import { AddTransactionType } from '../type';
 import CategorySelect from '../components/CategorySelect';
-import styles from '../styles';
 import InputField from 'components/InputField';
 import SvgIcon from 'components/SvgIcon';
 import SwitchField from 'components/Switch/SwitchField';
 import FormAction from 'components/common/FormAction';
 import RNText from 'components/Text';
 import InputCalculator from 'components/InputCalculator';
+import styles from '../styles';
 
 function Adjustment({ params, onSubmitSuccess }: AddTransactionType) {
   const isEditMode = !!params?.transactionId;
@@ -34,7 +34,7 @@ function Adjustment({ params, onSubmitSuccess }: AddTransactionType) {
     useNavigation<TransactionParamListProps<typeof ROUTES.ADD_TRANSACTION>['navigation']>();
   const { name: routerName } =
     useRoute<TransactionParamListProps<typeof ROUTES.ADD_TRANSACTION>['route']>();
-  const { control, handleSubmit, setValue, watch, getValues, reset } = useFormContext<any>();
+  const { handleSubmit, setValue, watch, getValues, reset } = useFormContext<any>();
   const [latestCurrentBalance, setLatestCurrentBalance] = useState(0);
 
   const differenceValue = useMemo(() => {

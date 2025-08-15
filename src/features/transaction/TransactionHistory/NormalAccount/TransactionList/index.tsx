@@ -1,8 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import VirtualizedListComponent from 'components/VirtualizedList';
 import { useFocusEffect } from '@react-navigation/native';
-import { queryUniqueTransactionDates } from 'database/querying';
-import isArray from 'lodash/isArray';
+import { transactionLocalQuery } from 'database/querying';
 import { useAppSelector } from 'store/index';
 import { selectRefreshTransactionHistory } from 'store/transactions/transactions.selector';
 import HeaderItem from './HeaderItem';
@@ -27,10 +26,8 @@ function TransactionList({ accountId }: TransactionListProps) {
   );
 
   const fetchTransactionLisGroupByDate = () => {
-    queryUniqueTransactionDates(accountId).then((res) => {
-      if (isArray(res)) {
-        setData(res);
-      }
+    transactionLocalQuery.getUniqueTransactionDates(accountId).then((res) => {
+      setData(res || []);
     });
   };
 

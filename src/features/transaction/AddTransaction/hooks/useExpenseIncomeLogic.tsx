@@ -85,8 +85,8 @@ export default function useExpenseIncomeHook({ params, onSubmitSuccess }: AddTra
         screen: screenTarget,
         params: {
           idActive: getValues('categoryId'),
-          returnScreen: routerName,
         },
+        returnScreen: routerName,
         initial: false,
       },
     });

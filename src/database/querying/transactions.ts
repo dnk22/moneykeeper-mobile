@@ -72,7 +72,7 @@ export class TransactionLocalDataSource {
    * 3. Chuyển đổi timestamp thành định dạng ngày YYYY-MM-DD
    * 4. Loại bỏ các ngày trùng lặp (DISTINCT)
    */
-  public async queryUniqueTransactionDates(accountId: string) {
+  public async getUniqueTransactionDates(accountId: string) {
     const query = `SELECT DISTINCT 
       strftime('%Y-%m-%d', datetime(recordAt/1000, 'unixepoch')) AS date 
       FROM ${TRANSACTIONS}

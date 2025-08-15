@@ -34,10 +34,7 @@ export class CategoriesLocalData {
     try {
       return await database.read(async () => {
         return this.categoriesCollection
-          .query(
-            Q.where('categoryName', Q.oneOf(Object.values(TRANSACTION_LEND_BORROW_NAME))),
-            Q.where('_status', Q.notEq('deleted')),
-          )
+          .query(Q.where('categoryName', Q.oneOf(Object.values(TRANSACTION_LEND_BORROW_NAME))))
           .unsafeFetchRaw();
       });
     } catch (error) {

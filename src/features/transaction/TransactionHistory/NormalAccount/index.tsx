@@ -1,15 +1,15 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { View } from 'react-native';
+import PressableHaptic from 'components/PressableHaptic';
+import SvgIcon from 'components/SvgIcon';
 import { useCustomTheme } from 'resources/theme';
 import { ROUTES } from 'navigation/constants/routes';
-import { AccountParamListProps } from 'navigation/types';
 import ButtonText from 'navigation/components/ButtonText';
+import { AccountParamListProps } from 'navigation/types';
 import Summary from './Summary';
 import TransactionList from './TransactionList';
 import HeaderBarConfig from '../HeaderBarConfig';
 import styles from './styles';
-import PressableHaptic from 'components/PressableHaptic';
-import SvgIcon from 'components/SvgIcon';
 
 function NormalAccount({
   navigation,

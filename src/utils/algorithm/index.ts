@@ -53,10 +53,10 @@ export const groupAccountDataByValue = (
   return Object.values(groupedData);
 };
 
-export function getKeyByValue(obj: Record<string, string>, value?: any): string {
-  const keys = Object.keys(obj) as Array<keyof Record<string, string>>;
+export function getKeyByValue(obj?: Record<string, string>, value?: any): string {
+  const keys = Object.keys(obj || {}) as Array<keyof Record<string, string>>;
   for (const key of keys) {
-    if (obj[key] === value) {
+    if (obj?.[key] === value) {
       return key;
     }
   }

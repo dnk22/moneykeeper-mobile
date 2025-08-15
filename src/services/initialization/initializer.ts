@@ -4,6 +4,9 @@ import { database } from 'database/index';
 import { BankModel } from 'database/models';
 import TransactionCategoryModel from 'database/models/transactionCategory.model';
 import size from 'lodash/size';
+import { storageService } from 'services/storage';
+import { MMKV_KEY } from 'services/storage/const';
+import { TRANSACTION_LEND_BORROW_NAME } from 'utils/constants';
 
 export class Initializer implements TInitializer {
   private dataSource: InitializerDataSource;
@@ -118,6 +121,15 @@ export class Initializer implements TInitializer {
 
         await database.batch(...batchOperations);
       });
+
+      // set id lend & borrow vào mmkv sau này dùng cho dễ
+      const lendBorrowIds = categoriesCollection
+        .filter((item) => Object.values(TRANSACTION_LEND_BORROW_NAME).includes(item.categoryName))
+        .reduce((acc, item) => {
+          acc[item.id] = item.categoryName;
+          return acc;
+        }, {} as Record<string, string>);
+      storageService.setItem(MMKV_KEY.LEND_BORROW_ID, JSON.stringify(lendBorrowIds));
     } catch (error: any) {
       throw new Error(`Failed to initialize categories: ${error.message}`);
     }

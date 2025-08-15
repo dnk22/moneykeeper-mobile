@@ -1,17 +1,16 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import RNText from 'components/Text';
-import { useCustomTheme } from 'resources/theme';
-import { formatDateStringLocal, formatDayOfTheWeek } from 'utils/date';
 import isArray from 'lodash/isArray';
 import isEmpty from 'lodash/isEmpty';
 import isEqualLodash from 'lodash/isEqual';
 import size from 'lodash/size';
-import { getTransactionByDate } from 'services/api/transactions';
+import { useCustomTheme } from 'resources/theme';
 import { useFocusEffect } from '@react-navigation/native';
 import { formatNumber } from 'utils/math';
 import { TTransactions } from 'database/types';
 import { TRANSACTION_TYPE } from 'utils/constants';
+import { formatDateStringLocal, formatDayOfTheWeek } from 'utils/date';
 import {
   PARENT_ITEM_TRANSACTION_HEIGHT,
   MARGIN_TOP,
@@ -20,6 +19,7 @@ import {
 import { useAppSelector } from 'store/index';
 import { selectTransactionConfig } from 'store/app/app.selector';
 import TransactionItem from '../TransactionItem';
+import { transactionLocalQuery } from 'database/querying';
 import styles from './styles';
 
 type HeaderItemProps = {
@@ -38,7 +38,7 @@ function HeaderItem({ date, accountId, onRefreshDate, reload }: HeaderItemProps)
   const transactionLength = size(transaction);
 
   const fetchTransactionInDay = () => {
-    getTransactionByDate(accountId, date).then((res) => {
+    transactionLocalQuery.getTransactionsListByDate({ accountId, date }).then((res) => {
       if (!isArray(res) || isEqualLodash(res, transaction)) {
         return;
       }

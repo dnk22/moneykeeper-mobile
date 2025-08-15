@@ -55,6 +55,7 @@ export type TTransactionsCategory = {
   lastUseAt?: Date | null;
   dictionaryKey: number;
   children?: TTransactionsCategory[];
+  lendBorrow?: boolean;
 };
 
 // account

@@ -1,7 +1,7 @@
 import React, { useContext, useCallback } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { TTransactionsCategory } from 'database/types';
 import { ROUTES } from 'navigation/constants/routes';
 import ShakeAnimation from 'resources/animations/Shake';
@@ -21,8 +21,7 @@ type ParentItemProps = {
 
 function ParentItem({ data }: ParentItemProps) {
   const { getMappingKey } = useMappingHelper();
-  const navigation = useNavigation<TransactionCategoryParamProps['navigation']>();
-  const { params } = useRoute<any>();
+  const navigation = useNavigation<any>();
   const { colors } = useCustomTheme();
   const { isEditable } = useContext(CategoryContext) as { isEditable: boolean };
 
@@ -33,12 +32,25 @@ function ParentItem({ data }: ParentItemProps) {
           transactionCategoryId: category.id,
         });
       } else {
-        if (params?.returnScreen) {
-          navigation.popTo(params.returnScreen, { categoryId: category.id });
+        const parent = navigation.getParent();
+        if (parent) {
+          // Find the TransactionCategory route
+          const tabsParams = parent
+            .getState()
+            .routes.find((r) => r.name === ROUTES.TRANSACTION_CATEGORY_TABS)
+            ?.params as TransactionCategoryParamProps<
+            typeof ROUTES.TRANSACTION_CATEGORY_TABS
+          >['route']['params'];
+
+          // Get returnScreen from nested params
+          const returnScreenValue = tabsParams?.returnScreen;
+          if (returnScreenValue) {
+            navigation.popTo(returnScreenValue, { categoryId: category.id });
+          }
         }
       }
     },
-    [isEditable, navigation, params],
+    [isEditable, navigation],
   );
 
   const children = data?.children || [];

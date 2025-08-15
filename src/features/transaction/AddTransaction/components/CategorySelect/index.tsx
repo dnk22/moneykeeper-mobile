@@ -35,6 +35,7 @@ function CategorySelect({ onPress, onChange }: CategorySelectProps) {
         // if data no change , don't setState
         if (!isEqual(res, categorySelected)) {
           setCategorySelected(res);
+          // mode là ADJUSTMENT thì không set lại transactionType
           if (getValues('transactionType') !== TRANSACTION_TYPE.ADJUSTMENT) {
             setValue('transactionType', res.categoryType);
           }

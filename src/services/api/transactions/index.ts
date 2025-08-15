@@ -3,8 +3,6 @@ import { SyncQueueAction } from 'database/models/syncQueue.model';
 import {
   queryAddNewBalanceTransaction,
   queryDeleteTransactionById,
-  queryTransactionById,
-  queryGetTransactionsListByDate,
   queryCalculateAllBalanceAfterDate,
   queryUpdateTransaction,
   queryUpdateBalanceTransaction,
@@ -14,29 +12,6 @@ import {
 } from 'database/querying';
 import { TTransactions } from 'database/types';
 import { transactionsFb } from 'services/firebase/db/transactions';
-
-/** read */
-export const getTransactionById = async (id: string) => {
-  try {
-    return await queryTransactionById(id);
-  } catch (error) {
-    return {
-      success: false,
-      error: 'Có lỗi, vui lòng thử lại.',
-    };
-  }
-};
-
-export const getTransactionByDate = async (accountId: string, date: string) => {
-  try {
-    return await queryGetTransactionsListByDate({ accountId, date });
-  } catch (error) {
-    return {
-      success: false,
-      error,
-    };
-  }
-};
 
 /**
  * Updates a transaction record, including creating a new transaction if `id` is not provided.
@@ -87,9 +62,6 @@ export const updateTransaction = async ({ data }: { data: TTransactions }) => {
             });
           // Update balance
           if (isUpdateBalance) {
-            console.log(transactionUpdated.accountId, transactionUpdated.id);
-            console.log(prevTransaction.accountId);
-
             // update balance với thông tin từ transactionUpdated
             await balanceLocalQuery.updateBalance({
               transactionId: transactionUpdated.id,
@@ -110,10 +82,10 @@ export const updateTransaction = async ({ data }: { data: TTransactions }) => {
         });
     }
   } catch (error) {
-    console.log(error, 'error');
     throw error;
   }
 };
+
 /**
  * Updates a transaction record, including creating a new transaction if `id` is not provided.
  * Also updates account balances accordingly.

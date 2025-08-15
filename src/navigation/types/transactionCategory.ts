@@ -6,6 +6,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 export type TransactionCategoryParams = {
   [ROUTES.TRANSACTION_CATEGORY_TABS]: {
     tabsHide?: TRANSACTION_CATEGORY_TYPE;
+    returnScreen: string;
   };
   [ROUTES.UPDATE_TRANSACTION_CATEGORY]: {
     icon?: string;

@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 import { TransactionParamListProps } from 'navigation/types';
-import SelectTransactionType from '../components/SelectTransactionType';
 import { TTransactionType } from 'utils/types/request.type';
-import { transactionCategoryProps } from 'store/transactionCategory/transactionCategory.slice';
 import { ROUTES } from 'navigation/constants/routes';
 import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constants';
 import { getKeyByValue } from 'utils/algorithm';
+import { storageService } from 'services/storage';
+import { MMKV_KEY } from 'services/storage/const';
+import SelectTransactionType from '../components/SelectTransactionType';
 
 interface Props {
   navigation: TransactionParamListProps<typeof ROUTES.ADD_TRANSACTION>['navigation'];
-  lendBorrowData: transactionCategoryProps['lendBorrowData'];
   currentCategoryId: string;
   transactionType: TRANSACTION_TYPE;
   isEditMode: boolean;
@@ -18,7 +18,6 @@ interface Props {
 
 export const useHeaderOption = ({
   navigation,
-  lendBorrowData,
   currentCategoryId,
   transactionType,
   isEditMode,
@@ -41,11 +40,12 @@ export const useHeaderOption = ({
       setValue('eventName', '');
     }
   };
+  const lendBorrowData = JSON.parse(storageService.getItem(MMKV_KEY.LEND_BORROW_ID) || '{}');
 
-  const handleOnChangeTransactionType = (item: TTransactionType) => {
-    resetFormAfterChangeTransactionType(item);
-    setValue('categoryId', getKeyByValue(lendBorrowData, item.categoryType));
+  const handleOnTransactionTypeSelect = (item: TTransactionType) => {
     setValue('transactionType', item.value);
+    setValue('categoryId', getKeyByValue(lendBorrowData, item.categoryType));
+    resetFormAfterChangeTransactionType(item);
   };
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export const useHeaderOption = ({
           lendBorrowData={lendBorrowData}
           currentCategoryId={currentCategoryId}
           currentType={transactionType}
-          onItemPress={handleOnChangeTransactionType}
+          onItemPress={handleOnTransactionTypeSelect}
           isEditMode={isEditMode}
         />
       ),
@@ -64,5 +64,5 @@ export const useHeaderOption = ({
     return () => {
       navigation.setOptions({ headerTitle: undefined });
     };
-  }, [lendBorrowData, currentCategoryId, transactionType]);
+  }, [currentCategoryId, transactionType, lendBorrowData]);
 };

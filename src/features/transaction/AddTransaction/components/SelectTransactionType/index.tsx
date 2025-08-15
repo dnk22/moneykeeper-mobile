@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import ImageComponent from 'components/ImageComponent';
@@ -26,7 +26,6 @@ function SelectTransactionType({
   onItemPress,
   isEditMode,
 }: SelectTransactionTypeProps) {
-  const prevActive = useRef<any>(undefined);
   const [isActive, setIsActive] = useState<any>(0);
   const [isShowTransactionTypeModal, setIsShowTransactionTypeModal] = useState(false);
 
@@ -52,11 +51,7 @@ function SelectTransactionType({
   }, [currentCategoryId, currentType]);
 
   const onHandleTransactionTypeItemPress = (item: TTransactionType) => {
-    if (prevActive.current !== +item.id) {
-      prevActive.current = +item.id;
-      setIsActive(item.id);
-      onItemPress(item);
-    }
+    onItemPress(item);
     onToggleTransactionTypeModal();
   };
 

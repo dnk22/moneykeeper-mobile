@@ -10,7 +10,7 @@ import TouchableHighlightComponent from 'components/TouchableHighlight';
 
 import { formatDateLocal } from 'utils/date';
 import { BottomSheetFlatList, BottomSheetModal } from '@gorhom/bottom-sheet';
-import { queryUniqueTransactionDates } from 'database/querying';
+import { transactionLocalQuery } from 'database/querying';
 import { generateMonthlyStatements } from 'utils/algorithm';
 import { StatementViewProps } from 'utils/types';
 import { TransactionHistoryContext } from '../context';
@@ -32,7 +32,7 @@ function StatementPicker({ onChange }: StatementPickerProps) {
   const [viewMonth, setViewMonth] = useState<StatementViewProps>(defaultStatement);
 
   const getAllStatements = () => {
-    queryUniqueTransactionDates(accountId).then((res) => {
+    transactionLocalQuery.getUniqueTransactionDates(accountId).then((res) => {
       if (res.length) {
         const convertDataToRangeDate = generateMonthlyStatements(res, statementInfo.statementDate);
         setViewStatementList([defaultStatement, ...convertDataToRangeDate]);
