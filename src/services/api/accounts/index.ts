@@ -72,7 +72,6 @@ export async function requestUpdateAccount(account: TAccount): Promise<void> {
       });
     }
   } catch (error: any) {
-    console.log(error, 'update account err');
     throw error;
   }
 }
@@ -111,7 +110,7 @@ export async function requestDeleteAccount(accountId: string) {
               (item) => item.accountId !== accountId,
             );
             for await (const { accountId, recordAt } of accountCalc) {
-              await balanceLocalQuery.calculateAllBalanceAfterDate({
+              await balanceLocalQuery.calculateBalanceAccountByDate({
                 accountId,
                 date: recordAt,
               });

@@ -1,4 +1,3 @@
-export * from './transactionsCategory.query';
 export * from './transactions.query';
 export * from './contacts.query';
 export * from './balance.query';

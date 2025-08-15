@@ -129,23 +129,3 @@ export const queryCalculateAllBalanceAfterDate = async ({
   }
 };
 
-/** delete */
-export const queryDeleteBalanceById = async (id: string, accountId?: string) => {
-  try {
-    const query = [Q.where('transactionId', id)];
-    if (accountId) {
-      query.push(Q.where('accountId', accountId));
-    }
-    return await database.write(async () => {
-      await database
-        .get<BalanceModel>(BALANCE)
-        .query(...query)
-        .destroyAllPermanently();
-      return true;
-    });
-  } catch (error) {
-    return handleError({
-      error: 'DEL-BAL',
-    });
-  }
-};

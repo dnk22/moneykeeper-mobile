@@ -4,11 +4,11 @@ import { TransactionParamList } from 'navigation/types';
 interface Props {
   params: Partial<TransactionParamList['ADD_TRANSACTION']>;
   navigation: any;
-  getValues: (name: string) => any;
+  categoryId: string;
   setValue: any;
 }
 
-export const useTransactionParamsSync = ({ params, navigation, getValues, setValue }: Props) => {
+export const useTransactionParamsSync = ({ params, navigation, categoryId, setValue }: Props) => {
   useEffect(() => {
     if (params?.transactionType) {
       setValue('transactionType', params.transactionType);
@@ -22,7 +22,7 @@ export const useTransactionParamsSync = ({ params, navigation, getValues, setVal
   }, [params?.accountId]);
 
   useEffect(() => {
-    if (params?.categoryId && params?.categoryId !== getValues('categoryId')) {
+    if (params?.categoryId && params?.categoryId !== categoryId) {
       setValue('categoryId', params.categoryId);
       navigation.setParams({ categoryId: undefined });
     }

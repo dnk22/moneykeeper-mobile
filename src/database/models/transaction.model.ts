@@ -23,7 +23,6 @@ export default class TransactionModel extends Model {
   @field('relatedPerson') relatedPerson!: string;
   @field('excludeReport') excludeReport!: number;
   @field('attachment') attachment!: string;
-  @field('userId') userId!: string;
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;
 }

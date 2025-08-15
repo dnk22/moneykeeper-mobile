@@ -13,9 +13,8 @@ export interface ErrorResponse {
   errors?: Record<string, string[]>;
 }
 
-export type ApiError = AxiosError<ErrorResponse>;
-
 export type ApiSuccess<T> = AxiosResponse<ApiResponse<T>>;
+export type ApiError = AxiosError<ErrorResponse>;
 
 export interface RetryConfig {
   retry: boolean;

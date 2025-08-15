@@ -32,7 +32,7 @@ function DateTimeSelect({ values = new Date(), onChangeDate }: DateTimeSelectPro
         onDateTimePicker={onChangeDate}
       />
       <View style={styles.itemGroup}>
-        <Calendar2 size="28" />
+        <Calendar2 size="28" style={{ opacity: 0.6 }} />
         <View style={styles.groupContent}>
           <PressableHaptic onPress={() => onToggleDateTimeModal(true)}>
             <RNText>{formatDateLocal(values, 'EEEE, dd/MM/yyyy')}</RNText>

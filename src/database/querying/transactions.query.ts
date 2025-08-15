@@ -118,20 +118,6 @@ export const queryRecentTransaction = async (limit: number) => {
   });
 };
 
-/** create */
-/**
- *
- * @param transaction : TTransactions
- * add new transaction , if success then update useCount in transaction category
- */
-export const queryAddNewTransaction = async (transaction: TTransactions) => {
-  return await database.write(async () => {
-    return await database.get<TransactionModel>(TRANSACTIONS).create((item) => {
-      Object.assign(item, transaction);
-    });
-  });
-};
-/** update */
 /**
  *
  * @param id

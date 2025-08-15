@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import ImageComponent from 'components/ImageComponent';
@@ -97,7 +97,7 @@ function SelectTransactionType({
       >
         <ScrollView>
           {TRANSACTION_TYPE_DATA.map((item, index) => {
-            return renderItem({ item, index });
+            return <Fragment key={item.id}>{renderItem({ item, index })}</Fragment>;
           })}
         </ScrollView>
       </ModalComponent>

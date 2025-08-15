@@ -1,6 +1,6 @@
 import { TRANSACTION_CATEGORY } from 'database/constants';
 import { SyncQueueAction } from 'database/models/syncQueue.model';
-import { queryDeleteTransactionCategoryById, syncQueueLocalQuery } from 'database/querying';
+import { syncQueueLocalQuery } from 'database/querying';
 import { categoriesLocalQuery } from 'database/querying/categories';
 import { categoriesFb } from 'services/firebase/db/categories';
 

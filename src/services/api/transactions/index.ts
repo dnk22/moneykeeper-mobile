@@ -1,20 +1,19 @@
+import { TRANSACTIONS } from 'database/constants';
+import { SyncQueueAction } from 'database/models/syncQueue.model';
 import {
   queryAddNewBalanceTransaction,
-  queryAddNewTransaction,
-  queryDeleteBalanceById,
   queryDeleteTransactionById,
   queryTransactionById,
   queryGetTransactionsListByDate,
   queryCalculateAllBalanceAfterDate,
   queryUpdateTransaction,
-  queryUpdateUseCountTransactionCategory,
   queryUpdateBalanceTransaction,
+  transactionLocalQuery,
+  balanceLocalQuery,
+  syncQueueLocalQuery,
 } from 'database/querying';
 import { TTransactions } from 'database/types';
-
-const delay = (delayInms) => {
-  return new Promise((resolve) => setTimeout(resolve, delayInms));
-};
+import { transactionsFb } from 'services/firebase/db/transactions';
 
 /** read */
 export const getTransactionById = async (id: string) => {
@@ -39,7 +38,6 @@ export const getTransactionByDate = async (accountId: string, date: string) => {
   }
 };
 
-/** update */
 /**
  * Updates a transaction record, including creating a new transaction if `id` is not provided.
  * Also updates related counts and balances accordingly.
@@ -48,60 +46,72 @@ export const getTransactionByDate = async (accountId: string, date: string) => {
  * @param data - The data for the transaction, including the amount, category ID, etc.
  * @returns Promise<{ success: boolean, error?: any }>
  */
-export const updateTransaction = async ({ id, data }: { id?: string; data: TTransactions }) => {
+export const updateTransaction = async ({ data }: { data: TTransactions }) => {
   try {
-    if (!id) {
-      return queryAddNewTransaction(data).then(async (transaction) => {
-        // Update the usage count for the transaction category
-        queryUpdateUseCountTransactionCategory(transaction.categoryId);
-        // Update the balance and calculate new balances after the transaction
-        await queryAddNewBalanceTransaction(transaction);
-        await queryCalculateAllBalanceAfterDate({
-          accountId: transaction.accountId,
-          date: new Date(transaction.recordAt).getTime(),
+    // If no ID is provided, create a new transaction
+    if (!data?.id) {
+      const transactionCreated = await transactionLocalQuery.addNewTransaction(data);
+      // // Sync to firebase
+      await transactionsFb
+        .addNewTransaction({ transaction: transactionCreated._raw })
+        .catch(async (error) => {
+          await syncQueueLocalQuery.updateSyncQueueItem({
+            recordId: transactionCreated.id,
+            payload: transactionCreated._raw,
+            tableName: TRANSACTIONS,
+            action: SyncQueueAction.CREATE,
+          });
         });
-        return {
-          success: true,
-        };
+      // Update the balance and calculate new balances after the transaction
+      await balanceLocalQuery.addNewBalance({
+        transactionId: transactionCreated.id,
+        accountId: transactionCreated.accountId,
+        movementAmount: transactionCreated.amount,
+        dateRecord: transactionCreated.recordAt,
       });
     } else {
-      delete data.id;
-      return await queryUpdateTransaction({ id, data }).then(
-        async ({
-          isUpdateCountCategory,
-          isUpdateBalance,
-          prevAccountId,
-          prevToAccountId,
-          prevDate,
-        }: any) => {
-          if (isUpdateCountCategory) {
-            queryUpdateUseCountTransactionCategory(data.categoryId);
-          }
-          if (isUpdateBalance) {
-            await queryUpdateBalanceTransaction({ ...data, id }, prevAccountId);
-            await queryCalculateAllBalanceAfterDate({
-              accountId: data.accountId,
-              date: prevDate,
+      const { id, ...dataWithoutId } = data;
+      await transactionLocalQuery
+        .updateTransaction({ id, data: dataWithoutId })
+        .then(async ({ isUpdateBalance, prevTransaction, transactionUpdated }: any) => {
+          // sync to firebase
+          await transactionsFb
+            .updateTransaction({ transaction: transactionUpdated._raw })
+            .catch(async (error) => {
+              await syncQueueLocalQuery.updateSyncQueueItem({
+                recordId: transactionUpdated.id,
+                payload: transactionUpdated._raw,
+                tableName: TRANSACTIONS,
+                action: SyncQueueAction.UPDATE,
+              });
             });
-            if (prevToAccountId) {
-              await queryDeleteBalanceById(id, prevToAccountId);
-              await queryCalculateAllBalanceAfterDate({
-                accountId: prevToAccountId,
-                date: prevDate,
+          // Update balance
+          if (isUpdateBalance) {
+            console.log(transactionUpdated.accountId, transactionUpdated.id);
+            console.log(prevTransaction.accountId);
+
+            // update balance với thông tin từ transactionUpdated
+            await balanceLocalQuery.updateBalance({
+              transactionId: transactionUpdated.id,
+              accountId: prevTransaction.accountId,
+              accountToUpdateId: transactionUpdated.accountId,
+              movementAmount: transactionUpdated.amount,
+              dateRecord: transactionUpdated.recordAt,
+            });
+            // // nếu account thay đổi, update lại balance account cũ
+            if (prevTransaction.accountId !== transactionUpdated.accountId) {
+              console.log('account change');
+              await balanceLocalQuery.calculateBalanceAccountByDate({
+                accountId: prevTransaction.accountId,
+                date: prevTransaction.recordAt,
               });
             }
           }
-          return {
-            success: true,
-          };
-        },
-      );
+        });
     }
-  } catch ({ error }) {
-    return Promise.reject({
-      success: false,
-      error,
-    });
+  } catch (error) {
+    console.log(error, 'error');
+    throw error;
   }
 };
 /**
@@ -231,18 +241,18 @@ export const updateTransactionTransfer = async ({
 /** delete */
 export const deleteTransactionById = async (id: string) => {
   return await queryDeleteTransactionById(id).then(async (transaction) => {
-    await queryDeleteBalanceById(transaction.id).then(async () => {
-      await queryCalculateAllBalanceAfterDate({
-        accountId: transaction.accountId,
-        date: new Date(transaction.recordAt).getTime(),
-      });
-      if (transaction.toAccountId) {
-        await queryCalculateAllBalanceAfterDate({
-          accountId: transaction.toAccountId,
-          date: new Date(transaction.recordAt).getTime(),
-        });
-      }
-    });
+    // await queryDeleteBalanceById(transaction.id).then(async () => {
+    //   await queryCalculateAllBalanceAfterDate({
+    //     accountId: transaction.accountId,
+    //     date: new Date(transaction.recordAt).getTime(),
+    //   });
+    //   if (transaction.toAccountId) {
+    //     await queryCalculateAllBalanceAfterDate({
+    //       accountId: transaction.toAccountId,
+    //       date: new Date(transaction.recordAt).getTime(),
+    //     });
+    //   }
+    // });
     return {
       success: true,
     };

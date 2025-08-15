@@ -13,6 +13,7 @@ import { useHeaderOption } from './useHeaderOption';
 import { useTransactionParamsSync } from './useTransactionParamsSync';
 import { accountLocalQuery } from 'database/querying';
 import { showToast } from 'utils/system';
+import { formatDataDetail } from './utility';
 
 export function useAddTransactionFormLogic({
   navigation,
@@ -29,17 +30,43 @@ export function useAddTransactionFormLogic({
     },
   });
 
-  const { getValues, setValue, control, reset } = transactionForm;
+  const { setValue, control, reset } = transactionForm;
 
   const accountId = useWatch({
     control,
     name: 'accountId',
   });
 
+  const categoryId = useWatch({
+    control,
+    name: 'categoryId',
+  });
+
+  const transactionType = useWatch({
+    control,
+    name: 'transactionType',
+  });
+
+  useHeaderOption({
+    navigation,
+    lendBorrowData,
+    currentCategoryId: categoryId,
+    transactionType: transactionType,
+    isEditMode: !!params?.transactionId,
+    setValue,
+  });
+
+  useTransactionParamsSync({
+    params,
+    navigation,
+    categoryId,
+    setValue,
+  });
+
   const getDetailTransaction = async (id: string) => {
     const res = await getTransactionById(id);
     if (res?.id) {
-      reset(res);
+      reset(formatDataDetail(res));
     }
   };
 
@@ -56,22 +83,6 @@ export function useAddTransactionFormLogic({
       });
     }
   };
-
-  useHeaderOption({
-    navigation,
-    lendBorrowData,
-    currentCategoryId: getValues('categoryId'),
-    transactionType: getValues('transactionType'),
-    isEditMode: !!params?.transactionId,
-    setValue,
-  });
-
-  useTransactionParamsSync({
-    params,
-    navigation,
-    getValues,
-    setValue,
-  });
 
   /** Set account mặc định khi mode add */
   useFocusEffect(
@@ -91,7 +102,10 @@ export function useAddTransactionFormLogic({
   // set lại ngày tháng ghi chép mỗi khi focus mới vào screen đi từ account
   useFocusEffect(
     useCallback(() => {
-      if (routerName === ROUTES.CREATE_TRANSACTION_FROM_ACCOUNT && !params?.transactionId) {
+      if (
+        (routerName as const) === ROUTES.CREATE_TRANSACTION_FROM_ACCOUNT &&
+        !params?.transactionId
+      ) {
         setValue('recordAt', new Date().getTime());
       }
     }, [routerName, params?.transactionId]),

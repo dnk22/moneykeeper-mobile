@@ -103,12 +103,12 @@ export class BalanceLocalDataSource {
    * 4. Cập nhật đồng thời tất cả các thay đổi vào database
    * 5. Throw error nếu có lỗi xảy ra trong quá trình tính toán
    */
-  public async calculateAllBalanceAfterDate({
+  public async calculateBalanceAccountByDate({
     accountId,
     date = 0,
   }: {
     accountId: string;
-    date?: number;
+    date?: number | Date;
   }) {
     try {
       const latestBalance = await this.getLatestAccountBalanceByDate(
@@ -208,7 +208,7 @@ export class BalanceLocalDataSource {
     });
     // tính toán lại balance
     if (balanceCreated.dateRecord) {
-      await this.calculateAllBalanceAfterDate({
+      await this.calculateBalanceAccountByDate({
         accountId: balanceCreated.accountId,
         date: new Date(balanceCreated.dateRecord).getTime(),
       });
@@ -250,19 +250,24 @@ export class BalanceLocalDataSource {
 
     const balanceUpdated = await database.write(async () => {
       const currentBalanceRecords = await this.balancesCollection.query(...queryConditions).fetch();
+
+      if (isEmpty(currentBalanceRecords)) {
+        isCreate = true;
+        return null;
+      }
+
       const balanceToUpdate = currentBalanceRecords[0];
+      // Nếu có accountToUpdateId thì cập nhật lại accountId
       await balanceToUpdate.update((bal) => {
-        bal.accountId = balanceData.accountId;
+        bal.accountId = balanceData?.accountToUpdateId
+          ? balanceData?.accountToUpdateId
+          : balanceData.accountId;
         bal.transactionId = balanceData.transactionId;
         bal.openAmount = balanceData.openAmount || 0;
         bal.movementAmount = balanceData.movementAmount || 0;
         bal.closingAmount = balanceData.closingAmount || 0;
         bal.dateRecord = balanceData.dateRecord ? new Date(balanceData.dateRecord) : undefined;
       });
-
-      if (isEmpty(currentBalanceRecords)) {
-        isCreate = true;
-      }
       return balanceToUpdate;
     });
 
@@ -273,10 +278,12 @@ export class BalanceLocalDataSource {
     }
 
     // tính toán lại balance
-    await this.calculateAllBalanceAfterDate({
-      accountId: balanceUpdated.accountId,
-      date: balanceData.dateRecord,
-    });
+    if (balanceUpdated) {
+      await this.calculateBalanceAccountByDate({
+        accountId: balanceUpdated.accountId,
+        date: balanceData.dateRecord,
+      });
+    }
 
     return true;
   }
@@ -293,16 +300,32 @@ export class BalanceLocalDataSource {
    * 3. Xóa vĩnh viễn (không phải soft delete) các bản ghi thỏa mãn
    * 4. Throw error nếu có lỗi trong quá trình xóa
    */
-  public async deleteBalanceByTransactionId(transactionId: string, accountId?: string) {
+  public async deleteBalance({
+    accountId,
+    transactionId,
+  }: {
+    accountId: string;
+    transactionId: string;
+  }) {
     try {
-      const queryConditions = [Q.where('transactionId', transactionId)];
-      if (accountId) {
-        queryConditions.push(Q.where('accountId', accountId));
-      }
-      return await database.write(async () => {
-        await this.balancesCollection.query(...queryConditions).destroyAllPermanently(); // Sử dụng destroyAllPermanently
-        return true;
+      const queryConditions = [
+        Q.where('accountId', accountId),
+        Q.where('transactionId', transactionId),
+      ];
+      let balanceToDelete: TBalance | null = null;
+
+      await database.write(async () => {
+        balanceToDelete = await this.balancesCollection.query(...queryConditions).fetch();
+        await this.balancesCollection.query(...queryConditions).destroyAllPermanently();
       });
+
+      if (balanceToDelete) {
+        // tính toán lại balance
+        await this.calculateBalanceAccountByDate({
+          accountId,
+          date: balanceToDelete.dateRecord,
+        });
+      }
     } catch (error) {
       this.throwError('DEL-BAL');
     }

@@ -14,8 +14,8 @@ export type TUsers = {
 
 // transactions
 export type TTransactions = {
-  id: string;
-  amount: number;
+  id?: string;
+  amount: number | string;
   toAmount: number;
   transactionType: TRANSACTION_TYPE;
   closingAmount: number;
@@ -23,7 +23,7 @@ export type TTransactions = {
   categoryId: string;
   categoryName?: string;
   descriptions?: string;
-  recordAt: number;
+  recordAt: number | Date;
   accountId: string;
   toAccountId: string;
   accountName?: string;
@@ -38,8 +38,8 @@ export type TTransactions = {
   excludeReport?: number;
   attachment?: any;
   userId?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: any;
+  updatedAt?: any;
 };
 
 export type TTransactionsCategory = {
@@ -120,9 +120,9 @@ export type TContact = {
 export type TBalance = {
   transactionId?: string;
   accountId: string;
+  accountToUpdateId?: string;
   openAmount?: number;
   movementAmount?: number;
   closingAmount?: number;
-  dateRecord?: number;
+  dateRecord?: number | Date;
 };
-

@@ -6,6 +6,7 @@ export default class BalanceModel extends Model {
   static table = BALANCE;
 
   @nochange @field('_balanceId') _balanceId!: number;
+  @field('_id') _id?: number;
   @field('transactionId') transactionId?: string;
   @field('accountId') accountId!: string;
   @field('openAmount') openAmount?: number;

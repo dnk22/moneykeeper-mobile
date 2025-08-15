@@ -12,6 +12,7 @@ import { useAppSelector } from 'store/index';
 import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';
 import { defaultValues, INPUT_AMOUNT_COLOR } from '../constant';
 import { AddTransactionType } from '../type';
+import { formatDataBeforeSubmit } from './utility';
 
 export default function useExpenseIncomeHook({ params, onSubmitSuccess }: AddTransactionType) {
   const navigation =
@@ -68,7 +69,7 @@ export default function useExpenseIncomeHook({ params, onSubmitSuccess }: AddTra
   const handleOnCategorySelect = (item?: TTransactionsCategory) => {
     const transactionType = getValues('transactionType');
 
-    let screenTarget;
+    let screenTarget: any = ROUTES.EXPENSE_CATEGORY;
     if (
       item?.categoryName &&
       Object.values(TRANSACTION_LEND_BORROW_NAME).includes(item.categoryName)
@@ -76,8 +77,6 @@ export default function useExpenseIncomeHook({ params, onSubmitSuccess }: AddTra
       screenTarget = ROUTES.LEND_BORROW;
     } else if (transactionType === TRANSACTION_TYPE.INCOME) {
       screenTarget = ROUTES.INCOME_CATEGORY;
-    } else {
-      screenTarget = ROUTES.EXPENSE_CATEGORY;
     }
 
     navigation.navigate(ROUTES.TRANSACTION_CATEGORY, {
@@ -107,22 +106,12 @@ export default function useExpenseIncomeHook({ params, onSubmitSuccess }: AddTra
   };
 
   const onSubmit = (data: TTransactions) => {
-    const requestData = {
-      ...data,
-      excludeReport: +data?.excludeReport,
-      amount:
-        data.transactionType === TRANSACTION_TYPE.INCOME
-          ? Math.abs(+data.amount)
-          : -Math.abs(+data.amount),
-    };
+    const requestData = formatDataBeforeSubmit(data) as TTransactions;
+
     updateTransaction({
-      id: params?.transactionId,
       data: requestData,
     })
-      .then(({ success }) => {
-        if (!success) {
-          return;
-        }
+      .then(() => {
         onSubmitSuccess();
         // reset form state
         reset({

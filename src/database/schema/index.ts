@@ -74,7 +74,7 @@ export default appSchema({
         { name: 'eventName', type: 'string', isOptional: true },
         { name: 'fee', type: 'number', isOptional: true },
         { name: 'feeType', type: 'string', isOptional: true },
-        { name: 'excludeReport', type: 'number', isOptional: true },
+        { name: 'excludeReport', type: 'boolean', isOptional: true },
         { name: 'attachment', type: 'string', isOptional: true },
         { name: 'giver', type: 'string', isOptional: true },
         { name: 'payee', type: 'string', isOptional: true },
