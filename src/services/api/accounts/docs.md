@@ -57,7 +57,7 @@ Deletes an account and recalculates balances for related accounts.
 ### Flow Steps Overview
 
 1. Delete account by ID (queryDeleteAccountById)
-2. Delete related transactions (queryDeleteAllTransactionRelatedWithAccountId)
+2. Delete related transactions (clearTransactionsForAccount)
 3. Recalculate affected account balances (queryCalculateAllBalanceAfterDate)
 
 ### Detailed Process Flow
@@ -70,7 +70,7 @@ Deletes an account and recalculates balances for related accounts.
   2. Mark account as deleted in database
   3. Return success/error response
 
-#### 2. queryDeleteAllTransactionRelatedWithAccountId
+#### 2. clearTransactionsForAccount
 
 - Input: accountId (string)
 - Process:

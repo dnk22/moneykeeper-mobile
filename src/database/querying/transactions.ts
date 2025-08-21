@@ -338,10 +338,9 @@ export class TransactionLocalDataSource {
       return await database.write(async () => {
         const transactionToDelete = await this.transactionsCollection.find(id);
         await transactionToDelete.markAsDeleted();
-        return transactionToDelete; // Trả về để xử lý balance
+        return transactionToDelete;
       });
     } catch (error) {
-      console.error('Error soft deleting transaction:', error);
       this.throwError('DEL-TRANS');
     }
   }
@@ -381,7 +380,7 @@ export class TransactionLocalDataSource {
 
         // Xóa các bản ghi balance liên quan đến các giao dịch chuyển khoản này
         if (transferTransactions && transferTransactions.length > 0) {
-          await balanceLocalQuery.deleteBalancesByIds(
+          await balanceLocalQuery.deleteBalancesByTransactionIds(
             Array.from(transferTransactions.map((item) => item.id)),
           );
         }

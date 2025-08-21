@@ -1,11 +1,6 @@
 import { TRANSACTIONS } from 'database/constants';
 import { SyncQueueAction } from 'database/models/syncQueue.model';
 import {
-  queryAddNewBalanceTransaction,
-  queryDeleteTransactionById,
-  queryCalculateAllBalanceAfterDate,
-  queryUpdateTransaction,
-  queryUpdateBalanceTransaction,
   transactionLocalQuery,
   balanceLocalQuery,
   syncQueueLocalQuery,
@@ -110,97 +105,97 @@ export const updateTransactionTransfer = async ({
   try {
     if (!id) {
       // Create a new transaction
-      return queryAddNewTransaction(requestData).then(async (transaction) => {
+      // return queryAddNewTransaction(requestData).then(async (transaction) => {
         // Prepare data for updating account balances after a new transaction
-        const requestDataBalance = {
-          [data.accountId]: {
-            id: transaction.id,
-            accountId: transaction.accountId,
-            amount: transaction.amount,
-            recordAt: transaction.recordAt,
-          },
-          [data.toAccountId]: {
-            id: transaction.id,
-            accountId: transaction.toAccountId,
-            amount: transaction.toAmount,
-            recordAt: transaction.recordAt,
-          },
-        };
-        // Update balances and calculate new balances for accounts involved in the transaction
-        for await (const item of [data.accountId, data.toAccountId]) {
-          await queryAddNewBalanceTransaction(requestDataBalance[item]);
-          await queryCalculateAllBalanceAfterDate({
-            accountId: requestDataBalance[item].accountId,
-            date: new Date(requestDataBalance[item].recordAt).getTime(),
-          });
-        }
-        return {
-          success: true,
-        };
-      });
-    } else {
-      // Update an existing transaction
-      delete requestData.id; // Remove ID from the request data
-      return queryUpdateTransaction({ id, data: requestData }).then(
-        async ({
-          isUpdateBalance,
-          transactionUpdated,
-          prevAccountId,
-          prevToAccountId,
-          prevDate,
-        }: any) => {
-          /** Retrieve a list of account IDs to calculate the balance after the update. */
-          const listAccountUpdateAfterUpdateTransfer = [
-            ...new Set(
-              [
-                transactionUpdated.accountId,
-                transactionUpdated.toAccountId,
-                prevAccountId,
-                prevToAccountId,
-              ].filter((item) => item),
-            ),
-          ];
+    //     const requestDataBalance = {
+    //       [data.accountId]: {
+    //         id: transaction.id,
+    //         accountId: transaction.accountId,
+    //         amount: transaction.amount,
+    //         recordAt: transaction.recordAt,
+    //       },
+    //       [data.toAccountId]: {
+    //         id: transaction.id,
+    //         accountId: transaction.toAccountId,
+    //         amount: transaction.toAmount,
+    //         recordAt: transaction.recordAt,
+    //       },
+    //     };
+    //     // Update balances and calculate new balances for accounts involved in the transaction
+    //     for await (const item of [data.accountId, data.toAccountId]) {
+    //       await queryAddNewBalanceTransaction(requestDataBalance[item]);
+    //       await queryCalculateAllBalanceAfterDate({
+    //         accountId: requestDataBalance[item].accountId,
+    //         date: new Date(requestDataBalance[item].recordAt).getTime(),
+    //       });
+    //     }
+    //     return {
+    //       success: true,
+    //     };
+    //   });
+    // } else {
+    //   // Update an existing transaction
+    //   delete requestData.id; // Remove ID from the request data
+    //   return queryUpdateTransaction({ id, data: requestData }).then(
+    //     async ({
+    //       isUpdateBalance,
+    //       transactionUpdated,
+    //       prevAccountId,
+    //       prevToAccountId,
+    //       prevDate,
+    //     }: any) => {
+    //       /** Retrieve a list of account IDs to calculate the balance after the update. */
+    //       const listAccountUpdateAfterUpdateTransfer = [
+    //         ...new Set(
+    //           [
+    //             transactionUpdated.accountId,
+    //             transactionUpdated.toAccountId,
+    //             prevAccountId,
+    //             prevToAccountId,
+    //           ].filter((item) => item),
+    //         ),
+    //       ];
 
           /**
            * Prepare request data for updating balances after a transaction has been updated.
            * This data structure is used to represent the changes in account balances.
            */
-          const requestDataBalance = {
-            [data.accountId]: {
-              id: transactionUpdated.id,
-              accountId: transactionUpdated.accountId,
-              amount: transactionUpdated.amount,
-              recordAt: transactionUpdated.recordAt,
-              accountIdQuery: prevAccountId,
-            },
-            [data.toAccountId]: {
-              id: transactionUpdated.id,
-              accountId: transactionUpdated.toAccountId,
-              amount: transactionUpdated.toAmount,
-              recordAt: transactionUpdated.recordAt,
-              accountIdQuery: prevToAccountId || transactionUpdated.toAccountId,
-            },
-          };
-          if (isUpdateBalance) {
-            for await (const item of [data.accountId, data.toAccountId]) {
-              await queryUpdateBalanceTransaction(
-                requestDataBalance[item],
-                requestDataBalance[item].accountIdQuery,
-              );
-            }
-          }
-          /** Iterate through the list of accounts that need balance calculation after a transfer update. */
-          for await (const item of listAccountUpdateAfterUpdateTransfer) {
-            await queryCalculateAllBalanceAfterDate({
-              accountId: item,
-              date: prevDate,
-            });
-          }
-          return {
-            success: true,
-          };
-        },
-      );
+      //     const requestDataBalance = {
+      //       [data.accountId]: {
+      //         id: transactionUpdated.id,
+      //         accountId: transactionUpdated.accountId,
+      //         amount: transactionUpdated.amount,
+      //         recordAt: transactionUpdated.recordAt,
+      //         accountIdQuery: prevAccountId,
+      //       },
+      //       [data.toAccountId]: {
+      //         id: transactionUpdated.id,
+      //         accountId: transactionUpdated.toAccountId,
+      //         amount: transactionUpdated.toAmount,
+      //         recordAt: transactionUpdated.recordAt,
+      //         accountIdQuery: prevToAccountId || transactionUpdated.toAccountId,
+      //       },
+      //     };
+      //     if (isUpdateBalance) {
+      //       for await (const item of [data.accountId, data.toAccountId]) {
+      //         await queryUpdateBalanceTransaction(
+      //           requestDataBalance[item],
+      //           requestDataBalance[item].accountIdQuery,
+      //         );
+      //       }
+      //     }
+      //     /** Iterate through the list of accounts that need balance calculation after a transfer update. */
+      //     for await (const item of listAccountUpdateAfterUpdateTransfer) {
+      //       await queryCalculateAllBalanceAfterDate({
+      //         accountId: item,
+      //         date: prevDate,
+      //       });
+      //     }
+      //     return {
+      //       success: true,
+      //     };
+      //   },
+      // );
     }
   } catch ({ error }) {
     return Promise.reject({
@@ -212,21 +207,34 @@ export const updateTransactionTransfer = async ({
 
 /** delete */
 export const deleteTransactionById = async (id: string) => {
-  return await queryDeleteTransactionById(id).then(async (transaction) => {
-    // await queryDeleteBalanceById(transaction.id).then(async () => {
-    //   await queryCalculateAllBalanceAfterDate({
-    //     accountId: transaction.accountId,
-    //     date: new Date(transaction.recordAt).getTime(),
-    //   });
-    //   if (transaction.toAccountId) {
-    //     await queryCalculateAllBalanceAfterDate({
-    //       accountId: transaction.toAccountId,
-    //       date: new Date(transaction.recordAt).getTime(),
-    //     });
-    //   }
-    // });
-    return {
-      success: true,
-    };
-  });
+  try {
+    const transactionDeleted = await transactionLocalQuery.softDeleteTransactionById(id);
+
+    // sync to firebase
+    await transactionsFb.deleteTransactionById(transactionDeleted.id).catch(async (error) => {
+      await syncQueueLocalQuery.updateSyncQueueItem({
+        recordId: transactionDeleted.id,
+        payload: transactionDeleted._raw,
+        tableName: TRANSACTIONS,
+        action: SyncQueueAction.DELETE,
+      });
+    });
+
+    // delete & calculate balance
+    await balanceLocalQuery.deleteBalance({
+      accountId: transactionDeleted.accountId,
+      transactionId: transactionDeleted.id,
+    });
+    if (transactionDeleted.toAccountId) {
+      await balanceLocalQuery.deleteBalance({
+        accountId: transactionDeleted.toAccountId,
+        transactionId: transactionDeleted.id,
+      });
+    }
+  } catch (error) {
+    return Promise.reject({
+      success: false,
+      error,
+    });
+  }
 };

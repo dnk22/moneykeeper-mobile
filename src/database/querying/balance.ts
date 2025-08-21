@@ -160,7 +160,7 @@ export class BalanceLocalDataSource {
    * 2. Trả về closingAmount và dateRecord của bản ghi đó
    * 3. Trả về undefined nếu không có bản ghi nào
    */
-  public async getCurrentBalance(accountId: string) {
+  public async getCurrentAccountBalance(accountId: string) {
     const query = `SELECT closingAmount, dateRecord FROM ${BALANCE}
                   WHERE accountId='${accountId}'
                   ORDER BY dateRecord DESC, id DESC -- Sử dụng 'id' của WMDB thay vì '_id' nếu '_id' không phải PK
@@ -315,7 +315,8 @@ export class BalanceLocalDataSource {
       let balanceToDelete: TBalance | null = null;
 
       await database.write(async () => {
-        balanceToDelete = await this.balancesCollection.query(...queryConditions).fetch();
+        const balances = await this.balancesCollection.query(...queryConditions).fetch();
+        balanceToDelete = balances[0] || null;
         await this.balancesCollection.query(...queryConditions).destroyAllPermanently();
       });
 
@@ -340,7 +341,7 @@ export class BalanceLocalDataSource {
    * 1. Xóa vĩnh viễn tất cả các bản ghi balance có transactionId nằm trong danh sách
    * 2. Sử dụng Q.oneOf để tối ưu hiệu suất truy vấn
    */
-  public async deleteBalancesByIds(ids: string[]) {
+  public async deleteBalancesByTransactionIds(ids: string[]) {
     await this.balancesCollection
       .query(Q.where('transactionId', Q.oneOf(ids)))
       .destroyAllPermanently();
