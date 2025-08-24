@@ -257,10 +257,10 @@ export class BalanceLocalDataSource {
       }
 
       const balanceToUpdate = currentBalanceRecords[0];
-      // Nếu có accountToUpdateId thì cập nhật lại accountId
+      // Nếu có newAccountId thì cập nhật lại accountId
       await balanceToUpdate.update((bal) => {
-        bal.accountId = balanceData?.accountToUpdateId
-          ? balanceData?.accountToUpdateId
+        bal.accountId = balanceData?.newAccountId
+          ? balanceData?.newAccountId
           : balanceData.accountId;
         bal.transactionId = balanceData.transactionId;
         bal.openAmount = balanceData.openAmount || 0;

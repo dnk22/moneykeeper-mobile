@@ -10,10 +10,6 @@ export type TransactionTypeProps = {
 };
 
 export type AddTransactionType = {
-  params: {
-    transactionId?: string;
-    categoryId?: string;
-    accountId?: string;
-  };
+  onDelete: () => void;
   onSubmitSuccess: () => void;
 };

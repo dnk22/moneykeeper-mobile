@@ -3,14 +3,15 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useForm, useWatch } from 'react-hook-form';
 import { TTransactions } from 'database/types';
 import { TRANSACTION_TYPE } from 'utils/constants';
-import { defaultValues } from '../constant';
 import { ROUTES } from 'navigation/constants/routes';
 import { TransactionParamListProps } from 'navigation/types';
+import { accountLocalQuery, transactionLocalQuery } from 'database/querying';
+import { deleteTransactionById } from 'services/api/transactions';
+import { showToast } from 'utils/system';
 import { useHeaderOption } from './useHeaderOption';
 import { useTransactionParamsSync } from './useTransactionParamsSync';
-import { accountLocalQuery, transactionLocalQuery } from 'database/querying';
-import { showToast } from 'utils/system';
 import { formatDataDetail } from './utility';
+import { defaultValues } from '../constant';
 
 export function useAddTransactionFormLogic({
   navigation,
@@ -26,7 +27,7 @@ export function useAddTransactionFormLogic({
     },
   });
 
-  const { setValue, control, reset } = transactionForm;
+  const { setValue, control, reset, getValues } = transactionForm;
 
   const accountId = useWatch({
     control,
@@ -58,13 +59,6 @@ export function useAddTransactionFormLogic({
     setValue,
   });
 
-  const getDetailTransaction = async (id: string) => {
-    const res = await transactionLocalQuery.getTransactionById(id);
-    if (res?.id) {
-      reset(formatDataDetail(res));
-    }
-  };
-
   /** Set account mặc định khi mode add */
   useFocusEffect(
     useCallback(() => {
@@ -87,7 +81,11 @@ export function useAddTransactionFormLogic({
 
   useEffect(() => {
     if (params?.transactionId) {
-      getDetailTransaction(params.transactionId);
+      transactionLocalQuery.getTransactionById(params?.transactionId).then(transaction => {
+        if (transaction) {
+          reset(formatDataDetail(transaction));
+        }
+      });
     }
   }, [params?.transactionId]);
 
@@ -109,10 +107,33 @@ export function useAddTransactionFormLogic({
       return;
     }
     navigation.setParams({ categoryId: '' });
+    navigation.setParams({ toAccountId: '' });
+    // reset form state
+    reset({
+      ...defaultValues,
+      toAccountId: '',
+      accountId: getValues('accountId'),
+      transactionType: getValues('transactionType'),
+    });
   }, [navigation, routerName]);
+
+  const onDeleteTransaction = () => {
+    const transactionId = getValues('id');
+    if (transactionId) {
+      deleteTransactionById(transactionId)
+        .then(() => navigation.goBack())
+        .catch((err) =>
+          showToast({
+            type: 'error',
+            text2: err.message || 'Vui lòng thử lại.',
+          }),
+        );
+    }
+  };
 
   return {
     transactionForm,
     onSubmitSuccess,
+    onDeleteTransaction,
   };
 }

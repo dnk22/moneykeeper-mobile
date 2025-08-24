@@ -1,26 +1,38 @@
 import { TRANSACTIONS } from 'database/constants';
 import { SyncQueueAction } from 'database/models/syncQueue.model';
-import {
-  transactionLocalQuery,
-  balanceLocalQuery,
-  syncQueueLocalQuery,
-} from 'database/querying';
+import { transactionLocalQuery, balanceLocalQuery, syncQueueLocalQuery } from 'database/querying';
 import { TTransactions } from 'database/types';
 import { transactionsFb } from 'services/firebase/db/transactions';
+import { formatDataBeforeSubmit } from './helpers';
 
 /**
- * Updates a transaction record, including creating a new transaction if `id` is not provided.
- * Also updates related counts and balances accordingly.
+ * Updates or creates a transaction record and updates related balances.
  *
- * @param id - Optional. The ID of the transaction to update. If not provided, a new transaction is created.
- * @param data - The data for the transaction, including the amount, category ID, etc.
- * @returns Promise<{ success: boolean, error?: any }>
+ * @input
+ * - data: TTransactions - The transaction data including amount, category, account etc.
+ *
+ * @output
+ * - No explicit return value - Throws error on failure
+ *
+ * @flow
+ * 1. Format the input data
+ * 2. If no ID in data:
+ *    a. Create new transaction in local database
+ *    b. Sync to Firebase (or queue for sync if fails)
+ *    c. Add new balance record for the affected account
+ * 3. If ID exists:
+ *    a. Update existing transaction
+ *    b. Sync updated transaction to Firebase (or queue for sync if fails)
+ *    c. Update balances for affected accounts
+ *    d. Recalculate balances for any accounts no longer associated with transaction
  */
 export const updateTransaction = async ({ data }: { data: TTransactions }) => {
+  const requestData = formatDataBeforeSubmit(data) as TTransactions;
+
   try {
     // If no ID is provided, create a new transaction
-    if (!data?.id) {
-      const transactionCreated = await transactionLocalQuery.addNewTransaction(data);
+    if (!requestData?.id) {
+      const transactionCreated = await transactionLocalQuery.addNewTransaction(requestData);
       // // Sync to firebase
       await transactionsFb
         .addNewTransaction({ transaction: transactionCreated._raw })
@@ -40,7 +52,7 @@ export const updateTransaction = async ({ data }: { data: TTransactions }) => {
         dateRecord: transactionCreated.recordAt,
       });
     } else {
-      const { id, ...dataWithoutId } = data;
+      const { id, ...dataWithoutId } = requestData;
       await transactionLocalQuery
         .updateTransaction({ id, data: dataWithoutId })
         .then(async ({ isUpdateBalance, prevTransaction, transactionUpdated }: any) => {
@@ -55,23 +67,33 @@ export const updateTransaction = async ({ data }: { data: TTransactions }) => {
                 action: SyncQueueAction.UPDATE,
               });
             });
+          // danh sách các tài khoản cần cập nhật số dư loại trừ tài khoản hiện tại
+          const listAccountNeedUpdateBalance = [
+            ...new Set(
+              [prevTransaction.accountId, prevTransaction.toAccountId].filter(
+                (item) => item && item !== transactionUpdated.toAccountId,
+              ),
+            ),
+          ];
           // Update balance
           if (isUpdateBalance) {
             // update balance với thông tin từ transactionUpdated
             await balanceLocalQuery.updateBalance({
               transactionId: transactionUpdated.id,
               accountId: prevTransaction.accountId,
-              accountToUpdateId: transactionUpdated.accountId,
+              newAccountId: transactionUpdated.accountId,
               movementAmount: transactionUpdated.amount,
               dateRecord: transactionUpdated.recordAt,
             });
-            // // nếu account thay đổi, update lại balance account cũ
-            if (prevTransaction.accountId !== transactionUpdated.accountId) {
-              console.log('account change');
-              await balanceLocalQuery.calculateBalanceAccountByDate({
-                accountId: prevTransaction.accountId,
-                date: prevTransaction.recordAt,
-              });
+
+            // nếu list account cần update nhiều hơn 1 account thì sẽ tính toán lại số dư
+            if (listAccountNeedUpdateBalance.length) {
+              for await (const item of listAccountNeedUpdateBalance) {
+                await balanceLocalQuery.calculateBalanceAccountByDate({
+                  accountId: item,
+                  date: prevTransaction.recordAt,
+                });
+              }
             }
           }
         });
@@ -82,130 +104,155 @@ export const updateTransaction = async ({ data }: { data: TTransactions }) => {
 };
 
 /**
- * Updates a transaction record, including creating a new transaction if `id` is not provided.
- * Also updates account balances accordingly.
+ * Updates or creates a transfer transaction between two accounts and updates balances for both.
  *
- * @param id - Optional. The ID of the transaction to update. If not provided, a new transaction is created.
- * @param data - The data for the transaction, including the amount, account IDs, etc.
- * @returns Promise<{ success: boolean, error?: any }>
+ * @input
+ * - data: TTransactions - The transaction data including amount, fromAccount, toAccount, etc.
+ *
+ * @output
+ * - Promise<void> on success
+ * - Promise.reject({success: false, error}) on failure
+ *
+ * @flow
+ * 1. Format the input data and ensure toAmount is positive
+ * 2. If no ID in data (new transaction):
+ *    a. Create new transfer transaction in local database
+ *    b. Sync to Firebase (or queue for sync if fails)
+ *    c. Add new balance records for both source and destination accounts
+ * 3. If ID exists (update):
+ *    a. Update existing transaction
+ *    b. Sync updated transaction to Firebase (or queue for sync if fails)
+ *    c. Update balances for the current accounts involved
+ *    d. Recalculate balances for any previously involved accounts no longer part of the transaction
  */
-export const updateTransactionTransfer = async ({
-  id,
-  data,
-}: {
-  id?: string;
-  data: TTransactions;
-}) => {
-  // Convert transaction amount for transfer: negative for source account, positive for destination account
-  const requestData = {
-    ...data,
-    amount: -Math.abs(data.amount),
-    toAmount: Math.abs(data.amount),
-  };
-  try {
-    if (!id) {
-      // Create a new transaction
-      // return queryAddNewTransaction(requestData).then(async (transaction) => {
-        // Prepare data for updating account balances after a new transaction
-    //     const requestDataBalance = {
-    //       [data.accountId]: {
-    //         id: transaction.id,
-    //         accountId: transaction.accountId,
-    //         amount: transaction.amount,
-    //         recordAt: transaction.recordAt,
-    //       },
-    //       [data.toAccountId]: {
-    //         id: transaction.id,
-    //         accountId: transaction.toAccountId,
-    //         amount: transaction.toAmount,
-    //         recordAt: transaction.recordAt,
-    //       },
-    //     };
-    //     // Update balances and calculate new balances for accounts involved in the transaction
-    //     for await (const item of [data.accountId, data.toAccountId]) {
-    //       await queryAddNewBalanceTransaction(requestDataBalance[item]);
-    //       await queryCalculateAllBalanceAfterDate({
-    //         accountId: requestDataBalance[item].accountId,
-    //         date: new Date(requestDataBalance[item].recordAt).getTime(),
-    //       });
-    //     }
-    //     return {
-    //       success: true,
-    //     };
-    //   });
-    // } else {
-    //   // Update an existing transaction
-    //   delete requestData.id; // Remove ID from the request data
-    //   return queryUpdateTransaction({ id, data: requestData }).then(
-    //     async ({
-    //       isUpdateBalance,
-    //       transactionUpdated,
-    //       prevAccountId,
-    //       prevToAccountId,
-    //       prevDate,
-    //     }: any) => {
-    //       /** Retrieve a list of account IDs to calculate the balance after the update. */
-    //       const listAccountUpdateAfterUpdateTransfer = [
-    //         ...new Set(
-    //           [
-    //             transactionUpdated.accountId,
-    //             transactionUpdated.toAccountId,
-    //             prevAccountId,
-    //             prevToAccountId,
-    //           ].filter((item) => item),
-    //         ),
-    //       ];
+export const updateTransactionTransfer = async ({ data }: { data: TTransactions }) => {
+  // gán amount là giá trị âm (chi), toAmount là giá trị dương (thu)
+  const dataFormatted = formatDataBeforeSubmit(data) as TTransactions;
 
-          /**
-           * Prepare request data for updating balances after a transaction has been updated.
-           * This data structure is used to represent the changes in account balances.
-           */
-      //     const requestDataBalance = {
-      //       [data.accountId]: {
-      //         id: transactionUpdated.id,
-      //         accountId: transactionUpdated.accountId,
-      //         amount: transactionUpdated.amount,
-      //         recordAt: transactionUpdated.recordAt,
-      //         accountIdQuery: prevAccountId,
-      //       },
-      //       [data.toAccountId]: {
-      //         id: transactionUpdated.id,
-      //         accountId: transactionUpdated.toAccountId,
-      //         amount: transactionUpdated.toAmount,
-      //         recordAt: transactionUpdated.recordAt,
-      //         accountIdQuery: prevToAccountId || transactionUpdated.toAccountId,
-      //       },
-      //     };
-      //     if (isUpdateBalance) {
-      //       for await (const item of [data.accountId, data.toAccountId]) {
-      //         await queryUpdateBalanceTransaction(
-      //           requestDataBalance[item],
-      //           requestDataBalance[item].accountIdQuery,
-      //         );
-      //       }
-      //     }
-      //     /** Iterate through the list of accounts that need balance calculation after a transfer update. */
-      //     for await (const item of listAccountUpdateAfterUpdateTransfer) {
-      //       await queryCalculateAllBalanceAfterDate({
-      //         accountId: item,
-      //         date: prevDate,
-      //       });
-      //     }
-      //     return {
-      //       success: true,
-      //     };
-      //   },
-      // );
+  const requestData = {
+    ...dataFormatted,
+    toAmount: Math.abs(+dataFormatted.amount),
+  } as TTransactions;
+
+  try {
+    // Create a new transaction
+    if (!requestData.id) {
+      const transactionCreated = await transactionLocalQuery.addNewTransaction(requestData);
+      // // Sync to firebase
+      await transactionsFb
+        .addNewTransaction({ transaction: transactionCreated._raw })
+        .catch(async (error) => {
+          await syncQueueLocalQuery.updateSyncQueueItem({
+            recordId: transactionCreated.id,
+            payload: transactionCreated._raw,
+            tableName: TRANSACTIONS,
+            action: SyncQueueAction.CREATE,
+          });
+        });
+
+      // update balance
+      const requestDataBalance = {
+        [requestData.accountId]: {
+          transactionId: transactionCreated.id,
+          accountId: transactionCreated.accountId,
+          movementAmount: transactionCreated.amount,
+          dateRecord: transactionCreated.recordAt,
+        },
+        [requestData.toAccountId]: {
+          transactionId: transactionCreated.id,
+          accountId: transactionCreated.toAccountId,
+          movementAmount: transactionCreated.toAmount,
+          dateRecord: transactionCreated.recordAt,
+        },
+      };
+
+      // Update balances and calculate new balances for accounts involved in the transaction
+      for await (const item of [requestData.accountId, requestData.toAccountId]) {
+        await balanceLocalQuery.addNewBalance({
+          ...requestDataBalance[item],
+        });
+      }
+    } else {
+      const { id, ...dataWithoutId } = requestData;
+      await transactionLocalQuery
+        .updateTransaction({ id, data: dataWithoutId })
+        .then(async ({ isUpdateBalance, prevTransaction, transactionUpdated }: any) => {
+          // sync to firebase
+          await transactionsFb
+            .updateTransaction({ transaction: transactionUpdated._raw })
+            .catch(async (error) => {
+              await syncQueueLocalQuery.updateSyncQueueItem({
+                recordId: transactionUpdated.id,
+                payload: transactionUpdated._raw,
+                tableName: TRANSACTIONS,
+                action: SyncQueueAction.UPDATE,
+              });
+            });
+
+          const listCurrentAccount = [transactionUpdated.accountId, transactionUpdated.toAccountId];
+
+          // danh sách các tài khoản cần cập nhật số dư loại trừ danh sách tài khoản hiện tại
+          const listAccountNeedUpdateBalance = [
+            ...new Set(
+              [prevTransaction.accountId, prevTransaction.toAccountId].filter(
+                (item) => item && !listCurrentAccount.includes(item),
+              ),
+            ),
+          ];
+
+          const requestDataBalance = {
+            [transactionUpdated.accountId]: {
+              transactionId: transactionUpdated.id,
+              accountId: prevTransaction.accountId,
+              newAccountId: transactionUpdated.accountId,
+              movementAmount: transactionUpdated.amount,
+              dateRecord: transactionUpdated.recordAt,
+            },
+            [transactionUpdated.toAccountId]: {
+              transactionId: transactionUpdated.id,
+              accountId: prevTransaction.toAccountId,
+              newAccountId: transactionUpdated.toAccountId,
+              movementAmount: transactionUpdated.toAmount,
+              dateRecord: transactionUpdated.recordAt,
+            },
+          };
+          if (isUpdateBalance) {
+            for await (const item of listCurrentAccount) {
+              await balanceLocalQuery.updateBalance({ ...requestDataBalance[item] });
+            }
+            // nếu list account cần update nhiều hơn 1 account thì sẽ tính toán lại số dư
+            if (listAccountNeedUpdateBalance.length) {
+              for await (const item of listAccountNeedUpdateBalance) {
+                await balanceLocalQuery.calculateBalanceAccountByDate({
+                  accountId: item,
+                  date: prevTransaction.recordAt,
+                });
+              }
+            }
+          }
+        });
     }
-  } catch ({ error }) {
-    return Promise.reject({
-      success: false,
-      error,
-    });
+  } catch (error) {
+    throw error;
   }
 };
 
-/** delete */
+/**
+ * Soft deletes a transaction by its ID and updates the balances accordingly.
+ *
+ * @input
+ * - id: string - The ID of the transaction to delete
+ *
+ * @output
+ * - void on success
+ * - Promise.reject({success: false, error}) on failure
+ *
+ * @flow
+ * 1. Soft delete the transaction in the local database
+ * 2. Sync deletion to Firebase (or queue for sync if fails)
+ * 3. Delete balance records for the affected account(s)
+ * 4. If it was a transfer transaction, also delete balance record for the destination account
+ */
 export const deleteTransactionById = async (id: string) => {
   try {
     const transactionDeleted = await transactionLocalQuery.softDeleteTransactionById(id);
@@ -232,9 +279,6 @@ export const deleteTransactionById = async (id: string) => {
       });
     }
   } catch (error) {
-    return Promise.reject({
-      success: false,
-      error,
-    });
+    throw error;
   }
 };

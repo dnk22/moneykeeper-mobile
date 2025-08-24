@@ -5,23 +5,25 @@ import { ROUTES } from 'navigation/constants/routes';
 import { TransactionParamListProps } from 'navigation/types';
 import HeaderIcon from 'navigation/components/HeaderIcon';
 import { TRANSACTION_LEND_BORROW_NAME, TRANSACTION_TYPE } from 'utils/constants';
-import { deleteTransactionById, updateTransaction } from 'services/api/transactions';
+import { updateTransaction } from 'services/api/transactions';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { showToast } from 'utils/system';
 import { useAppSelector } from 'store/index';
 import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';
-import { defaultValues, INPUT_AMOUNT_COLOR } from '../constant';
-import { AddTransactionType } from '../type';
-import { formatDataBeforeSubmit } from './utility';
+import { INPUT_AMOUNT_COLOR } from '../constant';
 
-export default function useExpenseIncomeHook({ params, onSubmitSuccess }: AddTransactionType) {
+export default function useExpenseIncomeHook({ onSubmitSuccess }: { onSubmitSuccess: () => void }) {
   const navigation =
     useNavigation<TransactionParamListProps<typeof ROUTES.ADD_TRANSACTION>['navigation']>();
   const { name: routerName } =
     useRoute<TransactionParamListProps<typeof ROUTES.ADD_TRANSACTION>['route']>();
   const lendBorrowData = useAppSelector((state) => selectLendBorrowData(state));
-  const { handleSubmit, setValue, getValues, control, reset } = useFormContext<any>();
+  const { handleSubmit, setValue, getValues, control } = useFormContext<any>();
 
+  const transactionId = useWatch({
+    control,
+    name: 'id',
+  });
   const categoryId = useWatch({
     control,
     name: 'categoryId',
@@ -92,33 +94,12 @@ export default function useExpenseIncomeHook({ params, onSubmitSuccess }: AddTra
     });
   };
 
-  const onDeleteTransaction = () => {
-    if (params?.transactionId) {
-      deleteTransactionById(params.transactionId)
-        .then(() => navigation.goBack())
-        .catch((err) =>
-          showToast({
-            type: 'error',
-            text2: err.message || 'Vui lòng thử lại.',
-          }),
-        );
-    }
-  };
-
   const onSubmit = (data: TTransactions) => {
-    const requestData = formatDataBeforeSubmit(data) as TTransactions;
-
     updateTransaction({
-      data: requestData,
+      data,
     })
       .then(() => {
         onSubmitSuccess();
-        // reset form state
-        reset({
-          ...defaultValues,
-          accountId: data?.accountId,
-          transactionType: data?.transactionType,
-        });
       })
       .catch(({ error }) => {
         showToast({
@@ -147,17 +128,17 @@ export default function useExpenseIncomeHook({ params, onSubmitSuccess }: AddTra
   }, [categoryId, relatedPerson, descriptions, lendBorrowData, setValue]);
 
   return {
-    relatedPersonPlaceholder,
+    transactionId,
     categoryId,
     lendBorrowData,
     recordAt,
     isLendBorrowType,
     inputAmountColor,
     isExpenseType,
+    relatedPersonPlaceholder,
     handleOnCategorySelect,
     handleOnDateTimePicker,
     onFeeRemove,
-    onDeleteTransaction,
     handleSubmit,
     onSubmit,
   };

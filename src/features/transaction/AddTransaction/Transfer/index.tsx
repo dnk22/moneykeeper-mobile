@@ -1,11 +1,17 @@
 import React, { useEffect } from 'react';
 import { Pressable, View } from 'react-native';
+import FormAction from 'components/common/FormAction';
+import InputField from 'components/InputField';
+import SvgIcon from 'components/SvgIcon';
+import SwitchField from 'components/Switch/SwitchField';
+import RNText from 'components/Text';
+import InputCalculator from 'components/InputCalculator';
+import HeaderIcon from 'navigation/components/HeaderIcon';
 import { useCustomTheme } from 'resources/theme';
 import { TTransactions } from 'database/types';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
-import HeaderIcon from 'navigation/components/HeaderIcon';
-import { deleteTransactionById, updateTransactionTransfer } from 'services/api/transactions';
+import { updateTransactionTransfer } from 'services/api/transactions';
 import { showToast } from 'utils/system';
 import { TransactionParamListProps } from 'navigation/types';
 import { ROUTES } from 'navigation/constants/routes';
@@ -13,68 +19,33 @@ import MoreDetail from '../components/MoreDetail';
 import AccountSelect from '../components/AccountSelect';
 import Fee from '../components/Fee';
 import DateTimeSelect from '../components/DateTimeSelect';
-import { defaultValues } from '../constant';
 import { AddTransactionType } from '../type';
 import styles from '../styles';
-import FormAction from 'components/common/FormAction';
-import InputField from 'components/InputField';
-import SvgIcon from 'components/SvgIcon';
-import SwitchField from 'components/Switch/SwitchField';
-import RNText from 'components/Text';
-import InputCalculator from 'components/InputCalculator';
 
-function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
+function Transfer({ onSubmitSuccess, onDelete }: AddTransactionType) {
   const { colors } = useCustomTheme();
   const navigation =
     useNavigation<TransactionParamListProps<typeof ROUTES.ADD_TRANSACTION>['navigation']>();
-  const { control, handleSubmit, setValue, watch, reset, getValues } = useFormContext<any>();
+  const { handleSubmit, setValue, reset, getValues, control } = useFormContext<any>();
+
+  const transactionId = useWatch({
+    control,
+    name: 'id',
+  });
+  const recordAt = useWatch({
+    control,
+    name: 'recordAt',
+  });
 
   // Use `setOptions` to update the button that submit form
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => <HeaderIcon onPress={handleSubmit(onSubmit)} />,
     });
-    return () => {
-      navigation.setOptions({
-        headerRight: () => undefined,
-      });
-    };
   }, []);
 
   const handleOnDateTimePicker = (date: Date) => {
     setValue('recordAt', date);
-  };
-
-  const onDeleteTransaction = () => {
-    if (params?.transactionId) {
-      deleteTransactionById(params.transactionId).then(() => navigation.goBack());
-    }
-  };
-
-  const onSubmit = (data: TTransactions) => {
-    updateTransactionTransfer({
-      id: params?.transactionId,
-      data,
-    })
-      .then(({ success }) => {
-        if (!success) {
-          return;
-        }
-        onSubmitSuccess();
-        // reset form state
-        reset({
-          ...defaultValues,
-          toAccountId: '',
-          accountId: data?.accountId,
-          transactionType: data?.transactionType,
-        });
-      })
-      .catch(({ error }) => {
-        showToast({
-          type: 'error',
-          text2: error,
-        });
-      });
   };
 
   const handleOnClearFee = () => {
@@ -85,6 +56,21 @@ function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
     const { accountId, toAccountId } = getValues();
     setValue('accountId', toAccountId);
     setValue('toAccountId', accountId);
+  };
+
+  const onSubmit = (data: TTransactions) => {
+    updateTransactionTransfer({
+      data,
+    })
+      .then(() => {
+        onSubmitSuccess();
+      })
+      .catch(({ error }) => {
+        showToast({
+          type: 'error',
+          text2: error,
+        });
+      });
   };
 
   return (
@@ -105,7 +91,7 @@ function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
         </View>
       </View>
       <View style={[styles.group, { backgroundColor: colors.surface }]}>
-        <DateTimeSelect values={watch('recordAt')} onChangeDate={handleOnDateTimePicker} />
+        <DateTimeSelect values={recordAt} onChangeDate={handleOnDateTimePicker} />
         <View style={styles.itemGroup}>
           <SvgIcon name="textWord" style={styles.iconShadow} />
           <View style={styles.groupContent}>
@@ -143,8 +129,8 @@ function Transfer({ params, onSubmitSuccess }: AddTransactionType) {
         </View>
       </MoreDetail>
       <FormAction
-        isShowDelete={Boolean(params?.transactionId)}
-        onDelete={onDeleteTransaction}
+        isShowDelete={Boolean(transactionId)}
+        onDelete={onDelete}
         onSubmit={handleSubmit(onSubmit)}
       />
       <View style={{ height: 150 }} />

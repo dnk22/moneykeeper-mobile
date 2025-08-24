@@ -18,10 +18,11 @@ import { AddTransactionType } from '../type';
 import useExpenseIncomeHook from '../hooks/useExpenseIncomeLogic';
 import styles from '../styles';
 
-function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
+function ExpenseAndIncome({ onSubmitSuccess, onDelete }: AddTransactionType) {
   const { colors } = useCustomTheme();
 
   const {
+    transactionId,
     categoryId,
     recordAt,
     isLendBorrowType,
@@ -31,12 +32,10 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
     handleOnCategorySelect,
     handleOnDateTimePicker,
     onFeeRemove,
-    onDeleteTransaction,
     handleSubmit,
     onSubmit,
   } = useExpenseIncomeHook({
     onSubmitSuccess,
-    params,
   });
 
   return (
@@ -111,8 +110,8 @@ function ExpenseAndIncome({ params, onSubmitSuccess }: AddTransactionType) {
         </View>
       </MoreDetail>
       <FormAction
-        isShowDelete={Boolean(params?.transactionId)}
-        onDelete={onDeleteTransaction}
+        isShowDelete={Boolean(transactionId)}
+        onDelete={onDelete}
         onSubmit={handleSubmit(onSubmit)}
       />
       <View style={{ height: 150 }} />

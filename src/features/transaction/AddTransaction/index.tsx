@@ -24,7 +24,7 @@ function AddTransactions({
   route,
 }: TransactionParamListProps<typeof ROUTES.ADD_TRANSACTION>) {
   const { colors } = useCustomTheme();
-  const { transactionForm, onSubmitSuccess } = useAddTransactionFormLogic({
+  const { transactionForm, onSubmitSuccess, onDeleteTransaction } = useAddTransactionFormLogic({
     navigation,
     route,
   });
@@ -37,7 +37,7 @@ function AddTransactions({
   // Determine which transaction component to render
   const RenderTransactionComponent = useMemo(() => {
     const Content = COMPONENT_MAPPING[transactionType] || ExpenseAndIncome;
-    return <Content params={route.params} onSubmitSuccess={onSubmitSuccess} />;
+    return <Content onSubmitSuccess={onSubmitSuccess} onDelete={onDeleteTransaction} />;
   }, [transactionType, route]);
 
   return (

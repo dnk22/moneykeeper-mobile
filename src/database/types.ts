@@ -121,7 +121,7 @@ export type TContact = {
 export type TBalance = {
   transactionId?: string;
   accountId: string;
-  accountToUpdateId?: string;
+  newAccountId?: string;
   openAmount?: number;
   movementAmount?: number;
   closingAmount?: number;

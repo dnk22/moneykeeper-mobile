@@ -242,7 +242,9 @@ export class TransactionLocalDataSource {
     });
 
     // // Update the usage count for the transaction category
-    await categoriesLocalQuery.updateCategoryUseCount(transactionCreated.categoryId);
+    if (transactionCreated.categoryId) {
+      await categoriesLocalQuery.updateCategoryUseCount(transactionCreated.categoryId);
+    }
 
     return transactionCreated;
   }
