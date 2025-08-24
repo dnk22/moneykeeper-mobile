@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import { CommonActions, useFocusEffect } from '@react-navigation/native';
 import { useForm, useWatch } from 'react-hook-form';
 import { TTransactions } from 'database/types';
 import { TRANSACTION_TYPE } from 'utils/constants';
@@ -106,8 +106,12 @@ export function useAddTransactionFormLogic({
       navigation.goBack();
       return;
     }
-    navigation.setParams({ categoryId: '' });
-    navigation.setParams({ toAccountId: '' });
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: ROUTES.ADD_TRANSACTION }], // Resets to 'Home' with no params
+      })
+    );
     // reset form state
     reset({
       ...defaultValues,
