@@ -20,11 +20,6 @@ class AppInitService {
     return AppInitService.instance;
   }
 
-  // async isFirstLaunch(): Promise<boolean> {
-  //   const initialized = storageService.getItem(APP_INITIALIZED_KEY);
-  //   return !initialized;
-  // }
-
   async initializeApp(): Promise<void> {
     try {
       await this.initializeDefaultData();

@@ -15,7 +15,7 @@ import { TTransactionsCategory } from 'database/types';
 import { ITEM_WIDTH } from 'features/transaction/TransactionCategory/constants.config';
 import { TransactionCategoryParamProps } from 'navigation/types';
 import { categoriesLocalQuery } from 'database/querying/categories';
-import TransactionCategoryModel from 'database/models/transactionCategory.model';
+import { TransactionCategoryModel } from 'database/models';
 import { ArrowRight2 } from 'iconsax-react-native';
 import { updateCategoriesConfig } from 'store/app/app.thunk';
 import { useAppDispatch, useAppSelector } from 'store/index';

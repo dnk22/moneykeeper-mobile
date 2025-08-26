@@ -1,4 +1,4 @@
-import { TBank, TTransactionsCategory } from 'database/types';
+import { TAccount, TBank, TTransactions, TTransactionsCategory } from 'database/types';
 import { TSettings } from 'utils/types/store.type';
 
 export interface InitializerOptions {
@@ -13,4 +13,5 @@ export interface InitializerDataSource {
   getCategories(): Promise<TTransactionsCategory[]>;
   getBanks(): Promise<TBank[]>;
   getAppSettings(): Promise<TSettings>;
+  getAccountData(): Promise<{ accounts: TAccount[]; transactions: TTransactions[] }>;
 }

@@ -14,7 +14,7 @@ export type TUsers = {
 
 // transactions
 export type TTransactions = {
-  id?: string;
+  id: string;
   amount: number | string;
   toAmount: number;
   transactionType: TRANSACTION_TYPE;
@@ -60,8 +60,7 @@ export type TTransactionsCategory = {
 
 // account
 export type TAccount = {
-  remoteId?: string;
-  id?: string;
+  id: string;
   accountName: string;
   initialAmount: any;
   accountTypeId: number;

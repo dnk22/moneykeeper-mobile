@@ -3,7 +3,7 @@ import { TransactionCategoryParamProps } from 'navigation/types';
 import { useForm, useWatch } from 'react-hook-form';
 import { TTransactionsCategory } from 'database/types';
 import { ROUTES } from 'navigation/constants/routes';
-import TransactionCategoryModel from 'database/models/transactionCategory.model';
+import { TransactionCategoryModel } from 'database/models';
 import { deleteCategoryById, updateTransactionCategory } from 'services/api/transactionsCategory';
 import { categoriesLocalQuery } from 'database/querying/categories';
 import { TRANSACTION_CATEGORY_TYPE } from 'utils/constants';

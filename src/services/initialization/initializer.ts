@@ -1,8 +1,13 @@
 import { TInitializer, InitializerOptions, InitializerDataSource } from './types';
-import { BANKS, TRANSACTION_CATEGORY } from 'database/constants';
+import { ACCOUNTS, BANKS, TRANSACTION_CATEGORY, TRANSACTIONS } from 'database/constants';
 import { database } from 'database/index';
-import { BankModel } from 'database/models';
-import TransactionCategoryModel from 'database/models/transactionCategory.model';
+import {
+  AccountModel,
+  BankModel,
+  TransactionModel,
+  TransactionCategoryModel,
+} from 'database/models';
+import { balanceLocalQuery } from 'database/querying';
 import size from 'lodash/size';
 import { storageService } from 'services/storage';
 import { MMKV_KEY } from 'services/storage/const';
@@ -18,7 +23,66 @@ export class Initializer implements TInitializer {
   async initialize(): Promise<void> {
     await this.bankInitialize();
     await this.categoriesInitialize();
+    await this.accountDataInitialize();
   }
+
+  private async accountDataInitialize(): Promise<void> {
+    try {
+      const { accounts: accountsCollection, transactions: transactionsCollection } =
+        await this.dataSource.getAccountData();
+
+      const accountsTable = database.collections.get<AccountModel>(ACCOUNTS);
+      const transactionsTable = database.collections.get<TransactionModel>(TRANSACTIONS);
+
+      await database.write(async () => {
+        const batchOperations = [
+          ...accountsCollection.map((data) => {
+            return accountsTable.prepareCreate((account) => {
+              const { id, ...dataWithoutId } = data;
+              account._raw.id = id;
+              Object.assign(account, dataWithoutId);
+            });
+          }),
+          ...transactionsCollection.map((data) => {
+            return transactionsTable.prepareCreate((transaction) => {
+              const { id, ...dataWithoutId } = data;
+              transaction._raw.id = id;
+              Object.assign(transaction, dataWithoutId);
+            });
+          }),
+        ];
+
+        await database.batch(...batchOperations);
+      });
+
+      // Initialize balances data
+      const accountsBalance = accountsCollection.map((account) => ({
+        accountId: account.id,
+        openAmount: account.initialAmount,
+        closingAmount: account.initialAmount,
+      }));
+      const transactionsBalance = transactionsCollection.map((transaction) => ({
+        transactionId: transaction.id,
+        accountId: transaction.accountId,
+        movementAmount: +transaction.amount,
+        dateRecord: transaction.recordAt,
+      }));
+      const allBalances = [...accountsBalance, ...transactionsBalance];
+
+      if (allBalances.length) {
+        await balanceLocalQuery.addMultipleBalances(allBalances);
+        for (const account of allBalances) {
+          await balanceLocalQuery.calculateBalanceAccountByDate({
+            accountId: account.accountId,
+            date: 0,
+          });
+        }
+      }
+    } catch (error: any) {
+      throw new Error(`Failed to initialize banks: ${error.message}`);
+    }
+  }
+
   /**
    * Initialize banks data from the data source and store it in the database.
    * If the banks collection is empty, this method will return without making any changes.
@@ -77,7 +141,7 @@ export class Initializer implements TInitializer {
    * If the categories collection is empty, this method will return without making any changes.
    * @throws {Error} If there is an error during the initialization process.
    */
-  async categoriesInitialize(): Promise<void> {
+  private async categoriesInitialize(): Promise<void> {
     try {
       const categoriesCollection = await this.dataSource.getCategories();
       if (!size(categoriesCollection)) {

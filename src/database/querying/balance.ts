@@ -346,6 +346,26 @@ export class BalanceLocalDataSource {
       .query(Q.where('transactionId', Q.oneOf(ids)))
       .destroyAllPermanently();
   }
+
+  /**
+   * Thêm nhiều bản ghi số dư cùng lúc
+   * @param balances - Mảng các đối tượng TBalance cần thêm
+   * @returns Promise<void>
+   *
+   * Phương thức này sẽ:
+   * 1. Tạo các thao tác tạo bản ghi mới cho mỗi đối tượng trong mảng
+   * 2. Thực hiện batch insert để tối ưu hiệu suất
+   */
+  public async addMultipleBalances(balances: TBalance[]) {
+    await database.write(async () => {
+      const batchOperations = balances.map((balance) => {
+        return this.balancesCollection.prepareCreate((bal) => {
+          Object.assign(bal, balance);
+        });
+      });
+      await database.batch(...batchOperations);
+    });
+  }
 }
 
 export const balanceLocalQuery = BalanceLocalDataSource.getInstance();

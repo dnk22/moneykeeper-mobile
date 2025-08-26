@@ -26,12 +26,11 @@ export async function requestUpdateAccount(account: TAccount): Promise<void> {
   try {
     // update
     if (id) {
-      const accountUpdates = { ...account };
-      delete accountUpdates.id;
+      const { id, ...accountWithoutId } = account;
 
       const { isInitialAmountChanged, updatedAccount } = await accountLocalQuery.updateAccount({
         id: id,
-        accountData: accountUpdates,
+        accountData: accountWithoutId,
       });
 
       // Sync to firebase

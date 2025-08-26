@@ -1,4 +1,4 @@
-import { TBank, TTransactionsCategory } from 'database/types';
+import { TAccount, TBank, TTransactions, TTransactionsCategory } from 'database/types';
 import { InitializerDataSource } from 'services/initialization/types';
 import { databaseService } from './services/database';
 import { FB_PATH } from './config';
@@ -22,5 +22,15 @@ export class FirebaseDataSource implements InitializerDataSource {
   async getAppSettings(): Promise<TSettings> {
     const snapshot = await databaseService.get<TSettings>(FB_PATH.SETTINGS);
     return snapshot.data ?? (defaultSettings as TSettings);
+  }
+
+  async getAccountData(): Promise<{ accounts: TAccount[]; transactions: TTransactions[] }> {
+    const accountsSnapshot = await databaseService.get<TAccount[]>(FB_PATH.ACCOUNTS);
+    const transactionsSnapshot = await databaseService.get<TTransactions[]>(FB_PATH.TRANSACTIONS);
+
+    return {
+      accounts: Object.values(accountsSnapshot?.data ?? {}),
+      transactions: Object.values(transactionsSnapshot?.data ?? {}),
+    };
   }
 }
