@@ -1,5 +1,5 @@
 import { database } from 'database/index';
-import TransactionCategoryModel from 'database/models/transactionCategory.model';
+import CategoriesModel from 'database/models/transactionCategory.model';
 import { TRANSACTION_CATEGORY } from 'database/constants';
 import { TTransactionsCategory } from 'database/types';
 import { TRANSACTION_CATEGORY_TYPE, TRANSACTION_LEND_BORROW_NAME } from 'utils/constants';
@@ -11,7 +11,7 @@ export class CategoriesLocalData {
   private static instance: CategoriesLocalData;
 
   private categoriesCollection =
-    database.collections.get<TransactionCategoryModel>(TRANSACTION_CATEGORY);
+    database.collections.get<CategoriesModel>(TRANSACTION_CATEGORY);
 
   private constructor() {}
 

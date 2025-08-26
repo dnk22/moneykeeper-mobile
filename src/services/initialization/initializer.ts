@@ -5,7 +5,7 @@ import {
   AccountModel,
   BankModel,
   TransactionModel,
-  TransactionCategoryModel,
+  CategoriesModel,
 } from 'database/models';
 import { balanceLocalQuery } from 'database/querying';
 import size from 'lodash/size';
@@ -148,7 +148,7 @@ export class Initializer implements TInitializer {
         return;
       }
       const categoriesTable =
-        database.collections.get<TransactionCategoryModel>(TRANSACTION_CATEGORY);
+        database.collections.get<CategoriesModel>(TRANSACTION_CATEGORY);
 
       await database.write(async () => {
         const batchOperations = await Promise.all(

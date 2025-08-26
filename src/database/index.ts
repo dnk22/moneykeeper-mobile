@@ -6,7 +6,7 @@ import schema from './schema';
 import {
   AccountModel,
   TransactionModel,
-  TransactionCategory,
+  CategoriesModel,
   BankModel,
   ContactModel,
   BalanceModel,
@@ -44,7 +44,7 @@ export const database = new Database({
   modelClasses: [
     AccountModel,
     TransactionModel,
-    TransactionCategory,
+    CategoriesModel,
     BankModel,
     ContactModel,
     BalanceModel,

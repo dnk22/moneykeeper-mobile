@@ -2,7 +2,7 @@ import { Model } from '@nozbe/watermelondb';
 import { field, text } from '@nozbe/watermelondb/decorators';
 import { TRANSACTION_CATEGORY } from 'database/constants';
 
-export default class TransactionCategoryModel extends Model {
+export default class CategoriesModel extends Model {
   static table = TRANSACTION_CATEGORY;
 
   @text('categoryName') categoryName!: string;
