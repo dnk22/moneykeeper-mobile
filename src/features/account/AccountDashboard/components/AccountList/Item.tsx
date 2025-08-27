@@ -18,10 +18,9 @@ import { accountListStyles as styles } from '../../styles';
 
 type ItemProps = {
   account: TAccount;
-  transparentBackground?: boolean;
 };
 
-function AccountItem({ account, transparentBackground }: ItemProps) {
+function AccountItem({ account }: ItemProps) {
   const { colors } = useCustomTheme();
   const { onActionPress } = useContext(AccountContext);
   const navigation = useNavigation<AccountParamListProps['navigation']>();
@@ -47,7 +46,6 @@ function AccountItem({ account, transparentBackground }: ItemProps) {
   return (
     <View style={styles.itemContainer}>
       <TouchableHighlightComponent
-        style={{ backgroundColor: transparentBackground ? undefined : colors.surface }}
         onPress={onHandleItemPress}
       >
         <View style={styles.itemContent}>

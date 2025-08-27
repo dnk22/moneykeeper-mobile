@@ -1,16 +1,15 @@
 import { memo, useMemo } from 'react';
-import { SectionListData } from 'react-native';
-import SectionListComponent from 'components/SectionList';
 import Empty from 'components/Empty';
 import RNText from 'components/Text';
+import FlatListComponent from 'components/FlatList';
 import { TAccount } from 'database/types';
 import { useCustomTheme } from 'resources/theme';
-import { groupAccountDataByValue, sortDataByKey } from 'utils/algorithm';
+import { groupAccountDataByKey, sortDataByKey } from 'utils/algorithm';
 import { selectAccountViewSettings } from 'store/app/app.selector';
 import { useAppSelector } from 'store/index';
-import AccountItem from './Item';
 import { MAP_SUBTITLE } from 'features/account/AccountDashboard/constants';
 import isEqual from 'react-fast-compare';
+import AccountItem from './Item';
 import { accountListStyles as styles } from '../../styles';
 
 function ActiveAccount({
@@ -26,37 +25,27 @@ function ActiveAccount({
   const { groupByType, sortByName } = useAppSelector((state) => selectAccountViewSettings(state));
   const sortField = useMemo(() => (sortByName ? 'accountName' : 'sortOrder'), [sortByName]);
 
-  const accountList = useMemo(() => {
+  const accountData = useMemo(() => {
     const accountList = data.filter((item) => +item.isActive === +isActive);
     return groupByType
-      ? groupAccountDataByValue(accountList, sortField)
-      : accountList.length > 0
-      ? [{ data: accountList.sort(sortDataByKey(sortField)) }]
-      : [];
+      ? groupAccountDataByKey(accountList, sortField)
+      : [...accountList].sort(sortDataByKey(sortField))
   }, [data, groupByType, sortField, isActive]);
 
-  const renderSectionHeader = ({ section }: { section: SectionListData<TAccount> }) => {
-    if (!groupByType) {
-      return null;
+  const renderItem = ({ item }: { item: TAccount & { title: string; accountTypeId: number } }) => {
+    if (item.title) {
+      return <RNText color={colors.textSecondary} fontSize={13}>
+        {item.title}
+      </RNText>;
+    } else {
+      return <AccountItem account={item} />;
     }
-    const { title } = section;
-    return (
-      <RNText color={colors.textSecondary} fontSize={13}>
-        {title}
-      </RNText>
-    );
-  };
-
-  const renderItem = ({ item }: { item: TAccount }) => {
-    return <AccountItem account={item} />;
   };
 
   return (
-    <SectionListComponent
-      sections={accountList}
-      initialNumToRender={10}
+    <FlatListComponent
+      data={accountData}
       renderItem={renderItem}
-      renderSectionHeader={renderSectionHeader}
       ListEmptyComponent={
         <Empty
           styles={styles.emptyText}
@@ -64,8 +53,11 @@ function ActiveAccount({
           subTitle={MAP_SUBTITLE[isActive ? '1' : '0']}
         />
       }
+      maintainVisibleContentPosition={{ disabled: true }}
       onRefresh={onRefresh}
-      hasPull
+      getItemType={(item) => {
+        return item.title ? "sectionHeader" : "row";
+      }}
     />
   );
 }

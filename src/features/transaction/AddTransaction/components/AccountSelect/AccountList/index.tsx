@@ -1,17 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SectionListData, View } from 'react-native';
+import FlatListComponent from 'components/FlatList';
+import Empty from 'components/Empty';
+import RNText from 'components/Text';
 import { TAccount } from 'database/types';
 import { Observable } from '@nozbe/watermelondb/utils/rx';
 import { AccountModel } from 'database/models';
-import { groupAccountDataByValue } from 'utils/algorithm';
+import { groupAccountDataByKey } from 'utils/algorithm';
 import { accountLocalQuery, TGetAllAccountsOptions } from 'database/querying';
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { useCustomTheme } from 'resources/theme';
 import Item from './Item';
-import Empty from 'components/Empty';
-import RNText from 'components/Text';
 import styles from './styles';
-import SectionList from 'components/SectionList';
 
 type AccountListProps = {
   isItemSelected?: string;
@@ -31,7 +31,7 @@ function AccountList({ isItemSelected, onItemPress, excludeId }: AccountListProp
 
   const getListAccount = ({ text = '', excludeId }: TGetAllAccountsOptions) => {
     accountLocalQuery.getAccounts({ text, excludeId }).then((res) => {
-      const dataGroup: any[] = groupAccountDataByValue(res);
+      const dataGroup: any[] = groupAccountDataByKey(res);
       setAccounts(dataGroup);
     });
   };
@@ -40,16 +40,15 @@ function AccountList({ isItemSelected, onItemPress, excludeId }: AccountListProp
     getListAccount({ text, excludeId });
   };
 
-  const renderItem = ({ item }: { item: TAccount }) => {
-    return <Item account={item} onItemPress={onItemPress} isItemSelected={isItemSelected} />;
+  const renderItem = ({ item }: { item: Partial<TAccount> & { title: string; accountTypeId: number } }) => {
+    if (item.title) {
+      // Rendering header
+      return <RNText preset="subTitle" >{item.title}</RNText>;
+    } else {
+      // Render item
+      return <Item account={item} onItemPress={onItemPress} isItemSelected={isItemSelected} />
+    }
   };
-
-  const renderSectionHeader = ({ section }: { section: SectionListData<TAccount> }) => {
-    const { title } = section;
-    return <RNText color="#747471" style={styles.itemTitle}>{`${title}`}</RNText>;
-  };
-
-  const keyExtractor = useCallback((item: any) => item['id'], []);
 
   return (
     <View style={styles.wrapper}>
@@ -57,21 +56,19 @@ function AccountList({ isItemSelected, onItemPress, excludeId }: AccountListProp
         <View style={[styles.inputGroup, { backgroundColor: colors.surface }]}>
           <BottomSheetTextInput
             placeholder="Tìm kiếm tài khoản"
-            style={{
-              height: 46,
-              paddingHorizontal: 20,
-            }}
+            style={styles.inputSearch}
             onChangeText={onInputChange}
           />
         </View>
       </View>
-      <SectionList
-        sections={accounts}
-        initialNumToRender={8}
+      <FlatListComponent
+        gap={5}
+        data={accounts}
         renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        renderSectionHeader={renderSectionHeader}
         ListEmptyComponent={<Empty title="Bạn chưa có tài khoản nào!" />}
+        getItemType={(item) => {
+          return item.title ? "sectionHeader" : "row";
+        }}
       />
     </View>
   );

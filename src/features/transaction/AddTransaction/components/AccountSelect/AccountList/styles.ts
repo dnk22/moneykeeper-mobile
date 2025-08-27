@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   inputSearch: {
     height: 44,
     paddingVertical: 10,
-    paddingHorizontal: 40,
+    paddingHorizontal: 20,
   },
   iconSearch: {
     left: 10,

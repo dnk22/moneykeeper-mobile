@@ -17,40 +17,37 @@ export function findObjectInArrayById(array: any, id: string) {
   };
 }
 
-export const groupAccountDataByValue = (
-  data: TAccount[],
-  sortKey?: 'accountName' | 'sortOrder',
-) => {
-  if (!data.length) return [];
+export const groupAccountDataByKey = (data: TAccount[], sortKey?: 'accountName' | 'sortOrder') => {
+  if (!Array.isArray(data) || !data.length) return [];
+
   const groupedData: {
-    [key: string]: {
-      title: string;
-      data: TAccount[];
-      amount: number;
-      accountTypeId?: any;
-    };
+    [key: string]: (Partial<TAccount> & { title: string; accountTypeId: number })[];
   } = {};
+
   data.forEach((item: TAccount) => {
     if (!groupedData[item.accountTypeId]) {
-      groupedData[item.accountTypeId] = { title: '', data: [], amount: 0 };
+      groupedData[item.accountTypeId] = [
+        {
+          id: `header-${item.accountTypeId}`,
+          title: ACCOUNT_TYPE_LIST[item.accountTypeId].name,
+          accountTypeId: item.accountTypeId,
+        },
+      ];
     }
-    groupedData[item.accountTypeId].title = ACCOUNT_TYPE_LIST[item.accountTypeId].name;
-    groupedData[item.accountTypeId].accountTypeId = item.accountTypeId;
-    groupedData[item.accountTypeId].amount = groupedData[item.accountTypeId].amount +=
-      item?.closingAmount || 0;
-    groupedData[item.accountTypeId].data.push(item);
+    groupedData[item.accountTypeId].push(item);
   });
 
   // Sort data within each group by categoryName or sortOrder
   if (sortKey) {
-    Object.values(groupedData).forEach(({ data }: { data: TAccount[] }) => {
-      if (data && data.length > 1) {
-        return data.sort(sortDataByKey(sortKey));
+    Object.values(groupedData).forEach((group) => {
+      const [first, ...rest] = group;
+      if (rest && rest.length > 1) {
+        return [first, ...rest.sort(sortDataByKey(sortKey))];
       }
     });
   }
 
-  return Object.values(groupedData);
+  return Object.values(groupedData).flat();
 };
 
 export function getKeyByValue(obj?: Record<string, string>, value?: any): string {

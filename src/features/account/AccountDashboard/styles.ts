@@ -19,14 +19,14 @@ export const accountDashboardStyles = StyleSheet.create({
 
 export const accountListStyles = StyleSheet.create({
   itemContainer: {
-    paddingVertical: 10,
   },
   itemContent: {
     height: 60,
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: 10,
-    paddingHorizontal: 5,
+    paddingLeft: 12,
+    paddingRight: 6,
   },
   itemCenter: {
     flex: 1,
@@ -37,7 +37,6 @@ export const accountListStyles = StyleSheet.create({
     height: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    // transform: [{ rotate: '90deg' }],
   },
   itemTitle: {
     fontWeight: '500',
