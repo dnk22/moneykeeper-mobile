@@ -15,6 +15,7 @@ function FlatListComponent({
   gap = 10,
   ...rest
 }: FlatListComponentProps) {
+
   const renderSeparator = useCallback(
     () =>
       showSeparator || gap ? (

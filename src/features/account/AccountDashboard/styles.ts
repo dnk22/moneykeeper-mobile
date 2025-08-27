@@ -19,6 +19,7 @@ export const accountDashboardStyles = StyleSheet.create({
 
 export const accountListStyles = StyleSheet.create({
   itemContainer: {
+    marginBottom: 5,
   },
   itemContent: {
     height: 60,

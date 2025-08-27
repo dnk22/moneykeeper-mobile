@@ -44,6 +44,7 @@ function ActiveAccount({
 
   return (
     <FlatListComponent
+      gap={5}
       data={accountData}
       renderItem={renderItem}
       ListEmptyComponent={
