@@ -7,10 +7,12 @@ export default function ProgressLineChart({
   data = [],
   title = 'title',
   value = 'value',
+  height = 14
 }: {
   data: { title?: string; value: number; color?: string }[] | object[];
   title?: string;
   value?: string;
+  height?: number;
 }) {
   const totalAmount = useMemo(() => {
     return data && data.reduce((prev, cur) => (prev += cur[value]), 0);
@@ -27,6 +29,7 @@ export default function ProgressLineChart({
           <View
             key={index}
             style={{
+              height,
               width: `${getProgressBarWidth(item.value)}%`,
               backgroundColor: item.color || MATERIAL_COLOR[index],
             }}

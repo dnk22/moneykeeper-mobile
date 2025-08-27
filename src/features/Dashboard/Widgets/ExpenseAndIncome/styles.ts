@@ -40,6 +40,7 @@ export const styles = StyleSheet.create({
   col: {
     flex: 1,
     rowGap: 15,
+    paddingHorizontal: 5,
   },
   moneyItem: {
     flexDirection: 'row',
@@ -86,8 +87,8 @@ export const styles = StyleSheet.create({
   },
   chart: {
     height: '100%',
-    width: 60,
-    borderRadius: 4,
+    width: 40,
+    borderRadius: 6,
   },
   chartBalance: {
     position: 'absolute',
