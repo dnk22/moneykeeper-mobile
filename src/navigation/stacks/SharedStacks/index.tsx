@@ -5,11 +5,11 @@ import { ROUTE_KEYS } from 'navigation/constants/routes';
 
 interface SharedScreensProps {
   stack: any;
-  screens: Pick<ROUTE_KEYS, keyof ROUTE_KEYS>[] | 'all';
+  screens?: Pick<ROUTE_KEYS, keyof ROUTE_KEYS>[];
 }
 
-export default function SharedScreens({ stack: Stack, screens = 'all' }: SharedScreensProps) {
-  const screenNames = screens === 'all' ? sharedScreenRegistry.getRegisteredScreenNames() : screens;
+export default function SharedScreens({ stack: Stack, screens }: SharedScreensProps) {
+  const screenNames = !screens ? sharedScreenRegistry.getRegisteredScreenNames() : screens;
 
   return (
     <Stack.Group>

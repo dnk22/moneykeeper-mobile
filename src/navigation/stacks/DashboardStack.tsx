@@ -37,7 +37,6 @@ function DashboardNavigation() {
       {/* Shared screens */}
       {SharedScreens({
         stack: TransactionStack,
-        screens: [ROUTES.ADD_ACCOUNT, ROUTES.EXPENSE_INCOME_DETAIL],
       })}
     </TransactionStack.Navigator>
   );

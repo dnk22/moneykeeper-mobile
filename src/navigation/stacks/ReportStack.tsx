@@ -37,7 +37,7 @@ function ReportNavigation() {
           title: 'Thu & Chi',
         }}
       />
-      {SharedScreens({ stack: ReportStack, screens: 'all' })}
+      {SharedScreens({ stack: ReportStack })}
     </ReportStack.Navigator>
   );
 }

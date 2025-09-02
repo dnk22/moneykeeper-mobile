@@ -39,7 +39,7 @@ function SettingsNavigation() {
           title: 'Giao diện',
         }}
       />
-      {SharedScreens({ stack: SettingsStack, screens: 'all' })}
+      {SharedScreens({ stack: SettingsStack })}
     </SettingsStack.Navigator>
   );
 }

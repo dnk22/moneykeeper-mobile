@@ -60,18 +60,16 @@ function ExpenseAndIncome({ title }: { title: string }) {
         }}
       >
         <RNText preset="widgetTitle">{title}</RNText>
-        {!!data.categoryGroup.length && (
-          <MenuView
-            title="Xem theo"
-            onPressAction={({ nativeEvent: { event } }) => setDateView(event)}
-            actions={dateViewSelect}
-          >
-            <View style={styles.dateView}>
-              <RNText color={colors.primaryVariant}>{renderMenuTitle}</RNText>
-              <SvgIcon name="forward" preset="forwardLink" color="#00a8e8" />
-            </View>
-          </MenuView>
-        )}
+        <MenuView
+          title="Xem theo"
+          onPressAction={({ nativeEvent: { event } }) => setDateView(event)}
+          actions={dateViewSelect}
+        >
+          <View style={styles.dateView}>
+            <RNText color={colors.primaryVariant}>{renderMenuTitle}</RNText>
+            <SvgIcon name="forward" preset="forwardLink" color="#00a8e8" />
+          </View>
+        </MenuView>
       </PressableHaptic>
 
       {!data.categoryGroup.length ? (

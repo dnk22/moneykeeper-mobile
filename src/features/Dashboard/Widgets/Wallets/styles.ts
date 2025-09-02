@@ -26,15 +26,16 @@ export default StyleSheet.create({
   },
   title: {
     opacity: 0.6,
+    width: '70%',
   },
   amount: {
     fontWeight: 'bold',
     fontSize: 18,
   },
-  accountIcon: {
-    position: 'absolute',
-    top: 16,
-    right: 16,
+  walletName: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
   },
   noData: {
     padding: 10,

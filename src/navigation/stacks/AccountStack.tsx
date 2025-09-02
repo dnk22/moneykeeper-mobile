@@ -34,7 +34,7 @@ function AccountNavigation() {
         }}
         component={AccountTab}
       />
-      {SharedScreens({ stack: AccountStack, screens: 'all' })}
+      {SharedScreens({ stack: AccountStack })}
     </AccountStack.Navigator>
   );
 }
