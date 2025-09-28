@@ -6,15 +6,15 @@ import { getTotalAmount } from 'utils/algorithm';
 import ItemSettingsModal from 'features/account/AccountDashboard/components/ItemSettingsModal';
 import { TAccount } from 'database/types';
 import { useAppDispatch, useAppSelector } from 'store/index';
-import ItemLevel2 from './ItemLevel2';
+import Item from './Item';
 import { dataLevelProps } from '../types';
-import { setRefreshData } from '../reducer/financialStatement.slice';
+import { setRefreshData } from '../../../reducer/financialStatement.slice';
 import {
   selectDataDetailLevel1,
   selectDataDetailLevel2,
-} from '../reducer/financialStatement.selector';
+} from '../../../reducer/financialStatement.selector';
 
-function Level2View() {
+function Detail() {
   const dispatch = useAppDispatch();
   const [isShowModal, setIsShowModal] = useState(false);
   const currentAccountPressed = useRef<TAccount | any>(null);
@@ -80,7 +80,7 @@ function Level2View() {
 
   const renderItem = ({ item, index }: { item: dataLevelProps; index: number }) => {
     return (
-      <ItemLevel2
+      <Item
         item={item}
         index={index}
         totalAmount={totalCurrentAccount}
@@ -110,4 +110,4 @@ function Level2View() {
     </View>
   );
 }
-export default Level2View;
+export default Detail;

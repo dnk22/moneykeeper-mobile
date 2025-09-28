@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   detail: {
     flex: 1,
+    padding: 8,
   },
   item: {
     paddingVertical: 12,
@@ -30,13 +31,6 @@ const styles = StyleSheet.create({
   },
   amount: {
     maxWidth: 130,
-  },
-  personLogo: {
-    width: 38,
-    height: 38,
-    borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   settingsDot: {
     transform: [{ rotate: '90deg' }],

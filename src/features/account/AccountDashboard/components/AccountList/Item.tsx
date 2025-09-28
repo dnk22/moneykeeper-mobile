@@ -45,9 +45,7 @@ function AccountItem({ account }: ItemProps) {
 
   return (
     <View style={styles.itemContainer}>
-      <TouchableHighlightComponent
-        onPress={onHandleItemPress}
-      >
+      <TouchableHighlightComponent onPress={onHandleItemPress}>
         <View style={styles.itemContent}>
           <ImageComponent name={account.accountLogo} style={styles.itemIcon} />
           <View style={styles.itemCenter}>

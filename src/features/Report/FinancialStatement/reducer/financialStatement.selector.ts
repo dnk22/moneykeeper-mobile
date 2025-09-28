@@ -18,5 +18,4 @@ export const selectDataDetailLevel2 = createSelector(
   (data) => data.dataDetailLv2,
 );
 export const selectPageView = createSelector(financialStatementState, (data) => data.pageView);
-export const selectTotal = createSelector(financialStatementState, (data) => data.total);
 export const selectRefreshData = createSelector(financialStatementState, (data) => data.refreshData);

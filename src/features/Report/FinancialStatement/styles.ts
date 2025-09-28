@@ -8,18 +8,19 @@ const styles = StyleSheet.create({
   },
   totalMoney: {
     padding: 5,
+    width: '100%',
     marginBottom: 5,
     borderRadius: 10,
-    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    gap: 5,
   },
   fontWeight300: {
     fontWeight: '300',
   },
   totalAmount: {
-    maxWidth: 130,
-    fontWeight: '500',
+    maxWidth: '99%',
+    fontWeight: '700',
   },
 });
 export default styles;

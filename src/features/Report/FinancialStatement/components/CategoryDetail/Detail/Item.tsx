@@ -12,14 +12,14 @@ import {
   TRANSACTION_LEND_BORROW_NAME,
 } from 'utils/constants';
 import { MenuAction, MenuView, NativeActionEvent } from '@react-native-menu/menu';
-import { ROUTES } from 'navigation/constants/routes';
-import { dataLevelProps } from '../types';
-import styles from './styles';
 import { useAppSelector } from 'store/index';
 import { selectLendBorrowData } from 'store/transactionCategory/transactionCategory.selector';
 import { ACCOUNT_CATEGORY_ID } from 'utils/constants/account';
+import { ROUTES } from 'navigation/constants/routes';
+import { dataLevelProps } from '../types';
+import styles from '../styles';
 
-function ItemLevel2({
+function ItemDetail({
   item,
   totalAmount,
   index,
@@ -134,4 +134,4 @@ function ItemLevel2({
     </TouchableHighlightComponent>
   );
 }
-export default ItemLevel2;
+export default ItemDetail;

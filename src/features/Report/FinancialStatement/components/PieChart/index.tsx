@@ -9,9 +9,9 @@ import {
   selectDataDetailLevel1,
   selectDataDetailLevel2,
   selectViewType,
-} from '../reducer/financialStatement.selector';
-import styles from './styles';
+} from '../../reducer/financialStatement.selector';
 import { MATERIAL_COLOR } from 'utils/constants';
+import styles from './styles';
 
 function PieChart() {
   const { colors } = useCustomTheme();
@@ -70,13 +70,13 @@ function PieChart() {
     <>
       <View style={styles.pieChart}>
         <PieChartComponent
-          // showGradient
+          showGradient
           donut
           strokeWidth={4}
           strokeColor={colors.background}
           data={pieData}
           radius={110}
-          innerRadius={85}
+          innerRadius={80}
           innerCircleColor={colors.background}
           centerLabelComponent={renderPieInnerComponent}
         />
@@ -94,7 +94,7 @@ function PieChart() {
                 <View style={[styles.icon, { backgroundColor: item.color }]} />
                 <RNText fontSize={10} style={styles.fontWeight300}>{`${item.text} `}</RNText>
               </View>
-            );
+            );r
           })}
         </ScrollView>
       </View>

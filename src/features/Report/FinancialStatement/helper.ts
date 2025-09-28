@@ -6,16 +6,18 @@ export function convertFinancialData(data: any, isOwnedViewType: boolean) {
   const groupedData: {
     [key: string]: dataLevelProps;
   } = {};
-  data.forEach((item: any) => {
-    const accountTypeName = ACCOUNT_TYPE_LIST[item.accountTypeId].name;
-    if (!groupedData[accountTypeName]) {
-      groupedData[accountTypeName] = { accountName: '', data: [], value: 0, logo: '' };
+  (data || []).forEach((item: any) => {
+    const accountType =
+      ACCOUNT_TYPE_LIST.find((i) => i.id === item.accountTypeId) || ACCOUNT_TYPE_LIST[0];
+
+    if (!groupedData[accountType.name]) {
+      groupedData[accountType.name] = { accountName: '', data: [], value: 0, logo: '' };
     }
     const value = isOwnedViewType ? item.value : Math.abs(item.value);
-    groupedData[accountTypeName].accountName = accountTypeName;
-    groupedData[accountTypeName].logo = item.accountTypeId;
-    groupedData[accountTypeName].value = groupedData[accountTypeName].value += value || 0;
-    groupedData[accountTypeName].data.push(item);
+    groupedData[accountType.name].accountName = accountType.name;
+    groupedData[accountType.name].logo = accountType.icon;
+    groupedData[accountType.name].value = groupedData[accountType.name].value += value || 0;
+    groupedData[accountType.name].data.push(item);
   });
   return Object.values(groupedData);
 }
@@ -25,7 +27,7 @@ export function convertDebtLoanData(data: any, isOwnedViewType: boolean) {
   const groupedData: {
     [key: string]: dataLevelProps;
   } = {};
-  data.forEach((item: any) => {
+  (data || []).forEach((item: any) => {
     // filter person with amount value = 0
     if (!item.value) {
       return;

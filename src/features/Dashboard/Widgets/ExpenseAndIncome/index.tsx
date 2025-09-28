@@ -1,7 +1,6 @@
 import { memo } from 'react';
 import { ScrollView, View } from 'react-native';
 import PressableHaptic from 'components/PressableHaptic';
-import SvgIcon from 'components/SvgIcon';
 import ProgressLineChart from 'components/ProgressLineChart';
 import RNText from 'components/Text';
 import { useCustomTheme } from 'resources/theme';
@@ -12,6 +11,7 @@ import isEqual from 'react-fast-compare';
 import EmptyData from './components/EmptyData';
 import { useExpenseAndIncomeHook } from './hook';
 import { styles } from './styles';
+import { ArrowDown2 } from 'iconsax-react-native';
 
 function ExpenseAndIncome({ title }: { title: string }) {
   const { colors } = useCustomTheme();
@@ -25,16 +25,6 @@ function ExpenseAndIncome({ title }: { title: string }) {
     getProgressBarWidth,
     onNavigationToDetail,
   } = useExpenseAndIncomeHook();
-
-  const reportData = [
-    { title: 'Thu', amount: data.totalAmount.income, color: colors.green },
-    { title: 'Chi', amount: data.totalAmount.expense, color: colors.error },
-    {
-      title: 'Số dư',
-      amount: data.totalAmount.income - data.totalAmount.expense,
-      color: colors.alert,
-    },
-  ];
 
   const renderProgressLabel = ({ categoryName, categoryParentId, expense }: any, index: number) => (
     <View style={styles.barName} key={categoryParentId}>
@@ -67,53 +57,68 @@ function ExpenseAndIncome({ title }: { title: string }) {
         >
           <View style={styles.dateView}>
             <RNText color={colors.primaryVariant}>{renderMenuTitle}</RNText>
-            <SvgIcon name="forward" preset="forwardLink" color="#00a8e8" />
+            <ArrowDown2 size="16" color={colors.primaryVariant} />
           </View>
         </MenuView>
       </PressableHaptic>
 
-      {!data.categoryGroup.length ? (
+      {/* {!data.categoryGroup.length ? (
         <EmptyData colors={colors} />
       ) : (
-        <>
-          <View style={styles.row}>
-            <View style={styles.col}>
-              {reportData.map(({ title, amount, color }) => (
-                <View key={title} style={styles.moneyItem}>
-                  <View style={styles.moneyItemTitle}>
-                    <View style={[styles.icon, { backgroundColor: color }]} />
-                    <RNText>{title}</RNText>
-                  </View>
-                  <RNText color={color}>{formatNumber(amount, true)}</RNText>
-                </View>
-              ))}
-              <View style={[styles.divider, { backgroundColor: colors.divider }]} />
+        <> */}
+      <View style={styles.row}>
+        <View style={styles.col}>
+          <View key={'Thu'} style={styles.moneyItem}>
+            <View style={styles.moneyItemTitle}>
+              <View style={[styles.icon, { backgroundColor: colors.green }]} />
+              <RNText>{'Thu'}</RNText>
             </View>
-
-            <View style={{ flex: 0.5 }}>
-              <View style={styles.chartView}>
-                {[colors.green, colors.error].map((color, index) => (
-                  <View
-                    key={color}
-                    style={[
-                      styles.chart,
-                      {
-                        backgroundColor: color,
-                        height: `${getChartHeight(
-                          index === 0 ? data.totalAmount.income : data.totalAmount.expense,
-                        )}%`,
-                      },
-                    ]}
-                  />
-                ))}
-              </View>
-            </View>
+            <RNText color={colors.green}>{formatNumber(data.totalAmount.income, true)}</RNText>
           </View>
+          <View key={'Chi'} style={styles.moneyItem}>
+            <View style={styles.moneyItemTitle}>
+              <View style={[styles.icon, { backgroundColor: colors.error }]} />
+              <RNText>{'Chi'}</RNText>
+            </View>
+            <RNText color={colors.error}>{formatNumber(data.totalAmount.expense, true)}</RNText>
+          </View>
+          <View style={[styles.divider, { backgroundColor: colors.divider }]} />
+          <View key={'Số dư'} style={styles.moneyItem}>
+            <View style={styles.moneyItemTitle}>
+              <View style={[styles.icon, { backgroundColor: colors.alert }]} />
+              <RNText>{'Số dư'}</RNText>
+            </View>
+            <RNText color={colors.alert}>
+              {formatNumber(data.totalAmount.income - data.totalAmount.expense, true)}
+            </RNText>
+          </View>
+        </View>
 
+        <View style={{ flex: 0.5 }}>
+          <View style={styles.chartView}>
+            {[colors.green, colors.error].map((color, index) => (
+              <View
+                key={color}
+                style={[
+                  styles.chart,
+                  {
+                    backgroundColor: color,
+                    height: `${getChartHeight(
+                      index === 0 ? data.totalAmount.income : data.totalAmount.expense,
+                    )}%`,
+                  },
+                ]}
+              />
+            ))}
+          </View>
+        </View>
+      </View>
+
+      {data.categoryGroup && data.categoryGroup.length > 0 && (
+        <>
           <View style={styles.progressBar}>
             <ProgressLineChart height={10} data={progressLineData} />
           </View>
-
           <ScrollView
             horizontal
             centerContent
@@ -124,6 +129,8 @@ function ExpenseAndIncome({ title }: { title: string }) {
           </ScrollView>
         </>
       )}
+      {/* </>
+      )} */}
     </PressableHaptic>
   );
 }

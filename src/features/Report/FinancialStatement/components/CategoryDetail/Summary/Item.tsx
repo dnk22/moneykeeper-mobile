@@ -5,11 +5,11 @@ import TouchableHighlightComponent from 'components/TouchableHighlight';
 import { formatNumber } from 'utils/math';
 import { MATERIAL_COLOR } from 'utils/constants';
 import { useAppDispatch } from 'store/index';
-import { setDataDetailLv2, setPageView } from '../reducer/financialStatement.slice';
+import { setDataDetailLv2, setPageView } from '../../../reducer/financialStatement.slice';
 import { dataLevelProps } from '../types';
-import styles from './styles';
+import styles from '../styles';
 
-function ItemLevel1({
+function AccountSummaryItem({
   item,
   totalAmount,
   index,
@@ -23,7 +23,7 @@ function ItemLevel1({
   const percent = () => {
     return `${Number(((item.value / totalAmount) * 100).toFixed(2))}%`;
   };
-
+  
   const setDataDetail = () => {
     dispatch(setDataDetailLv2(item.accountName || ''));
     dispatch(setPageView({ page: 1, resetLv2: false }));
@@ -33,13 +33,7 @@ function ItemLevel1({
     <TouchableHighlightComponent onPress={setDataDetail}>
       <View style={styles.item}>
         <View style={styles.col}>
-          {item.logo ? (
-            <ImageComponent name={item.logo} />
-          ) : (
-            <View style={[styles.personLogo, { backgroundColor: MATERIAL_COLOR[index || 0] }]}>
-              <RNText color="white">{String(item.relatedPerson).charAt(0)}</RNText>
-            </View>
-          )}
+          <ImageComponent name={item.logo} />
           <View style={styles.accountName}>
             <RNText style={styles.accountName}>{item.accountName || item.relatedPerson}</RNText>
             <RNText fontSize={13} preset="subTitle">
@@ -59,4 +53,4 @@ function ItemLevel1({
     </TouchableHighlightComponent>
   );
 }
-export default ItemLevel1;
+export default AccountSummaryItem;

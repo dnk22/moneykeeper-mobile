@@ -1,47 +1,29 @@
 import { useCallback } from 'react';
 import { View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import RNText from 'components/Text';
-import { useCustomTheme } from 'resources/theme';
-import {
-  getCurrentBalanceAllAccount,
-  queryAccountStatement,
-  queryGetDebtLoanList,
-} from 'database/querying';
-import { formatNumber } from 'utils/math';
-import { useAppDispatch, useAppSelector } from 'store/index';
-import { setDataDetailLv1, setTotal, setViewType } from './reducer/financialStatement.slice';
-import {
-  selectRefreshData,
-  selectTotal,
-  selectViewType,
-} from './reducer/financialStatement.selector';
-import { convertDebtLoanData, convertFinancialData } from './helper';
-import PieChart from './PieChart';
-import CategoryDetail from './CategoryDetail';
-import styles from './styles';
 import RNSegmentedControl from 'components/SegmentedControl';
+import { useCustomTheme } from 'resources/theme';
+import { useAppDispatch, useAppSelector } from 'store/index';
+import { selectRefreshData, selectViewType } from './reducer/financialStatement.selector';
+import { setDataDetailLv1, setViewType } from './reducer/financialStatement.slice';
+import { reportLocalQuery } from 'database/querying/report';
+import { convertDebtLoanData, convertFinancialData } from './helper';
+import PieChart from './components/PieChart';
+import CategoryDetail from './components/CategoryDetail';
+import TotalAmount from './components/TotalAmount';
+import styles from './styles';
 
 function FinanceStatement() {
   const { colors } = useCustomTheme();
   const dispatch = useAppDispatch();
   const isOwnedViewType = useAppSelector((state) => selectViewType(state));
   const isRefreshData = useAppSelector((state) => selectRefreshData(state));
-  const total = useAppSelector((state) => selectTotal(state));
-
-  useFocusEffect(
-    useCallback(() => {
-      getCurrentBalanceAllAccount().then((res) => {
-        dispatch(setTotal(res));
-      });
-    }, []),
-  );
 
   useFocusEffect(
     useCallback(() => {
       Promise.all([
-        queryAccountStatement(isOwnedViewType),
-        queryGetDebtLoanList({ isDebt: isOwnedViewType }),
+        reportLocalQuery.queryAccountStatement({ isDebt: isOwnedViewType }),
+        reportLocalQuery.queryGetDebtLoanList({ isDebt: isOwnedViewType }),
       ]).then((res) => {
         const groupData = convertFinancialData(res[0], isOwnedViewType);
         const groupDebtLoan = convertDebtLoanData(res[1], isOwnedViewType);
@@ -56,12 +38,13 @@ function FinanceStatement() {
 
   return (
     <View style={styles.container}>
-      <View style={[styles.totalMoney, { backgroundColor: colors.surface }]}>
-        <RNText style={styles.fontWeight300}>Tổng tài sản: </RNText>
-        <RNText style={styles.totalAmount}>{formatNumber(total, true)}</RNText>
-      </View>
-      <RNSegmentedControl values={['Sở hữu', 'Dư nợ']} onChange={onChangeViewType} />
-      <PieChart />
+      <TotalAmount />
+      <RNSegmentedControl
+        values={['Sở hữu', 'Dư nợ']}
+        onChange={onChangeViewType}
+        tintColor={colors.background}
+      />
+      {/* <PieChart /> */}
       <CategoryDetail />
     </View>
   );

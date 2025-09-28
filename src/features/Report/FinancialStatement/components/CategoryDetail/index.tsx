@@ -3,21 +3,21 @@ import { View } from 'react-native';
 import { SceneMap, TabView } from 'react-native-tab-view';
 import { SCREEN_WIDTH } from 'share/dimensions';
 import { useAppDispatch, useAppSelector } from 'store/index';
-import { selectPageView } from '../reducer/financialStatement.selector';
-import { setPageView } from '../reducer/financialStatement.slice';
-import Level1View from './Level1View';
-import Level2View from './Level2View';
+import { selectPageView } from '../../reducer/financialStatement.selector';
+import { setPageView } from '../../reducer/financialStatement.slice';
+import Summary from './Summary';
+import Detail from './Detail';
 import styles from './styles';
 
 const renderScene = SceneMap({
-  root: Level1View,
-  lv2: Level2View,
+  root: Summary,
+  detail: Detail,
 });
 
 function CategoryDetail() {
   const dispatch = useAppDispatch();
   const index = useAppSelector((state) => selectPageView(state));
-  const [routes] = useState([{ key: 'root' }, { key: 'lv2' }]);
+  const [routes] = useState([{ key: 'root' }, { key: 'detail' }]);
   const prevIndex = useRef(0);
 
   const setPageIndex = (page: number) => {

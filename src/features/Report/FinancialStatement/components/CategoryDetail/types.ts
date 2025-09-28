@@ -18,5 +18,6 @@ export type financialStatementProps = {
   dataDetailLv1: dataLevelProps[];
   dataDetailLv2: string;
   pageView: number;
+  total: number;
   refreshData: number;
 };

@@ -3,8 +3,8 @@ import { BOX_SHADOW } from 'resources/theme/constants';
 
 export const styles = StyleSheet.create({
   container: {
-    padding: 10,
-    paddingHorizontal: 5,
+    padding: 15,
+    paddingHorizontal: 10,
     borderRadius: 8,
     ...BOX_SHADOW,
   },
@@ -18,6 +18,7 @@ export const styles = StyleSheet.create({
   dateView: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 5,
   },
   noData: {
     gap: 30,
@@ -59,7 +60,7 @@ export const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    width: '90%',
+    width: '96%',
     alignSelf: 'center',
   },
   incomeIcon: {

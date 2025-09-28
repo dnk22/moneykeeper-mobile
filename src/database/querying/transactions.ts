@@ -205,7 +205,10 @@ export class TransactionLocalDataSource {
    * 4. Giới hạn số lượng kết quả trả về
    */
   public async getRecentTransactions(limit: number) {
-    const query = `SELECT tran.id,tran.amount, tran.accountId, tran.toAccountId, tran.categoryId,tran.transactionType, tran.descriptions, tran.recordAt, bal._id, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, bal.closingAmount AS closingAmount,bal.movementAmount AS amount
+    const query = `SELECT tran.id,tran.amount, tran.accountId, 
+      tran.toAccountId, tran.categoryId,tran.transactionType, tran.descriptions, 
+      tran.recordAt, bal._id, tCategory.icon AS categoryIcon, tCategory.categoryName AS categoryName, 
+      bal.closingAmount AS closingAmount,bal.movementAmount AS amount, acc.accountName AS accountName, accTo.accountName AS toAccountName
       FROM ${TRANSACTIONS} tran
       LEFT JOIN ${TRANSACTION_CATEGORY} tCategory ON tCategory.id=tran.categoryId
       LEFT JOIN ${BALANCE} bal ON bal.transactionId=tran.id AND bal.accountId=tran.accountId
