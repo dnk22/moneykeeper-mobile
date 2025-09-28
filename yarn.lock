@@ -7095,13 +7095,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gifted-charts-core@npm:0.1.62":
-  version: 0.1.62
-  resolution: "gifted-charts-core@npm:0.1.62"
+"gifted-charts-core@npm:0.1.66":
+  version: 0.1.66
+  resolution: "gifted-charts-core@npm:0.1.66"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: dfc9056a74c3900fa9ed08ada2847d6f06a3c329352880c048fcdb6f3dda28c6bdd78d42f568d7742ce00f0f8a7c1cb2ebdcb089e628edf7edf0967b805fd916
+    react-native-svg: "*"
+  checksum: 2c4915776a7d26cf7104a9c7d21738f9d5eb4be122efd2021e0cab78a64815ac92ea6743c5e63601538d099368f2354c13f3b1ab3abaafe639370dfad1f4f91e
   languageName: node
   linkType: hard
 
@@ -9604,7 +9605,7 @@ __metadata:
     react-native-draggable-flatlist: ^4.0.1
     react-native-fast-image: ^8.6.3
     react-native-gesture-handler: ^2.26.0
-    react-native-gifted-charts: ^1.4.47
+    react-native-gifted-charts: ^1.4.64
     react-native-haptic-feedback: ^2.3.3
     react-native-ios-context-menu: 1.15.3
     react-native-keyboard-aware-scroll-view: ^0.9.5
@@ -10716,11 +10717,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-gifted-charts@npm:^1.4.47":
-  version: 1.4.60
-  resolution: "react-native-gifted-charts@npm:1.4.60"
+"react-native-gifted-charts@npm:^1.4.64":
+  version: 1.4.64
+  resolution: "react-native-gifted-charts@npm:1.4.64"
   dependencies:
-    gifted-charts-core: 0.1.62
+    gifted-charts-core: 0.1.66
   peerDependencies:
     expo-linear-gradient: "*"
     react: "*"
@@ -10732,7 +10733,7 @@ __metadata:
       optional: true
     react-native-linear-gradient:
       optional: true
-  checksum: 3e5d2f965c7943dad2bc8f3545e31695c269006dcc70d6dcb9f5f32ed47cf7cb22a480992712af81860831d61458259add5f7f9677a7d4583ad1f284ec90c960
+  checksum: e11a1457ac20676d426c6f10f7a660fd6ab171c239f09ec24cc4926b0f6e45a985de81789da60b971ad74aa5dc37779201d93454ffb4332e6a1b4ab55e9d7198
   languageName: node
   linkType: hard
 

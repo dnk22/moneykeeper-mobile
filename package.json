@@ -54,7 +54,7 @@
     "react-native-draggable-flatlist": "^4.0.1",
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.26.0",
-    "react-native-gifted-charts": "^1.4.47",
+    "react-native-gifted-charts": "^1.4.64",
     "react-native-haptic-feedback": "^2.3.3",
     "react-native-ios-context-menu": "1.15.3",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
