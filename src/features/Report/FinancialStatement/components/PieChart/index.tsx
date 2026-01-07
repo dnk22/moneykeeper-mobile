@@ -6,8 +6,8 @@ import { useCustomTheme } from 'resources/theme';
 import { formatNumber } from 'utils/math';
 import { useAppSelector } from 'store/index';
 import {
-  selectDataDetailLevel1,
-  selectDataDetailLevel2,
+  selectDataSummary,
+  selectDataDetail,
   selectViewType,
 } from '../../reducer/financialStatement.selector';
 import { MATERIAL_COLOR } from 'utils/constants';
@@ -15,17 +15,17 @@ import styles from './styles';
 
 function PieChart() {
   const { colors } = useCustomTheme();
-  const dataLv1 = useAppSelector((state) => selectDataDetailLevel1(state));
-  const isItemLevel2Selected = useAppSelector((state) => selectDataDetailLevel2(state));
+  const dataSummary = useAppSelector((state) => selectDataSummary(state));
+  const itemDetailSelected = useAppSelector((state) => selectDataDetail(state));
   const isOwnedViewType = useAppSelector((state) => selectViewType(state));
 
   const dataFocus = useMemo(() => {
-    if (isItemLevel2Selected) {
-      return dataLv1 && dataLv1.find((item) => item.accountName === isItemLevel2Selected)?.data;
+    if (itemDetailSelected) {
+      return dataSummary && dataSummary.find((item) => item.accountName === itemDetailSelected)?.data;
     } else {
-      return dataLv1;
+      return dataSummary;
     }
-  }, [dataLv1, isItemLevel2Selected]);
+  }, [dataSummary, itemDetailSelected]);
 
   const pieData = useMemo(() => {
     return [...dataFocus].map((item, index) => ({
@@ -35,23 +35,23 @@ function PieChart() {
     }));
   }, [dataFocus]);
 
-  const totalCurrentAccount = () => {
+  const totalCurrentAccount = useMemo(() => {
     if (!pieData || !pieData.length) {
       return 0;
     }
     return formatNumber(
-      dataFocus.reduce((total, current) => (total += current.value), 0),
+      [...dataFocus].reduce((total, current) => (total += current.value), 0),
       true,
     );
-  };
+  }, [dataFocus]);
 
   const innerTitle = useMemo(() => {
-    if (isItemLevel2Selected) {
+    if (itemDetailSelected) {
       return dataFocus[0].categoryName || dataFocus[0].accountTypeName;
     } else {
       return isOwnedViewType ? 'Tổng Sở hữu' : 'Tổng dư nợ';
     }
-  }, [isOwnedViewType, isItemLevel2Selected]);
+  }, [isOwnedViewType, itemDetailSelected]);
 
   const renderPieInnerComponent = () => {
     return (
@@ -60,7 +60,7 @@ function PieChart() {
           {innerTitle}
         </RNText>
         <RNText fontSize={18} style={styles.totalAmount}>
-          {totalCurrentAccount()}
+          {totalCurrentAccount}
         </RNText>
       </View>
     );
@@ -78,7 +78,7 @@ function PieChart() {
           radius={110}
           innerRadius={80}
           innerCircleColor={colors.background}
-          centerLabelComponent={renderPieInnerComponent}
+          // centerLabelComponent={renderPieInnerComponent}
         />
       </View>
       <View style={{ paddingHorizontal: 10 }}>
@@ -94,7 +94,7 @@ function PieChart() {
                 <View style={[styles.icon, { backgroundColor: item.color }]} />
                 <RNText fontSize={10} style={styles.fontWeight300}>{`${item.text} `}</RNText>
               </View>
-            );r
+            );
           })}
         </ScrollView>
       </View>

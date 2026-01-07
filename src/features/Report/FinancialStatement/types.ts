@@ -15,8 +15,8 @@ export type dataLevelProps = {
 
 export type financialStatementProps = {
   isOwnedViewType: boolean;
-  dataDetailLv1: dataLevelProps[];
-  dataDetailLv2: string;
+  dataSummary: dataLevelProps[];
+  dataDetail: string;
   pageView: number;
   refreshData: number;
 };

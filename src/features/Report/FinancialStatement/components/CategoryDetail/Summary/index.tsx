@@ -4,11 +4,11 @@ import { getTotalAmount } from 'utils/algorithm';
 import FlatListComponent from 'components/FlatList';
 import Empty from 'components/Empty';
 import AccountSummaryItem from './Item';
-import { selectDataDetailLevel1 } from '../../../reducer/financialStatement.selector';
+import { selectDataSummary } from '../../../reducer/financialStatement.selector';
 import { dataLevelProps } from '../types';
 
 function AccountSummary() {
-  const data = useAppSelector((state) => selectDataDetailLevel1(state));
+  const data = useAppSelector((state) => selectDataSummary(state));
 
   const totalCurrentAccount = useMemo(() => {
     return getTotalAmount(data);

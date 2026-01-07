@@ -4,8 +4,8 @@ import { financialStatementProps } from '../types';
 
 const initialState = {
   isOwnedViewType: true,
-  dataDetailLv1: [],
-  dataDetailLv2: '',
+  dataSummary: [],
+  dataDetail: '',
   pageView: 0,
   refreshData: 0,
 } as financialStatementProps;
@@ -19,13 +19,13 @@ export const financialStatementSlice = createSlice({
     setViewType(state, { payload }: PayloadAction<boolean>) {
       state.isOwnedViewType = payload;
       state.pageView = 0;
-      state.dataDetailLv2 = '';
+      state.dataDetail = '';
     },
     setDataDetailLv1(state, { payload }: PayloadAction<any>) {
-      state.dataDetailLv1 = payload;
+      state.dataSummary = payload;
     },
     setDataDetailLv2(state, { payload }: PayloadAction<string>) {
-      state.dataDetailLv2 = payload;
+      state.dataDetail = payload;
     },
     setRefreshData(state) {
       state.refreshData += 1;
@@ -33,7 +33,7 @@ export const financialStatementSlice = createSlice({
     setPageView(state, { payload }: PayloadAction<{ page: number; resetLv2: boolean }>) {
       state.pageView = payload.page;
       if (payload.resetLv2) {
-        state.dataDetailLv2 = '';
+        state.dataDetail = '';
       }
     },
   },

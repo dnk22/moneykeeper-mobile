@@ -44,7 +44,7 @@ function FinanceStatement() {
         onChange={onChangeViewType}
         tintColor={colors.background}
       />
-      {/* <PieChart /> */}
+      <PieChart />
       <CategoryDetail />
     </View>
   );

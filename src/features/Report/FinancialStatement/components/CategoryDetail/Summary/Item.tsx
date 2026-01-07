@@ -3,27 +3,18 @@ import RNText from 'components/Text';
 import ImageComponent from 'components/ImageComponent';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import { formatNumber } from 'utils/math';
-import { MATERIAL_COLOR } from 'utils/constants';
 import { useAppDispatch } from 'store/index';
 import { setDataDetailLv2, setPageView } from '../../../reducer/financialStatement.slice';
 import { dataLevelProps } from '../types';
 import styles from '../styles';
 
-function AccountSummaryItem({
-  item,
-  totalAmount,
-  index,
-}: {
-  item: dataLevelProps;
-  totalAmount: number;
-  index?: number;
-}) {
+function AccountSummaryItem({ item, totalAmount }: { item: dataLevelProps; totalAmount: number }) {
   const dispatch = useAppDispatch();
 
   const percent = () => {
     return `${Number(((item.value / totalAmount) * 100).toFixed(2))}%`;
   };
-  
+
   const setDataDetail = () => {
     dispatch(setDataDetailLv2(item.accountName || ''));
     dispatch(setPageView({ page: 1, resetLv2: false }));

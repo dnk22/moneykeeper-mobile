@@ -9,13 +9,13 @@ export const selectViewType = createSelector(
   financialStatementState,
   (data) => data.isOwnedViewType,
 );
-export const selectDataDetailLevel1 = createSelector(
+export const selectDataSummary = createSelector(
   financialStatementState,
-  (data) => data.dataDetailLv1,
+  (data) => data.dataSummary,
 );
-export const selectDataDetailLevel2 = createSelector(
+export const selectDataDetail = createSelector(
   financialStatementState,
-  (data) => data.dataDetailLv2,
+  (data) => data.dataDetail,
 );
 export const selectPageView = createSelector(financialStatementState, (data) => data.pageView);
 export const selectRefreshData = createSelector(financialStatementState, (data) => data.refreshData);
