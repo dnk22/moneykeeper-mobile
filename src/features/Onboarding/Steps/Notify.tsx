@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import Text from 'components/Text';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@d11/react-native-fast-image';
 import { welcome } from 'assets/images/Illustration';
 import { welComeStyles } from './styles';
 

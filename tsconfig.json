@@ -1,6 +1,7 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json",
+  "extends": "@react-native/typescript-config",
   "compilerOptions": {
+    "types": ["jest"],
     "jsx": "react-native",
     "experimentalDecorators": true,
     "skipLibCheck": true,
@@ -20,4 +21,6 @@
     },
     "typeRoots": ["./src/utils/types", "./node_modules/@types"],
   },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["**/node_modules", "**/Pods"]
 }

@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Alert, TextInput, View } from 'react-native';
-import { GestureResponderEvent } from 'react-native-modal';
+import { Alert, GestureResponderEvent, TextInput, View } from 'react-native';
 import { TContact } from 'database/types';
 import { deleteContact, updateContact } from 'services/api/contacts';
 import styles from './styles';

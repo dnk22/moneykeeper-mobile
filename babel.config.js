@@ -1,7 +1,3 @@
-/** @type {import('react-native-worklets/plugin').PluginOptions} */
-const workletsPluginOptions = {
-  
-};
 module.exports = {
   presets: ['module:@react-native/babel-preset'],
   plugins: [
@@ -42,6 +38,5 @@ module.exports = {
         relativeSourceLocation: true,
       },
     ],
-    ['react-native-worklets/plugin', workletsPluginOptions],
   ],
 };

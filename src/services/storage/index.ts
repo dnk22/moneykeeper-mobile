@@ -1,11 +1,11 @@
-import { MMKV } from 'react-native-mmkv';
+import { createMMKV } from 'react-native-mmkv';
 
 class StorageService {
   private static instance: StorageService;
-  private storage: MMKV;
+  private storage: ReturnType<typeof createMMKV>;
 
   private constructor() {
-    this.storage = new MMKV({
+    this.storage = createMMKV({
       id: 'money-keeper-storage',
       encryptionKey: process.env.MMKV_ENCRYPTION_KEY,
     });

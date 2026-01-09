@@ -2,7 +2,7 @@ import { GestureResponderEvent, Pressable, View } from 'react-native';
 import Text from 'components/Text';
 import CheckboxComponent from 'components/Checkbox';
 import Switch from 'components/Switch';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@d11/react-native-fast-image';
 import switchTheme from 'react-native-theme-switch-animation';
 import { useCustomTheme } from 'resources/theme';
 import { TonBoardingConfig } from 'utils/types/store.type';

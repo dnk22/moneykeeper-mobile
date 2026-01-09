@@ -1,6 +1,5 @@
 import React from 'react';
 import { View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useRoute } from '@react-navigation/native';
 import { useCustomTheme } from 'resources/theme';
 
@@ -33,11 +32,11 @@ function AddAccount() {
   return (
     <FormProvider {...methods}>
       <View style={styles.container}>
-        <KeyboardAwareScrollView
+        {/* <KeyboardAwareScrollView
           style={[styles.form, { backgroundColor: colors.background }]}
           showsVerticalScrollIndicator={false}
           extraScrollHeight={60}
-        >
+        > */}
           <InputCalculator
             text={isCreditCard ? 'Hạn mức thẻ' : 'Số dư ban đầu'}
             name="initialAmount"
@@ -91,7 +90,6 @@ function AddAccount() {
             onDelete={onConfirmDeleteAccount}
           />
           <View style={{ height: 100 }} />
-        </KeyboardAwareScrollView>
       </View>
     </FormProvider>
   );

@@ -6,6 +6,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 import { AuthProvider } from 'services/auth/AuthProvider';
 import { persistor, store } from './store';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 LogBox.ignoreAllLogs();
 
@@ -15,7 +16,9 @@ const App = () => {
       <PersistGate persistor={persistor}>
         <SafeAreaProvider initialMetrics={initialWindowMetrics}>
           <AuthProvider>
-            <AppNavigators />
+            <KeyboardProvider>
+              <AppNavigators />
+            </KeyboardProvider>
           </AuthProvider>
         </SafeAreaProvider>
       </PersistGate>

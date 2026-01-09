@@ -9,7 +9,7 @@ import CheckboxComponent from 'components/Checkbox';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import RNText from 'components/Text';
 import { ROUTES } from 'navigation/constants/routes';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@d11/react-native-fast-image';
 
 const unknownIcon = require('assets/images/default/unknown.png');
 

@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { useCustomTheme } from 'resources/theme';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { TransactionParamListProps } from 'navigation/types';
 import { FormProvider, useWatch } from 'react-hook-form';
 import { ROUTES } from 'navigation/constants/routes';
@@ -43,13 +42,7 @@ function AddTransactions({
   return (
     <View style={styles.container}>
       <FormProvider {...transactionForm}>
-        <KeyboardAwareScrollView
-          style={[styles.form, { backgroundColor: colors.background }]}
-          showsVerticalScrollIndicator={false}
-          extraScrollHeight={40}
-        >
           {RenderTransactionComponent}
-        </KeyboardAwareScrollView>
       </FormProvider>
     </View>
   );

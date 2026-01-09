@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import isEqual from 'react-fast-compare';
 import { useCustomTheme } from 'resources/theme';
 import { normalize } from 'share/dimensions';
-import FastImage, { FastImageProps } from 'react-native-fast-image';
+import FastImage, { FastImageProps } from '@d11/react-native-fast-image';
 import imgSrc from './data';
 
 const unknownIcon = require('assets/images/default/unknown.png');

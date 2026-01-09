@@ -1,82 +1,58 @@
+ENV['RCT_NEW_ARCH_ENABLED'] = '1'
+
 def node_require(script)
- # Resolve script with node to allow for hoisting
-require Pod::Executable.execute_command('node', ['-p',
-   "require.resolve(
-     '#{script}',
-     {paths: [process.argv[1]]},
-   )", __dir__]).strip
+  require Pod::Executable.execute_command('node', ['-p',
+     "require.resolve('#{script}', {paths: [process.argv[1]]})", __dir__]).strip
 end
 
 node_require('react-native/scripts/react_native_pods.rb')
 node_require('react-native-permissions/scripts/setup.rb')
 
-platform :ios, min_ios_version_supported
+platform :ios, '15.1' # Đảm bảo min iOS phù hợp với RN 0.83
 prepare_react_native_project!
-use_modular_headers!
-use_frameworks! :linkage => :static
+
+# 1. Cấu hình Firebase Static Framework
 $RNFirebaseAsStaticFramework = true
+use_modular_headers!
 
-# linkage = ENV['USE_FRAMEWORKS']
-# if linkage != nil
-#   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-#   use_frameworks! :linkage => linkage.to_sym
-# end
-
-# ⬇️ uncomment wanted permissions
 setup_permissions([
-  # 'Calendars',
-  'Camera',
-  'Contacts',
-  'FaceID',
-  'Notifications',
-  'PhotoLibrary',
-  'PhotoLibraryAddOnly',
-  'Reminders',
+  'Camera', 'Contacts', 'FaceID', 'Notifications', 'PhotoLibrary', 'PhotoLibraryAddOnly', 'Reminders',
 ])
-
 
 target 'moneykeeper' do
   config = use_native_modules!
 
+  # 2. Quan trọng cho Swift & Firebase
+  use_frameworks! :linkage => :static
+
+  # 3. Cấu hình React Native với New Arch
   use_react_native!(
     :path => config[:reactNativePath],
-    
-    # An absolute path to your application root.
-    :app_path => "#{Pod::Config.instance.installation_root}/.."
+    :app_path => "#{Pod::Config.instance.installation_root}/..",
+    :hermes_enabled => true,
+    :fabric_enabled => true # Bật để sửa lỗi "No such module 'ReactAppDependencyProvider'"
   )
 
-  # Uncomment this line if you're not using auto-linking
-  # pod 'WatermelonDB', path: '../node_modules/@nozbe/watermelondb'
-
-  # WatermelonDB dependency, should not be needed on modern React Native
-  # (please file an issue if this causes issues for you)
-  # pod 'React-jsi', path: '../node_modules/react-native/ReactCommon/jsi', modular_headers: true
-
-  # WatermelonDB dependency
+  # 4. Các thư viện đặc thù không autolink hoàn toàn hoặc cần config riêng
   pod 'simdjson', path: '../node_modules/@nozbe/simdjson'
   
-  # @react-native-menu/menu (fabric+swift requirements)
-  pod 'React-Fabric', :path => '../node_modules/react-native/ReactCommon'
-  pod 'React-graphics', :path => '../node_modules/react-native/ReactCommon/react/renderer/graphics'
-  pod 'React-utils', :path => '../node_modules/react-native/ReactCommon/react/utils'
-  pod 'React-debug', :path => '../node_modules/react-native/ReactCommon/react/debug'
-
-  # Firebase
-  pod 'RNFBAuth', :path => '../node_modules/@react-native-firebase/auth'
-  pod 'RNFBDatabase', :path => '../node_modules/@react-native-firebase/database'
-
-  target 'moneykeeperTests' do
-    inherit! :complete
-    # Pods for testing
-  end
+  # Firebase Pods (Nếu autolink không hoạt động, bạn giữ lại, nhưng thường RN 0.83 sẽ tự nhận)
+  # pod 'RNFBAuth', :path => '../node_modules/@react-native-firebase/auth'
+  # pod 'RNFBDatabase', :path => '../node_modules/@react-native-firebase/database'
 
   post_install do |installer|
-    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+    # 5. Đảm bảo config hệ thống của React Native được thực thi
     react_native_post_install(
       installer,
       config[:reactNativePath],
-      :mac_catalyst_enabled => false,
-      # :ccache_enabled => true
+      :mac_catalyst_enabled => false
     )
+    
+    # Fix lỗi build "Double quoted include" thường gặp khi dùng Swift + Static Frameworks
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
+      end
+    end
   end
 end
