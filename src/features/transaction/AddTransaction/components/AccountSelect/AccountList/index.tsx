@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SectionListData, View } from 'react-native';
+import { SectionListData, TextInput, View } from 'react-native';
 import FlatListComponent from 'components/FlatList';
 import Empty from 'components/Empty';
 import RNText from 'components/Text';
@@ -8,7 +8,6 @@ import { Observable } from '@nozbe/watermelondb/utils/rx';
 import { AccountModel } from 'database/models';
 import { groupAccountDataByKey } from 'utils/algorithm';
 import { accountLocalQuery, TGetAllAccountsOptions } from 'database/querying';
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { useCustomTheme } from 'resources/theme';
 import Item from './Item';
 import styles from './styles';
@@ -54,7 +53,7 @@ function AccountList({ isItemSelected, onItemPress, excludeId }: AccountListProp
     <View style={styles.wrapper}>
       <View style={{ marginBottom: 10 }}>
         <View style={[styles.inputGroup, { backgroundColor: colors.surface }]}>
-          <BottomSheetTextInput
+          <TextInput
             placeholder="Tìm kiếm tài khoản"
             style={styles.inputSearch}
             onChangeText={onInputChange}

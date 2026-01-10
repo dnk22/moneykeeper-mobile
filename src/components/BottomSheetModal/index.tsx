@@ -1,70 +1,35 @@
-import React, { forwardRef, useCallback } from 'react';
-import {
-  BottomSheetBackdrop,
-  BottomSheetBackdropProps,
-  BottomSheetModal,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
+import React, { forwardRef } from 'react';
+import { TrueSheet } from '@lodev09/react-native-true-sheet';
+import type { TrueSheetProps } from '@lodev09/react-native-true-sheet';
 import { useCustomTheme } from 'resources/theme';
 import { styles } from './styles';
+import { StyleProp, View } from 'react-native';
 
 type BottomSheetProps = {
   children: React.ReactElement;
   backgroundColor?: string;
-  paddingTop?: string;
-  backdropColor?: string;
-  disabledBackdrop?: boolean;
-} & React.ComponentProps<typeof BottomSheetModal>;
+  onDismiss?: () => void;
+  modalContainerStyle?: StyleProp<any>;
+} & Partial<TrueSheetProps>;
 
-const snapPointsInit = ['30%', '50%', '80%'];
-
-const BottomSheetComponent = forwardRef(
-  (
-    {
-      children,
-      snapPoints,
-      index = 2,
-      disabledBackdrop,
-      backgroundColor,
-      backdropColor,
-      ...rest
-    }: BottomSheetProps,
-    ref: any,
-  ) => {
+const BottomSheetComponent = forwardRef<TrueSheet, BottomSheetProps>(
+  ({ children, backgroundColor, onDismiss, modalContainerStyle, ...rest }, ref) => {
     const { colors } = useCustomTheme();
 
-    const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {
-      if (disabledBackdrop) {
-        return undefined;
-      }
-      return (
-        <BottomSheetBackdrop
-          {...props}
-          style={backdropColor ? { backgroundColor: backdropColor } : undefined}
-          opacity={0.3}
-          appearsOnIndex={0}
-          disappearsOnIndex={-1}
-        />
-      );
-    }, []);
-
     return (
-      <BottomSheetModal
+      <TrueSheet
         ref={ref}
-        index={index}
-        snapPoints={snapPoints || snapPointsInit}
-        backdropComponent={renderBackdrop}
-        keyboardBehavior="extend"
+        cornerRadius={24}
+        onDidDismiss={onDismiss}
         {...rest}
+        backgroundColor={backgroundColor || colors.background}
       >
-        <BottomSheetView
-          style={[{ backgroundColor: backgroundColor || colors.background }, styles.modalContainer]}
-        >
-          {children}
-        </BottomSheetView>
-      </BottomSheetModal>
+        <View style={[styles.modalContainer, modalContainerStyle]}>{children}</View>
+      </TrueSheet>
     );
   },
 );
 
 export default BottomSheetComponent;
+
+export type { BottomSheetProps, TrueSheet };

@@ -5,8 +5,7 @@ import { useCustomTheme } from 'resources/theme';
 import RNText from 'components/Text';
 import { RegisterOptions, useController, useFormContext } from 'react-hook-form';
 import KeyboardCalculator from './KeyboardCalculator';
-import BottomSheet from 'components/BottomSheetModal';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import BottomSheet, { TrueSheet } from 'components/BottomSheetModal';
 import styles from './styles';
 
 type TInputCalculator = TextInputProps & {
@@ -41,7 +40,7 @@ function InputCalculator({
     control,
   });
 
-  const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const bottomSheetRef = useRef<TrueSheet>(null);
   const hasJustFocused = useRef(false);
 
   const onFocusInput = () => {
@@ -91,19 +90,13 @@ function InputCalculator({
         )}
       </View>
       <BottomSheet
-        index={0}
         ref={bottomSheetRef}
-        snapPoints={snapPoints}
-        enableOverDrag={false}
-        enablePanDownToClose
-        // disabledBackdrop
-        backdropColor="transparent"
-        enableContentPanningGesture={false}
-        enableDynamicSizing={false}
-        onDismiss={onDismiss}
-        handleStyle={styles.handleIndicatorStyle}
-        style={[{ backgroundColor: colors.surface }]}
+        detents={['auto']}
         backgroundColor={colors.surface}
+        // dimmed={false}
+        grabber={false}
+        onDismiss={onDismiss}
+        modalContainerStyle={styles.modalContainer}
       >
         <KeyboardCalculator
           value={value}

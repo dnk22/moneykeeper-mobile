@@ -1,15 +1,14 @@
 import { useRef, useState } from 'react';
 import { View } from 'react-native';
 import DisplayModal from './DisplayModal';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import SvgIcon from 'components/SvgIcon';
-import BottomSheet from 'components/BottomSheetModal';
+import BottomSheet, { TrueSheet } from 'components/BottomSheetModal';
 import RNText from 'components/Text';
 import styles from './styles';
 
 function HeaderBarConfig({ onPressSelectMode }: { onPressSelectMode: () => void }) {
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const bottomSheetModalRef = useRef<TrueSheet>(null);
 
   const [isShowModal, setIsShowModal] = useState(false);
   const [isShowDisplayModal, setShowDisplayModal] = useState(false);
@@ -32,7 +31,7 @@ function HeaderBarConfig({ onPressSelectMode }: { onPressSelectMode: () => void 
       <TouchableHighlightComponent onPress={onToggleModal} underlayColor="transparent">
         <SvgIcon name="panel" color="white" />
       </TouchableHighlightComponent>
-      <BottomSheet snapPoints={['28%']} ref={bottomSheetModalRef}>
+      <BottomSheet detents={['auto']} ref={bottomSheetModalRef}>
         <View style={{ paddingHorizontal: 10 }}>
           <TouchableHighlightComponent onPress={setSelectMode}>
             <View style={styles.item}>

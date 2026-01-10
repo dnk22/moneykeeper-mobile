@@ -43,8 +43,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
   },
-  handleIndicatorStyle: {
-    display: 'none',
+  modalContainer: {
+    padding: 8,
+    paddingVertical: 16,
   },
   keyBoardContainer: {
     gap: 4,

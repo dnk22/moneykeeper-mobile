@@ -92,6 +92,8 @@ class FireBaseAuthService {
         return 'Email không hợp lệ. Vui lòng kiểm tra lại.';
       case 'too-many-requests':
         return 'Quá nhiều yêu cầu đăng nhập. Vui lòng thử lại sau.';
+      case 'auth/keychain-error':
+        return 'Lỗi xác thực. Vui lòng thử lại.';
       default:
         return 'Đã có lỗi xảy ra khi đăng nhập';
     }
@@ -146,6 +148,8 @@ class FireBaseAuthService {
 
       return { data: userCredential, error: null };
     } catch (error: any) {
+      console.log(error,'error');
+      
       return {
         data: null,
         error: new FirebaseError(

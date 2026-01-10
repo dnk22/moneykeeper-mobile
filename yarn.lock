@@ -3029,6 +3029,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lodev09/react-native-true-sheet@npm:^3.7.0":
+  version: 3.7.0
+  resolution: "@lodev09/react-native-true-sheet@npm:3.7.0"
+  peerDependencies:
+    "@gorhom/bottom-sheet": ">=5"
+    "@react-navigation/native": ">=7"
+    react: "*"
+    react-native: "*"
+    react-native-reanimated: ">=4"
+    react-native-worklets: "*"
+  peerDependenciesMeta:
+    "@gorhom/bottom-sheet":
+      optional: true
+    "@react-navigation/native":
+      optional: true
+    react-native-reanimated:
+      optional: true
+    react-native-worklets:
+      optional: true
+  checksum: b07cdab24d7f6d85a7c6a9b313ce9cab14b8be14abc40151d686f19868a34f710da583d64cf31c6f925c24b6e795a1d051d7c5e112cbcdfbda709edfa7085af6
+  languageName: node
+  linkType: hard
+
 "@nicolo-ribaudo/eslint-scope-5-internals@npm:5.1.1-v1":
   version: 5.1.1-v1
   resolution: "@nicolo-ribaudo/eslint-scope-5-internals@npm:5.1.1-v1"
@@ -9391,6 +9414,7 @@ __metadata:
     "@d11/react-native-fast-image": ^8.13.0
     "@gorhom/bottom-sheet": ^5.2.8
     "@hookform/resolvers": ^5.2.2
+    "@lodev09/react-native-true-sheet": ^3.7.0
     "@notifee/react-native": ^9.1.8
     "@nozbe/watermelondb": ^0.28.0
     "@react-native-community/blur": ^4.4.1

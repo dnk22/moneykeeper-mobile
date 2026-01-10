@@ -23,8 +23,8 @@
   },
   "dependencies": {
     "@d11/react-native-fast-image": "^8.13.0",
-    "@gorhom/bottom-sheet": "^5.2.8",
     "@hookform/resolvers": "^5.2.2",
+    "@lodev09/react-native-true-sheet": "^3.7.0",
     "@notifee/react-native": "^9.1.8",
     "@nozbe/watermelondb": "^0.28.0",
     "@react-native-community/blur": "^4.4.1",

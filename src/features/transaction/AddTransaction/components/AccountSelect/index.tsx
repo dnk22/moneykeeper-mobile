@@ -3,12 +3,11 @@ import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useFocusEffect } from '@react-navigation/native';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { TAccount } from 'database/types';
 import { showToast } from 'utils/system';
 import AccountList from './AccountList';
 import InputSelection from 'components/InputSelection';
-import BottomSheet from 'components/BottomSheetModal';
+import BottomSheet, { TrueSheet } from 'components/BottomSheetModal';
 import { accountLocalQuery } from 'database/querying';
 
 type AccountProp = {
@@ -33,7 +32,7 @@ function AccountSelect({
 }: AccountSelectProps) {
   const { control, setValue, getValues } = useFormContext<any>();
 
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const bottomSheetModalRef = useRef<TrueSheet>(null);
   const [accountSelected, setAccountSelected] = useState<AccountProp | undefined>(undefined);
 
   const accountId = useWatch({
@@ -102,7 +101,7 @@ function AccountSelect({
         subTitle={subTitle}
         onSelect={handleOnSelectAccount}
       />
-      <BottomSheet ref={bottomSheetModalRef} index={1} snapPoints={['80%']}>
+      <BottomSheet ref={bottomSheetModalRef}>
         <AccountList
           excludeId={getValues(excludeId)}
           isItemSelected={getValues(name)}
