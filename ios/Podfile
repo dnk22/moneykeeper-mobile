@@ -52,6 +52,7 @@ target 'moneykeeper' do
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
         config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
+        config.build_settings['COMPILER_INDEX_STORE_ENABLE'] = 'NO'
       end
     end
   end

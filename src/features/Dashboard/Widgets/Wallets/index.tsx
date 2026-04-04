@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { accountLocalQuery } from 'database/querying';
 import PressableHaptic from 'components/PressableHaptic';
 import ImageComponent from 'components/ImageComponent';
 import RNText from 'components/Text';
@@ -13,6 +12,7 @@ import { ACCOUNT_CATEGORY_ID } from 'utils/constants/account';
 import { TAccount } from 'database/types';
 import DemoAccount from './DemoAccount';
 import styles from './styles';
+import { accountLocalQuery } from 'database/querying';
 
 // Định nghĩa kiểu dữ liệu cho account
 
