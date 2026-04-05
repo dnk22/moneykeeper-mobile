@@ -1,7 +1,5 @@
 ENV['RCT_NEW_ARCH_ENABLED'] = '1'
 
-require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
-
 # Resolve react_native_pods.rb with node to allow for hoisting
 def node_require(script)
   require Pod::Executable.execute_command('node', ['-p',
@@ -23,24 +21,7 @@ setup_permissions([
 ])
 
 target 'moneykeeper' do
-  use_expo_modules!
- 
-  if ENV['EXPO_USE_COMMUNITY_AUTOLINKING'] == '1'
-    config_command = ['node', '-e', "process.argv=['', '', 'config'];require('@react-native-community/cli').run()"];
-  else
-    config_command = [
-      'node',
-      '--no-warnings',
-      '--eval',
-      'require(require.resolve(\'expo-modules-autolinking\', { paths: [require.resolve(\'expo/package.json\')] }))(process.argv.slice(1))',
-      'react-native-config',
-      '--json',
-      '--platform',
-      'ios'
-    ]
-  end
- 
-  config = use_native_modules!(config_command)
+  config = use_native_modules!
 
   # 2. Quan trọng cho Swift & Firebase
   use_frameworks! :linkage => :static
@@ -56,14 +37,6 @@ target 'moneykeeper' do
   # 4. Các thư viện đặc thù không autolink hoàn toàn hoặc cần config riêng
   pod 'simdjson', path: '../node_modules/@nozbe/simdjson'
   
-  post_integrate do |installer|
-    begin
-      expo_patch_react_imports!(installer)
-    rescue => e
-      Pod::UI.warn e
-    end
-  end
-
   post_install do |installer|
     # 5. Đảm bảo config hệ thống của React Native được thực thi
     react_native_post_install(

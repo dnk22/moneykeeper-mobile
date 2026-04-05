@@ -1,46 +1,22 @@
 import UIKit
-import Expo
 import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
 import Firebase
 
 @main
-class AppDelegate: ExpoAppDelegate {
-  var window: UIWindow?
-
-  var reactNativeDelegate: ReactNativeDelegate?
-  var reactNativeFactory: RCTReactNativeFactory?
+class AppDelegate: RCTAppDelegate {
 
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
     FirebaseApp.configure()
-    let delegate = ReactNativeDelegate()
-    let factory = ExpoReactNativeFactory(delegate: delegate)
-    delegate.dependencyProvider = RCTAppDependencyProvider()
-
-    reactNativeDelegate = delegate
-    reactNativeFactory = factory
-    bindReactNativeFactory(factory)
-
-    window = UIWindow(frame: UIScreen.main.bounds)
-
-    factory.startReactNative(
-      withModuleName: "moneykeeper",
-      in: window,
-      launchOptions: launchOptions
-    )
+    moduleName = "moneykeeper"
+    dependencyProvider = RCTAppDependencyProvider()
+    initialProps = [:]
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
-  }
-}
-
-class ReactNativeDelegate: ExpoReactNativeFactoryDelegate {
-  override func sourceURL(for bridge: RCTBridge) -> URL? {
-    // needed to return the correct URL for expo-dev-client.
-    bridge.bundleURL ?? bundleURL()
   }
 
   override func bundleURL() -> URL? {
