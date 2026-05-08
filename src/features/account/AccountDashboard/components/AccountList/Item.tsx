@@ -52,12 +52,12 @@ function AccountItem({ account }: ItemProps) {
             {account.accountName}
           </RNText>
           <PressableHaptic style={styles.itemAction} onPress={() => onActionPress(account)}>
-            <More size="26" color={colors.text} />
+            <More size="24" color={colors.text} />
           </PressableHaptic>
         </View>
         <View style={[styles.divider, { backgroundColor: colors.divider }]} />
         <View style={styles.itemFooter}>
-          <RNText color={colors.textSecondary} fontSize={13}>
+          <RNText color={colors.textSecondary} fontSize={12}>
             Số dư hiện tại
           </RNText>
           <RNText

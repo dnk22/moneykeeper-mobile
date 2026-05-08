@@ -8,16 +8,13 @@ export const accountDashboardStyles = StyleSheet.create({
     padding: 12,
     gap: 4,
   },
-  overviewWrapper: {
-    overflow: 'hidden',
-  },
   overviewInitial: {
-    marginBottom: 12,
+    marginBottom: 16,
   },
   accountWrapper: {
     flex: 1,
-    padding: 12,
-    paddingBottom: 6,
+    paddingLeft: 12,
+    paddingVertical: 8,
   },
   pagerContainer: {
     flex: 1,

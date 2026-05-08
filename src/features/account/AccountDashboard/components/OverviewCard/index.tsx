@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { View } from 'react-native';
 import RNText from 'components/Text';
 import PressableHaptic from 'components/PressableHaptic';
-import ImageComponent from 'components/ImageComponent';
+import SvgIcon from 'components/SvgIcon';
 import { Eye, EyeSlash } from 'iconsax-react-native';
 import { overviewCardStyles as styles } from './styles';
 import { formatNumber } from 'utils/math';
@@ -22,10 +22,10 @@ function OverviewCard({ totalAsset, colors }: OverviewCardProps) {
 
   const totalAssetText = useMemo(() => {
     if (isHideTotalAsset) {
-      return 'VND ********';
+      return '********';
     }
 
-    return `VND ${formatNumber(totalAsset)}`;
+    return `${formatNumber(totalAsset)}`;
   }, [isHideTotalAsset, totalAsset]);
 
   return (
@@ -39,7 +39,7 @@ function OverviewCard({ totalAsset, colors }: OverviewCardProps) {
         ]}
       >
         <View style={styles.overviewAmountRow}>
-          <RNText color={colors.textSecondary}>Tổng tài sản</RNText>
+          <RNText fontSize={12}>Tổng tài sản</RNText>
           <PressableHaptic onPress={() => setIsHideTotalAsset(!isHideTotalAsset)}>
             {isHideTotalAsset ? (
               <Eye size={20} color={colors.text} />
@@ -49,19 +49,24 @@ function OverviewCard({ totalAsset, colors }: OverviewCardProps) {
           </PressableHaptic>
         </View>
         <RNText fontSize={20} style={styles.overviewAmount}>
+          <RNText fontSize={18} color={colors.textSecondary}>
+            VND{' '}
+          </RNText>
           {totalAssetText}
         </RNText>
       </View>
-      <View
-        style={[
-          styles.chartCard,
-          {
-            borderColor: colors.divider,
-          },
-        ]}
-      >
-        <ImageComponent name="investment" size={32} />
-      </View>
+      <PressableHaptic onPress={() => {}}>
+        <View
+          style={[
+            styles.chartCard,
+            {
+              borderColor: colors.divider,
+            },
+          ]}
+        >
+          <SvgIcon name="pieChart" size={40} />
+        </View>
+      </PressableHaptic>
     </View>
   );
 }

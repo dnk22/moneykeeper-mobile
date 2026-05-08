@@ -10,14 +10,14 @@ export const accountTypeTabsStyles = StyleSheet.create({
   },
   tabItem: {
     borderWidth: 1,
-    height: 36,
+    height: 34,
     borderRadius: 999,
     paddingHorizontal: 22,
     justifyContent: 'center',
     alignItems: 'center',
   },
   tabText: {
-    fontSize: 18,
+    fontSize: 16,
   },
 });
 

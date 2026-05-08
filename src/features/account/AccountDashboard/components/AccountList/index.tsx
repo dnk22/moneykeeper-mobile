@@ -61,6 +61,7 @@ function AccountList({
       }}
       contentContainerStyle={{
         paddingBottom: 180,
+        paddingRight:12
       }}
     />
   );

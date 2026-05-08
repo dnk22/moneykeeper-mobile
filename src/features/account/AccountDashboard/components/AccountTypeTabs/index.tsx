@@ -47,7 +47,11 @@ function AccountTypeTabs({ pageIndex, onChangePageIndex, colors }: AccountTypeTa
               ]}
               onPress={() => onChangePageIndex(index)}
             >
-              <RNText color={isActive ? '#ffffff' : colors.text} style={styles.tabText}>
+              <RNText
+                fontSize={14}
+                color={isActive ? '#ffffff' : colors.text}
+                style={styles.tabText}
+              >
                 {accountType.name}
               </RNText>
             </PressableHaptic>

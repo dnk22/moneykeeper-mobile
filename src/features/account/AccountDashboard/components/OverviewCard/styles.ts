@@ -8,9 +8,9 @@ export const overviewCardStyles = StyleSheet.create({
   overviewCard: {
     flex: 1,
     padding: 16,
-    paddingVertical: 12,
+    paddingVertical: 8,
     borderWidth: 1,
-    borderRadius: 14,
+    borderRadius: 12,
     justifyContent: 'center',
     gap: 6,
   },
@@ -28,7 +28,8 @@ export const overviewCardStyles = StyleSheet.create({
   },
   chartCard: {
     width: 80,
-    borderRadius: 14,
+    flex: 1,
+    borderRadius: 12,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',

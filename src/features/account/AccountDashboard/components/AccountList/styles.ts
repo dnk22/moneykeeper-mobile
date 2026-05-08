@@ -4,11 +4,12 @@ const styles = StyleSheet.create({
   itemContainer: {
     marginBottom: 5,
     borderRadius: 8,
+    
   },
   itemContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    columnGap: 12,
+    columnGap: 10,
     padding: 12,
   },
   itemCenter: {
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
     rowGap: 5,
   },
   itemAction: {
-    width: 30,
+    width: 50,
     height: 30,
     justifyContent: 'center',
     alignItems: 'center',
@@ -28,8 +29,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   divider: {
-    height: 1,
-    marginHorizontal: 20,
+    height: 0.5,
+    marginHorizontal: 12,
   },
   itemTitle: {
     fontWeight: '500',
@@ -42,8 +43,8 @@ const styles = StyleSheet.create({
     marginTop: '50%',
   },
   itemIcon: {
-    width: 40,
-    height: 40,
+    width: 28,
+    height: 28,
   },
 });
 

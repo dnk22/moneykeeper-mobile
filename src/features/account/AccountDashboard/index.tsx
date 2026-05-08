@@ -8,7 +8,6 @@ import { AccountContext } from './context';
 import OverviewCard from './components/OverviewCard';
 import AccountTypeTabs from './components/AccountTypeTabs';
 import useAccountDashboard from './hooks/useAccountDashboard';
-import useAccountDashboardHeader from './hooks/useAccountDashboardHeader';
 import { accountDashboardStyles as styles } from './styles';
 import userHeaderOptions from './hooks/userHeaderOptions';
 import { useCustomTheme } from 'resources/theme';
@@ -27,21 +26,12 @@ function AccountDashboard() {
     pageIndex,
     accountData,
     fetchAccounts,
-    onChangePageIndex,
     openActionModal,
     closeActionModal,
-    setPageIndex,
-  } = useAccountDashboard();
-
-  const {
     totalAsset,
     onTabChange,
     onPageSelected,
-  } = useAccountDashboardHeader({
-    accountData,
-    setPageIndex,
-    onChangePageIndex,
-  });
+  } = useAccountDashboard();
 
   return (
     <AccountContext.Provider
@@ -51,7 +41,7 @@ function AccountDashboard() {
     >
       <View style={[styles.container, { backgroundColor: colors.surface }]}>
         <View style={styles.headerContainer}>
-          <View style={[styles.overviewWrapper, styles.overviewInitial]}>
+          <View style={[styles.overviewInitial]}>
             <OverviewCard totalAsset={totalAsset} colors={colors} />
           </View>
           <AccountTypeTabs pageIndex={pageIndex} onChangePageIndex={onTabChange} colors={colors} />

@@ -29,7 +29,7 @@ export const ACCOUNT_TYPE_LIST: TAccountType[] = [
   },
   {
     id: ACCOUNT_CATEGORY_ID.BANK,
-    name: 'Tài khoản ngân hàng',
+    name: 'Ngân hàng',
     icon: 'bank',
   },
   {
@@ -39,7 +39,7 @@ export const ACCOUNT_TYPE_LIST: TAccountType[] = [
   },
   {
     id: ACCOUNT_CATEGORY_ID.INVESTMENT,
-    name: 'Tài khoản đầu tư',
+    name: 'Đầu tư',
     icon: 'investment',
   },
   {

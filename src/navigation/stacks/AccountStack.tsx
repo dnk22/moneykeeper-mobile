@@ -19,9 +19,7 @@ function AccountNavigation() {
     >
       <AccountStack.Screen
         name={ROUTES.ACCOUNT_TAB}
-        options={({ navigation }) => ({
-          title: 'Tài khoản',
-        })}
+        options={{ title: 'Tài khoản' }}
         component={AccountDashboard}
       />
       {SharedScreens({ stack: AccountStack })}

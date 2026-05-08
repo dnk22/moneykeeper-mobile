@@ -77,8 +77,10 @@ import contactBookReport from './contactBookReport.svg';
 import expenseIncomeReport from './expenseIncomeReport.svg';
 import debtLoanReport from './debtLoanReport.svg';
 import expenseIncomeAnalyzeReport from './expenseIncomeAnalyzeReport.svg';
+import pieChart from './pieChart.svg';
 
 export {
+  pieChart,
   expenseIncomeAnalyzeReport,
   debtLoanReport,
   expenseIncomeReport,
