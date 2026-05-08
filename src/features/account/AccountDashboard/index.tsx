@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, View } from 'react-native';
+import { View } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import { ACCOUNT_TYPE_ALL, ACCOUNT_TYPE_LIST } from 'utils/constants/account';
 import AccountList from './components/AccountList';
@@ -35,15 +35,10 @@ function AccountDashboard() {
 
   const {
     totalAsset,
-    onOverviewLayout,
-    onListScrollOffsetChange,
     onTabChange,
     onPageSelected,
-    isOverviewMeasured,
-    overviewAnimatedStyle,
   } = useAccountDashboardHeader({
     accountData,
-    pageIndex,
     setPageIndex,
     onChangePageIndex,
   });
@@ -56,16 +51,9 @@ function AccountDashboard() {
     >
       <View style={[styles.container, { backgroundColor: colors.surface }]}>
         <View style={styles.headerContainer}>
-          <Animated.View
-            style={[
-              styles.overviewWrapper,
-              isOverviewMeasured ? overviewAnimatedStyle : styles.overviewInitial,
-            ]}
-          >
-            <View onLayout={onOverviewLayout}>
-              <OverviewCard totalAsset={totalAsset} colors={colors} />
-            </View>
-          </Animated.View>
+          <View style={[styles.overviewWrapper, styles.overviewInitial]}>
+            <OverviewCard totalAsset={totalAsset} colors={colors} />
+          </View>
           <AccountTypeTabs pageIndex={pageIndex} onChangePageIndex={onTabChange} colors={colors} />
         </View>
 
@@ -85,7 +73,6 @@ function AccountDashboard() {
                       : accountData.filter((item) => item.accountTypeId === accountType.id)
                   }
                   onRefresh={fetchAccounts}
-                  onScrollOffsetChange={(offsetY) => onListScrollOffsetChange(index, offsetY)}
                 />
               </View>
             ))}
