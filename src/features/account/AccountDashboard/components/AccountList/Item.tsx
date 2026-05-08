@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import React, { View } from 'react-native';
+import { View } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import { ROUTES } from 'navigation/constants/routes';
@@ -14,7 +14,7 @@ import { AccountContext } from 'features/account/AccountDashboard/context';
 import { TAccount } from 'database/types';
 import { More } from 'iconsax-react-native';
 import ImageComponent from 'components/ImageComponent';
-import { accountListStyles as styles } from '../../styles';
+import styles from './styles';
 
 type ItemProps = {
   account: TAccount;
@@ -44,32 +44,33 @@ function AccountItem({ account }: ItemProps) {
   };
 
   return (
-    <View style={styles.itemContainer}>
-      <TouchableHighlightComponent onPress={onHandleItemPress}>
+    <TouchableHighlightComponent onPress={onHandleItemPress}>
+      <View style={[styles.itemContainer, { backgroundColor: colors.surface }]}>
         <View style={styles.itemContent}>
           <ImageComponent name={account.accountLogo} style={styles.itemIcon} />
-          <View style={styles.itemCenter}>
-            <RNText numberOfLines={1} fontSize={16} style={styles.itemTitle}>
-              {account.accountName}
-            </RNText>
-            <RNText
-              numberOfLines={1}
-              fontSize={13}
-              style={styles.itemSubTitle}
-              color={(account.closingAmount ?? 0) < 0 ? 'red' : colors.text}
-            >
-              {formatNumber(account.closingAmount, true)}
-            </RNText>
-          </View>
-          <PressableHaptic
-            style={styles.itemAction}
-            onPress={() => onActionPress && onActionPress(account)}
-          >
+          <RNText numberOfLines={1} fontSize={16} style={styles.itemTitle}>
+            {account.accountName}
+          </RNText>
+          <PressableHaptic style={styles.itemAction} onPress={() => onActionPress(account)}>
             <More size="26" color={colors.text} />
           </PressableHaptic>
         </View>
-      </TouchableHighlightComponent>
-    </View>
+        <View style={[styles.divider, { backgroundColor: colors.divider }]} />
+        <View style={styles.itemFooter}>
+          <RNText color={colors.textSecondary} fontSize={13}>
+            Số dư hiện tại
+          </RNText>
+          <RNText
+            numberOfLines={1}
+            fontSize={14}
+            style={styles.itemSubTitle}
+            color={(account.closingAmount ?? 0) < 0 ? 'red' : colors.text}
+          >
+            {formatNumber(account.closingAmount, true)}
+          </RNText>
+        </View>
+      </View>
+    </TouchableHighlightComponent>
   );
 }
 export default AccountItem;

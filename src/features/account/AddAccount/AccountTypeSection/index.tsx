@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import InputSelection from 'components/InputSelection';
 import { useFormContext } from 'react-hook-form';
-import { ACCOUNT_TYPE_LIST } from 'utils/constants/account';
+import {
+  ACCOUNT_CATEGORY_ID,
+  ACCOUNT_TYPE_LIST,
+  getAccountTypeById,
+} from 'utils/constants/account';
 import { TAccountType } from 'database/types';
 import ModalComponent from 'components/Modal';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
@@ -12,7 +16,7 @@ import { useCustomTheme } from 'resources/theme';
 import ImageComponent from 'components/ImageComponent';
 import styles from './styles';
 
-const BANK_ACCOUNT_TYPE = [ACCOUNT_TYPE_LIST[1].id, ACCOUNT_TYPE_LIST[2].id];
+const BANK_ACCOUNT_TYPE = [ACCOUNT_CATEGORY_ID.BANK, ACCOUNT_CATEGORY_ID.CREDITCARD];
 
 function AccountTypeSelect({ accountTypeId }: { accountTypeId: number }) {
   const { colors } = useCustomTheme();
@@ -20,7 +24,7 @@ function AccountTypeSelect({ accountTypeId }: { accountTypeId: number }) {
   const formMethods = useFormContext();
   const { setValue, getValues } = formMethods;
 
-  const currentAccountType = ACCOUNT_TYPE_LIST[accountTypeId];
+  const currentAccountType = getAccountTypeById(accountTypeId);
 
   const onToggleModal = () => {
     toggle(!isVisible);

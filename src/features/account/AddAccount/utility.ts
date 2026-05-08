@@ -1,5 +1,5 @@
 import { TAccount } from 'database/types';
-import { ACCOUNT_TYPE_LIST } from 'utils/constants/account';
+import { DEFAULT_ACCOUNT_TYPE } from 'utils/constants/account';
 import { formatNumberGroups } from 'utils/math';
 
 export const formatDataBeforeSubmit = (data: TAccount) => ({
@@ -11,5 +11,5 @@ export const formatDataBeforeSubmit = (data: TAccount) => ({
 export const formatDataDetail = (data: TAccount) => ({
   ...data,
   initialAmount: formatNumberGroups(String(data.initialAmount)),
-  accountTypeId: data.accountTypeId || ACCOUNT_TYPE_LIST[0].id,
+  accountTypeId: data.accountTypeId || DEFAULT_ACCOUNT_TYPE.id,
 });

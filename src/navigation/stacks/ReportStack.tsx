@@ -20,6 +20,7 @@ function ReportNavigation() {
           backgroundColor: colors.primary,
         },
         headerTintColor: 'white',
+        headerBackButtonDisplayMode: 'minimal',
       }}
     >
       <ReportStack.Screen

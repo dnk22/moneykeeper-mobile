@@ -2,14 +2,16 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   modal: {
+    flex: 1,
     margin: 0,
-    justifyContent: 'flex-end',
   },
   modalView: {
     flexDirection: 'column',
     borderRadius: 8,
     padding: 10,
     paddingBottom: 40,
+    width: '100%',
+    alignSelf: 'flex-end',
   },
   modalAction: {
     alignItems: 'flex-end',

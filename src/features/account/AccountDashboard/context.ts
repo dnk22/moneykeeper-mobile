@@ -2,7 +2,7 @@ import { createContext } from 'react';
 import { TAccount } from 'database/types';
 
 export const AccountContext = createContext<{
-  onActionPress: (T: TAccount) => void;
+  onActionPress: (account: TAccount) => void;
 }>({
-  onActionPress: (T: TAccount) => {},
+  onActionPress: (_account: TAccount) => {},
 });

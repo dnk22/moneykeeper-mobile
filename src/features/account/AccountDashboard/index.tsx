@@ -1,57 +1,100 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Animated, View } from 'react-native';
 import PagerView from 'react-native-pager-view';
+import { ACCOUNT_TYPE_ALL, ACCOUNT_TYPE_LIST } from 'utils/constants/account';
 import AccountList from './components/AccountList';
 import ItemSettingsModal from './components/ItemSettingsModal';
 import { AccountContext } from './context';
-import Header from './components/Header';
-import AddButton from './components/AddButton';
-import useHook from './useHook';
+import OverviewCard from './components/OverviewCard';
+import AccountTypeTabs from './components/AccountTypeTabs';
+import useAccountDashboard from './hooks/useAccountDashboard';
+import useAccountDashboardHeader from './hooks/useAccountDashboardHeader';
 import { accountDashboardStyles as styles } from './styles';
+import userHeaderOptions from './hooks/userHeaderOptions';
+import { useCustomTheme } from 'resources/theme';
 
-function Accounts() {
+const ACCOUNT_TYPE_TABS = [ACCOUNT_TYPE_ALL, ...ACCOUNT_TYPE_LIST];
+
+function AccountDashboard() {
+  const { colors } = useCustomTheme();
+
+  userHeaderOptions({ colors });
+
   const {
     isShowModal,
     currentAccountPressed,
     pagerViewRef,
-    colors,
     pageIndex,
     accountData,
     fetchAccounts,
     onChangePageIndex,
-    onActionPress,
+    openActionModal,
+    closeActionModal,
     setPageIndex,
-  } = useHook();
+  } = useAccountDashboard();
+
+  const {
+    totalAsset,
+    onOverviewLayout,
+    onListScrollOffsetChange,
+    onTabChange,
+    onPageSelected,
+    isOverviewMeasured,
+    overviewAnimatedStyle,
+  } = useAccountDashboardHeader({
+    accountData,
+    pageIndex,
+    setPageIndex,
+    onChangePageIndex,
+  });
 
   return (
     <AccountContext.Provider
       value={{
-        onActionPress,
+        onActionPress: openActionModal,
       }}
     >
-      <View style={[styles.container]}>
-        <View style={[styles.accountWrapper, { backgroundColor: colors.surface }]}>
-          <Header colors={colors} isActive={!pageIndex} setPageIndex={onChangePageIndex} />
+      <View style={[styles.container, { backgroundColor: colors.surface }]}>
+        <View style={styles.headerContainer}>
+          <Animated.View
+            style={[
+              styles.overviewWrapper,
+              isOverviewMeasured ? overviewAnimatedStyle : styles.overviewInitial,
+            ]}
+          >
+            <View onLayout={onOverviewLayout}>
+              <OverviewCard totalAsset={totalAsset} colors={colors} />
+            </View>
+          </Animated.View>
+          <AccountTypeTabs pageIndex={pageIndex} onChangePageIndex={onTabChange} colors={colors} />
+        </View>
+
+        <View style={[styles.accountWrapper, { backgroundColor: colors.background }]}>
           <PagerView
             ref={pagerViewRef}
             style={styles.pagerContainer}
             initialPage={pageIndex}
-            onPageSelected={(e) => setPageIndex(e.nativeEvent.position)}
-            scrollEnabled={false}
+            onPageSelected={(e) => onPageSelected(e.nativeEvent.position)}
           >
-            <View key={0}>
-              <AccountList data={accountData} onRefresh={fetchAccounts} />
-            </View>
-            <View key={1}>
-              <AccountList data={accountData} isActive={false} onRefresh={fetchAccounts} />
-            </View>
+            {ACCOUNT_TYPE_TABS.map((accountType, index) => (
+              <View key={accountType.id.toString()}>
+                <AccountList
+                  data={
+                    accountType.id === ACCOUNT_TYPE_ALL.id
+                      ? accountData
+                      : accountData.filter((item) => item.accountTypeId === accountType.id)
+                  }
+                  onRefresh={fetchAccounts}
+                  onScrollOffsetChange={(offsetY) => onListScrollOffsetChange(index, offsetY)}
+                />
+              </View>
+            ))}
           </PagerView>
-          {!pageIndex && <AddButton colors={colors.primary} />}
         </View>
       </View>
       <ItemSettingsModal
         isShowModal={isShowModal}
-        onToggleModal={onActionPress}
+        onToggleModal={closeActionModal}
         currentAccount={currentAccountPressed.current}
         onRefresh={fetchAccounts}
       />
@@ -59,4 +102,4 @@ function Accounts() {
   );
 }
 
-export default Accounts;
+export default AccountDashboard;

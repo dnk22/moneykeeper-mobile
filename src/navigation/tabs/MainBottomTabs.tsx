@@ -17,7 +17,7 @@ const BottomTab = createBottomTabNavigator<MainTabStackParamsList>();
 function MainNavigation() {
   return (
     <BottomTab.Navigator
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ headerShown: false, headerBackButtonDisplayMode: 'minimal' }}
       initialRouteName={ROUTES.DASHBOARD}
       tabBar={(props) => <MainBottomBar {...props} />}
     >

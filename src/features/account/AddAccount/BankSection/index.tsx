@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { CommonActions, useFocusEffect, useNavigation } from '@react-navigation/native';
 import InputSelection from 'components/InputSelection';
-import { ACCOUNT_CATEGORY_ID, ACCOUNT_TYPE_LIST, BANK_TYPE } from 'utils/constants/account';
+import { ACCOUNT_CATEGORY_ID, BANK_TYPE, getAccountTypeById } from 'utils/constants/account';
 import { ROUTES } from 'navigation/constants/routes';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { fetchBankList } from 'services/api/banks';
@@ -71,7 +71,7 @@ function BankSection({ bankIdParam }: { bankIdParam?: string }) {
 
   const handleDeleteBank = () => {
     setValue('bankId', '');
-    setValue('accountLogo', ACCOUNT_TYPE_LIST[getValues('accountTypeId')].icon);
+    setValue('accountLogo', getAccountTypeById(getValues('accountTypeId')).icon);
   };
 
   useEffect(() => {

@@ -16,7 +16,7 @@ export const roundMaxFixed = (num: number, decimals: number): number => {
 export const formatNumber = (
   num: number | string | undefined,
   isShowPrefix = false,
-  comma = '.',
+  comma = ',',
 ) => {
   if (num === undefined || num === null) {
     return `0${isShowPrefix ? ' ₫' : ''}`;

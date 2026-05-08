@@ -19,7 +19,7 @@ function Switch({
       ios_backgroundColor={ios_backgroundColor || '#3e3e3e'}
       trackColor={trackColor || { true: colors.primary }}
       onValueChange={onValueChange}
-      style={[style]}
+      style={style}
       value={value}
       {...rest}
     />

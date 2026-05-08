@@ -28,14 +28,14 @@ function ItemSettingsModal({
   isShowModal: boolean;
   onToggleModal: () => void;
   onRefresh: (redirect?: boolean) => void;
-  currentAccount: TAccount;
+  currentAccount: TAccount | null;
 }) {
   const { colors } = useCustomTheme();
   const navigation = useNavigation<AccountParamListProps['navigation']>();
   const isDisabledAction = !currentAccount?.isActive;
 
   const onOk = () => {
-    if (currentAccount.id) {
+    if (currentAccount?.id) {
       requestDeleteAccount(currentAccount.id)
         .then(() => {
           onToggleModal();
@@ -88,7 +88,7 @@ function ItemSettingsModal({
         onConfirmDelete();
         break;
       default:
-        if (currentAccount?.id) {
+        if (currentAccount && currentAccount.id) {
           changeAccountStatusById(currentAccount)
             .then(() => onRefresh(true))
             .catch((error) => {
@@ -109,51 +109,46 @@ function ItemSettingsModal({
       onToggleModal={onToggleModal}
       styleDefaultContent={{ padding: 5 }}
     >
-      <View>
-        <TouchableHighlightComponent
-          onPress={() => onItemPress(TRANSFER)}
-          isDisable={isDisabledAction}
-        >
-          <View style={styles.item}>
-            <MoneySend size={28} color={colors.primary} variant="Broken" />
-            <RNText>Chuyển khoản</RNText>
-          </View>
-        </TouchableHighlightComponent>
-        <TouchableHighlightComponent
-          onPress={() => onItemPress(ADJUSTMENT)}
-          isDisable={isDisabledAction}
-        >
-          <View style={styles.item}>
-            <Math size="28" color={colors.primary} variant="Broken" />
-            <RNText>Điều chỉnh số dư tài khoản</RNText>
-          </View>
-        </TouchableHighlightComponent>
-        <TouchableHighlightComponent onPress={() => onItemPress(EDIT)} isDisable={isDisabledAction}>
-          <View style={styles.item}>
-            <CardEdit size="28" color={colors.primary} variant="Broken" />
-            <RNText>Sửa tài khoản</RNText>
-          </View>
-        </TouchableHighlightComponent>
-        <TouchableHighlightComponent onPress={() => onItemPress(INACTIVE)}>
-          <View style={styles.item}>
-            {isDisabledAction ? (
-              <Unlock size="28" color={colors.primary} variant="Broken" />
-            ) : (
-              <Lock1 size="28" color={colors.error} variant="Broken" />
-            )}
-            <RNText>{isDisabledAction ? 'Tái sử dụng' : 'Ngừng sử dụng'}</RNText>
-          </View>
-        </TouchableHighlightComponent>
-        <TouchableHighlightComponent
-          onPress={() => onItemPress(DELETE)}
-          isDisable={isDisabledAction}
-        >
-          <View style={styles.item}>
-            <BagCross size="28" color={colors.error} variant="Broken" />
-            <RNText>Xóa tài khoản</RNText>
-          </View>
-        </TouchableHighlightComponent>
-      </View>
+      <TouchableHighlightComponent
+        onPress={() => onItemPress(TRANSFER)}
+        isDisable={isDisabledAction}
+      >
+        <View style={styles.item}>
+          <MoneySend size={28} color={colors.primary} variant="Broken" />
+          <RNText>Chuyển khoản</RNText>
+        </View>
+      </TouchableHighlightComponent>
+      <TouchableHighlightComponent
+        onPress={() => onItemPress(ADJUSTMENT)}
+        isDisable={isDisabledAction}
+      >
+        <View style={styles.item}>
+          <Math size="28" color={colors.primary} variant="Broken" />
+          <RNText>Điều chỉnh số dư tài khoản</RNText>
+        </View>
+      </TouchableHighlightComponent>
+      <TouchableHighlightComponent onPress={() => onItemPress(EDIT)} isDisable={isDisabledAction}>
+        <View style={styles.item}>
+          <CardEdit size="28" color={colors.primary} variant="Broken" />
+          <RNText>Sửa tài khoản</RNText>
+        </View>
+      </TouchableHighlightComponent>
+      <TouchableHighlightComponent onPress={() => onItemPress(INACTIVE)}>
+        <View style={styles.item}>
+          {isDisabledAction ? (
+            <Unlock size="28" color={colors.primary} variant="Broken" />
+          ) : (
+            <Lock1 size="28" color={colors.error} variant="Broken" />
+          )}
+          <RNText>{isDisabledAction ? 'Tái sử dụng' : 'Ngừng sử dụng'}</RNText>
+        </View>
+      </TouchableHighlightComponent>
+      <TouchableHighlightComponent onPress={() => onItemPress(DELETE)} isDisable={isDisabledAction}>
+        <View style={styles.item}>
+          <BagCross size="28" color={colors.error} variant="Broken" />
+          <RNText>Xóa tài khoản</RNText>
+        </View>
+      </TouchableHighlightComponent>
     </ModalComponent>
   );
 }

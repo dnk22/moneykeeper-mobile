@@ -3,7 +3,7 @@ import { TAccount } from 'database/types';
 import { ROUTES } from 'navigation/constants/routes';
 import { useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import { ACCOUNT_TYPE_LIST, ADD_ACCOUNT_DEFAULT_VALUES } from 'utils/constants/account';
+import { ACCOUNT_CATEGORY_ID, ADD_ACCOUNT_DEFAULT_VALUES } from 'utils/constants/account';
 import { formatDataBeforeSubmit, formatDataDetail } from './utility';
 import { requestDeleteAccount, requestUpdateAccount } from 'services/api/accounts';
 import { useAppDispatch } from 'store/index';
@@ -26,7 +26,7 @@ const useFormHooks = (accountId?: string) => {
     useWatch({
       control,
       name: 'accountTypeId',
-    }) === ACCOUNT_TYPE_LIST[2].id;
+    }) === ACCOUNT_CATEGORY_ID.CREDITCARD;
 
   const accountTypeId = useWatch({
     control,
@@ -37,7 +37,12 @@ const useFormHooks = (accountId?: string) => {
     if (navigation.canGoBack()) {
       navigation.goBack();
     } else {
-      navigation.navigate(ROUTES.ACCOUNT_TAB);
+      navigation.navigate(ROUTES.MAIN, {
+        screen: ROUTES.ACCOUNT,
+        params: {
+          screen: ROUTES.ACCOUNT_TAB,
+        },
+      });
     }
   };
 

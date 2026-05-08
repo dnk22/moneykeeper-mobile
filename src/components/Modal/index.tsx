@@ -30,6 +30,7 @@ export interface IModalComponentProps extends NewModalProps {
   styleDefaultContent?: StyleProp<any>;
   title?: string;
   disabledBackDropClose?: boolean;
+  alignment?: 'flex-start' | 'center' | 'flex-end';
 }
 
 const ModalComponent = ({
@@ -44,6 +45,7 @@ const ModalComponent = ({
   onBackdropPress,
   disabledBackDropClose = false,
   onToggleModal,
+  alignment = 'flex-end',
   title,
   ...rest
 }: IModalComponentProps) => {
@@ -79,7 +81,7 @@ const ModalComponent = ({
     <Modal
       visible={!!isVisible}
       transparent
-      animationType={Platform.OS === 'ios' ? 'fade' : 'slide'}
+      animationType="fade"
       onRequestClose={onToggleModal}
       {...rest}
     >
@@ -89,13 +91,7 @@ const ModalComponent = ({
         accessibilityRole="button"
         accessible={true}
       >
-        <Animated.View
-          style={[
-            styles.modal,
-            style,
-            { opacity, justifyContent: 'center', alignItems: 'center', flex: 1 },
-          ]}
-        >
+        <Animated.View style={[styles.modal, style, { opacity, justifyContent: alignment }]}>
           <View
             style={[
               styles.modalView,

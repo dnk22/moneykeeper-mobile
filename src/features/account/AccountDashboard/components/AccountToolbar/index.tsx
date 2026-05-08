@@ -14,7 +14,7 @@ import { appSettingsFb } from 'services/firebase/db/appSettings';
 import { FB_PATH } from 'services/firebase/config';
 import { syncQueueLocalQuery } from 'database/querying';
 import { SyncQueueAction } from 'database/models/syncQueue.model';
-import { Autobrightness, Link, Setting5, Sort } from 'iconsax-react-native';
+import { Autobrightness, Link, Setting4, Sort } from 'iconsax-react-native';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 
@@ -64,10 +64,16 @@ function Toolbar() {
             </RNText>
             <View style={styles.groupContent}>
               <View style={styles.groupItem}>
-                <Link color={colors.primaryVariant} />
-                <RNText preset="textMedium">Nhóm theo loại tài khoản</RNText>
+                <Link size={22} color={colors.primaryVariant} />
+                <RNText numberOfLines={undefined} preset="textMedium">
+                  Nhóm theo loại tài khoản
+                </RNText>
               </View>
-              <Switch value={groupByType} onValueChange={onGroupChange} />
+              <Switch
+                style={[{ marginTop: 10 }]}
+                value={groupByType}
+                onValueChange={onGroupChange}
+              />
             </View>
           </View>
           <View style={styles.group}>
@@ -77,7 +83,7 @@ function Toolbar() {
             <TouchableHighlightComponent disabled={groupByType} onPress={() => onSortChange(true)}>
               <View style={styles.groupContent}>
                 <View style={styles.groupItem}>
-                  <Autobrightness color={colors.primaryVariant} />
+                  <Autobrightness size={22} color={colors.primaryVariant} />
                   <RNText preset="textMedium">Tên tài khoản</RNText>
                 </View>
                 {sortByName && <CheckboxComponent type="radio" check />}
@@ -86,17 +92,17 @@ function Toolbar() {
             <TouchableHighlightComponent disabled={groupByType} onPress={() => onSortChange(false)}>
               <View style={styles.groupContent}>
                 <View style={styles.groupItem}>
-                  <Sort color={colors.primaryVariant} />
+                  <Sort size={22} color={colors.primaryVariant} />
                   <RNText preset="textMedium">Tự chọn</RNText>
                 </View>
-                {!sortByName && <CheckboxComponent type="radio" check />}
+                {!sortByName && <CheckboxComponent checkbox check />}
               </View>
             </TouchableHighlightComponent>
           </View>
         </View>
       </ModalComponent>
       <PressableHaptic onPress={onToggleModal}>
-        <Setting5 size="28" color="white" variant="Bold" />
+        <Setting4 size="26" color={colors.text} />
       </PressableHaptic>
     </>
   );

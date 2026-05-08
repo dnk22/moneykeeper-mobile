@@ -22,6 +22,7 @@ function DashboardNavigation() {
           backgroundColor: colors.primary,
         },
         headerTintColor: 'white',
+        headerBackButtonDisplayMode: 'minimal',
       }}
     >
       <TransactionStack.Screen

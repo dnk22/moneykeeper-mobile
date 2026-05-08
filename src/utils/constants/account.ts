@@ -6,7 +6,6 @@ export enum ACCOUNT_CATEGORY_ID {
   CREDITCARD,
   INVESTMENT,
   EWALLET,
-  OTHER,
 }
 
 export enum BANK_TYPE {
@@ -14,6 +13,12 @@ export enum BANK_TYPE {
   WALLET,
   INVESTMENT,
 }
+
+export const ACCOUNT_TYPE_ALL = {
+  id: -1,
+  name: 'Tất cả',
+  icon: '',
+};
 
 // don't suffer order
 export const ACCOUNT_TYPE_LIST: TAccountType[] = [
@@ -42,19 +47,19 @@ export const ACCOUNT_TYPE_LIST: TAccountType[] = [
     name: 'Ví điện tử',
     icon: 'eWallet',
   },
-  {
-    id: ACCOUNT_CATEGORY_ID.OTHER,
-    name: 'Khác',
-    icon: 'money',
-  },
 ];
+
+export const DEFAULT_ACCOUNT_TYPE = ACCOUNT_TYPE_LIST[0];
+
+export const getAccountTypeById = (accountTypeId?: number | null): TAccountType =>
+  ACCOUNT_TYPE_LIST.find((item) => item.id === accountTypeId) ?? DEFAULT_ACCOUNT_TYPE;
 
 export const ADD_ACCOUNT_DEFAULT_VALUES = {
   accountName: '',
   initialAmount: 0,
   isCCReminder: false,
-  accountLogo: ACCOUNT_TYPE_LIST[0].icon,
-  accountTypeId: ACCOUNT_TYPE_LIST[0].id,
+  accountLogo: DEFAULT_ACCOUNT_TYPE.icon,
+  accountTypeId: DEFAULT_ACCOUNT_TYPE.id,
   creditCardStatementDay: 5,
   creditCardDayAfterStatement: 15,
   creditCardReminderList: '',

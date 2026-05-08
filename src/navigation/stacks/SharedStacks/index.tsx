@@ -22,7 +22,10 @@ export default function SharedScreens({ stack: Stack, screens }: SharedScreensPr
             key={name.toString()}
             name={name}
             component={config.component}
-            options={config.options}
+            options={{
+              ...config.options,
+              headerBackButtonDisplayMode: 'minimal',
+            }}
           />
         );
       })}

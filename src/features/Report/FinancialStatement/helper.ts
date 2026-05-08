@@ -1,4 +1,4 @@
-import { ACCOUNT_TYPE_LIST } from 'utils/constants/account';
+import { getAccountTypeById } from 'utils/constants/account';
 import { dataLevelProps } from './types';
 
 export function convertFinancialData(data: any, isOwnedViewType: boolean) {
@@ -7,8 +7,7 @@ export function convertFinancialData(data: any, isOwnedViewType: boolean) {
     [key: string]: dataLevelProps;
   } = {};
   (data || []).forEach((item: any) => {
-    const accountType =
-      ACCOUNT_TYPE_LIST.find((i) => i.id === item.accountTypeId) || ACCOUNT_TYPE_LIST[0];
+    const accountType = getAccountTypeById(item.accountTypeId);
 
     if (!groupedData[accountType.name]) {
       groupedData[accountType.name] = { accountName: '', data: [], value: 0, logo: '' };

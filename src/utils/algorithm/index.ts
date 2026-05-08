@@ -1,5 +1,5 @@
 import { TAccount, TTransactions } from 'database/types';
-import { ACCOUNT_TYPE_LIST } from 'utils/constants/account';
+import { getAccountTypeById } from 'utils/constants/account';
 import { GroupedTransactionProps, StatementViewProps } from 'utils/types';
 
 /**
@@ -9,7 +9,7 @@ import { GroupedTransactionProps, StatementViewProps } from 'utils/types';
  * @param id is string
  */
 
-export function findObjectInArrayById(array: any, id: string) {
+export function findObjectInArrayById<T extends { id: string }>(array: T[], id: string) {
   const idIndex = array.map((x) => x.id).indexOf(id);
   return {
     idx: idIndex,
@@ -20,16 +20,19 @@ export function findObjectInArrayById(array: any, id: string) {
 export const groupAccountDataByKey = (data: TAccount[], sortKey?: 'accountName' | 'sortOrder') => {
   if (!Array.isArray(data) || !data.length) return [];
 
+  type GroupHeader = Partial<TAccount> & { title: string; accountTypeId: number };
+  type GroupItem = TAccount | GroupHeader;
   const groupedData: {
-    [key: string]: (Partial<TAccount> & { title: string; accountTypeId: number })[];
+    [key: string]: GroupItem[];
   } = {};
 
   data.forEach((item: TAccount) => {
     if (!groupedData[item.accountTypeId]) {
+      const accountType = getAccountTypeById(item.accountTypeId);
       groupedData[item.accountTypeId] = [
         {
           id: `header-${item.accountTypeId}`,
-          title: ACCOUNT_TYPE_LIST[item.accountTypeId].name,
+          title: accountType.name,
           accountTypeId: item.accountTypeId,
         },
       ];
@@ -39,10 +42,11 @@ export const groupAccountDataByKey = (data: TAccount[], sortKey?: 'accountName' 
 
   // Sort data within each group by categoryName or sortOrder
   if (sortKey) {
-    Object.values(groupedData).forEach((group) => {
+    Object.keys(groupedData).forEach((key) => {
+      const group = groupedData[key];
       const [first, ...rest] = group;
       if (rest && rest.length > 1) {
-        return [first, ...rest.sort(sortDataByKey(sortKey))];
+        groupedData[key] = [first, ...rest.sort(sortDataByKey(sortKey))];
       }
     });
   }

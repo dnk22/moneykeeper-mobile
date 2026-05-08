@@ -10,9 +10,11 @@ import { ROUTES } from 'navigation/constants/routes';
 import navigation from 'navigation/helpers/navigate';
 import MainBottomTabs from './tabs/MainBottomTabs';
 import AuthNavigator from './stacks/AuthStack';
-import AppContainer from './components/AppContainer';
 import { useAuth } from 'services/auth/AuthProvider';
 import OnboardingNavigator from './stacks/Onboarding';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
 
 //set up routes
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -26,25 +28,25 @@ function AppNavigators() {
     <NavigationContainer theme={theme} ref={navigation.navigationRef}>
       <BlurScreen />
       <AppLoading theme={theme} darkMode={darkMode} />
-      <AppContainer theme={theme} isMarginTop={!isLoggedIn || isOnboarded}>
-        <RootStack.Navigator
-          screenOptions={{
-            headerShown: false,
-            autoHideHomeIndicator: true,
-          }}
-        >
-          {!isLoggedIn ? (
-            // Nếu chưa đăng nhập, luôn đi đến màn hình xác thực
-            <RootStack.Screen name={ROUTES.AUTH} component={AuthNavigator} />
-          ) : !isOnboarded ? (
-            // Nếu đã đăng nhập nhưng chưa onboarding, đi đến màn hình onboarding
-            <RootStack.Screen name={ROUTES.ONBOARDING} component={OnboardingNavigator} />
-          ) : (
-            // Nếu đã đăng nhập và đã onboarding, đi đến màn hình chính
-            <RootStack.Screen name={ROUTES.MAIN} component={MainBottomTabs} />
-          )}
-        </RootStack.Navigator>
-      </AppContainer>
+      <SafeAreaView style={{ flex: 1 }} edges={['right', 'left']}>
+        <GestureHandlerRootView>
+          <RootStack.Navigator
+            screenOptions={{
+              headerShown: false,
+              autoHideHomeIndicator: true,
+            }}
+          >
+            {!isLoggedIn ? (
+              <RootStack.Screen name={ROUTES.AUTH} component={AuthNavigator} />
+            ) : !isOnboarded ? (
+              <RootStack.Screen name={ROUTES.ONBOARDING} component={OnboardingNavigator} />
+            ) : (
+              <RootStack.Screen name={ROUTES.MAIN} component={MainBottomTabs} />
+            )}
+          </RootStack.Navigator>
+          <Toast />
+        </GestureHandlerRootView>
+      </SafeAreaView>
     </NavigationContainer>
   );
 }

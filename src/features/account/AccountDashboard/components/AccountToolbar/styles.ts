@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   groupContent: {
     height: 50,
-    paddingLeft: 10,
+    paddingHorizontal: 12,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
