@@ -5,7 +5,13 @@ import HeaderIconButton from 'navigation/components/HeaderIconButton';
 import { Add } from 'iconsax-react-native';
 import { ROUTES } from 'navigation/constants/routes';
 
-export default function userHeaderOptions({ colors }: { colors: any }) {
+export default function userHeaderOptions({
+  colors,
+  pageIndex,
+}: {
+  colors: any;
+  pageIndex: number;
+}) {
   const navigation = useNavigation();
 
   const handleAddAccount = () => {
@@ -14,9 +20,9 @@ export default function userHeaderOptions({ colors }: { colors: any }) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: () => <AccountToolbar />,
+      headerLeft: () => <AccountToolbar pageIndex={pageIndex} />,
     });
-  }, []);
+  }, [pageIndex]);
 
   useLayoutEffect(() => {
     navigation.setOptions({

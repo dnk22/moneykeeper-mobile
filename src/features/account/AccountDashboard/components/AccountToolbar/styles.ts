@@ -4,16 +4,18 @@ const styles = StyleSheet.create({
   container: {
     rowGap: 10,
   },
+  divider: {
+    height: 0.5,
+    backgroundColor: 'rgb(200,200,200)',
+  },
   group: {
     paddingTop: 10,
-    borderTopWidth: 0.2,
-    borderColor: 'rgb(200,200,200)',
   },
   groupHeader: {
     opacity: 0.7,
   },
   groupContent: {
-    height: 50,
+    height: 55,
     paddingHorizontal: 12,
     flexDirection: 'row',
     alignItems: 'center',

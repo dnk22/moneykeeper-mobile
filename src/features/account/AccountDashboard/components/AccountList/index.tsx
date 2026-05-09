@@ -15,9 +15,11 @@ import styles from './styles';
 function AccountList({
   data,
   onRefresh,
+  index,
 }: {
   data: TAccount[];
   onRefresh: () => void;
+  index: number;
 }) {
   const { colors } = useCustomTheme();
   const { groupByType, sortByName } = useAppSelector((state) => selectAccountViewSettings(state));
@@ -25,7 +27,7 @@ function AccountList({
 
   const accountData = useMemo(() => {
     const accountList = data.filter((item) => +item.isActive === 1);
-    return groupByType
+    return groupByType && !index
       ? groupAccountDataByKey(accountList, sortField)
       : [...accountList].sort(sortDataByKey(sortField));
   }, [data, groupByType, sortField]);
@@ -44,7 +46,6 @@ function AccountList({
 
   return (
     <FlatListComponent
-      gap={10}
       data={accountData}
       renderItem={renderItem}
       ListEmptyComponent={
@@ -61,7 +62,7 @@ function AccountList({
       }}
       contentContainerStyle={{
         paddingBottom: 180,
-        paddingRight:12
+        paddingRight: 12,
       }}
     />
   );

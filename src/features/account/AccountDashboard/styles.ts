@@ -14,7 +14,7 @@ export const accountDashboardStyles = StyleSheet.create({
   accountWrapper: {
     flex: 1,
     paddingLeft: 12,
-    paddingVertical: 8,
+    paddingVertical: 12,
   },
   pagerContainer: {
     flex: 1,

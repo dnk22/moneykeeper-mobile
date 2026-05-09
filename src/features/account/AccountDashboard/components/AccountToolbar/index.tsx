@@ -18,7 +18,7 @@ import { Autobrightness, Link, Setting4, Sort } from 'iconsax-react-native';
 import { useCustomTheme } from 'resources/theme';
 import styles from './styles';
 
-function Toolbar() {
+function Toolbar({ pageIndex }: { pageIndex: number }) {
   const { colors } = useCustomTheme();
   const { groupByType, sortByName } = useAppSelector((state) => selectAccountViewSettings(state));
   const useDispatch = useAppDispatch();
@@ -56,26 +56,29 @@ function Toolbar() {
 
   return (
     <>
-      <ModalComponent isVisible={isShowModal} onToggleModal={onToggleModal}>
+      <ModalComponent animationType="slide" isVisible={isShowModal} onToggleModal={onToggleModal}>
         <View style={styles.container}>
-          <View>
-            <RNText style={styles.groupHeader} preset="textXSmall">
-              Nhóm
-            </RNText>
-            <View style={styles.groupContent}>
-              <View style={styles.groupItem}>
-                <Link size={22} color={colors.primaryVariant} />
-                <RNText numberOfLines={undefined} preset="textMedium">
-                  Nhóm theo loại tài khoản
-                </RNText>
+          {!pageIndex && (
+            <View>
+              <RNText style={styles.groupHeader} preset="textXSmall">
+                Nhóm
+              </RNText>
+              <View style={styles.groupContent}>
+                <View style={styles.groupItem}>
+                  <Link size={18} color={colors.primaryVariant} />
+                  <RNText numberOfLines={undefined} preset="textMedium">
+                    Nhóm theo loại tài khoản
+                  </RNText>
+                </View>
+                <Switch
+                  style={[{ marginTop: 10 }]}
+                  value={groupByType}
+                  onValueChange={onGroupChange}
+                />
               </View>
-              <Switch
-                style={[{ marginTop: 10 }]}
-                value={groupByType}
-                onValueChange={onGroupChange}
-              />
+              <View style={styles.divider} />
             </View>
-          </View>
+          )}
           <View style={styles.group}>
             <RNText style={styles.groupHeader} preset="textXSmall">
               Sắp xếp theo
@@ -83,19 +86,19 @@ function Toolbar() {
             <TouchableHighlightComponent disabled={groupByType} onPress={() => onSortChange(true)}>
               <View style={styles.groupContent}>
                 <View style={styles.groupItem}>
-                  <Autobrightness size={22} color={colors.primaryVariant} />
+                  <Autobrightness size={18} color={colors.primaryVariant} />
                   <RNText preset="textMedium">Tên tài khoản</RNText>
                 </View>
-                {sortByName && <CheckboxComponent type="radio" check />}
+                {sortByName && <CheckboxComponent check />}
               </View>
             </TouchableHighlightComponent>
             <TouchableHighlightComponent disabled={groupByType} onPress={() => onSortChange(false)}>
               <View style={styles.groupContent}>
                 <View style={styles.groupItem}>
-                  <Sort size={22} color={colors.primaryVariant} />
+                  <Sort size={18} color={colors.primaryVariant} />
                   <RNText preset="textMedium">Tự chọn</RNText>
                 </View>
-                {!sortByName && <CheckboxComponent checkbox check />}
+                {!sortByName && <CheckboxComponent check />}
               </View>
             </TouchableHighlightComponent>
           </View>

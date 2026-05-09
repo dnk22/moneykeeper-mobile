@@ -6,6 +6,8 @@ import SvgIcon from 'components/SvgIcon';
 import { Eye, EyeSlash } from 'iconsax-react-native';
 import { overviewCardStyles as styles } from './styles';
 import { formatNumber } from 'utils/math';
+import { useNavigation } from '@react-navigation/native';
+import { ROUTES } from 'navigation/constants/routes';
 
 type OverviewCardProps = {
   totalAsset: number;
@@ -18,6 +20,8 @@ type OverviewCardProps = {
 };
 
 function OverviewCard({ totalAsset, colors }: OverviewCardProps) {
+  const navigation = useNavigation();
+
   const [isHideTotalAsset, setIsHideTotalAsset] = useState(false);
 
   const totalAssetText = useMemo(() => {
@@ -55,7 +59,7 @@ function OverviewCard({ totalAsset, colors }: OverviewCardProps) {
           {totalAssetText}
         </RNText>
       </View>
-      <PressableHaptic onPress={() => {}}>
+      <PressableHaptic onPress={() => navigation.navigate(ROUTES.FINANCE_STATEMENT as never)}>
         <View
           style={[
             styles.chartCard,

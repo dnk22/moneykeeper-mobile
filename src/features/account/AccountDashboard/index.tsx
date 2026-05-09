@@ -17,8 +17,6 @@ const ACCOUNT_TYPE_TABS = [ACCOUNT_TYPE_ALL, ...ACCOUNT_TYPE_LIST];
 function AccountDashboard() {
   const { colors } = useCustomTheme();
 
-  userHeaderOptions({ colors });
-
   const {
     isShowModal,
     currentAccountPressed,
@@ -32,6 +30,8 @@ function AccountDashboard() {
     onTabChange,
     onPageSelected,
   } = useAccountDashboard();
+
+  userHeaderOptions({ colors, pageIndex });
 
   return (
     <AccountContext.Provider
@@ -62,6 +62,7 @@ function AccountDashboard() {
                       ? accountData
                       : accountData.filter((item) => item.accountTypeId === accountType.id)
                   }
+                  index={index}
                   onRefresh={fetchAccounts}
                 />
               </View>
