@@ -22,9 +22,16 @@ export default function SharedScreens({ stack: Stack, screens }: SharedScreensPr
             key={name.toString()}
             name={name}
             component={config.component}
-            options={{
-              ...config.options,
-              headerBackButtonDisplayMode: 'minimal',
+            options={({ route, navigation }: any) => {
+              const resolvedOptions =
+                typeof config.options === 'function'
+                  ? config.options({ route, navigation })
+                  : config.options;
+
+              return {
+                ...resolvedOptions,
+                headerBackButtonDisplayMode: 'minimal',
+              };
             }}
           />
         );

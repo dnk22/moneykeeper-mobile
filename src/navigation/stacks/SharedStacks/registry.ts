@@ -1,12 +1,12 @@
 import { ComponentType } from 'react';
 import { ParamListBase, RouteProp } from '@react-navigation/native';
-import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { NativeStackNavigationOptions, NativeStackScreenProps } from '@react-navigation/native-stack';
 
 type ScreenConfig<ParamList extends ParamListBase, RouteName extends keyof ParamList> = {
   component: ComponentType<any>;
   options?:
     | NativeStackNavigationOptions
-    | ((props: { route: RouteProp<ParamList, RouteName> }) => NativeStackNavigationOptions);
+    | ((props: NativeStackScreenProps<ParamList, RouteName>) => NativeStackNavigationOptions);
 };
 
 export class ScreenRegistry<ParamList extends ParamListBase> {
