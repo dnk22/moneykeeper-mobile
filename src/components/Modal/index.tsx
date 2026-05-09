@@ -48,6 +48,7 @@ const ModalComponent = ({
       visible={!!isVisible}
       allowSwipeDismissal
       transparent
+      animationType='slide'
       onRequestClose={onToggleModal}
       {...rest}
     >

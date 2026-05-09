@@ -47,7 +47,6 @@ function AccountTypeSelect({ accountTypeId }: { accountTypeId: number }) {
     }
   };
 
-  // Memoize renderItem to prevent recreating on every render
   const renderItem = ({ item }: { item: TAccountType }) => {
     const isItemSelected = item.id === currentAccountType.id;
 

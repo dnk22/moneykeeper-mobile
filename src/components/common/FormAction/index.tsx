@@ -2,7 +2,6 @@ import { Alert, TouchableOpacity, View } from 'react-native';
 import TouchableHighlightComponent from 'components/TouchableHighlight';
 import RNText from 'components/Text';
 import { useCustomTheme } from 'resources/theme';
-import SvgIcon from 'components/SvgIcon';
 import Loading from 'components/Loading';
 import { BagCross } from 'iconsax-react-native';
 import styles from './styles';
@@ -42,8 +41,8 @@ function FormAction({ isShowDelete = false, onDelete, onSubmit, loading }: FormA
         style={[styles.button, { backgroundColor: colors.primary }]}
         onPress={onSubmit}
       >
-        {loading ? <Loading color={'white'} /> : <SvgIcon name="doneCircle" color="white" />}
-        <RNText color="white" style={{ marginLeft: 5 }}>
+        {loading && <Loading color={'white'} />}
+        <RNText fontSize={18} color="white" style={{ marginLeft: 6 }}>
           Lưu
         </RNText>
       </TouchableOpacity>

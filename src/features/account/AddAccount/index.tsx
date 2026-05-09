@@ -32,11 +32,6 @@ function AddAccount() {
   return (
     <FormProvider {...methods}>
       <View style={styles.container}>
-        {/* <KeyboardAwareScrollView
-          style={[styles.form, { backgroundColor: colors.background }]}
-          showsVerticalScrollIndicator={false}
-          extraScrollHeight={60}
-        > */}
         <InputCalculator
           text={isCreditCard ? 'Hạn mức thẻ' : 'Số dư ban đầu'}
           name="initialAmount"
@@ -45,7 +40,7 @@ function AddAccount() {
         />
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={styles.itemGroup}>
-            <Autobrightness size="28" color={colors.text} style={styles.icon} />
+            <Autobrightness size="22" color={colors.text} style={styles.icon} />
             <View style={styles.groupContent}>
               <InputField
                 name="accountName"
@@ -57,7 +52,7 @@ function AddAccount() {
             </View>
           </View>
           <View style={styles.itemGroup}>
-            <Stickynote size="28" color={colors.text} style={styles.icon} />
+            <Stickynote size="22" color={colors.text} style={styles.icon} />
             <View style={styles.groupContent}>
               <InputField
                 name="descriptions"

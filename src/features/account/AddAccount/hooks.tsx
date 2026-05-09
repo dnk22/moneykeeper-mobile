@@ -98,9 +98,7 @@ const useFormHooks = (accountId?: string) => {
   // Use `setOptions` to update account
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <Button title="Lưu" onPress={handleSubmit(handleFormSubmit)} color="white" />
-      ),
+      headerRight: () => <Button title="Lưu" onPress={handleSubmit(handleFormSubmit)} />,
     });
     return () => {
       navigation.setOptions({

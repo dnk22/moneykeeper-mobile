@@ -20,8 +20,8 @@ export const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 5,
-    paddingBottom: 10,
+    padding: 10,
+    paddingBottom: 15,
     marginBottom: 10,
   },
   headerBorder: {
