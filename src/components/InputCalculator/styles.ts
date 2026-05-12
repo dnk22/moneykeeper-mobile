@@ -30,18 +30,17 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    height: 50,
+    height: 56,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRightWidth: 1,
-    borderBottomWidth: 1,
+    borderWidth: 0.5,
+    borderRadius: 8,
   },
   enterButton: {
-    height: 100,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    borderBottomWidth: 1,
+    borderRadius: 12,
   },
   modalContainer: {
     padding: 8,
@@ -49,6 +48,20 @@ const styles = StyleSheet.create({
   },
   keyBoardContainer: {
     gap: 4,
+    paddingHorizontal: 6,
+    paddingTop: 12,
+  },
+  numberText: {
+    fontSize: 21,
+    fontWeight: '500',
+  },
+  operatorText: {
+    fontSize: 20,
+    fontWeight: '500',
+  },
+  doneText: {
+    fontSize: 20,
+    fontWeight: '600',
   },
 });
 

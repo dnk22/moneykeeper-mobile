@@ -18,6 +18,7 @@
       "store/*": ["src/store/*"],
       "utils/*": ["src/utils/*"],
       "database/*": ["src/database/*"],
+      "libs/*": ["src/libs/*"]
     },
     "typeRoots": ["./src/utils/types", "./node_modules/@types"],
   },

@@ -38,5 +38,6 @@ export type TBaseTheme = {
     alert: string;
     link: string;
     green: string;
+    operatorKeyBackground: string;
   };
 };

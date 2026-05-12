@@ -19,6 +19,7 @@ const lightMode: Record<COLOR_SCHEME, any> = {
     primary: '#2567E8',
     primaryVariant: '#4A90E2',
     background: '#F5F7FA',
+    operatorKeyBackground: '#E9EDF3',
   },
   // xanh thanh lịch
   [COLOR_SCHEME.elegantGreen]: {
@@ -26,6 +27,7 @@ const lightMode: Record<COLOR_SCHEME, any> = {
     primary: '#FF6F61',
     primaryVariant: '#FF8A75',
     background: '#FFF8F6',
+    operatorKeyBackground: '#E9EDF3',
   },
   // tím công nghệ
   [COLOR_SCHEME.techPurple]: {
@@ -33,6 +35,7 @@ const lightMode: Record<COLOR_SCHEME, any> = {
     primary: '#8E44AD',
     primaryVariant: '#9B59B6',
     background: '#F9F3FA',
+    operatorKeyBackground: '#E9EDF3',
   },
 };
 

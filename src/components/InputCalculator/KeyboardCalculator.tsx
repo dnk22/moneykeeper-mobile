@@ -1,154 +1,111 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import TouchableHighlight from 'components/TouchableHighlight';
 import { View } from 'react-native';
 import styles from './styles';
 import { CLEAR, ENTER, OPERATOR, BACKSPACE, DECIMAL, ActionsProps, NUMBER } from './type';
 import Text from 'components/Text';
-import { useCustomTheme } from 'resources/theme';
-import { showToast } from 'utils/system';
-import { formatNumberGroups } from 'utils/math';
+import { hasOperator } from './calculatorEngine';
+import { useCalculatorKeyboard } from './useCalculatorKeyboard';
+import { CustomTheme } from 'resources/theme';
 
 type KeyboardCalculatorProps = {
   value: string;
   onChange: (val: string) => void;
-  onDismiss: () => void;
-  hasJustFocused: React.MutableRefObject<boolean>;
+  onDone: () => void;
+  colors: CustomTheme['colors'];
+  replaceOnFirstKeyPress?: boolean;
+  onFirstKeyPressHandled?: () => void;
 };
-
-type onPushKeyboardEventProps = {
-  value: string;
-  type: ActionsProps | typeof NUMBER | typeof ENTER;
-};
-
-const replaceSymbols = (expression: string) => expression.replace(/×/g, '*').replace(/÷/g, '/');
 
 function KeyboardCalculator({
   value,
   onChange,
-  hasJustFocused,
-  onDismiss,
+  onDone,
+  colors,
+  replaceOnFirstKeyPress = false,
+  onFirstKeyPressHandled,
 }: KeyboardCalculatorProps) {
-  const { colors } = useCustomTheme();
-  const [expression, setExpression] = useState<string>(value || '');
+  const numberKeyBg = colors.surface;
+  const operatorKeyBg = colors.operatorKeyBackground;
+  const keyBorderColor = colors.border;
+  const primaryTint = colors.primary;
+  const operatorTextColor = colors.textSecondary;
 
-  useEffect(() => {
-    setExpression(value || '');
-  }, [value]);
-
-  const updateValue = (val: string) => {
-    // Tách expression theo toán tử cuối cùng
-    const match = val.match(/^(.*?)([+\-×÷])?([\d.,]*)$/);
-
-    if (!match) {
-      setExpression(val);
-      onChange(val);
-      return;
-    }
-
-    const [, left = '', operator = '', right = ''] = match;
-
-    // Xóa dấu phẩy cũ trước khi format
-    const cleanRight = right.replace(/,/g, '');
-
-    const formattedRight = cleanRight ? formatNumberGroups(cleanRight) : '';
-
-    const formatted = `${left}${operator}${formattedRight}`;
-    setExpression(formatted);
-    onChange(formatted);
-  };
-
-  const onPushKeyboardEvent = useCallback(
-    ({ value: inputValue, type }: onPushKeyboardEventProps) => {
-      let val = expression;
-      // Nếu vừa mới focus, reset giá trị để tránh lỗi hiển thị
-      if (hasJustFocused.current) {
-        hasJustFocused.current = false;
-        val = '';
-      }
-      try {
-        switch (type) {
-          case CLEAR:
-            updateValue('');
-            break;
-          case BACKSPACE:
-            updateValue(val.slice(0, -1));
-            break;
-          case OPERATOR:
-            if (val && !/[+\-×÷]$/.test(val)) {
-              updateValue(val + inputValue);
-            }
-            break;
-          case DECIMAL:
-            updateValue(val + '.');
-            break;
-          case NUMBER:
-            updateValue(val + inputValue);
-            break;
-          case ENTER:
-            try {
-              const raw = replaceSymbols(val).replace(/,/g, '');
-              const evaluated = eval(raw);
-              updateValue(evaluated.toString());
-            } catch (err) {
-              setExpression('');
-            }
-            onDismiss();
-            break;
-        }
-      } catch (err) {}
-    },
-    [expression, hasJustFocused],
-  );
+  const { expression, onPushKeyboardEvent } = useCalculatorKeyboard({
+    value,
+    onChange,
+    onDone,
+    replaceOnFirstKeyPress,
+    onFirstKeyPressHandled,
+  });
 
   const EnterButton = () => {
-    const isHasOperator = useMemo(() => /[+\-×÷]/.test(expression), [expression]);
+    const isHasOperator = useMemo(() => hasOperator(expression), [expression]);
 
     return (
       <TouchableHighlight
-        style={[
-          styles.enterButton,
-          { backgroundColor: colors.background, borderColor: colors.border },
-        ]}
+        style={[styles.enterButton, { backgroundColor: primaryTint, borderColor: keyBorderColor }]}
+        underlayColor={primaryTint}
         onPress={() => onPushKeyboardEvent({ value: '=', type: ENTER })}
       >
-        <Text>{isHasOperator ? '=' : 'Xong'}</Text>
+        <Text style={styles.doneText} color="white">
+          {isHasOperator ? '=' : 'Xong'}
+        </Text>
       </TouchableHighlight>
     );
   };
 
   const renderButton = useCallback(
-    (val: string, type: ActionsProps | typeof NUMBER, color?: any) => (
+    (val: string, type: ActionsProps | typeof NUMBER, isOperator = false) => (
       <TouchableHighlight
         key={val}
-        underlayColor={color ? colors.surface : colors.background}
-        style={[styles.button, { borderColor: colors.border, backgroundColor: color }]}
+        underlayColor={isOperator ? numberKeyBg : operatorKeyBg}
+        style={[
+          styles.button,
+          {
+            borderColor: keyBorderColor,
+            backgroundColor: isOperator ? operatorKeyBg : numberKeyBg,
+          },
+        ]}
         onPress={() => onPushKeyboardEvent({ value: val, type })}
       >
-        <Text>{val}</Text>
+        <Text
+          style={type === NUMBER || type === DECIMAL ? styles.numberText : styles.operatorText}
+          color={colors.text}
+        >
+          {val}
+        </Text>
       </TouchableHighlight>
     ),
-    [onPushKeyboardEvent],
+    [
+      colors.text,
+      keyBorderColor,
+      numberKeyBg,
+      onPushKeyboardEvent,
+      operatorKeyBg,
+      operatorTextColor,
+    ],
   );
 
   return (
-    <View style={styles.keyBoardContainer}>
+    <View style={[styles.keyBoardContainer]}>
       <View style={styles.calcRow}>
-        {renderButton('C', CLEAR, colors.background)}
-        {renderButton('÷', OPERATOR, colors.background)}
-        {renderButton('×', OPERATOR, colors.background)}
-        {renderButton('⌫', BACKSPACE, colors.background)}
+        {renderButton('C', CLEAR, true)}
+        {renderButton('÷', OPERATOR, true)}
+        {renderButton('×', OPERATOR, true)}
+        {renderButton('⌫', BACKSPACE, true)}
       </View>
       <View style={styles.calcRow}>
         {renderButton('7', NUMBER)}
         {renderButton('8', NUMBER)}
         {renderButton('9', NUMBER)}
-        {renderButton('-', OPERATOR, colors.background)}
+        {renderButton('+', OPERATOR, true)}
       </View>
       <View style={styles.calcRow}>
         {renderButton('4', NUMBER)}
         {renderButton('5', NUMBER)}
         {renderButton('6', NUMBER)}
-        {renderButton('+', OPERATOR, colors.background)}
+        {renderButton('-', OPERATOR, true)}
       </View>
       <View style={styles.calcRow}>
         <View style={{ flex: 3, gap: 4 }}>

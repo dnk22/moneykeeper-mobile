@@ -7,6 +7,7 @@ import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-c
 import { AuthProvider } from 'services/auth/AuthProvider';
 import { persistor, store } from './store';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { CustomKeyboardProvider } from 'libs/custom-keyboard/CustomKeyboardProvider';
 
 LogBox.ignoreAllLogs();
 
@@ -17,7 +18,9 @@ const App = () => {
         <SafeAreaProvider initialMetrics={initialWindowMetrics}>
           <AuthProvider>
             <KeyboardProvider>
-              <AppNavigators />
+              <CustomKeyboardProvider>
+                <AppNavigators />
+              </CustomKeyboardProvider>
             </KeyboardProvider>
           </AuthProvider>
         </SafeAreaProvider>

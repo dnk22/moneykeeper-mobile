@@ -15,6 +15,8 @@ import OnboardingNavigator from './stacks/Onboarding';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
+import { CustomKeyboardPortal } from 'libs/custom-keyboard/CustomKeyboardPortal';
+import { PortalProvider } from '@gorhom/portal';
 
 //set up routes
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -26,27 +28,30 @@ function AppNavigators() {
 
   return (
     <NavigationContainer theme={theme} ref={navigation.navigationRef}>
-      <BlurScreen />
-      <AppLoading theme={theme} darkMode={darkMode} />
-      <SafeAreaView style={{ flex: 1 }} edges={['right', 'left']}>
-        <GestureHandlerRootView>
-          <RootStack.Navigator
-            screenOptions={{
-              headerShown: false,
-              autoHideHomeIndicator: true,
-            }}
-          >
-            {!isLoggedIn ? (
-              <RootStack.Screen name={ROUTES.AUTH} component={AuthNavigator} />
-            ) : !isOnboarded ? (
-              <RootStack.Screen name={ROUTES.ONBOARDING} component={OnboardingNavigator} />
-            ) : (
-              <RootStack.Screen name={ROUTES.MAIN} component={MainBottomTabs} />
-            )}
-          </RootStack.Navigator>
-          <Toast />
-        </GestureHandlerRootView>
-      </SafeAreaView>
+      <PortalProvider>
+        <BlurScreen />
+        <AppLoading theme={theme} darkMode={darkMode} />
+        <SafeAreaView style={{ flex: 1 }} edges={['right', 'left']}>
+          <GestureHandlerRootView>
+            <RootStack.Navigator
+              screenOptions={{
+                headerShown: false,
+                autoHideHomeIndicator: true,
+              }}
+            >
+              {!isLoggedIn ? (
+                <RootStack.Screen name={ROUTES.AUTH} component={AuthNavigator} />
+              ) : !isOnboarded ? (
+                <RootStack.Screen name={ROUTES.ONBOARDING} component={OnboardingNavigator} />
+              ) : (
+                <RootStack.Screen name={ROUTES.MAIN} component={MainBottomTabs} />
+              )}
+            </RootStack.Navigator>
+            <Toast />
+            <CustomKeyboardPortal />
+          </GestureHandlerRootView>
+        </SafeAreaView>
+      </PortalProvider>
     </NavigationContainer>
   );
 }

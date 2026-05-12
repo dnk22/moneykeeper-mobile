@@ -18,18 +18,21 @@ const darkMode: Record<COLOR_SCHEME, any> = {
     primary: '#4A90E2',
     primaryVariant: '#5A9BEF',
     background: '#121212',
+    operatorKeyBackground: '#374151',
   },
   [COLOR_SCHEME.elegantGreen]: {
     ...baseColor,
     primary: '#FF6F61',
     primaryVariant: '#FF8A75',
     background: '#121212',
+    operatorKeyBackground: '#374151',
   },
   [COLOR_SCHEME.techPurple]: {
     ...baseColor,
     primary: '#8E44AD',
     primaryVariant: '#9B59B6',
     background: '#121212',
+    operatorKeyBackground: '#374151',
   },
 };
 export default darkMode;
