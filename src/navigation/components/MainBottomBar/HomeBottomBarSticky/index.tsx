@@ -1,11 +1,12 @@
 import { memo, useCallback } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCustomTheme } from 'resources/theme';
 import TabBar from './TabBar';
 import styles from './styles';
 import isEqual from 'react-fast-compare';
+import { BlurView } from '@react-native-community/blur';
 
 const HomeBottomBarSticky = ({
   state: { index: activeIndex, routes },

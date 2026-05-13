@@ -15,6 +15,8 @@ type ITabBarProps = {
 };
 
 const TabBar = ({ isFocused, options, onPress, style, colors }: ITabBarProps) => {
+  const colorsWithOpacity = colors.text + '90';
+
   const animatedIconContainerStyles = useAnimatedStyle(() => {
     return {
       opacity: withTiming(isFocused ? 1 : 0.5, { duration: 400 }),
@@ -27,9 +29,16 @@ const TabBar = ({ isFocused, options, onPress, style, colors }: ITabBarProps) =>
     <PressableHaptic onPress={onPress} style={[styles.component, style]}>
       <Animated.View style={animatedIconContainerStyles}>
         {/* @ts-ignore */}
-        {options.tabBarIcon({ color: !style ? colors.primary : 'white' })}
+        {options.tabBarIcon({ color: isFocused ? colors.primary : colorsWithOpacity })}
       </Animated.View>
-      {options.tabBarLabel && <RNText preset="textXXSmall">{options.tabBarLabel}</RNText>}
+      {options.tabBarLabel && (
+        <RNText
+          fontSize={isFocused ? 10 : 8}
+          color={isFocused ? colors.primary : colorsWithOpacity}
+        >
+          {options.tabBarLabel}
+        </RNText>
+      )}
     </PressableHaptic>
   );
 };

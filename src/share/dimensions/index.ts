@@ -41,7 +41,7 @@ export const ModalNavigationHeaderBarDimensions = {
 
 // system dimensions define
 export const bottomBarStickyHeight = 100;
-export const bottomBarFlatHeight = 100;
+export const bottomBarFlatHeight = 94;
 export const PARENT_ITEM_TRANSACTION_HEIGHT = 60;
 export const CHILD_ITEM_TRANSACTION_HEIGHT = 54;
 export const MARGIN_TOP = 4;
