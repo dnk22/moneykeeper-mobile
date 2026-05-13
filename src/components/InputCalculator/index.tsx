@@ -113,6 +113,7 @@ function InputCalculator({
           allowFontScaling={true}
           defaultValue={displayValue}
           value={displayValue}
+          caretHidden={true}
           style={[
             styles.amountInput,
             {
@@ -122,7 +123,7 @@ function InputCalculator({
           onFocus={onFocusInput}
           onBlur={onBlurInput}
           showSoftInputOnFocus={false}
-          // contextMenuHidden={true}
+          contextMenuHidden={true}
           {...props}
         />
         {isShowPrefix && (

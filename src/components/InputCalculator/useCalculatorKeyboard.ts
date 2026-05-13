@@ -43,9 +43,6 @@ export function useCalculatorKeyboard({
 
       if (replaceOnFirstKeyPress && type !== ENTER) {
         currentValue = '';
-      }
-
-      if (replaceOnFirstKeyPress && type !== ENTER) {
         onFirstKeyPressHandled?.();
       }
 
