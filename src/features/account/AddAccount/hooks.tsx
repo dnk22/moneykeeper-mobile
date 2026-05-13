@@ -12,12 +12,21 @@ import { Alert, Button } from 'react-native';
 import { accountLocalQuery } from 'database/querying';
 import { updateAppLoading } from 'store/app/app.slice';
 
-const useFormHooks = (accountId?: string) => {
+const useFormHooks = ({
+  accountId,
+  accountTypeIdParam,
+}: {
+  accountId?: string;
+  accountTypeIdParam?: number;
+}) => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
 
   const methods = useForm<TAccount>({
-    defaultValues: ADD_ACCOUNT_DEFAULT_VALUES,
+    defaultValues: {
+      ...ADD_ACCOUNT_DEFAULT_VALUES,
+      accountTypeId: accountTypeIdParam,
+    },
     reValidateMode: 'onChange',
   });
   const { control, handleSubmit, getValues, reset } = methods;

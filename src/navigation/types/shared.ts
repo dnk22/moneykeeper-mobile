@@ -9,7 +9,7 @@ export type SharedStackParamsList = {
     accountId?: string;
     bankId?: string;
     toAccountId?: string;
-    accountTypeId?: string;
+    accountTypeId?: number;
     accountName?: string;
   };
   [ROUTES.ACCOUNT_NORMAL_DETAIL]: { accountId: string; accountName: string };

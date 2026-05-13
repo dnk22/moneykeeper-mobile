@@ -27,7 +27,10 @@ function AddAccount() {
   const { colors } = useCustomTheme();
 
   const { methods, onFormSubmit, isCreditCard, accountTypeId, onConfirmDeleteAccount } =
-    useFormHooks(params?.accountId);
+    useFormHooks({
+      accountId: params?.accountId,
+      accountTypeIdParam: params?.accountTypeId,
+    });
 
   return (
     <FormProvider {...methods}>

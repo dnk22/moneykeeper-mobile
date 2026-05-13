@@ -15,7 +15,12 @@ export default function userHeaderOptions({
   const navigation = useNavigation();
 
   const handleAddAccount = () => {
-    navigation.navigate(ROUTES.ADD_ACCOUNT as never);
+    navigation.navigate({
+      name: ROUTES.ADD_ACCOUNT as any,
+      params: {
+        accountTypeId: Math.max(pageIndex - 1, 0), // Ensure that the accountTypeId is not negative
+      },
+    });
   };
 
   useLayoutEffect(() => {
@@ -30,5 +35,5 @@ export default function userHeaderOptions({
         <HeaderIconButton icon={<Add size={28} color={colors.text} />} onPress={handleAddAccount} />
       ),
     });
-  }, [colors.text]);
+  }, [colors.text, pageIndex]);
 }
