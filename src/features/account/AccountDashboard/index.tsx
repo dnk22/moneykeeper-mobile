@@ -1,8 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
 import PagerView from 'react-native-pager-view';
-import { ACCOUNT_TYPE_ALL, ACCOUNT_TYPE_LIST } from 'utils/constants/account';
+import { ACCOUNT_CATEGORY_ID, ACCOUNT_TYPE_ALL, ACCOUNT_TYPE_LIST } from 'utils/constants/account';
+import { TAccount } from 'database/types';
 import AccountList from './components/AccountList';
+import BankAccountList from './components/BankAccountList';
 import ItemSettingsModal from './components/ItemSettingsModal';
 import { AccountContext } from './context';
 import OverviewCard from './components/OverviewCard';
@@ -13,6 +15,31 @@ import userHeaderOptions from './hooks/userHeaderOptions';
 import { useCustomTheme } from 'resources/theme';
 
 const ACCOUNT_TYPE_TABS = [ACCOUNT_TYPE_ALL, ...ACCOUNT_TYPE_LIST];
+
+const ACCOUNT_TAB_RENDERERS: Partial<Record<number, typeof BankAccountList>> = {
+  [ACCOUNT_CATEGORY_ID.BANK]: BankAccountList,
+};
+
+function renderAccountTab({
+  accountTypeId,
+  data,
+  onRefresh,
+  index,
+}: {
+  accountTypeId: number;
+  data: TAccount[];
+  onRefresh: () => void;
+  index: number;
+}) {
+  const accountListData =
+    accountTypeId === ACCOUNT_TYPE_ALL.id
+      ? data
+      : data.filter((item) => item.accountTypeId === accountTypeId);
+
+  const TabComponent = ACCOUNT_TAB_RENDERERS[accountTypeId] ?? AccountList;
+
+  return <TabComponent data={accountListData} index={index} onRefresh={onRefresh} />;
+}
 
 function AccountDashboard() {
   const { colors } = useCustomTheme();
@@ -56,15 +83,12 @@ function AccountDashboard() {
           >
             {ACCOUNT_TYPE_TABS.map((accountType, index) => (
               <View key={accountType.id.toString()}>
-                <AccountList
-                  data={
-                    accountType.id === ACCOUNT_TYPE_ALL.id
-                      ? accountData
-                      : accountData.filter((item) => item.accountTypeId === accountType.id)
-                  }
-                  index={index}
-                  onRefresh={fetchAccounts}
-                />
+                {renderAccountTab({
+                  accountTypeId: accountType.id,
+                  data: accountData,
+                  index,
+                  onRefresh: fetchAccounts,
+                })}
               </View>
             ))}
           </PagerView>

@@ -76,7 +76,7 @@ function AddAccount() {
         <View style={[styles.group, { backgroundColor: colors.surface }]}>
           <View style={[styles.itemGroup, styles.itemGroupBetween]}>
             <RNText preset="title">Không tính vào báo cáo</RNText>
-            <SwitchField name="excludeReport" />
+            <SwitchField name="excludeReport" style={styles.switch} />
           </View>
           <RNText fontSize={12} style={styles.subText}>
             Ghi chép này sẽ không thống kê vào các báo cáo.

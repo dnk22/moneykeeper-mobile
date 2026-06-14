@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
   },
   itemGroupBetween: {
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   groupContent: {
     flex: 1,
@@ -59,6 +60,9 @@ const styles = StyleSheet.create({
     width: 50,
     alignItems: 'flex-end',
     paddingRight: 10,
+  },
+  switch: {
+    marginTop: 10,
   },
 });
 

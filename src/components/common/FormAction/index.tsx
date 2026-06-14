@@ -3,7 +3,7 @@ import TouchableHighlightComponent from 'components/TouchableHighlight';
 import RNText from 'components/Text';
 import { useCustomTheme } from 'resources/theme';
 import Loading from 'components/Loading';
-import { BagCross } from 'iconsax-react-native';
+import { Trash } from 'iconsax-react-native';
 import styles from './styles';
 
 type FormActionProps = {
@@ -31,8 +31,14 @@ function FormAction({ isShowDelete = false, onDelete, onSubmit, loading }: FormA
       {isShowDelete && (
         <TouchableHighlightComponent style={styles.buttonDel} onPress={onConfirmDelete}>
           <>
-            {loading ? <Loading color={colors.error} /> : <BagCross color={colors.error} />}
-            <RNText color="red">Xóa</RNText>
+            {loading ? (
+              <Loading size="small" color={colors.error} />
+            ) : (
+              <Trash size={18} color={colors.error} />
+            )}
+            <RNText fontSize={20} color="red">
+              Xóa
+            </RNText>
           </>
         </TouchableHighlightComponent>
       )}
@@ -41,8 +47,8 @@ function FormAction({ isShowDelete = false, onDelete, onSubmit, loading }: FormA
         style={[styles.button, { backgroundColor: colors.primary }]}
         onPress={onSubmit}
       >
-        {loading && <Loading color={'white'} />}
-        <RNText fontSize={18} color="white" style={{ marginLeft: 6 }}>
+        {loading && <Loading size="small" color={'white'} />}
+        <RNText fontSize={20} color="white" style={{ marginLeft: 6 }}>
           Lưu
         </RNText>
       </TouchableOpacity>

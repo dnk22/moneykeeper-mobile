@@ -87,7 +87,7 @@ function FinancialStatement() {
           <View style={[styles.leftToolbar, { backgroundColor: colors.primary }]}>
             <Pressable onPress={onHideMoney}>
               <View style={[styles.sync, { backgroundColor: colors.surface }]}>
-                <Repeat color={colors.primary} />
+                <Repeat size={20} color={colors.primary} />
               </View>
             </Pressable>
           </View>
