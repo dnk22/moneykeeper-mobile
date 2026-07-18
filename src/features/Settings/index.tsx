@@ -91,7 +91,7 @@ function Settings() {
           style={[styles.item, styles.logout, { backgroundColor: colors.surface }]}
           onPress={handleLogout}
         >
-          <Logout color={colors.error} variant="Broken" />
+          <Logout color={colors.error} variant="Broken" size={24} />
           <Text>Đăng xuất</Text>
         </PressableHaptic>
       </ScrollView>

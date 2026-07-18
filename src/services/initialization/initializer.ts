@@ -1,13 +1,10 @@
 import { TInitializer, InitializerOptions, InitializerDataSource } from './types';
 import { ACCOUNTS, BANKS, TRANSACTION_CATEGORY, TRANSACTIONS } from 'database/constants';
 import { database } from 'database/index';
-import {
-  AccountModel,
-  BankModel,
-  TransactionModel,
-  CategoriesModel,
-} from 'database/models';
+import { AccountModel, BankModel, TransactionModel, CategoriesModel } from 'database/models';
 import { balanceLocalQuery } from 'database/querying';
+import { TAccount, TTransactions } from 'database/types';
+import { Q } from '@nozbe/watermelondb';
 import size from 'lodash/size';
 import { storageService } from 'services/storage';
 import { MMKV_KEY } from 'services/storage/const';
@@ -26,42 +23,106 @@ export class Initializer implements TInitializer {
     await this.accountDataInitialize();
   }
 
+  private uniqueById<T extends { id: string }>(items: T[]): T[] {
+    return Array.from(
+      new Map(items.filter((item) => item.id).map((item) => [item.id, item])).values(),
+    );
+  }
+
+  private async getExistingIds(table: any, tableName: string, ids: string[]): Promise<Set<string>> {
+    if (!ids.length) {
+      return new Set();
+    }
+
+    const idsQuery = ids.map((id) => `'${id.replace(/'/g, "''")}'`).join(',');
+    const records = await table
+      .query(Q.unsafeSqlQuery(`SELECT id FROM ${tableName} WHERE id IN (${idsQuery})`))
+      .unsafeFetchRaw();
+    return new Set(records.map((record: { id: string }) => record.id));
+  }
+
   private async accountDataInitialize(): Promise<void> {
     try {
       const { accounts: accountsCollection, transactions: transactionsCollection } =
         await this.dataSource.getAccountData();
 
+      const uniqueAccounts = this.uniqueById<TAccount>(accountsCollection);
+      const uniqueTransactions = this.uniqueById<TTransactions>(transactionsCollection);
       const accountsTable = database.collections.get<AccountModel>(ACCOUNTS);
       const transactionsTable = database.collections.get<TransactionModel>(TRANSACTIONS);
+      const existingAccountIds = await this.getExistingIds(
+        accountsTable,
+        ACCOUNTS,
+        uniqueAccounts.map((account) => account.id),
+      );
+      const existingTransactionIds = await this.getExistingIds(
+        transactionsTable,
+        TRANSACTIONS,
+        uniqueTransactions.map((transaction) => transaction.id),
+      );
 
       await database.write(async () => {
         const batchOperations = [
-          ...accountsCollection.map((data) => {
-            return accountsTable.prepareCreate((account) => {
+          ...(await Promise.all(
+            uniqueAccounts.map(async (data) => {
               const { id, ...dataWithoutId } = data;
-              account._raw.id = id;
-              Object.assign(account, dataWithoutId);
-            });
-          }),
-          ...transactionsCollection.map((data) => {
-            return transactionsTable.prepareCreate((transaction) => {
+
+              if (!existingAccountIds.has(id)) {
+                return accountsTable.prepareCreate((account) => {
+                  account._raw.id = id;
+                  Object.assign(account, dataWithoutId);
+                });
+              }
+
+              try {
+                const existingAccount = await accountsTable.find(id);
+                return existingAccount.prepareUpdate((account) => {
+                  Object.assign(account, dataWithoutId);
+                });
+              } catch (error) {
+                console.warn('Skip account initialize because local id already exists:', id, error);
+                return null;
+              }
+            }),
+          )),
+          ...(await Promise.all(
+            uniqueTransactions.map(async (data) => {
               const { id, ...dataWithoutId } = data;
-              transaction._raw.id = id;
-              Object.assign(transaction, dataWithoutId);
-            });
-          }),
-        ];
+
+              if (!existingTransactionIds.has(id)) {
+                return transactionsTable.prepareCreate((transaction) => {
+                  transaction._raw.id = id;
+                  Object.assign(transaction, dataWithoutId);
+                });
+              }
+
+              try {
+                const existingTransaction = await transactionsTable.find(id);
+                return existingTransaction.prepareUpdate((transaction) => {
+                  Object.assign(transaction, dataWithoutId);
+                });
+              } catch (error) {
+                console.warn(
+                  'Skip transaction initialize because local id already exists:',
+                  id,
+                  error,
+                );
+                return null;
+              }
+            }),
+          )),
+        ].filter(Boolean);
 
         await database.batch(...batchOperations);
       });
 
       // Initialize balances data
-      const accountsBalance = accountsCollection.map((account) => ({
+      const accountsBalance = uniqueAccounts.map((account) => ({
         accountId: account.id,
         openAmount: account.initialAmount,
         closingAmount: account.initialAmount,
       }));
-      const transactionsBalance = transactionsCollection.map((transaction) => ({
+      const transactionsBalance = uniqueTransactions.map((transaction) => ({
         transactionId: transaction.id,
         accountId: transaction.accountId,
         movementAmount: +transaction.amount,
@@ -70,7 +131,9 @@ export class Initializer implements TInitializer {
       const allBalances = [...accountsBalance, ...transactionsBalance];
 
       if (allBalances.length) {
-        await balanceLocalQuery.addMultipleBalances(allBalances);
+        for (const balance of allBalances) {
+          await balanceLocalQuery.updateBalance(balance);
+        }
         for (const account of allBalances) {
           await balanceLocalQuery.calculateBalanceAccountByDate({
             accountId: account.accountId,
@@ -79,7 +142,8 @@ export class Initializer implements TInitializer {
         }
       }
     } catch (error: any) {
-      throw new Error(`Failed to initialize banks: ${error.message}`);
+      console.error('Failed to initialize account data:', error);
+      throw new Error(`Failed to initialize account data: ${error.message}`);
     }
   }
 
@@ -147,8 +211,7 @@ export class Initializer implements TInitializer {
       if (!size(categoriesCollection)) {
         return;
       }
-      const categoriesTable =
-        database.collections.get<CategoriesModel>(TRANSACTION_CATEGORY);
+      const categoriesTable = database.collections.get<CategoriesModel>(TRANSACTION_CATEGORY);
 
       await database.write(async () => {
         const batchOperations = await Promise.all(
